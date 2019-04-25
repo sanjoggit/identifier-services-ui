@@ -7,6 +7,7 @@ const navStyles = theme  =>({
     navbarContainer: {
         width: '1200px',
         margin: '0 auto',
+        padding: 0,
         display: 'flex',
         justifyContent: 'space-between'
     },

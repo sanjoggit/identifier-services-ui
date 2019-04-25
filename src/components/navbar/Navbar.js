@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {AppBar, Toolbar, Typography, withStyles, Menu, MenuItem} from '@material-ui/core';
 import navStyles from '../../styles/nav';
 import LanguageIcon from '@material-ui/icons/Language';
+import PersonIcon from '@material-ui/icons/Person';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+
 
 const Navbar = props=> {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -33,13 +36,16 @@ const Navbar = props=> {
                         </Typography>
                     </div>
                     <div className={classes.navRight}>
+                        <PersonIcon />
                         <LanguageIcon
-                            aria-owns={anchorEl ? 'simple-menu': undefined}
+                            aria-owns={anchorEl ? 'language-menu': undefined}
                             aria-haspopup="true"
                             onClick={handleClick}
+                            style={{ marginLeft: 20 }}
                          />&nbsp;<span>EN</span>
+                         <ArrowDropDown onClick={handleClick}/>
                         <Menu
-                            id="simple-menu"
+                            id="language-menu"
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
                             onClose={handleClose}

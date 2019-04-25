@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
@@ -13,11 +13,13 @@ const App = (props) => {
     return (
         <Router>
             <Navbar />
-            <main className={classes.mainlayout}>
-                {/* <IsbnAndIsmn /> */}
-                <Home />
-                <Footer />
-            </main>
+                <main className={classes.mainlayout}>
+                    <Switch>
+                        <Route exact path ="/" component={Home} />
+                        <Route exact path ="/isbn" component={IsbnAndIsmn} />
+                    </Switch>
+                </main>
+            <Footer />
         </Router>
     )
 }
