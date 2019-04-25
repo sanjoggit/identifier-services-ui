@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from '../styles/identifierApplication';
 import {
 	withStyles,
@@ -11,6 +12,7 @@ import {
 
 const RenderSelectInput = props => {
 	const {data, classes, value, labelWidth, handleChange, handleSubmit} = props;
+	console.log(props);
 	return (
 		<form
 			className={classes.form}
@@ -57,6 +59,15 @@ const RenderSelectInput = props => {
 			</Button>
 		</form>
 	);
+};
+
+RenderSelectInput.propTypes = {
+	classes: PropTypes.objectOf(PropTypes.string).isRequired,
+	data: PropTypes.objectOf(PropTypes.object).isRequired,
+	value: PropTypes.string.isRequired,
+	labelWidth: PropTypes.number.isRequired,
+	handleChange: PropTypes.func.isRequired,
+	handleSubmit: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(RenderSelectInput);

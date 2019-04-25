@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {AppBar, Toolbar, Typography, withStyles} from '@material-ui/core';
 import {NavLink} from 'react-router-dom';
 import navStyles from '../../styles/nav';
@@ -54,6 +55,10 @@ const Navbar = props => {
 			</AppBar>
 		</div>
 	);
+};
+
+Navbar.propTypes = {
+	classes: PropTypes.objectOf(PropTypes.string).isRequired
 };
 
 export default withStyles(navStyles)(Navbar);

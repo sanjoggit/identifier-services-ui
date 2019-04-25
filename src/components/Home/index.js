@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
 	Grid,
 	withStyles,
@@ -52,4 +53,7 @@ const Home = props => {
 	);
 };
 
+Home.propTypes = {
+	classes: PropTypes.objectOf(PropTypes.string).isRequired
+};
 export default withStyles(styles)(Home);

@@ -7,6 +7,7 @@ import IsbnAndIsmn from './components/IsbnAndIsmn';
 import IdentifierApplication from './components/IsbnAndIsmn/IdentifierApplication';
 import Issn from './components/Issn';
 import {withStyles} from '@material-ui/core';
+import PropTypes from 'prop-types';
 import styles from './styles/app';
 
 const App = props => {
@@ -28,6 +29,10 @@ const App = props => {
 			<Footer/>
 		</Router>
 	);
+};
+
+App.propTypes = {
+	classes: PropTypes.objectOf(PropTypes.string).isRequired
 };
 
 export default withStyles(styles)(App);

@@ -16,7 +16,6 @@ const Footer = props => {
 			<AppBar position="fixed" color="primary" className={classes.appBar}>
 				<Grid container className={classes.toolbar}>
 					{btmLinks.map(item => (
-						// eslint-disable-next-line react/jsx-sort-props
 						<Grid key={item.label} className={classes.bottomNavItem} item>
 							{item.label}
 						</Grid>
@@ -28,7 +27,7 @@ const Footer = props => {
 };
 
 Footer.propTypes = {
-	classes: PropTypes.objectOf({bottomNavItem: PropTypes.string}).isRequired
+	classes: PropTypes.objectOf(PropTypes.string).isRequired
 };
 
 export default withStyles(styles)(Footer);
