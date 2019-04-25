@@ -1,7 +1,8 @@
 const styles = theme => ({
 	mainlayout: {
 		width: 1200,
-		margin: '60px auto'
+		margin: '0 auto',
+		paddingTop: '30px'
 	}
 })
 

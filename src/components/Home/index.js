@@ -1,44 +1,52 @@
 import React from 'react'
 import { Grid, withStyles, Typography, List, ListItem, ListItemText, Link } from '@material-ui/core';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import {Lens} from '@material-ui/icons';
 import styles from '../../styles/home'
 
 const Home = (props) => {
 	const { classes } = props;
 	const list = [
 		{
-			href: "ISBN",
+			href: "https://www.kiwi.fi/display/ISBNjaISMN/In+English+-+ISBN+and+ISMN",
 			name: "ISBN",
 		},
 		{
-			href: "ISMN",
+			href: "https://www.kiwi.fi/display/ISBNjaISMN/In+English+-+ISBN+and+ISMN",
 			name: "ISMN",
 		},
 		{
-			href: "ISSN",
+			href: "https://www.kiwi.fi/display/ISSN/In+English+-+ISSN",
 			name: "ISSN",
 		},
 	]
 	return (
-		<>
-			<Grid container >
-				<Typography variant="h3" className={classes.heading}>
-					Identifier Services
-				</Typography>
-				<Typography variant="body1" className={classes.body}>
-					ISBN identifies books, ISMN notated music publications and ISSN serial publications. In Finland, these identifiers are applied for from the Finnish ISBN and ISSN Agencies operating at the National Library of Finland. The identifiers are free of charge.
-				</Typography>
-				<List>
-					{list.map(item =>
-						<ListItem key={item.href}>
-							<Link href={item.href} className={classes.link}>
-								<ListItemText primary={item.name} />
-							</Link>
-						</ListItem>
-					)}
-
-				</List>
+		<div>
+			<Grid container>
+				<Grid item xs={12}>
+					<Typography variant="h3" className={classes.heading}>
+						Identifier Services
+					</Typography>
+					<Typography variant="body1">
+						ISBN identifies books, ISMN notated music publications and ISSN serial publications. In Finland, these identifiers are applied for from the Finnish ISBN and ISSN Agencies operating at the National Library of Finland. The identifiers are free of charge.
+					</Typography>
+					<List>
+						{list.map(item =>
+							<ListItem key={item.href} className={classes.listItem}>
+								<ListItemIcon>
+									<Lens />
+								</ListItemIcon>
+								<Link href={item.href} target="_blank">								
+									<ListItemText 									
+										primary={<Typography type="body2" style={{ color: '#0077bb' }}>{item.name}</Typography>}
+									/>
+								</Link>
+							</ListItem>
+						)}
+					</List>
+				</Grid>
 			</Grid>
-		</>
+		</div>
 	)
 }
 
