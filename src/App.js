@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
-import IsbnAndIsmn from './components/IsbnAndIsmn';
+import IsbnAndIsmn from './components/Issn';
+import Issn from './components/Issn';
 import { withStyles } from '@material-ui/core';
 import styles from './styles/app';
+import IdentifierApplication from './components/IsbnAndIsmn/IdentifierApplication';
 
 
 const App = (props) => {
@@ -15,7 +17,9 @@ const App = (props) => {
             <Navbar />
             <main className={classes.mainlayout}>
                 {/* <IsbnAndIsmn /> */}
-                <Home />
+                {/* <Home /> */}
+                {/* <Issn/> */}
+                <IdentifierApplication/>
                 <Footer />
             </main>
         </Router>

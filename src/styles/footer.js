@@ -6,19 +6,14 @@ const styles = theme => ({
 	},
 	toolbar: {
 		alignItems: 'center',
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		backgroundColor: '#eeeeee',
 		color: '#666666',
 		minHeight: '100px'
 	},
-	bottomNav: {
-		width: '-webkit-fill-available',
-		alignItems: 'center',
-		backgroundColor: 'transparent',
-	},
-
-	bottomNavAction:{
+	bottomNavItem: {
 		maxWidth: 'unset',
+		margin: 20
 	}
 })
 
