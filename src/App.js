@@ -1,13 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
-import IsbnAndIsmn from './components/Issn';
+import IsbnAndIsmn from './components/IsbnAndIsmn';
+import IdentifierApplication from './components/IsbnAndIsmn/IdentifierApplication'
 import Issn from './components/Issn';
 import { withStyles } from '@material-ui/core';
 import styles from './styles/app';
-import IdentifierApplication from './components/IsbnAndIsmn/IdentifierApplication';
 
 
 const App = (props) => {
@@ -15,13 +15,15 @@ const App = (props) => {
     return (
         <Router>
             <Navbar />
-            <main className={classes.mainlayout}>
-                {/* <IsbnAndIsmn /> */}
-                {/* <Home /> */}
-                {/* <Issn/> */}
-                <IdentifierApplication/>
-                <Footer />
-            </main>
+                <main className={classes.mainlayout}>
+                    <Switch>
+                        <Route exact path ="/" component={Home} />
+                        <Route path ="/isbn-and-ismn" component={IsbnAndIsmn} />
+                        <Route path ="/issn" component={Issn} />
+                        <Route path ="/isbn-and-ismn-identifier-application-form" component={IdentifierApplication} />
+                    </Switch>
+                </main>
+            <Footer />
         </Router>
     )
 }

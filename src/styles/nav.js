@@ -7,6 +7,7 @@ const navStyles = theme  =>({
     navbarContainer: {
         width: '1200px',
         margin: '0 auto',
+        padding: 0,
         display: 'flex',
         justifyContent: 'space-between'
     },
@@ -19,12 +20,14 @@ const navStyles = theme  =>({
     },
     navHeader: {
         color: '#ffffff',
+        textDecoration: 'none',
         paddingRight: '30px'
     },
     navItem: {
         color: '#ffffff',
-        paddingRight: '20px'
-    }
+        textDecoration: 'none',
+        padding: '0 15px'
+    },
 })
 
 export default navStyles;

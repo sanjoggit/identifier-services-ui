@@ -7,7 +7,7 @@ const Issn = (props) => {
 	const { classes } = props;
 
 	const issn = [{
-		title: "ISBN and ISMN",
+		title: "ISSN",
 		paragraph: [
 			"SSN identifies continuously published publications, as <b>journals</b> and series. The Finnish national ISSN Agency is responsible for providing the identifiers in Finland and sends the information about publications that have received an ISSN to the ISSN Portal database.",
 			"Identifiers as a part of metadata serve the publishing industry and library sector in their entirety and support identification, processing and availability of publications.",
