@@ -16,7 +16,7 @@ const App = (props) => {
                 <main className={classes.mainlayout}>
                     <Switch>
                         <Route exact path ="/" component={Home} />
-                        <Route exact path ="/isbn" component={IsbnAndIsmn} />
+                        <Route path ="/isbn-and-ismn" component={IsbnAndIsmn} />
                     </Switch>
                 </main>
             <Footer />

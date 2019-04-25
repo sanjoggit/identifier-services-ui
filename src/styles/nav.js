@@ -20,12 +20,14 @@ const navStyles = theme  =>({
     },
     navHeader: {
         color: '#ffffff',
+        textDecoration: 'none',
         paddingRight: '30px'
     },
     navItem: {
         color: '#ffffff',
-        paddingRight: '20px'
-    }
+        textDecoration: 'none',
+        padding: '0 15px'
+    },
 })
 
 export default navStyles;
