@@ -20,16 +20,16 @@ const Navbar = props=> {
                 <Toolbar className={classes.navbarContainer}>
                     <div className={classes.navLeft}>
                         <Typography variant="h5" className={classes.navHeader}>
-                            TUNNISTEPALVELUT
+                            IDENTIFIER SERVICES
                         </Typography>
                         <Typography variant="subtitle1" className={classes.navItem}>
-                            ETUSIVU
+                            HOME
                         </Typography>
                         <Typography variant="subtitle1" className={classes.navItem}>
-                            ISBN-/ISMN-HAKULOMAKE
+                            ISBN AND ISMN 
                         </Typography>
                         <Typography variant="subtitle1" className={classes.navItem}>
-                            ISSN-HAKULOMAKE
+                            ISSN
                         </Typography>
                     </div>
                     <div className={classes.navRight}>
@@ -37,7 +37,7 @@ const Navbar = props=> {
                             aria-owns={anchorEl ? 'simple-menu': undefined}
                             aria-haspopup="true"
                             onClick={handleClick}
-                         />&nbsp;<span>FI</span>
+                         />&nbsp;<span>EN</span>
                         <Menu
                             id="simple-menu"
                             anchorEl={anchorEl}
