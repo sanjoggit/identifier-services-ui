@@ -32,8 +32,9 @@ const IdentifierApplication = (props) => {
 				label: "The Finnish ISBN Agency"
 			}
 		],
-		select: {
-			label: "The publication is",
+		select: [{
+			label: "Publication",
+			id: "publication",
 			options: [
 				{ name: "Book, booklet", id: "bookbooklet" },
 				{ name: "Dissertation", id: "dissertation" },
@@ -41,17 +42,23 @@ const IdentifierApplication = (props) => {
 				{ name: "Map", id: "map" },
 				{ name: "Other", id: "other" }
 			]
-		}
+		}]
 	}]
 
 	const handleChange = (event) => {
-		setState({ ...state, value: event.value })
+		setState({ ...state, value: event.target.value })
 	}
-
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(state)
+	}
 	return (
 		<>
 			<RenderTwoColComponent data={identifierApplicationRender} />
-			<RenderSelectInput data={identifierApplicationRender} />
+			{identifierApplicationRender.map(item => item.select.length !== 0 &&
+				<RenderSelectInput
+					{...state} handleSubmit={handleSubmit} key={`${item.label}render`} data={item.select} handleChange={handleChange} />
+			)}
 		</>
 	)
 }

@@ -28,7 +28,6 @@ const LangSelect = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-
                 <MenuItem onClick={handleClose}>Sv</MenuItem>
                 <MenuItem onClick={handleClose}>En</MenuItem>
             </Menu>
