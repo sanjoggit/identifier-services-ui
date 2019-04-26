@@ -10,7 +10,7 @@ const Navbar = props => {
 	const {classes} = props;
 	return (
 		<div>
-			<AppBar className={classes.navbar}>
+			<AppBar position="static" className={classes.navbar}>
 				<Toolbar className={classes.navbarContainer}>
 					<div className={classes.navLeft}>
 						<Typography variant="h6">
