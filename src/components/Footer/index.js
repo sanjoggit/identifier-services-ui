@@ -16,6 +16,7 @@ const Footer = props => {
 			<AppBar position="fixed" color="primary" className={classes.appBar}>
 				<Grid container className={classes.toolbar}>
 					{btmLinks.map(item => (
+						// eslint-disable-next-line react/jsx-sort-props
 						<Grid key={item.label} className={classes.bottomNavItem} item>
 							{item.label}
 						</Grid>
