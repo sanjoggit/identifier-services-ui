@@ -7,8 +7,10 @@ import {
 	List,
 	ListItem,
 	ListItemText,
-	Link
+	Link,
+	ListItemIcon
 } from '@material-ui/core';
+import {Lens} from '@material-ui/icons';
 import styles from '../../styles/home';
 
 const Home = props => {
@@ -28,28 +30,39 @@ const Home = props => {
 		}
 	];
 	return (
-		<>
+		<div>
 			<Grid container>
-				<Typography variant="h3" className={classes.heading}>
-					Identifier Services
-				</Typography>
-				<Typography variant="body1" className={classes.body}>
-					ISBN identifies books, ISMN notated music publications and ISSN serial
-					publications. In Finland, these identifiers are applied for from the
-					Finnish ISBN and ISSN Agencies operating at the National Library of
-					Finland. The identifiers are free of charge.
-				</Typography>
-				<List>
-					{list.map(item => (
-						<ListItem key={item.name}>
-							<Link href={item.href} className={classes.link}>
-								<ListItemText primary={item.name}/>
-							</Link>
-						</ListItem>
-					))}
-				</List>
+				<Grid item xs={12}>
+					<Typography variant="h3" className={classes.heading}>
+						Identifier Services
+					</Typography>
+					<Typography variant="body1">
+						ISBN identifies books, ISMN notated music publications and ISSN
+						serial publications. In Finland, these identifiers are applied for
+						from the Finnish ISBN and ISSN Agencies operating at the National
+						Library of Finland. The identifiers are free of charge.
+					</Typography>
+					<List>
+						{list.map(item => (
+							<ListItem key={item.name} className={classes.listItem}>
+								<ListItemIcon>
+									<Lens/>
+								</ListItemIcon>
+								<Link href={item.href} target="_blank">
+									<ListItemText
+										primary={
+											<Typography type="body2" style={{color: '#0077bb'}}>
+												{item.name}
+											</Typography>
+										}
+									/>
+								</Link>
+							</ListItem>
+						))}
+					</List>
+				</Grid>
 			</Grid>
-		</>
+		</div>
 	);
 };
 
