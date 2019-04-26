@@ -15,15 +15,15 @@ const Home = props => {
 	const {classes} = props;
 	const list = [
 		{
-			href: 'ISBN',
+			href: 'https://www.kiwi.fi/display/ISBNjaISMN/In+English+-+ISBN+and+ISMN',
 			name: 'ISBN'
 		},
 		{
-			href: 'ISMN',
+			href: 'https://www.kiwi.fi/display/ISBNjaISMN/In+English+-+ISBN+and+ISMN',
 			name: 'ISMN'
 		},
 		{
-			href: 'ISSN',
+			href: 'https://www.kiwi.fi/display/ISSN/In+English+-+ISSN',
 			name: 'ISSN'
 		}
 	];
@@ -41,7 +41,7 @@ const Home = props => {
 				</Typography>
 				<List>
 					{list.map(item => (
-						<ListItem key={item.href}>
+						<ListItem key={item.name}>
 							<Link href={item.href} className={classes.link}>
 								<ListItemText primary={item.name}/>
 							</Link>
