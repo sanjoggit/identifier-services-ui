@@ -6,6 +6,8 @@ import TopNav from './components/navbar/topNav/index';
 import MainNav from './components/navbar/mainNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Banner from './components/main/banner';
+import FormList from './components/main/formList';
+
 const App = props => {
 	const {classes} = props;
 	return (
@@ -14,6 +16,7 @@ const App = props => {
 			<CssBaseline/>
 			<MainNav/>
 			<Banner/>
+			<FormList/>
 		</>
 	);
 };

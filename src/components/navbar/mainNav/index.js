@@ -1,24 +1,37 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core';
-import {AppBar, Toolbar, Typography} from '@material-ui/core';
-import styles from '../../../styles/mainNav';
+import {AppBar, Toolbar, Typography, Paper, InputBase, Divider} from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import useStyles from '../../../styles/mainNav';
 
 const MainNav = props => {
-	const {classes} = props;
+	const classes = useStyles();
 	return (
 		<div>
 			<AppBar position="static" color="default">
 				<Toolbar className={classes.mainNav}>
-					<Typography variant="h6" color="primary">
-                        Home
-					</Typography>
-					<Typography variant="h6" color="primary" className={classes.isbnIsmn}>
-                        Isbn&amp;Ismn
-					</Typography>
-					<Typography variant="h6" color="primary">
-                        Issn
-					</Typography>
+					<div className={classes.menu}>
+						<Typography variant="h6" color="primary">
+                            Home
+						</Typography>
+						<Typography variant="h6" color="primary" className={classes.isbnIsmn}>
+                            Isbn&amp;Ismn
+						</Typography>
+						<Typography variant="h6" color="primary">
+                            Issn
+						</Typography>
+					</div>
+					<Paper className={classes.root}>
+						<InputBase className={classes.input} placeholder="Search..."/>
+						<IconButton color="primary" className={classes.iconButton} aria-label="Directions">
+							<ArrowDropDown/>
+						</IconButton>
+						<Divider className={classes.divider}/>
+						<IconButton className={classes.iconButton} aria-label="Search">
+							<SearchIcon/>
+						</IconButton>
+					</Paper>
 				</Toolbar>
 			</AppBar>
 		</div>
@@ -26,8 +39,4 @@ const MainNav = props => {
 	);
 };
 
-MainNav.propTypes = {
-	classes: PropTypes.objectOf(PropTypes.string).isRequired
-};
-
-export default withStyles(styles)(MainNav);
+export default MainNav;

@@ -1,14 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {AppBar, Toolbar, Typography, withStyles} from '@material-ui/core';
-import topNav from '../../../styles/topNav';
+import {AppBar, Toolbar, Typography} from '@material-ui/core';
+import useStyles from '../../../styles/topNav';
 import Logo from '../../../assets/logo/logo.png';
 import PersonIcon from '@material-ui/icons/Person';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
-const TopNav = props => {
-	const {classes} = props;
+const TopNav = () => {
+	const classes = useStyles();
 	return (
 		<div>
 			<AppBar position="static" className={classes.topNav}>
@@ -27,8 +26,4 @@ const TopNav = props => {
 	);
 };
 
-TopNav.propTypes = {
-	classes: PropTypes.objectOf(PropTypes.string).isRequired
-};
-
-export default withStyles(topNav)(TopNav);
+export default TopNav;

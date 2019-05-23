@@ -1,4 +1,6 @@
-const styles = theme => ({
+import {makeStyles} from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
 	topNav: {
 		backgroundColor: '#00224f'
 	},
@@ -28,4 +30,4 @@ const styles = theme => ({
 	}
 });
 
-export default styles;
+export default useStyles;
