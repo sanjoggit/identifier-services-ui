@@ -1,8 +1,9 @@
-const styles = () => ({
-	mainlayout: {
-		width: 1200,
+const styles = theme => ({
+	
+	mainLayout: {
+		width: '1200px',
 		margin: '0 auto',
-		paddingTop: '30px'
+		color: 'red'
 	}
 });
 
