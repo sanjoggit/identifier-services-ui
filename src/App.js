@@ -7,6 +7,8 @@ import MainNav from './components/navbar/mainNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Banner from './components/main/banner';
 import FormList from './components/main/formList';
+import IsbnIsmn from './components/main/isbn_ismn';
+import Issn from './components/main/issn';
 
 const App = props => {
 	const {classes} = props;
@@ -17,6 +19,8 @@ const App = props => {
 			<MainNav/>
 			<Banner/>
 			<FormList/>
+			<IsbnIsmn/>
+			<Issn/>
 		</>
 	);
 };
