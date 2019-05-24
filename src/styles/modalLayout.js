@@ -21,6 +21,7 @@ const useStyles = makeStyles({
 			fontSize: '1rem',
 			borderRadius: '50%'
 		},
+		cursor: 'pointer',
 		left: '777px',
 		top: '-30px'
 	}

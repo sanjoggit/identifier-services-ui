@@ -26,13 +26,22 @@
  * for the JavaScript code in this file.
  *
  */
-
-import {makeStyles} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
 	container: {
 		margin: '40px 0px 40px 0px',
 		flexGrow: 1
+	},
+	subContainer: {
+		flexGrow: 1,
+		padding: '0 10px'
+	},
+	btnContainer: {
+		marginTop: 35,
+		'& button': {
+			margin: '0 5px'
+		}
 	},
 	textField: {
 		height: '60px',

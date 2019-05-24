@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-indent */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-unused-expressions */
 /**
@@ -27,12 +28,12 @@
  * for the JavaScript code in this file.
  *
  */
-import React, {useState} from 'react';
+import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepButton, Typography} from '@material-ui/core';
-import {PropTypes} from 'prop-types';
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
+import useStyles from '../../styles/form';
 
 const fieldArray = [
 	{
@@ -41,6 +42,12 @@ const fieldArray = [
 				name: 'name',
 				type: 'text',
 				label: 'Name',
+				width: 'half'
+			},
+			{
+				name: 'publisherEmail',
+				type: 'email',
+				label: 'Publisher Email',
 				width: 'half'
 			},
 			{
@@ -53,19 +60,13 @@ const fieldArray = [
 				name: 'aliases',
 				type: 'text',
 				label: 'Aliases',
-				width: 'full'
-			},
-			{
-				name: 'email',
-				type: 'email',
-				label: 'Email',
 				width: 'half'
 			},
 			{
 				name: 'website',
 				type: 'text',
 				label: 'Website',
-				width: 'half'
+				width: 'full'
 			}
 		]
 	},
@@ -75,13 +76,13 @@ const fieldArray = [
 				name: 'givenName',
 				type: 'text',
 				label: 'Given Name',
-				width: 'half'
+				width: 'full'
 			},
 			{
 				name: 'familyName',
 				type: 'text',
 				label: 'Family Name',
-				width: 'half'
+				width: 'full'
 			},
 			{
 				name: 'email',
@@ -104,7 +105,7 @@ const fieldArray = [
 				name: 'city',
 				type: 'text',
 				label: 'City',
-				width: 'half'
+				width: 'full'
 			},
 			{
 				name: 'zip',
@@ -221,40 +222,40 @@ const PublisherRegistrationForm = () => {
 	}
 
 	return (
-		<form>
-			<Grid container spacing={3} direction="column">
-				<Stepper nonLinear activeStep={activeStep}>
-					{steps.map((label, index) => (
-						<Step key={label}>
-							<StepButton completed={completed[index]} onClick={handleStep(index)}>
-								{label}
-							</StepButton>
-						</Step>
-					))}
-				</Stepper>
+		<form className={classes.container}>
+			<Stepper nonLinear activeStep={activeStep}>
+				{steps.map((label, index) => (
+					<Step key={label}>
+						<StepButton completed={completed[index]} onClick={handleStep(index)}>
+							{label}
+						</StepButton>
+					</Step>
+				))}
+			</Stepper>
+			{allStepsCompleted() ? (
 				<div>
-					{allStepsCompleted() ? (
-						<div>
-							<Typography>
+					<Typography>
 						All steps completed - you&apos;re finished
-							</Typography>
-							<Button onClick={handleReset}>Reset</Button>
-						</div>
-					) : (
-						<div>
-							{(getStepContent(activeStep))}
-							<div>
-								<Button disabled={activeStep === 0} onClick={handleBack}>
+					</Typography>
+					<Button onClick={handleReset}>Reset</Button>
+				</div>
+			) : (
+				<div className={classes.subContainer}>
+					<Grid container spacing={3} direction="row">
+						{(getStepContent(activeStep))}
+					</Grid>
+					<div className={classes.btnContainer}>
+						<Button disabled={activeStep === 0} onClick={handleBack}>
 							Back
-								</Button>
-								<Button
-									variant="contained"
-									color="primary"
-									onClick={handleNext}
-								>
+						</Button>
+						<Button
+							variant="contained"
+							color="primary"
+							onClick={handleNext}
+						>
 							Next
-								</Button>
-								{activeStep !== steps.length &&
+						</Button>
+						{activeStep !== steps.length &&
                 (completed[activeStep] ? (
                 	<Typography variant="caption" className={classes.completed}>
                     Step {activeStep + 1} already completed
@@ -264,19 +265,11 @@ const PublisherRegistrationForm = () => {
                 		{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Complete Step'}
                 	</Button>
                 ))}
-							</div>
-						</div>
-					)}
+					</div>
 				</div>
-			</Grid>
+			)}
 		</form>
 	);
 };
 
 export default reduxForm({form: 'publisherRegistrationForm'})(PublisherRegistrationForm);
-
-PublisherRegistrationForm.propTypes = {
-	// HandleSubmit: PropTypes.func.isRequired,
-	// classes: PropTypes.shape({}).isRequired
-};
-

@@ -55,15 +55,15 @@ const ModalLayout = props => {
 			</Grid>
 
 			<Modal
+				disableRestoreFocus
 				aria-labelledby={`modal-${name}`}
 				aria-describedby="modal-description"
 				open={open}
-				onClose={handleClose}
 			>
 				<div style={modalStyle} className={classes.main}>
-					<Badge className={classes.badge} badgeContent="X" color="secondary"/>
+					<Badge className={classes.badge} badgeContent="X" color="secondary" onClick={handleClose}/>
 					<Typography variant="h6" id={`modal-${name}`}>
-						This is a text
+						{label}
 					</Typography>
 					{children}
 				</div>
@@ -77,7 +77,11 @@ export default ModalLayout;
 ModalLayout.propTypes = {
 	label: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
-	children: PropTypes.shape({}).isRequired
+	children: PropTypes.node
+};
+
+ModalLayout.defaultProps = {
+	children: null
 };
 
 function rand() {

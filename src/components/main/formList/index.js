@@ -5,11 +5,12 @@ import useStyles from '../../../styles/formList';
 import ModalLayout from '../../ModalLayout';
 import UserRequestForm from '../../form/UserRequestForm';
 import PublisherRegistrationForm from '../../form/PublisherRegistrationForm';
+import ContactForm from '../../form/ContactForm';
 
 const formListsArray = [
-	{label: 'Publisher Registration', name: 'publisherRegistration', component: <UserRequestForm/>},
-	{label: 'Publication', name: 'publication', component: <PublisherRegistrationForm/>},
-	{label: 'Contact Form', name: 'contactForm', component: <UserRequestForm/>}
+	{label: 'Publisher Registration', name: 'publisherRegistration', component: <PublisherRegistrationForm/>},
+	{label: 'Publication', name: 'publication', component: <UserRequestForm/>},
+	{label: 'Contact Form', name: 'contactForm', component: <ContactForm/>}
 
 ];
 

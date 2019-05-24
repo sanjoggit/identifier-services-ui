@@ -26,16 +26,16 @@
  * for the JavaScript code in this file.
  *
  */
+
 import React, {useState} from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {Button, Grid} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
+import {Grid, Button} from '@material-ui/core';
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
 
-const UserRequestForm = ({handleSubmit}) => {
-	const classes = useStyles();
+const ContactForm = ({handleSubmit}) => {
 	const initialState = {};
 	const [state, setState] = useState(initialState);
 
@@ -45,52 +45,32 @@ const UserRequestForm = ({handleSubmit}) => {
 
 	const fieldArray = [
 		{
-			name: 'userId',
+			name: 'name',
 			type: 'text',
-			label: 'UserId',
-			width: 'half'
+			label: 'Name',
+			width: 'full'
 		},
 		{
 			name: 'email',
 			type: 'text',
 			label: 'Email',
-			width: 'half'
-		},
-		{
-			name: 'publishers',
-			type: 'text',
-			label: 'Publishers',
 			width: 'full'
 		},
 		{
-			name: 'givenName',
-			type: 'text',
-			label: 'Given Name',
-			width: 'half'
-		},
-		{
-			name: 'familyName',
-			type: 'text',
-			label: 'Family Name',
-			width: 'half'
-		},
-		{
-			name: 'notes',
+			name: 'description',
 			type: 'multiline',
-			label: 'Notes',
+			label: 'Description',
 			width: 'full'
 		}
 	];
-
+	const classes = useStyles();
 	return (
-		<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
-
+		<form onSubmit={handleSubmit(handleClick)}>
 			<Grid container spacing={3} direction="row">
 				{
-					fieldArray.map(list =>
-						// eslint-disable-next-line no-negated-condition
-						((list.width !== 'full') ?
-							<Grid key={list.name} item xs={6}>
+					fieldArray.map(list => (
+						(list.type === 'text') ?
+							<Grid key={list.name} item xs={12}>
 								<Field
 									className={`${classes.textField} ${list.width}`}
 									component={renderTextField}
@@ -98,38 +78,19 @@ const UserRequestForm = ({handleSubmit}) => {
 									name={list.name}
 									type={list.type}
 								/>
-							</Grid>		:
-							((list.type === 'multiline') ?
-								<Grid key={list.name} item xs={12}>
-									<Field
-										className={`${classes.textArea} ${list.width}`}
-										component={renderTextArea}
-										label={list.label}
-										name={list.name}
-										type={list.type}
-									/>
-								</Grid>	:
-								<Grid key={list.name} item xs={12}>
-									<Field
-										className={`${classes.textField} ${list.width}`}
-										component={renderTextField}
-										label={list.label}
-										name={list.name}
-										type={list.type}
-									/>
-								</Grid>))
-					)
+							</Grid> :
+							<Grid key={list.name} item xs={12}>
+								<Field
+									className={`${classes.textArea} ${list.width}`}
+									component={renderTextArea}
+									label={list.label}
+									name={list.name}
+									type={list.type}
+								/>
+							</Grid>
+					))
 				}
 				<Grid item xs={6} className={classes.btnContainer}>
-					<Button
-						variant="outlined"
-						color="primary"
-						type="submit"
-						size="small"
-						fullWidth={false}
-					>
-				Back
-					</Button>
 					<Button
 						variant="contained"
 						color="primary"
@@ -145,13 +106,8 @@ const UserRequestForm = ({handleSubmit}) => {
 	);
 };
 
-export default reduxForm({form: 'userRequestForm'})(UserRequestForm);
+export default (reduxForm({form: 'contactForm'}))(ContactForm);
 
-UserRequestForm.propTypes = {
-	handleSubmit: PropTypes.func.isRequired,
-	classes: PropTypes.shape({})
-};
-
-UserRequestForm.defaultProps = {
-	classes: null
+ContactForm.propTypes = {
+	handleSubmit: PropTypes.func.isRequired
 };
