@@ -1,7 +1,16 @@
 import React from 'react';
-import {Typography, Grid, Button} from '@material-ui/core';
+import {Typography, Grid} from '@material-ui/core';
 
 import useStyles from '../../../styles/formList';
+import ModalLayout from '../../ModalLayout';
+import UserRequestForm from '../../form/UserRequestForm';
+
+const formListsArray = [
+	{label: 'Publisher Registration', name: 'publisherRegistration', component: <UserRequestForm/>},
+	{label: 'Publication', name: 'publication', component: <UserRequestForm/>},
+	{label: 'Contact Form', name: 'contactForm', component: <UserRequestForm/>}
+
+];
 
 const FormList = () => {
 	const classes = useStyles();
@@ -11,21 +20,12 @@ const FormList = () => {
 				<Grid item xs={12}>
 					<Typography variant="h4" align="center">Forms</Typography>
 				</Grid>
-				<Grid item>
-					<Button variant="outlined" color="primary" className={classes.button}>
-                                Publisher Registration
-					</Button>
-				</Grid>
-				<Grid item>
-					<Button variant="outlined" color="primary" className={classes.button}>
-                                Publication
-					</Button>
-				</Grid>
-				<Grid item>
-					<Button variant="outlined" color="primary" className={classes.button}>
-                                Contact Form
-					</Button>
-				</Grid>
+
+				{formListsArray.map(item => (
+					<ModalLayout key={item.label} label={item.label} name={item.name}>
+						{item.component}
+					</ModalLayout>
+				))}
 			</Grid>
 		</div>
 	);
