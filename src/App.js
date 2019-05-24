@@ -9,15 +9,15 @@ import FormList from './components/main/formList';
 import IsbnIsmn from './components/main/isbn_ismn';
 import Issn from './components/main/issn';
 import Footer from './components/footer';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import {MuiThemeProvider} from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
 	typography: {
 		fontFamily: 'Poppins'
 	}
-})
+});
 
-const App = props => {
+const App = () => {
 	return (
 		<MuiThemeProvider theme={theme}>
 			<TopNav/>

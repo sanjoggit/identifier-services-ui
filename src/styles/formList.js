@@ -10,8 +10,8 @@ const useStyles = makeStyles({
 	},
 	formContainer: {
 		justifyContent: 'center',
-        alignItems: 'center',
-        margin: '0'
+		alignItems: 'center',
+		margin: '0'
 	},
 	button: {
 		marginBottom: '20px'

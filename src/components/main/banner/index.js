@@ -4,7 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import useStyles from '../../../styles/banner';
 
-const Banner = props => {
+const Banner = () => {
 	const classes = useStyles();
 	return (
 		<div className={classes.bannerContainer}>
