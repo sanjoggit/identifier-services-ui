@@ -1,6 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core';
-import PropTypes from 'prop-types';
+import {withStyles, createMuiTheme} from '@material-ui/core';
 import styles from './styles/app';
 import TopNav from './components/navbar/topNav/index';
 import MainNav from './components/navbar/mainNav';
@@ -9,11 +8,18 @@ import Banner from './components/main/banner';
 import FormList from './components/main/formList';
 import IsbnIsmn from './components/main/isbn_ismn';
 import Issn from './components/main/issn';
+import Footer from './components/footer';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+	typography: {
+		fontFamily: 'Poppins'
+	}
+})
 
 const App = props => {
-	const {classes} = props;
 	return (
-		<>
+		<MuiThemeProvider theme={theme}>
 			<TopNav/>
 			<CssBaseline/>
 			<MainNav/>
@@ -21,12 +27,9 @@ const App = props => {
 			<FormList/>
 			<IsbnIsmn/>
 			<Issn/>
-		</>
+			<Footer/>
+		</MuiThemeProvider>
 	);
-};
-
-App.propTypes = {
-	classes: PropTypes.objectOf(PropTypes.string).isRequired
 };
 
 export default withStyles(styles)(App);
