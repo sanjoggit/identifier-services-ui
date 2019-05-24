@@ -36,7 +36,7 @@ const renderTextField = ({input, label, className, meta: {touched, error}, child
 		className={className}
 		error={touched && error}
 	>
-		{children}||{console.log(input)}
+		{children}
 	</TextField>
 );
 

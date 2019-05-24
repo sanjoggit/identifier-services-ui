@@ -4,10 +4,11 @@ import {Typography, Grid} from '@material-ui/core';
 import useStyles from '../../../styles/formList';
 import ModalLayout from '../../ModalLayout';
 import UserRequestForm from '../../form/UserRequestForm';
+import PublisherRegistrationForm from '../../form/PublisherRegistrationForm';
 
 const formListsArray = [
 	{label: 'Publisher Registration', name: 'publisherRegistration', component: <UserRequestForm/>},
-	{label: 'Publication', name: 'publication', component: <UserRequestForm/>},
+	{label: 'Publication', name: 'publication', component: <PublisherRegistrationForm/>},
 	{label: 'Contact Form', name: 'contactForm', component: <UserRequestForm/>}
 
 ];

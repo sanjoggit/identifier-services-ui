@@ -28,13 +28,14 @@
  */
 import React, {useState} from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {Button, Grid, withStyles} from '@material-ui/core';
+import {Button, Grid} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
-import userRequestForm from '../../styles/userRequestForm';
+import useStyles from '../../styles/userRequestForm';
 
-const UserRequestForm = ({handleSubmit, classes}) => {
+const UserRequestForm = ({handleSubmit}) => {
+	const classes = useStyles();
 	const initialState = {};
 	const [state, setState] = useState(initialState);
 
@@ -83,6 +84,7 @@ const UserRequestForm = ({handleSubmit, classes}) => {
 
 	return (
 		<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
+
 			<Grid container spacing={3} direction="row">
 
 				{
@@ -119,22 +121,32 @@ const UserRequestForm = ({handleSubmit, classes}) => {
 								</Grid>))
 					)
 				}
-
-				<Button
-					variant="contained"
-					color="primary"
-					type="submit"
-					size="small"
-					fullWidth={false}
-				>
+				<Grid item xs={6}>
+					<Button
+						variant="outlined"
+						color="primary"
+						type="submit"
+						size="small"
+						fullWidth={false}
+					>
+				Back
+					</Button>
+					<Button
+						variant="contained"
+						color="primary"
+						type="submit"
+						size="small"
+						fullWidth={false}
+					>
 				Submit
-				</Button>
+					</Button>
+				</Grid>
 			</Grid>
 		</form>
 	);
 };
 
-export default withStyles(userRequestForm)(reduxForm({form: 'userRequestForm'})(UserRequestForm));
+export default reduxForm({form: 'userRequestForm'})(UserRequestForm);
 
 UserRequestForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,

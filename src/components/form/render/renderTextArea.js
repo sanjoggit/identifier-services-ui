@@ -35,7 +35,7 @@ const renderTextArea = ({input, label, className, meta: {touched, error}, childr
 		multiline
 		label={label}
 		variant="outlined"
-		rowsMax={4}
+		rows={4}
 		className={className}
 		error={touched && error}
 	>

@@ -27,7 +27,9 @@
  *
  */
 
-const styles = () => ({
+import {makeStyles} from '@material-ui/core';
+
+const useStyles = makeStyles({
 	container: {
 		margin: '40px 0px 40px 0px',
 		flexGrow: 1
@@ -48,4 +50,4 @@ const styles = () => ({
 	}
 });
 
-export default styles;
+export default useStyles;

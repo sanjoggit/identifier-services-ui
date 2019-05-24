@@ -27,14 +27,13 @@
  *
  */
 import React, {useState} from 'react';
-import {Modal, Typography, Button, Grid} from '@material-ui/core';
+import {Modal, Typography, Button, Grid, Badge} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
 
 import useStyles from '../styles/modalLayout';
 
 const ModalLayout = props => {
 	const {label, name, children} = props;
-	console.log(children);
 	const classes = useStyles();
 	const [modalStyle] = useState(getModalStyle);
 	const [open, setOpen] = useState(false);
@@ -54,6 +53,7 @@ const ModalLayout = props => {
 					{label}
 				</Button>
 			</Grid>
+
 			<Modal
 				aria-labelledby={`modal-${name}`}
 				aria-describedby="modal-description"
@@ -61,6 +61,7 @@ const ModalLayout = props => {
 				onClose={handleClose}
 			>
 				<div style={modalStyle} className={classes.main}>
+					<Badge className={classes.badge} badgeContent="X" color="secondary"/>
 					<Typography variant="h6" id={`modal-${name}`}>
 						This is a text
 					</Typography>
