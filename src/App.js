@@ -12,6 +12,11 @@ import Footer from './components/footer';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#00224f'
+		}
+	},
 	typography: {
 		fontFamily: 'Poppins'
 	}
