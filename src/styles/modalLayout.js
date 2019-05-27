@@ -3,8 +3,8 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles({
 
 	main: {
-		position: 'absolute',
 		width: 800,
+		margin: '100px auto',
 		padding: 20,
 		borderRadius: 5,
 		backgroundColor: '#fff',

@@ -35,7 +35,6 @@ import useStyles from '../styles/modalLayout';
 const ModalLayout = props => {
 	const {label, name, children} = props;
 	const classes = useStyles();
-	const [modalStyle] = useState(getModalStyle);
 	const [open, setOpen] = useState(false);
 
 	const handleOpen = () => {
@@ -60,8 +59,10 @@ const ModalLayout = props => {
 				aria-describedby="modal-description"
 				open={open}
 			>
-				<div style={modalStyle} className={classes.main}>
-					<Badge className={classes.badge} badgeContent="X" color="secondary" onClick={handleClose}/>
+				<div className={classes.main}>
+					<Badge className={classes.badge} badgeContent="X" color="secondary" onClick={handleClose}>
+						<div/>
+					</Badge>
 					<Typography variant="h6" id={`modal-${name}`}>
 						{label}
 					</Typography>
@@ -83,18 +84,3 @@ ModalLayout.propTypes = {
 ModalLayout.defaultProps = {
 	children: null
 };
-
-function rand() {
-	return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-	const top = 50 + rand();
-	const left = 50 + rand();
-
-	return {
-		top: `${top}%`,
-		left: `${left}%`,
-		transform: `translate(-${top}%, -${left}%)`
-	};
-}

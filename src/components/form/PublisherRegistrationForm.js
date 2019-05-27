@@ -29,11 +29,14 @@
  *
  */
 import React from 'react';
+import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepButton, Typography} from '@material-ui/core';
+import PropTypes from 'prop-types';
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
+import * as actions from '../../store/actions';
 
 const fieldArray = [
 	{
@@ -122,7 +125,7 @@ function getSteps() {
 	return fieldArray.map(item => Object.keys(item));
 }
 
-const PublisherRegistrationForm = () => {
+const PublisherRegistrationForm = ({handleSubmit, registration}) => {
 	const classes = useStyles();
 
 	const [activeStep, setActiveStep] = React.useState(0);
@@ -222,7 +225,7 @@ const PublisherRegistrationForm = () => {
 	}
 
 	return (
-		<form className={classes.container}>
+		<form className={classes.container} onSubmit={handleSubmit(registration)}>
 			<Stepper nonLinear activeStep={activeStep}>
 				{steps.map((label, index) => (
 					<Step key={label}>
@@ -235,9 +238,13 @@ const PublisherRegistrationForm = () => {
 			{allStepsCompleted() ? (
 				<div>
 					<Typography>
-						All steps completed - you&apos;re finished
+						All steps completed - do you want to submit?
 					</Typography>
-					<Button onClick={handleReset}>Reset</Button>
+					<div className={classes.btnContainer}>
+						<Button onClick={handleReset}>Reset</Button>
+						<Button type="submit" variant="contained" color="primary">Submit</Button>
+					</div>
+
 				</div>
 			) : (
 				<div className={classes.subContainer}>
@@ -272,4 +279,9 @@ const PublisherRegistrationForm = () => {
 	);
 };
 
-export default reduxForm({form: 'publisherRegistrationForm'})(PublisherRegistrationForm);
+export default connect(null, actions)(reduxForm({form: 'publisherRegistrationForm'})(PublisherRegistrationForm));
+
+PublisherRegistrationForm.propTypes = {
+	handleSubmit: PropTypes.func.isRequired,
+	registration: PropTypes.func.isRequired
+};
