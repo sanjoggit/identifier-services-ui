@@ -1,6 +1,8 @@
 import React from 'react';
-import {Grid, Typography} from '@material-ui/core';
+import {Grid, Typography, Fab} from '@material-ui/core';
+import RightIcon from '@material-ui/icons/ChevronRight';
 import useStyles from '../../../styles/issn';
+import {para1, para2, para3} from './text';
 
 const Issn = () => {
 	const classes = useStyles();
@@ -8,17 +10,27 @@ const Issn = () => {
 		<div className={classes.IssnContainer}>
 			<Grid container>
 				<Grid item xs={12}>
-					<Typography variant="h4" gutterBottom>ISSN</Typography>
+					<Typography variant="h4">ISSN</Typography>
 					<hr/>
 					<Typography paragraph>
-                    ISSN identifies continuously published publications, as journals and series. The Finnish national ISSN Agency is responsible for providing the identifiers in Finland and sends the information about publications that have received an ISSN to the ISSN Portal database.
+						{para1}
 					</Typography>
 					<Typography paragraph>
-                    Identifiers as a part of metadata serve the publishing industry and library sector in their entirety and support identification, processing and availability of publications.
+						{para2}
 					</Typography>
-					<Typography>
-                    The identifiers are used, for example, in publishing industry's ordering and distribution systems to speed up the identification of publications as well as international and domestic joint catalogues, bibliographies, library lending systems and information retrieval. ISSN is inseparable with the title of the publication; if the title of the publication changes, the identifier must also be changed. A separate ISSN is given to various forms of publication.
+					<Typography paragraph>
+						{para3}
 					</Typography>
+					<Fab
+						variant="extended"
+						size="medium"
+						color="primary"
+						href="https://www.kansalliskirjasto.fi/en/services/expert-services-of-data-description/issn"
+						target="_blank"
+					>
+						More in details
+						<RightIcon/>
+					</Fab>
 				</Grid>
 			</Grid>
 		</div>
