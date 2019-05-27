@@ -26,4 +26,5 @@
  *
  */
 
-export {registration} from './publisherRegistrationActions';
+export {registration} from './publisherRegistrationFormActions';
+export {contact} from './contactFormActions';

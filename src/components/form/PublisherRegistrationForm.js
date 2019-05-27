@@ -30,8 +30,8 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, reduxForm} from 'redux-form';
-import {Button, Grid, Stepper, Step, StepButton, Typography} from '@material-ui/core';
+import {Field, reduxForm, isPristine} from 'redux-form';
+import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
@@ -60,15 +60,15 @@ const fieldArray = [
 				width: 'half'
 			},
 			{
-				name: 'aliases',
-				type: 'text',
-				label: 'Aliases',
-				width: 'half'
-			},
-			{
 				name: 'website',
 				type: 'text',
 				label: 'Website',
+				width: 'half'
+			},
+			{
+				name: 'aliases',
+				type: 'text',
+				label: 'Aliases',
 				width: 'full'
 			}
 		]
@@ -125,11 +125,9 @@ function getSteps() {
 	return fieldArray.map(item => Object.keys(item));
 }
 
-const PublisherRegistrationForm = ({handleSubmit, registration}) => {
+const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
 	const classes = useStyles();
-
 	const [activeStep, setActiveStep] = React.useState(0);
-	const [completed, setCompleted] = React.useState({});
 	const steps = getSteps();
 
 	function getStepContent(step) {
@@ -180,108 +178,56 @@ const PublisherRegistrationForm = ({handleSubmit, registration}) => {
 		);
 	}
 
-	function totalSteps() {
-		return steps.length;
-	}
-
-	function completedSteps() {
-		return Object.keys(completed).length;
-	}
-
-	function isLastStep() {
-		return activeStep === totalSteps() - 1;
-	}
-
-	function allStepsCompleted() {
-		return completedSteps() === totalSteps();
-	}
-
 	function handleNext() {
-		const newActiveStep =
-    	isLastStep() && !allStepsCompleted() ?
-    		steps.findIndex((step, i) => !(i in completed)) :
-    		activeStep + 1;
-		setActiveStep(newActiveStep);
+		setActiveStep(prevActiveStep => prevActiveStep + 1);
 	}
 
 	function handleBack() {
 		setActiveStep(prevActiveStep => prevActiveStep - 1);
 	}
 
-	const handleStep = step => () => {
-		setActiveStep(step);
-	};
-
-	function handleComplete() {
-		const newCompleted = completed;
-		newCompleted[activeStep] = true;
-		setCompleted(newCompleted);
-		handleNext();
-	}
-
-	function handleReset() {
-		setActiveStep(0);
-		setCompleted({});
-	}
-
 	return (
 		<form className={classes.container} onSubmit={handleSubmit(registration)}>
 			<Stepper nonLinear activeStep={activeStep}>
-				{steps.map((label, index) => (
+				{steps.map(label => (
 					<Step key={label}>
-						<StepButton completed={completed[index]} onClick={handleStep(index)}>
+						<StepButton className={classes.stepLabel}>
 							{label}
 						</StepButton>
 					</Step>
 				))}
 			</Stepper>
-			{allStepsCompleted() ? (
-				<div>
-					<Typography>
-						All steps completed - do you want to submit?
-					</Typography>
-					<div className={classes.btnContainer}>
-						<Button onClick={handleReset}>Reset</Button>
-						<Button type="submit" variant="contained" color="primary">Submit</Button>
-					</div>
-
-				</div>
-			) : (
-				<div className={classes.subContainer}>
-					<Grid container spacing={3} direction="row">
-						{(getStepContent(activeStep))}
-					</Grid>
-					<div className={classes.btnContainer}>
-						<Button disabled={activeStep === 0} onClick={handleBack}>
+			<div className={classes.subContainer}>
+				<Grid container spacing={3} direction="row">
+					{(getStepContent(activeStep))}
+				</Grid>
+				<div className={classes.btnContainer}>
+					<Button disabled={activeStep === 0} onClick={handleBack}>
 							Back
-						</Button>
-						<Button
-							variant="contained"
-							color="primary"
-							onClick={handleNext}
-						>
-							Next
-						</Button>
-						{activeStep !== steps.length &&
-                (completed[activeStep] ? (
-                	<Typography variant="caption" className={classes.completed}>
-                    Step {activeStep + 1} already completed
-                	</Typography>
-                ) : (
-                	<Button variant="contained" color="primary" onClick={handleComplete}>
-                		{completedSteps() === totalSteps() - 1 ? 'Finish' : 'Complete Step'}
-                	</Button>
-                ))}
-					</div>
+					</Button>
+					{
+						activeStep === steps.length - 1 ?
+							<Button disabled={pristine} variant="contained" color="primary" onClick={handleSubmit(registration)}>
+						Submit
+							</Button> :
+							<Button variant="contained" color="primary" onClick={handleNext}>
+						Next
+							</Button>
+					}
 				</div>
-			)}
+			</div>
 		</form>
 	);
 };
 
-export default connect(null, actions)(reduxForm({form: 'publisherRegistrationForm'})(PublisherRegistrationForm));
+const mapStateToProps = state => ({
+	pristine: isPristine('publisherRegistrationForm')(state)
+});
+
+export default connect(mapStateToProps, actions)(reduxForm({form: 'publisherRegistrationForm'})(PublisherRegistrationForm));
 
 PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
-	registration: PropTypes.func.isRequired
+	registration: PropTypes.func.isRequired,
+	pristine: PropTypes.bool.isRequired
 };

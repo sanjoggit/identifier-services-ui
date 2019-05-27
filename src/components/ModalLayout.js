@@ -27,7 +27,9 @@
  *
  */
 import React, {useState} from 'react';
-import {Modal, Typography, Button, Grid, Badge} from '@material-ui/core';
+import {Modal, Typography, Button, Grid} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 import {PropTypes} from 'prop-types';
 
 import useStyles from '../styles/modalLayout';
@@ -60,10 +62,10 @@ const ModalLayout = props => {
 				open={open}
 			>
 				<div className={classes.main}>
-					<Badge className={classes.badge} badgeContent="X" color="secondary" onClick={handleClose}>
-						<div/>
-					</Badge>
-					<Typography variant="h6" id={`modal-${name}`}>
+					<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
+						<CloseIcon/>
+					</IconButton>
+					<Typography variant="h4" id={`modal-${name}`}>
 						{label}
 					</Typography>
 					{children}

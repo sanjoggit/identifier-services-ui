@@ -28,14 +28,17 @@
  */
 
 import React, {useState} from 'react';
-import {Field, reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
+import {Field, reduxForm, isPristine} from 'redux-form';
 import {PropTypes} from 'prop-types';
 import {Grid, Button} from '@material-ui/core';
+
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
+import * as actions from '../../store/actions';
 
-const ContactForm = ({handleSubmit}) => {
+const ContactForm = ({handleSubmit, pristine}) => {
 	const initialState = {};
 	const [state, setState] = useState(initialState);
 
@@ -92,6 +95,7 @@ const ContactForm = ({handleSubmit}) => {
 				}
 				<Grid item xs={6} className={classes.btnContainer}>
 					<Button
+						disabled={pristine}
 						variant="contained"
 						color="primary"
 						type="submit"
@@ -106,8 +110,13 @@ const ContactForm = ({handleSubmit}) => {
 	);
 };
 
-export default (reduxForm({form: 'contactForm'}))(ContactForm);
+const mapStateToProps = state => ({
+	pristine: isPristine('contactForm')(state)
+});
+
+export default connect(mapStateToProps, actions)((reduxForm({form: 'contactForm'}))(ContactForm));
 
 ContactForm.propTypes = {
-	handleSubmit: PropTypes.func.isRequired
+	handleSubmit: PropTypes.func.isRequired,
+	pristine: PropTypes.bool.isRequired
 };

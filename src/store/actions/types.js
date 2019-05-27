@@ -27,3 +27,5 @@
  */
 
 export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
+
+export const CONTACT = 'CONTACT';
