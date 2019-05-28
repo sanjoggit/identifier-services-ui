@@ -129,7 +129,7 @@ function getSteps() {
 }
 
 const PublisherRegistrationForm = props => {
-	const {handleSubmit, registration, pristine, formSyncErrors} = props;
+	const {handleSubmit, registration, pristine, valid} = props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -202,7 +202,6 @@ const PublisherRegistrationForm = props => {
 
 	return (
 		<form className={classes.container} onSubmit={handleSubmit(registration)}>
-			{console.log(props)}
 			<Stepper alternativeLabel activeStep={activeStep}>
 				{steps.map(label => (
 					<Step key={label}>
@@ -217,7 +216,6 @@ const PublisherRegistrationForm = props => {
 					{(getStepContent(activeStep))}
 				</Grid>
 				<div className={classes.btnContainer}>
-					{fieldArray.filter(item=>item==='basicInformation').map(field => field.name)}
 					<Button disabled={activeStep === 0} onClick={handleBack}>
 							Back
 					</Button>
@@ -226,7 +224,7 @@ const PublisherRegistrationForm = props => {
 							<Button disabled={pristine} variant="contained" color="primary" onClick={handleSubmit(registration)}>
 						Submit
 							</Button> :
-							<Button disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
+							<Button disabled={pristine || !valid} variant="contained" color="primary" onClick={handleNext}>
 						Next
 							</Button>
 					}
@@ -247,14 +245,15 @@ PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
 	registration: PropTypes.func.isRequired,
 	pristine: PropTypes.bool.isRequired,
-	formSyncErrors: PropTypes.shape({})
+	formSyncErrors: PropTypes.shape({}),
+	valid: PropTypes.bool.isRequired
 };
 
 PublisherRegistrationForm.defaultProps = {
 	formSyncErrors: null
 };
 
-function validate(values) {
+export function validate(values) {
 	const errors = {};
 
 	if (!values.name) {
@@ -285,6 +284,11 @@ function validate(values) {
 
 	if (!values.website) {
 		errors.website = 'The Field cannot be left empty';
+	}
+
+	console.log(values);
+	if (values.aliases === {}) {
+		errors.aliases = 'Aliases cannot be empty';
 	}
 
 	return errors;

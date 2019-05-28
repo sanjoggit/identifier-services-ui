@@ -27,6 +27,7 @@
  */
 import React, {useState} from 'react';
 import {PropTypes} from 'prop-types';
+import {fieldArrayMetaPropTypes, fieldArrayFieldsPropTypes} from 'redux-form';
 import {TextField, InputAdornment, Chip, IconButton} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import useStyles from '../../../styles/form';
@@ -92,7 +93,7 @@ RenderChipsField.propTypes = {
 	input: PropTypes.shape({}),
 	label: PropTypes.string.isRequired,
 	className: PropTypes.string.isRequired,
-	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool}),
+	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.string}),
 	children: PropTypes.node,
 	value: PropTypes.shape({}),
 	fields: PropTypes.shape({}).isRequired
