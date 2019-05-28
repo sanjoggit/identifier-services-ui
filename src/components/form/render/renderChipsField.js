@@ -31,7 +31,7 @@ import {TextField, InputAdornment, Chip, IconButton} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import useStyles from '../../../styles/form';
 
-const RenderChipsField = ({input, value, label, className, meta: {touched, error}}) => {
+const RenderChipsField = ({fields, input, value, label, className, meta: {touched, error}}) => {
 	const classes = useStyles();
 	const [chipData, setChipData] = useState([]);
 	const [temp, setTemp] = useState({});
@@ -41,15 +41,15 @@ const RenderChipsField = ({input, value, label, className, meta: {touched, error
 	}
 
 	function handleDelete(value) {
-		let chipsArray = chipData;
-		const chipToDelete = chipsArray.indexOf(value);
-		chipsArray.splice(chipToDelete, 1);
-		setChipData(chipsArray);
+		const chipToDelete = chipData.indexOf(value);
+		fields.remove(chipToDelete);
+		chipData.splice(chipToDelete, 1);
 	}
 
 	function handleOnclick() {
 		if (temp.label !== undefined) {
 			if (!chipData.some(item => (item.label === temp.label))) {
+				fields.push(temp);
 				setChipData([...chipData, temp]);
 			}
 
@@ -59,7 +59,6 @@ const RenderChipsField = ({input, value, label, className, meta: {touched, error
 
 	return (
 		<div>
-
 			<TextField
 				{...input}
 				label={label}
@@ -90,15 +89,17 @@ const RenderChipsField = ({input, value, label, className, meta: {touched, error
 export default RenderChipsField;
 
 RenderChipsField.propTypes = {
-	input: PropTypes.shape({}).isRequired,
+	input: PropTypes.shape({}),
 	label: PropTypes.string.isRequired,
 	className: PropTypes.string.isRequired,
 	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool}),
 	children: PropTypes.node,
-	value: PropTypes.shape({}).isRequired
+	value: PropTypes.shape({})
 };
 
 RenderChipsField.defaultProps = {
+	input: null,
+	value: null,
 	meta: {},
-	children: null
+	children: undefined
 };

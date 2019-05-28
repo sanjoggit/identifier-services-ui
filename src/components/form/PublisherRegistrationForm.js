@@ -30,7 +30,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, reduxForm, isPristine} from 'redux-form';
+import {Field, FieldArray, reduxForm, isPristine} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -170,7 +170,7 @@ const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
 					</Grid>	:
 					((list.type === 'chips') ?
 						<Grid key={list.name} item xs={12}>
-							<Field
+							<FieldArray
 								component={RenderChipsField}
 								className={`${classes.chipField} ${list.width}`}
 								label={list.label}
@@ -200,7 +200,7 @@ const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
 
 	return (
 		<form className={classes.container} onSubmit={handleSubmit(registration)}>
-			<Stepper nonLinear activeStep={activeStep}>
+			<Stepper alternativeLabel activeStep={activeStep}>
 				{steps.map(label => (
 					<Step key={label}>
 						<StepButton className={classes.stepLabel}>
