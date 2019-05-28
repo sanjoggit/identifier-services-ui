@@ -27,18 +27,35 @@
  */
 import React from 'react';
 import {PropTypes} from 'prop-types';
-import {TextField} from '@material-ui/core';
+import {TextField, InputAdornment, Typography} from '@material-ui/core';
+import ErrorIcons from '@material-ui/icons/ErrorOutline';
 
-const renderTextField = ({input, label, className, meta: {touched, error}, children}) => (
-	<TextField
-		{...input}
-		label={label}
-		className={className}
-		error={touched && error}
-	>
-		{children}
-	</TextField>
-);
+import useStyles from '../../../styles/error';
+
+const renderTextField = ({input, label, className, meta: {touched, error}, children}) => {
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const classes = useStyles();
+	return (
+		<>
+			<TextField
+				{...input}
+				label={label}
+				className={className}
+				error={touched && error}
+				InputProps={{endAdornment:
+	<InputAdornment position="end">
+		{touched && (error &&
+			<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
+		)}
+	</InputAdornment>
+				}}
+			>
+				{children}
+			</TextField>
+
+		</>
+	);
+};
 
 export default renderTextField;
 

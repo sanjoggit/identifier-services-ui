@@ -95,13 +95,12 @@ RenderChipsField.propTypes = {
 	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool}),
 	children: PropTypes.node,
 	value: PropTypes.shape({}),
-	fields: PropTypes.arrayOf(PropTypes.shape({}))
+	fields: PropTypes.shape({}).isRequired
 };
 
 RenderChipsField.defaultProps = {
-	input: null,
-	value: null,
+	input: undefined,
+	value: undefined,
 	meta: {},
-	children: undefined,
-	fields: [{}]
+	children: undefined
 };

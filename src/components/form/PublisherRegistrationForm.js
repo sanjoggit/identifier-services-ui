@@ -30,9 +30,10 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, FieldArray, reduxForm, isPristine} from 'redux-form';
+import {Field, FieldArray, reduxForm, isPristine, isValid} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
 import PropTypes from 'prop-types';
+// Import {validate} from '@natlibfi/identifier-services-commons';
 
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
@@ -127,7 +128,8 @@ function getSteps() {
 	return fieldArray.map(item => Object.keys(item));
 }
 
-const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
+const PublisherRegistrationForm = props => {
+	const {handleSubmit, registration, pristine} = props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -199,7 +201,8 @@ const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
 	}
 
 	return (
-		<form className={classes.container} onSubmit={handleSubmit(registration)}>
+		<form className={classes.container} onSubmit={handleSubmit}>
+			{console.log(props)}
 			<Stepper alternativeLabel activeStep={activeStep}>
 				{steps.map(label => (
 					<Step key={label}>
@@ -222,7 +225,7 @@ const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
 							<Button disabled={pristine} variant="contained" color="primary" onClick={handleSubmit(registration)}>
 						Submit
 							</Button> :
-							<Button variant="contained" color="primary" onClick={handleNext}>
+							<Button disabled variant="contained" color="primary" onClick={handleNext}>
 						Next
 							</Button>
 					}
@@ -232,14 +235,35 @@ const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
 	);
 };
 
-const mapStateToProps = state => ({
-	pristine: isPristine('publisherRegistrationForm')(state)
-});
-
-export default connect(mapStateToProps, actions)(reduxForm({form: 'publisherRegistrationForm'})(PublisherRegistrationForm));
+export default reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm);
 
 PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
-	registration: PropTypes.func.isRequired,
 	pristine: PropTypes.bool.isRequired
 };
+
+function validate(values) {
+	const errors = {};
+
+	if (!values.name) {
+		errors.name = 'Name is Required!!';
+	  } else if (values.length < 2 && values.length > 20) {
+		errors.name = 'Name length must be between 2-20';
+	  } else if (/[0-9]/i.test(values.name)) {
+		errors.name = 'Name should not have numbers';
+	  }
+
+	if (!values.email) {
+		errors.email = 'Email is Required!!!';
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+		errors.email = 'Invalid e-mail address';
+	}
+
+	if (!values.publisherEmail) {
+		errors.publisherEmail = 'Publisher\'s Email is required';
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+		errors.email = 'Invalid e-mail address';
+	}
+
+	return errors;
+}
