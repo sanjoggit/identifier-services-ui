@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Typography, Fab} from '@material-ui/core';
+import {Grid, Typography, Button} from '@material-ui/core';
 import RightIcon from '@material-ui/icons/ChevronRight';
 import useStyles from '../../../styles/issn';
 import {para1, para2, para3} from './text';
@@ -21,16 +21,14 @@ const Issn = () => {
 					<Typography paragraph>
 						{para3}
 					</Typography>
-					<Fab
-						variant="extended"
-						size="medium"
+					<Button
 						color="primary"
 						href="https://www.kansalliskirjasto.fi/en/services/expert-services-of-data-description/issn"
 						target="_blank"
 					>
 						More in details
 						<RightIcon/>
-					</Fab>
+					</Button>
 				</Grid>
 			</Grid>
 		</div>
