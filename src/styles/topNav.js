@@ -1,12 +1,14 @@
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-	topNav: {
+	topBarContainer: {
 		backgroundColor: '#00224f'
 	},
+	topBar: {
+		maxWidth: '1200px',
+		margin: '0 auto'
+	},
 	navbarContainer: {
-		width: '1200px',
-		margin: '0 auto',
 		display: 'flex',
 		justifyContent: 'space-between'
 	},

@@ -1,14 +1,13 @@
 import bgImage from '../assets/img/bg.jpg';
 import {makeStyles} from '@material-ui/core/styles';
 
-
 const useStyles = makeStyles({
 	bannerContainer: {
 		backgroundImage: `url(${bgImage})`,
 		height: '500px',
 		width: '100%',
 		backgroundSize: 'cover',
-		backgroundColor: '#48474775',
+		backgroundColor: '#1f1e1e80',
 		backgroundBlendMode: 'color',
 		'& h1': {
 			color: '#ffffff',
@@ -25,12 +24,6 @@ const useStyles = makeStyles({
 		alignSelf: 'center',
 		'& h5': {
 			padding: '20px 0'
-		}
-	},
-	inputContainer: {
-		'& input': {
-			width: '50rem',
-			padding: '20px 10px'
 		}
 	}
 
