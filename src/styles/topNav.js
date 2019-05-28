@@ -49,13 +49,16 @@ const useStyles = makeStyles({
 		paddingTop: '8px'
 	},
 	personIcon: {
-		height: '35px',
-		width: '35px',
+		height: '45px',
+		width: '45px',
 		paddingRight: '10px'
 	},
 	rightMenu: {
 		display: 'flex',
-		alignItems: 'center'
+		alignItems: 'center',
+		'& button': {
+			color: 'white'
+		}
 	},
 	languageSelect: {
 		fontSize: '20px',

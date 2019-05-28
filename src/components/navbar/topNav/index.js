@@ -1,9 +1,3 @@
-import React, {useState} from 'react';
-import {AppBar, Toolbar, Typography, Grid, Select, FormControl, NativeSelect} from '@material-ui/core';
-import useStyles from '../../../styles/topNav';
-import Logo from '../../../assets/logo/logo.png';
-import PersonIcon from '@material-ui/icons/Person';
-import LanguageIcon from '@material-ui/icons/Language';
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -31,13 +25,19 @@ import LanguageIcon from '@material-ui/icons/Language';
  * for the JavaScript code in this file.
  *
  */
-
+import React, {useState} from 'react';
+import {AppBar, Toolbar, Typography, Grid, Select, FormControl, NativeSelect, Button, Menu, MenuItem} from '@material-ui/core';
+import useStyles from '../../../styles/topNav';
+import Logo from '../../../assets/logo/logo.png';
+import PersonIcon from '@material-ui/icons/Person';
+import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
 const TopNav = () => {
 	const [state, setState] = useState({
 		lang: 'EN'
 	});
+	const [anchorEl, setAnchorEl] = React.useState(null);
 	const classes = useStyles();
 
 	const handleChange = e => {
@@ -46,6 +46,14 @@ const TopNav = () => {
 			lang: e.target.value
 		});
 	};
+
+	function handleClick(event) {
+		setAnchorEl(event.currentTarget);
+	}
+
+	function handleClose() {
+		setAnchorEl(null);
+	}
 
 	const val = [{value: 'EN', label: 'English'}, {value: 'FI', label: 'Suomi'}, {value: 'SV', label: 'Swedish'}];
 
@@ -58,7 +66,16 @@ const TopNav = () => {
 							<img src={Logo} alt="" className={classes.mainLogo}/>
 						</Typography>
 						<div className={classes.rightMenu}>
-							<PersonIcon className={classes.personIcon}/>
+							<Button
+								aria-owns={anchorEl ? 'simple-menu' : undefined}
+								aria-haspopup="true"
+								onClick={handleClick}
+							>
+								<PersonIcon className={classes.personIcon}/>
+							</Button>
+							<Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+								<MenuItem onClick={handleClose}>Login</MenuItem>
+							</Menu>
 							<LanguageIcon/>
 							{/* <FormControl className={classes.formControl}>
 								<NativeSelect
