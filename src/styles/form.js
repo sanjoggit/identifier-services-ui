@@ -59,6 +59,13 @@ const useStyles = makeStyles({
 	},
 	stepLabel: {
 		textTransform: 'capitalize'
+	},
+	chipField: {
+		height: '50px',
+		width: '-webkit-fill-available'
+	},
+	chip: {
+		margin: '5px 5px 5px 0'
 	}
 });
 

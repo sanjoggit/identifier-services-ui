@@ -68,8 +68,8 @@ const ContactForm = ({handleSubmit, pristine}) => {
 	];
 	const classes = useStyles();
 	return (
-		<form onSubmit={handleSubmit(handleClick)}>
-			<Grid container spacing={3} direction="row">
+		<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
+			<Grid container className={classes.subContainer} spacing={3} direction="row">
 				{
 					fieldArray.map(list => (
 						(list.type === 'text') ?
