@@ -27,7 +27,7 @@
  *
  */
 import React, {useState} from 'react';
-import {Modal, Typography, Button, Grid} from '@material-ui/core';
+import {Modal, Typography, Button, Grid, Chip} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import {PropTypes} from 'prop-types';

@@ -33,8 +33,10 @@ import {connect} from 'react-redux';
 import {Field, reduxForm, isPristine} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
 import PropTypes from 'prop-types';
+
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
+import RenderChipsField from './render/renderChipsField';
 import useStyles from '../../styles/form';
 import * as actions from '../../store/actions';
 
@@ -67,7 +69,7 @@ const fieldArray = [
 			},
 			{
 				name: 'aliases',
-				type: 'text',
+				type: 'chips',
 				label: 'Aliases',
 				width: 'full'
 			}
@@ -166,15 +168,25 @@ const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
 							type={list.type}
 						/>
 					</Grid>	:
-					<Grid key={list.name} item xs={12}>
-						<Field
-							className={`${classes.textField} ${list.width}`}
-							component={renderTextField}
-							label={list.label}
-							name={list.name}
-							type={list.type}
-						/>
-					</Grid>))
+					((list.type === 'chips') ?
+						<Grid key={list.name} item xs={12}>
+							<Field
+								component={RenderChipsField}
+								className={`${classes.chipField} ${list.width}`}
+								label={list.label}
+								name={list.name}
+								type={list.type}
+							/>
+						</Grid>						:
+						<Grid key={list.name} item xs={12}>
+							<Field
+								className={`${classes.textField} ${list.width}`}
+								component={renderTextField}
+								label={list.label}
+								name={list.name}
+								type={list.type}
+							/>
+						</Grid>)))
 		);
 	}
 
