@@ -188,7 +188,7 @@ const PublisherRegistrationForm = ({handleSubmit, registration, pristine}) => {
 
 	return (
 		<form className={classes.container} onSubmit={handleSubmit(registration)}>
-			<Stepper nonLinear activeStep={activeStep}>
+			<Stepper alternativLabel nonLinear activeStep={activeStep}>
 				{steps.map(label => (
 					<Step key={label}>
 						<StepButton className={classes.stepLabel}>
