@@ -41,7 +41,7 @@ const renderTextField = ({input, label, className, meta: {touched, error}, child
 				{...input}
 				label={label}
 				className={className}
-				error={touched && error}
+				error={touched}
 				InputProps={{endAdornment:
 	<InputAdornment position="end">
 		{touched && (error &&
@@ -63,11 +63,11 @@ renderTextField.propTypes = {
 	input: PropTypes.shape({}).isRequired,
 	label: PropTypes.string.isRequired,
 	className: PropTypes.string.isRequired,
-	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool}),
+	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.string}),
 	children: PropTypes.node
 };
 
 renderTextField.defaultProps = {
-	meta: {},
-	children: null
+	meta: {error: undefined},
+	children: ''
 };

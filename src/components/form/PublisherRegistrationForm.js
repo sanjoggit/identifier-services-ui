@@ -30,7 +30,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, FieldArray, reduxForm, isPristine, isValid} from 'redux-form';
+import {Field, FieldArray, reduxForm, isPristine, getFormSyncErrors} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
 import PropTypes from 'prop-types';
 // Import {validate} from '@natlibfi/identifier-services-commons';
@@ -129,7 +129,7 @@ function getSteps() {
 }
 
 const PublisherRegistrationForm = props => {
-	const {handleSubmit, registration, pristine} = props;
+	const {handleSubmit, registration, pristine, formSyncErrors} = props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -201,7 +201,7 @@ const PublisherRegistrationForm = props => {
 	}
 
 	return (
-		<form className={classes.container} onSubmit={handleSubmit}>
+		<form className={classes.container} onSubmit={handleSubmit(registration)}>
 			{console.log(props)}
 			<Stepper alternativeLabel activeStep={activeStep}>
 				{steps.map(label => (
@@ -217,6 +217,7 @@ const PublisherRegistrationForm = props => {
 					{(getStepContent(activeStep))}
 				</Grid>
 				<div className={classes.btnContainer}>
+					{fieldArray.filter(item=>item==='basicInformation').map(field => field.name)}
 					<Button disabled={activeStep === 0} onClick={handleBack}>
 							Back
 					</Button>
@@ -225,7 +226,7 @@ const PublisherRegistrationForm = props => {
 							<Button disabled={pristine} variant="contained" color="primary" onClick={handleSubmit(registration)}>
 						Submit
 							</Button> :
-							<Button disabled variant="contained" color="primary" onClick={handleNext}>
+							<Button disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
 						Next
 							</Button>
 					}
@@ -235,11 +236,22 @@ const PublisherRegistrationForm = props => {
 	);
 };
 
-export default reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm);
+const mapStateToProps = state => ({
+	pristine: isPristine('publisherRegistrationForm')(state),
+	formSyncErrors: getFormSyncErrors('publisherRegistrationForm')(state)
+});
+
+export default connect(mapStateToProps, actions)(reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm));
 
 PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
-	pristine: PropTypes.bool.isRequired
+	registration: PropTypes.func.isRequired,
+	pristine: PropTypes.bool.isRequired,
+	formSyncErrors: PropTypes.shape({})
+};
+
+PublisherRegistrationForm.defaultProps = {
+	formSyncErrors: null
 };
 
 function validate(values) {
@@ -261,8 +273,18 @@ function validate(values) {
 
 	if (!values.publisherEmail) {
 		errors.publisherEmail = 'Publisher\'s Email is required';
-	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.publisherEmail)) {
 		errors.email = 'Invalid e-mail address';
+	}
+
+	if (!values.publicationEstimate) {
+		errors.publicationEstimate = 'This Field cannot be left empty!!';
+	} else if (!/[0-9]/i.test(values.publicationEstimate)) {
+		errors.publicationEstimate = 'Numbers only!!!';
+	}
+
+	if (!values.website) {
+		errors.website = 'The Field cannot be left empty';
 	}
 
 	return errors;
