@@ -29,11 +29,12 @@
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-    IssnContainer: {
-        maxWidth: '1200px',
-        margin: '0 auto',
-        marginTop: '30px'
-    }
+	IssnContainer: {
+		maxWidth: '1200px',
+		margin: '0 auto',
+		marginTop: '30px',
+		padding: '0 15px'
+	}
 });
 
 export default useStyles;

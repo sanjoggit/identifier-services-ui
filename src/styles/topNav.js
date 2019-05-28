@@ -34,7 +34,10 @@ const useStyles = makeStyles({
 	},
 	topBar: {
 		maxWidth: '1200px',
-		margin: '0 auto'
+		margin: '0 auto',
+		'&  header': {
+			boxShadow: 'none'
+		}
 	},
 	navbarContainer: {
 		display: 'flex',
