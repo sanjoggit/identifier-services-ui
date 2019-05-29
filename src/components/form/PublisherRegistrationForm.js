@@ -39,7 +39,7 @@ import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import RenderChipsField from './render/renderChipsField';
 import useStyles from '../../styles/form';
-import * as actions from '../../store/actions';
+import {registerPublisher} from '../../store/actions/publisherRegistration';
 
 const fieldArray = [
 	{
@@ -129,7 +129,7 @@ function getSteps() {
 }
 
 const PublisherRegistrationForm = props => {
-	const {handleSubmit, registration, pristine, formSyncErrors} = props;
+	const {handleSubmit, pristine, registerPublisher} = props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -160,39 +160,30 @@ const PublisherRegistrationForm = props => {
 						type={list.type}
 					/>
 				</Grid>		:
-				((list.type === 'multiline') ?
+				((list.type === 'chips') ?
 					<Grid key={list.name} item xs={12}>
-						<Field
-							className={`${classes.textArea} ${list.width}`}
-							component={renderTextArea}
+						<FieldArray
+							component={RenderChipsField}
+							className={`${classes.chipField} ${list.width}`}
 							label={list.label}
 							name={list.name}
 							type={list.type}
 						/>
-					</Grid>	:
-					((list.type === 'chips') ?
-						<Grid key={list.name} item xs={12}>
-							<FieldArray
-								component={RenderChipsField}
-								className={`${classes.chipField} ${list.width}`}
-								label={list.label}
-								name={list.name}
-								type={list.type}
-							/>
-						</Grid>						:
-						<Grid key={list.name} item xs={12}>
-							<Field
-								className={`${classes.textField} ${list.width}`}
-								component={renderTextField}
-								label={list.label}
-								name={list.name}
-								type={list.type}
-							/>
-						</Grid>)))
+					</Grid>						:
+					<Grid key={list.name} item xs={12}>
+						<Field
+							className={`${classes.textField} ${list.width}`}
+							component={renderTextField}
+							label={list.label}
+							name={list.name}
+							type={list.type}
+						/>
+					</Grid>))
 		);
 	}
 
-	function handleNext() {
+	function handleNext(e) {
+		e.preventDefault();
 		setActiveStep(prevActiveStep => prevActiveStep + 1);
 	}
 
@@ -200,9 +191,15 @@ const PublisherRegistrationForm = props => {
 		setActiveStep(prevActiveStep => prevActiveStep - 1);
 	}
 
+	const handlePublisherRegistration = values => {
+		const newPublisher = {
+			...values
+		};
+		registerPublisher(newPublisher);
+	};
+
 	return (
-		<form className={classes.container} onSubmit={handleSubmit(registration)}>
-			{console.log(props)}
+		<form className={classes.container} onSubmit={handleSubmit(handlePublisherRegistration)}>
 			<Stepper alternativeLabel activeStep={activeStep}>
 				{steps.map(label => (
 					<Step key={label}>
@@ -217,16 +214,16 @@ const PublisherRegistrationForm = props => {
 					{(getStepContent(activeStep))}
 				</Grid>
 				<div className={classes.btnContainer}>
-					{fieldArray.filter(item=>item==='basicInformation').map(field => field.name)}
+					{fieldArray.filter(item => item === 'basicInformation').map(field => field.name)}
 					<Button disabled={activeStep === 0} onClick={handleBack}>
 							Back
 					</Button>
 					{
 						activeStep === steps.length - 1 ?
-							<Button disabled={pristine} variant="contained" color="primary" onClick={handleSubmit(registration)}>
+							<Button type="submit" disabled={pristine} variant="contained" color="primary">
 						Submit
 							</Button> :
-							<Button disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
+							<Button type="button" disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
 						Next
 							</Button>
 					}
@@ -241,13 +238,13 @@ const mapStateToProps = state => ({
 	formSyncErrors: getFormSyncErrors('publisherRegistrationForm')(state)
 });
 
-export default connect(mapStateToProps, actions)(reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm));
+export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm));
 
 PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
-	registration: PropTypes.func.isRequired,
 	pristine: PropTypes.bool.isRequired,
-	formSyncErrors: PropTypes.shape({})
+	formSyncErrors: PropTypes.shape({}),
+	registerPublisher: PropTypes.func.isRequired
 };
 
 PublisherRegistrationForm.defaultProps = {
