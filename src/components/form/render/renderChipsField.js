@@ -27,8 +27,8 @@
  */
 import React, {useState} from 'react';
 import {PropTypes} from 'prop-types';
-import {fieldArrayMetaPropTypes, fieldArrayFieldsPropTypes} from 'redux-form';
-import {TextField, InputAdornment, Chip, IconButton} from '@material-ui/core';
+import {TextField, InputAdornment, Chip, IconButton, Typography} from '@material-ui/core';
+import ErrorIcons from '@material-ui/icons/ErrorOutline';
 import AddIcon from '@material-ui/icons/Add';
 import useStyles from '../../../styles/form';
 
@@ -67,6 +67,9 @@ const RenderChipsField = ({fields, input, value, label, className, meta: {touche
 				error={touched && error}
 				InputProps={{endAdornment:
 	<InputAdornment position="start">
+		{touched && (error &&
+			<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
+		)}
 		<IconButton onClick={handleOnclick}>
 			<AddIcon/>
 		</IconButton>

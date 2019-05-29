@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-indent */
-/* eslint-disable no-mixed-spaces-and-tabs */
-/* eslint-disable no-unused-expressions */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -137,59 +134,14 @@ const PublisherRegistrationForm = props => {
 	function getStepContent(step) {
 		switch (step) {
 			case 0:
-				return element(fieldArray[0].basicInformation);
+				return element(fieldArray[0].basicInformation, classes);
 			case 1:
-				return element(fieldArray[1].contactDetails);
+				return fieldArrayElement(fieldArray[1].contactDetails, classes);
 			case 2:
-				return element(fieldArray[2].address);
+				return element(fieldArray[2].address, classes);
 			default:
 				return 'Unknown step';
 		}
-	}
-
-	function element(array) {
-		return array.map(list =>
-			// eslint-disable-next-line no-negated-condition
-			((list.width !== 'full') ?
-				<Grid key={list.name} item xs={6}>
-					<Field
-						className={`${classes.textField} ${list.width}`}
-						component={renderTextField}
-						label={list.label}
-						name={list.name}
-						type={list.type}
-					/>
-				</Grid>		:
-				((list.type === 'multiline') ?
-					<Grid key={list.name} item xs={12}>
-						<Field
-							className={`${classes.textArea} ${list.width}`}
-							component={renderTextArea}
-							label={list.label}
-							name={list.name}
-							type={list.type}
-						/>
-					</Grid>	:
-					((list.type === 'chips') ?
-						<Grid key={list.name} item xs={12}>
-							<FieldArray
-								component={RenderChipsField}
-								className={`${classes.chipField} ${list.width}`}
-								label={list.label}
-								name={list.name}
-								type={list.type}
-							/>
-						</Grid>						:
-						<Grid key={list.name} item xs={12}>
-							<Field
-								className={`${classes.textField} ${list.width}`}
-								component={renderTextField}
-								label={list.label}
-								name={list.name}
-								type={list.type}
-							/>
-						</Grid>)))
-		);
 	}
 
 	function handleNext() {
@@ -217,15 +169,15 @@ const PublisherRegistrationForm = props => {
 				</Grid>
 				<div className={classes.btnContainer}>
 					<Button disabled={activeStep === 0} onClick={handleBack}>
-							Back
+						Back
 					</Button>
 					{
 						activeStep === steps.length - 1 ?
-							<Button disabled={pristine} variant="contained" color="primary" onClick={handleSubmit(registration)}>
-						Submit
+							<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
+								Submit
 							</Button> :
-							<Button disabled={pristine || !valid} variant="contained" color="primary" onClick={handleNext}>
-						Next
+							<Button disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
+								Next
 							</Button>
 					}
 				</div>
@@ -253,16 +205,112 @@ PublisherRegistrationForm.defaultProps = {
 	formSyncErrors: null
 };
 
+function element(array, classes, field) {
+	return array.map(list =>
+		// eslint-disable-next-line no-negated-condition
+		((list.width !== 'full') ?
+			<Grid key={list.name} item xs={6}>
+				<Field
+					className={`${classes.textField} ${list.width}`}
+					component={renderTextField}
+					label={list.label}
+					name={field ? `${field}.${list.name}` : list.name}
+					type={list.type}
+				/>
+			</Grid> :
+			((list.type === 'chips') ?
+				<Grid key={list.name} item xs={12}>
+					<FieldArray
+						component={RenderChipsField}
+						className={`${classes.chipField} ${list.width}`}
+						label={list.label}
+						name={list.name}
+						type={list.type}
+					/>
+				</Grid> :
+				<Grid key={list.name} item xs={12}>
+					<Field
+						className={`${classes.textField} ${list.width}`}
+						component={renderTextField}
+						label={list.label}
+						name={list.name}
+						type={list.type}
+					/>
+				</Grid>))
+	);
+}
+
+function fieldArrayElement(array, classes) {
+	return (
+		<FieldArray
+			component={renderFieldArray}
+			className={`${classes.chipField} full`}
+			name="contactDetails"
+		/>
+	);
+
+	function renderFieldArray({fields, meta}) {
+		return (
+			<>
+				{(fields.length === 0) && array.map(list => (
+										<Grid key={list.name} item xs={12}>
+						<Field
+							className={`${classes.textField} ${list.width}`}
+							component={renderTextField}
+							label={list.label}
+							name={`contactDetails[0].${list.name}`}
+							type={list.type}
+						/>
+					</Grid>
+				))}
+				{fields.map(field => array.map(list =>
+					(
+						<>
+							<hr/>
+							<Grid key={list.name} item xs={12}>
+								<Field
+									className={`${classes.textField} ${list.width}`}
+									component={renderTextField}
+									label={list.label}
+									name={field ? `${field}.${list.name}` : list.name}
+									type={list.type}
+								/>
+							</Grid>
+						</>
+					)))}
+				<Button onClick={() => fields.push({})}>Plus</Button>
+			</>
+
+		);
+	}
+}
+
 export function validate(values) {
 	const errors = {};
 
 	if (!values.name) {
 		errors.name = 'Name is Required!!';
-	  } else if (values.length < 2 && values.length > 20) {
+	} else if (values.length < 2 && values.length > 20) {
 		errors.name = 'Name length must be between 2-20';
-	  } else if (/[0-9]/i.test(values.name)) {
+	} else if (/[0-9]/i.test(values.name)) {
 		errors.name = 'Name should not have numbers';
-	  }
+	}
+
+	if (!values.givenName) {
+		errors.givenName = 'Given Name is Required!!';
+	} else if (values.length < 2 && values.length > 20) {
+		errors.givenName = 'Given Name length must be between 2-20';
+	} else if (/[0-9]/i.test(values.givenName)) {
+		errors.givenName = 'Given Name should not have numbers';
+	}
+
+	if (!values.familyName) {
+		errors.familyName = 'Family Name is Required!!';
+	} else if (values.length < 2 && values.length > 20) {
+		errors.familyName = 'Family Name length must be between 2-20';
+	} else if (/[0-9]/i.test(values.familyName)) {
+		errors.familyName = 'Family Name should not have numbers';
+	}
 
 	if (!values.email) {
 		errors.email = 'Email is Required!!!';
@@ -273,7 +321,7 @@ export function validate(values) {
 	if (!values.publisherEmail) {
 		errors.publisherEmail = 'Publisher\'s Email is required';
 	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.publisherEmail)) {
-		errors.email = 'Invalid e-mail address';
+		errors.publisherEmail = 'Invalid e-mail address';
 	}
 
 	if (!values.publicationEstimate) {
@@ -286,9 +334,26 @@ export function validate(values) {
 		errors.website = 'The Field cannot be left empty';
 	}
 
-	console.log(values);
 	if (values.aliases === {}) {
 		errors.aliases = 'Aliases cannot be empty';
+	}
+
+	if (!values.streetAddress) {
+		errors.streetAddress = 'Street Address cannot be empty.';
+	} else if (values.streetAddress.length < 2) {
+		errors.streetAddress = 'Value must be between more than 2 characters';
+	}
+
+	if (!values.city) {
+		errors.city = 'Please specify a city';
+	} else if (values.city.length < 2) {
+		errors.city = 'Value must be between more than 2 characters';
+	}
+
+	if (!values.zip) {
+		errors.zip = 'Zip code cannot be empty';
+	} else if (!/[0-9]/i.test(values.zip)) {
+		errors.zip = 'Value must be numbers';
 	}
 
 	return errors;
