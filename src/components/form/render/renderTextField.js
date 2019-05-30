@@ -41,7 +41,7 @@ const renderTextField = ({input, label, className, meta: {touched, error}, child
 				{...input}
 				label={label}
 				className={className}
-				error={touched}
+				error={touched && error}
 				InputProps={{endAdornment:
 	<InputAdornment position="end">
 		{touched && (error &&

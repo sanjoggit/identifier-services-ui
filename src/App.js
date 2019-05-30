@@ -27,8 +27,7 @@
  */
 
 import React from 'react';
-import {withStyles, createMuiTheme} from '@material-ui/core';
-import styles from './styles/app';
+import {createMuiTheme} from '@material-ui/core';
 import TopNav from './components/navbar/topNav/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Banner from './components/main/banner';
@@ -65,4 +64,4 @@ const App = () => {
 	);
 };
 
-export default withStyles(styles)(App);
+export default App;
