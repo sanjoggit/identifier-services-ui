@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,9 +27,9 @@
  *
  */
 import React from 'react';
-import {connect} from 'react-redux';
-import {Field, FieldArray, reduxForm, isPristine, getFormSyncErrors} from 'redux-form';
-import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Field, FieldArray, reduxForm, isPristine, getFormSyncErrors } from 'redux-form';
+import { Button, Grid, Stepper, Step, StepButton } from '@material-ui/core';
 import PropTypes from 'prop-types';
 // Import {validate} from '@natlibfi/identifier-services-commons';
 
@@ -126,7 +127,7 @@ function getSteps() {
 }
 
 const PublisherRegistrationForm = props => {
-	const {handleSubmit, registration, pristine, valid} = props;
+	const { handleSubmit, registration, pristine, valid } = props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -191,7 +192,7 @@ const mapStateToProps = state => ({
 	formSyncErrors: getFormSyncErrors('publisherRegistrationForm')(state)
 });
 
-export default connect(mapStateToProps, actions)(reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm));
+export default connect(mapStateToProps, actions)(reduxForm({ form: 'publisherRegistrationForm', validate, destroyOnUnmount: true })(PublisherRegistrationForm));
 
 PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
@@ -249,34 +250,21 @@ function fieldArrayElement(array, classes) {
 		/>
 	);
 
-	function renderFieldArray({fields, meta}) {
+	function renderFieldArray({ fields, meta }) {
+		fields.getAll() === undefined && fields.push({});
 		return (
 			<>
-				{(fields.length === 0) && array.map(list => (
-										<Grid key={list.name} item xs={12}>
-						<Field
-							className={`${classes.textField} ${list.width}`}
-							component={renderTextField}
-							label={list.label}
-							name={`contactDetails[0].${list.name}`}
-							type={list.type}
-						/>
-					</Grid>
-				))}
 				{fields.map(field => array.map(list =>
 					(
-						<>
-							<hr/>
-							<Grid key={list.name} item xs={12}>
-								<Field
-									className={`${classes.textField} ${list.width}`}
-									component={renderTextField}
-									label={list.label}
-									name={field ? `${field}.${list.name}` : list.name}
-									type={list.type}
-								/>
-							</Grid>
-						</>
+						<Grid key={list.name} item xs={12}>
+							<Field
+								className={`${classes.textField} ${list.width}`}
+								component={renderTextField}
+								label={list.label}
+								name={field ? `${field}.${list.name}` : list.name}
+								type={list.type}
+							/>
+						</Grid>
 					)))}
 				<Button onClick={() => fields.push({})}>Plus</Button>
 			</>
