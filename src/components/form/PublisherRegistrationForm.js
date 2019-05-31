@@ -28,16 +28,15 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, FieldArray, reduxForm, isPristine, getFormSyncErrors} from 'redux-form';
+import {Field, FieldArray, reduxForm, isPristine} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
 import PropTypes from 'prop-types';
 // Import {validate} from '@natlibfi/identifier-services-commons';
 
 import renderTextField from './render/renderTextField';
-import renderTextArea from './render/renderTextArea';
 import RenderChipsField from './render/renderChipsField';
 import useStyles from '../../styles/form';
-import * as actions from '../../store/actions';
+import {registerPublisher} from '../../store/actions/publisherRegistration';
 
 const fieldArray = [
 	{
@@ -127,7 +126,7 @@ function getSteps() {
 }
 
 const PublisherRegistrationForm = props => {
-	const {handleSubmit, registration, pristine, valid} = props;
+	const {handleSubmit, pristine, valid, registerPublisher} = props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -153,8 +152,15 @@ const PublisherRegistrationForm = props => {
 		setActiveStep(prevActiveStep => prevActiveStep - 1);
 	}
 
+	const handlePublisherRegistration = values => {
+		const newPublisher = {
+			...values
+		};
+		registerPublisher(newPublisher);
+	};
+
 	return (
-		<form className={classes.container} onSubmit={handleSubmit(registration)}>
+		<form className={classes.container} onSubmit={handleSubmit(handlePublisherRegistration)}>
 			<Stepper alternativeLabel activeStep={activeStep}>
 				{steps.map(label => (
 					<Step key={label}>
@@ -174,11 +180,11 @@ const PublisherRegistrationForm = props => {
 					</Button>
 					{
 						activeStep === steps.length - 1 ?
-							<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
-								Submit
+							<Button type="submit" disabled={pristine} variant="contained" color="primary">
+						Submit
 							</Button> :
-							<Button disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
-								Next
+							<Button type="button" disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
+						Next
 							</Button>
 					}
 				</div>
@@ -188,18 +194,15 @@ const PublisherRegistrationForm = props => {
 };
 
 const mapStateToProps = state => ({
-	pristine: isPristine('publisherRegistrationForm')(state),
-	formSyncErrors: getFormSyncErrors('publisherRegistrationForm')(state)
+	pristine: isPristine('publisherRegistrationForm')(state)
+	// FormSyncErrors: getFormSyncErrors('publisherRegistrationForm')(state)
 });
-
-export default connect(mapStateToProps, actions)(reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm));
 
 PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
-	registration: PropTypes.func.isRequired,
 	pristine: PropTypes.bool.isRequired,
 	formSyncErrors: PropTypes.shape({}),
-	valid: PropTypes.bool.isRequired
+	registerPublisher: PropTypes.func.isRequired
 };
 
 PublisherRegistrationForm.defaultProps = {
@@ -272,6 +275,8 @@ function fieldArrayElement(array, classes) {
 		);
 	}
 }
+
+export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm));
 
 export function validate(values) {
 	const errors = {};

@@ -29,7 +29,7 @@
 import {PUBLISHER_REGISTRATION} from '../actions/types';
 
 const initialState = {
-
+	publisherRegistrations: []
 };
 
 export default function (state = initialState, action) {

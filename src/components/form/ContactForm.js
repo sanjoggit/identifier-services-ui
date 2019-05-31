@@ -36,7 +36,6 @@ import {Grid, Button} from '@material-ui/core';
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
-import * as actions from '../../store/actions';
 import {validate} from '@natlibfi/identifier-services-commons';
 
 const ContactForm = ({handleSubmit, pristine}) => {
@@ -115,7 +114,7 @@ const mapStateToProps = state => ({
 	pristine: isPristine('contactForm')(state)
 });
 
-export default connect(mapStateToProps, actions)((reduxForm({form: 'contactForm'}, validate))(ContactForm));
+export default connect(mapStateToProps)((reduxForm({form: 'contactForm'}, validate))(ContactForm));
 
 ContactForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
