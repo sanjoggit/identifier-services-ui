@@ -50,7 +50,6 @@ const ContactForm = ({handleSubmit}) => {
 
 	return (
 		<form onSubmit={handleSubmit(handleClick)}>
-			{console.log(state)}
 			<FormGroup>
 				<Field
 					name="publisher"

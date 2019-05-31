@@ -27,16 +27,16 @@
  *
  */
 import React from 'react';
-import {connect} from 'react-redux';
-import {Field, FieldArray, reduxForm, isPristine} from 'redux-form';
-import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Field, FieldArray, reduxForm, isPristine } from 'redux-form';
+import { Button, Grid, Stepper, Step, StepButton } from '@material-ui/core';
 import PropTypes from 'prop-types';
 // Import {validate} from '@natlibfi/identifier-services-commons';
 
 import renderTextField from './render/renderTextField';
 import RenderChipsField from './render/renderChipsField';
 import useStyles from '../../styles/form';
-import {registerPublisher} from '../../store/actions/publisherRegistration';
+import { registerPublisher } from '../../store/actions/publisherRegistration';
 
 const fieldArray = [
 	{
@@ -126,7 +126,7 @@ function getSteps() {
 }
 
 const PublisherRegistrationForm = props => {
-	const {handleSubmit, pristine, valid, registerPublisher} = props;
+	const { handleSubmit, pristine, valid, registerPublisher } = props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -181,10 +181,10 @@ const PublisherRegistrationForm = props => {
 					{
 						activeStep === steps.length - 1 ?
 							<Button type="submit" disabled={pristine} variant="contained" color="primary">
-						Submit
+								Submit
 							</Button> :
 							<Button type="button" disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
-						Next
+								Next
 							</Button>
 					}
 				</div>
@@ -211,6 +211,7 @@ PublisherRegistrationForm.defaultProps = {
 
 function element(array, classes, field) {
 	return array.map(list =>
+		
 		// eslint-disable-next-line no-negated-condition
 		((list.width !== 'full') ?
 			<Grid key={list.name} item xs={6}>
@@ -223,6 +224,7 @@ function element(array, classes, field) {
 				/>
 			</Grid> :
 			((list.type === 'chips') ?
+			console.log(list.name) ||
 				<Grid key={list.name} item xs={12}>
 					<FieldArray
 						component={RenderChipsField}
@@ -253,7 +255,7 @@ function fieldArrayElement(array, classes) {
 		/>
 	);
 
-	function renderFieldArray({fields, meta}) {
+	function renderFieldArray({ fields, meta}) {
 		fields.getAll() === undefined && fields.push({});
 		return (
 			<>
@@ -264,7 +266,7 @@ function fieldArrayElement(array, classes) {
 								className={`${classes.textField} ${list.width}`}
 								component={renderTextField}
 								label={list.label}
-								name={field ? `${field}.${list.name}` : list.name}
+								name={`${field}.${list.name}`}
 								type={list.type}
 							/>
 						</Grid>
@@ -276,11 +278,10 @@ function fieldArrayElement(array, classes) {
 	}
 }
 
-export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm));
+export default connect(mapStateToProps, { registerPublisher })(reduxForm({ form: 'publisherRegistrationForm', validate, destroyOnUnmount: true })(PublisherRegistrationForm));
 
 export function validate(values) {
 	const errors = {};
-
 	if (!values.name) {
 		errors.name = 'Name is Required!!';
 	} else if (values.length < 2 && values.length > 20) {
@@ -289,27 +290,29 @@ export function validate(values) {
 		errors.name = 'Name should not have numbers';
 	}
 
-	if (!values.givenName) {
-		errors.givenName = 'Given Name is Required!!';
-	} else if (values.length < 2 && values.length > 20) {
-		errors.givenName = 'Given Name length must be between 2-20';
-	} else if (/[0-9]/i.test(values.givenName)) {
-		errors.givenName = 'Given Name should not have numbers';
-	}
+	values.contactDetails && values.contactDetails.map(item => {
+		if (!item.givenName) {
+			errors.givenName = 'Given Name is Required!!';
+		} else if (item.length < 2 && item.length > 20) {
+			errors.givenName = 'Given Name length must be between 2-20';
+		} else if (/[0-9]/i.test(item.givenName)) {
+			errors.givenName = 'Given Name should not have numbers';
+		}
 
-	if (!values.familyName) {
-		errors.familyName = 'Family Name is Required!!';
-	} else if (values.length < 2 && values.length > 20) {
-		errors.familyName = 'Family Name length must be between 2-20';
-	} else if (/[0-9]/i.test(values.familyName)) {
-		errors.familyName = 'Family Name should not have numbers';
-	}
+		if (!item.familyName) {
+			errors.familyName = 'Family Name is Required!!';
+		} else if (item.length < 2 && item.length > 20) {
+			errors.familyName = 'Family Name length must be between 2-20';
+		} else if (/[0-9]/i.test(item.familyName)) {
+			errors.familyName = 'Family Name should not have numbers';
+		}
 
-	if (!values.email) {
-		errors.email = 'Email is Required!!!';
-	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-		errors.email = 'Invalid e-mail address';
-	}
+		if (!item.email) {
+			errors.email = 'Email is Required!!!';
+		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(item.email)) {
+			errors.email = 'Invalid e-mail address';
+		}
+	})
 
 	if (!values.publisherEmail) {
 		errors.publisherEmail = 'Publisher\'s Email is required';
@@ -327,7 +330,7 @@ export function validate(values) {
 		errors.website = 'The Field cannot be left empty';
 	}
 
-	if (values.aliases === {}) {
+	if (!values.aliases || values.aliases && values.aliases.length === 0) {
 		errors.aliases = 'Aliases cannot be empty';
 	}
 
