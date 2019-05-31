@@ -39,6 +39,7 @@ const renderTextField = ({input, label, className, meta: {touched, error}, child
 		<>
 			<TextField
 				{...input}
+				required
 				label={label}
 				className={className}
 				error={touched && error}
@@ -50,7 +51,7 @@ const renderTextField = ({input, label, className, meta: {touched, error}, child
 	</InputAdornment>
 				}}
 			>
-				{children}
+				{/* {children} */}
 			</TextField>
 
 		</>

@@ -37,7 +37,9 @@ const useStyles = makeStyles({
 		padding: 20,
 		borderRadius: 5,
 		backgroundColor: '#fff',
-		outline: 'none'
+		outline: 'none',
+		overflowY: 'auto',
+		height: '602px'
 
 	},
 	button: {
