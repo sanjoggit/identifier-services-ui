@@ -39,6 +39,7 @@ import RenderChipsField from './render/renderChipsField';
 import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
 import {registerPublisher} from '../../store/actions/publisherRegistration';
+import renderFieldArray from './render/renderFieldArray';
 
 const fieldArray = [
 	{
@@ -129,7 +130,6 @@ function getSteps() {
 
 const PublisherRegistrationForm = props => {
 	const {handleSubmit, pristine, valid, registerPublisher} = props;
-	console.log('----', props);
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -139,7 +139,7 @@ const PublisherRegistrationForm = props => {
 			case 0:
 				return element(fieldArray[0].basicInformation, classes);
 			case 1:
-				return fieldArrayElement(fieldArray[1].contactDetails, classes);
+				return fieldArrayElement(fieldArray[1], classes);
 			case 2:
 				return element(fieldArray[2].address, classes);
 			default:
@@ -251,31 +251,9 @@ function fieldArrayElement(array, classes) {
 			component={renderFieldArray}
 			className={`${classes.chipField} full`}
 			name="contactDetails"
+			props={array}
 		/>
 	);
-
-	function renderFieldArray({fields, meta: {touched, error}}) {
-		fields.getAll() === undefined && fields.push({});
-		return (
-			<>
-				{fields.map(field => array.map(list =>
-					(
-						<Grid key={list.name} item xs={12}>
-							<Field
-								className={`${classes.textField} ${list.width}`}
-								component={renderTextField}
-								label={list.label}
-								name={field ? `${field}.${list.name}` : list.name}
-								type={list.type}
-							/>
-						</Grid>
-					)))}
-				{touched && error && <span>{error}</span>}
-				<Button onClick={() => fields.push({})}>Plus</Button>
-			</>
-
-		);
-	}
 }
 
 export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate})(PublisherRegistrationForm));
@@ -344,6 +322,28 @@ export function validate(values) {
 
 	if (!values.contactDetails || !values.contactDetails.length) {
 		errors.contactDetails = {_error: 'Contact Details need to be provided'};
+	} else {
+		const contactDetailsErrors = [];
+		values.contactDetails.forEach((item, index) => {
+			const contactFieldsErrors = {};
+			if (!item || !item.givenName) {
+				contactFieldsErrors.givenName = 'Required';
+        		contactDetailsErrors[index] = contactFieldsErrors;
+			}
+
+			if (!item || !item.familyName) {
+				contactFieldsErrors.familyName = 'Required';
+        		contactDetailsErrors[index] = contactFieldsErrors;
+			}
+
+			if (!item || !item.email) {
+				contactFieldsErrors.email = 'Required';
+        		contactDetailsErrors[index] = contactFieldsErrors;
+			}
+		});
+		if (contactDetailsErrors.length) {
+			errors.contactDetails = contactDetailsErrors;
+		}
 	}
 
 	// If (!values.streetAddress) {
