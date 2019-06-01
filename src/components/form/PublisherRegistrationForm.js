@@ -127,6 +127,7 @@ function getSteps() {
 
 const PublisherRegistrationForm = props => {
 	const {handleSubmit, pristine, valid, registerPublisher} = props;
+	console.log('----', props)
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -180,10 +181,10 @@ const PublisherRegistrationForm = props => {
 					</Button>
 					{
 						activeStep === steps.length - 1 ?
-							<Button type="submit" disabled={pristine} variant="contained" color="primary">
+							<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
 						Submit
 							</Button> :
-							<Button type="button" disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
+							<Button type="button" disabled={pristine || !valid} variant="contained" color="primary" onClick={handleNext}>
 						Next
 							</Button>
 					}
@@ -276,7 +277,7 @@ function fieldArrayElement(array, classes) {
 	}
 }
 
-export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate, destroyOnUnmount: true})(PublisherRegistrationForm));
+export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate, touchOnChange: true, destroyOnUnmount: true})(PublisherRegistrationForm));
 
 export function validate(values) {
 	const errors = {};
@@ -327,7 +328,7 @@ export function validate(values) {
 		errors.website = 'The Field cannot be left empty';
 	}
 
-	if (values.aliases === {}) {
+	if (!values.aliases) {
 		errors.aliases = 'Aliases cannot be empty';
 	}
 
