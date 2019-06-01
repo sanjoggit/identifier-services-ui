@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-unused-expressions */
 /**
  *
@@ -35,6 +36,7 @@ import PropTypes from 'prop-types';
 
 import renderTextField from './render/renderTextField';
 import RenderChipsField from './render/renderChipsField';
+import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
 import {registerPublisher} from '../../store/actions/publisherRegistration';
 
@@ -127,7 +129,7 @@ function getSteps() {
 
 const PublisherRegistrationForm = props => {
 	const {handleSubmit, pristine, valid, registerPublisher} = props;
-	console.log('----', props)
+	console.log('----', props);
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -226,11 +228,9 @@ function element(array, classes, field) {
 			((list.type === 'chips') ?
 				<Grid key={list.name} item xs={12}>
 					<FieldArray
-						component={RenderChipsField}
-						className={`${classes.chipField} ${list.width}`}
-						label={list.label}
+						component={renderAliases}
+						// ClassName={`${classes.chipField} ${list.width}`}
 						name={list.name}
-						type={list.type}
 					/>
 				</Grid> :
 				<Grid key={list.name} item xs={12}>
@@ -254,7 +254,7 @@ function fieldArrayElement(array, classes) {
 		/>
 	);
 
-	function renderFieldArray({fields, meta}) {
+	function renderFieldArray({fields, meta: {touched, error}}) {
 		fields.getAll() === undefined && fields.push({});
 		return (
 			<>
@@ -270,6 +270,7 @@ function fieldArrayElement(array, classes) {
 							/>
 						</Grid>
 					)))}
+				{touched && error && <span>{error}</span>}
 				<Button onClick={() => fields.push({})}>Plus</Button>
 			</>
 
@@ -277,11 +278,10 @@ function fieldArrayElement(array, classes) {
 	}
 }
 
-export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate, touchOnChange: true, destroyOnUnmount: true})(PublisherRegistrationForm));
+export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate})(PublisherRegistrationForm));
 
 export function validate(values) {
 	const errors = {};
-
 	if (!values.name) {
 		errors.name = 'Name is Required!!';
 	} else if (values.length < 2 && values.length > 20) {
@@ -290,27 +290,27 @@ export function validate(values) {
 		errors.name = 'Name should not have numbers';
 	}
 
-	if (!values.givenName) {
-		errors.givenName = 'Given Name is Required!!';
-	} else if (values.length < 2 && values.length > 20) {
-		errors.givenName = 'Given Name length must be between 2-20';
-	} else if (/[0-9]/i.test(values.givenName)) {
-		errors.givenName = 'Given Name should not have numbers';
-	}
+	// If (!values.givenName) {
+	// 	errors.givenName = 'Given Name is Required!!';
+	// } else if (values.length < 2 && values.length > 20) {
+	// 	errors.givenName = 'Given Name length must be between 2-20';
+	// } else if (/[0-9]/i.test(values.givenName)) {
+	// 	errors.givenName = 'Given Name should not have numbers';
+	// }
 
-	if (!values.familyName) {
-		errors.familyName = 'Family Name is Required!!';
-	} else if (values.length < 2 && values.length > 20) {
-		errors.familyName = 'Family Name length must be between 2-20';
-	} else if (/[0-9]/i.test(values.familyName)) {
-		errors.familyName = 'Family Name should not have numbers';
-	}
+	// if (!values.familyName) {
+	// 	errors.familyName = 'Family Name is Required!!';
+	// } else if (values.length < 2 && values.length > 20) {
+	// 	errors.familyName = 'Family Name length must be between 2-20';
+	// } else if (/[0-9]/i.test(values.familyName)) {
+	// 	errors.familyName = 'Family Name should not have numbers';
+	// }
 
-	if (!values.email) {
-		errors.email = 'Email is Required!!!';
-	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-		errors.email = 'Invalid e-mail address';
-	}
+	// if (!values.email) {
+	// 	errors.email = 'Email is Required!!!';
+	// } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+	// 	errors.email = 'Invalid e-mail address';
+	// }
 
 	if (!values.publisherEmail) {
 		errors.publisherEmail = 'Publisher\'s Email is required';
@@ -328,27 +328,41 @@ export function validate(values) {
 		errors.website = 'The Field cannot be left empty';
 	}
 
-	if (!values.aliases) {
-		errors.aliases = 'Aliases cannot be empty';
+	if (!values.aliases || !values.aliases.length) {
+		errors.aliases = {_error: 'At least one member must be entered'};
+	} else {
+		const aliasesArrayErrors = [];
+		values.aliases.forEach((item, index) => {
+			if (!item) {
+				aliasesArrayErrors[index] = 'Aliases Required';
+			}
+		});
+		if (aliasesArrayErrors.length) {
+			errors.aliases = aliasesArrayErrors;
+		}
 	}
 
-	if (!values.streetAddress) {
-		errors.streetAddress = 'Street Address cannot be empty.';
-	} else if (values.streetAddress.length < 2) {
-		errors.streetAddress = 'Value must be between more than 2 characters';
+	if (!values.contactDetails || !values.contactDetails.length) {
+		errors.contactDetails = {_error: 'Contact Details need to be provided'};
 	}
 
-	if (!values.city) {
-		errors.city = 'Please specify a city';
-	} else if (values.city.length < 2) {
-		errors.city = 'Value must be between more than 2 characters';
-	}
+	// If (!values.streetAddress) {
+	// 	errors.streetAddress = 'Street Address cannot be empty.';
+	// } else if (values.streetAddress.length < 2) {
+	// 	errors.streetAddress = 'Value must be between more than 2 characters';
+	// }
 
-	if (!values.zip) {
-		errors.zip = 'Zip code cannot be empty';
-	} else if (!/[0-9]/i.test(values.zip)) {
-		errors.zip = 'Value must be numbers';
-	}
+	// if (!values.city) {
+	// 	errors.city = 'Please specify a city';
+	// } else if (values.city.length < 2) {
+	// 	errors.city = 'Value must be between more than 2 characters';
+	// }
+
+	// if (!values.zip) {
+	// 	errors.zip = 'Zip code cannot be empty';
+	// } else if (!/[0-9]/i.test(values.zip)) {
+	// 	errors.zip = 'Value must be numbers';
+	// }
 
 	return errors;
 }
