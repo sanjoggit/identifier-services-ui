@@ -29,17 +29,16 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, FieldArray, reduxForm, isPristine} from 'redux-form';
+import {Field, FieldArray, reduxForm} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
 import PropTypes from 'prop-types';
 // Import {validate} from '@natlibfi/identifier-services-commons';
 
 import renderTextField from './render/renderTextField';
-import RenderChipsField from './render/renderChipsField';
 import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
 import {registerPublisher} from '../../store/actions/publisherRegistration';
-import renderFieldArray from './render/renderFieldArray';
+import renderContactDetail from './render/renderContactDetail';
 
 const fieldArray = [
 	{
@@ -196,16 +195,12 @@ const PublisherRegistrationForm = props => {
 	);
 };
 
-const mapStateToProps = state => ({
-	pristine: isPristine('publisherRegistrationForm')(state)
-	// FormSyncErrors: getFormSyncErrors('publisherRegistrationForm')(state)
-});
-
 PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
 	pristine: PropTypes.bool.isRequired,
 	formSyncErrors: PropTypes.shape({}),
-	registerPublisher: PropTypes.func.isRequired
+	registerPublisher: PropTypes.func.isRequired,
+	valid: PropTypes.bool.isRequired
 };
 
 PublisherRegistrationForm.defaultProps = {
@@ -248,7 +243,7 @@ function element(array, classes, field) {
 function fieldArrayElement(array, classes) {
 	return (
 		<FieldArray
-			component={renderFieldArray}
+			component={renderContactDetail}
 			className={`${classes.chipField} full`}
 			name="contactDetails"
 			props={array}
@@ -256,7 +251,10 @@ function fieldArrayElement(array, classes) {
 	);
 }
 
-export default connect(mapStateToProps, {registerPublisher})(reduxForm({form: 'publisherRegistrationForm', validate})(PublisherRegistrationForm));
+export default connect(null, {registerPublisher})(reduxForm({
+	form: 'publisherRegistrationForm',
+	validate
+})(PublisherRegistrationForm));
 
 export function validate(values) {
 	const errors = {};
@@ -267,28 +265,6 @@ export function validate(values) {
 	} else if (/[0-9]/i.test(values.name)) {
 		errors.name = 'Name should not have numbers';
 	}
-
-	// If (!values.givenName) {
-	// 	errors.givenName = 'Given Name is Required!!';
-	// } else if (values.length < 2 && values.length > 20) {
-	// 	errors.givenName = 'Given Name length must be between 2-20';
-	// } else if (/[0-9]/i.test(values.givenName)) {
-	// 	errors.givenName = 'Given Name should not have numbers';
-	// }
-
-	// if (!values.familyName) {
-	// 	errors.familyName = 'Family Name is Required!!';
-	// } else if (values.length < 2 && values.length > 20) {
-	// 	errors.familyName = 'Family Name length must be between 2-20';
-	// } else if (/[0-9]/i.test(values.familyName)) {
-	// 	errors.familyName = 'Family Name should not have numbers';
-	// }
-
-	// if (!values.email) {
-	// 	errors.email = 'Email is Required!!!';
-	// } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-	// 	errors.email = 'Invalid e-mail address';
-	// }
 
 	if (!values.publisherEmail) {
 		errors.publisherEmail = 'Publisher\'s Email is required';
@@ -329,15 +305,30 @@ export function validate(values) {
 			if (!item || !item.givenName) {
 				contactFieldsErrors.givenName = 'Required';
         		contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (item.givenName.length < 2 || item.givenName.length > 20) {
+				contactFieldsErrors.givenName = 'Given Name length must be between 2-20';
+        		contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (/[0-9]/i.test(item.givenName)) {
+				contactFieldsErrors.givenName = 'Given Name should not have numbers';
+        		contactDetailsErrors[index] = contactFieldsErrors;
 			}
 
 			if (!item || !item.familyName) {
 				contactFieldsErrors.familyName = 'Required';
         		contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (item.familyName.length < 2 || item.familyName.length > 20) {
+				contactFieldsErrors.familyName = 'Family Name length must be between 2-20';
+        		contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (/[0-9]/i.test(item.familyName)) {
+				contactFieldsErrors.familyName = 'Family Name should not have numbers';
+        		contactDetailsErrors[index] = contactFieldsErrors;
 			}
 
 			if (!item || !item.email) {
 				contactFieldsErrors.email = 'Required';
+        		contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(item.email)) {
+				contactFieldsErrors.email = 'Invalid e-mail address';
         		contactDetailsErrors[index] = contactFieldsErrors;
 			}
 		});
@@ -346,23 +337,23 @@ export function validate(values) {
 		}
 	}
 
-	// If (!values.streetAddress) {
-	// 	errors.streetAddress = 'Street Address cannot be empty.';
-	// } else if (values.streetAddress.length < 2) {
-	// 	errors.streetAddress = 'Value must be between more than 2 characters';
-	// }
+	if (!values.streetAddress) {
+		errors.streetAddress = 'Street Address cannot be empty.';
+	} else if (values.streetAddress.length < 2) {
+		errors.streetAddress = 'Value must be between more than 2 characters';
+	}
 
-	// if (!values.city) {
-	// 	errors.city = 'Please specify a city';
-	// } else if (values.city.length < 2) {
-	// 	errors.city = 'Value must be between more than 2 characters';
-	// }
+	if (!values.city) {
+		errors.city = 'Please specify a city';
+	} else if (values.city.length < 2) {
+		errors.city = 'Value must be between more than 2 characters';
+	}
 
-	// if (!values.zip) {
-	// 	errors.zip = 'Zip code cannot be empty';
-	// } else if (!/[0-9]/i.test(values.zip)) {
-	// 	errors.zip = 'Value must be numbers';
-	// }
+	if (!values.zip) {
+		errors.zip = 'Zip code cannot be empty';
+	} else if (!/[0-9]/i.test(values.zip)) {
+		errors.zip = 'Value must be numbers';
+	}
 
 	return errors;
 }

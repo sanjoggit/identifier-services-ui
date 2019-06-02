@@ -1,11 +1,11 @@
 import React from 'react';
-import {Button, Grid} from '@material-ui/core';
+import {Grid, Fab} from '@material-ui/core';
 import {Field} from 'redux-form';
 import renderTextField from './renderTextField';
 import useStyles from '../../../styles/form';
 
-const renderFieldArray = ({fields, contactDetails, meta}) => {
-    const classes = useStyles();
+const renderContactDetail = ({fields, contactDetails, meta}) => {
+	const classes = useStyles();
 	fields.getAll() === undefined && fields.push({});
 	return (
 		<>
@@ -22,10 +22,17 @@ const renderFieldArray = ({fields, contactDetails, meta}) => {
 					</Grid>
 				)))}
 			{meta.touched && meta.error && <span>{meta.error}</span>}
-			<Button onClick={() => fields.push({})}>Plus</Button>
+			<Fab
+				variant="extended"
+				size="medium"
+				color="primary"
+				onClick={() => fields.push({})}
+			>
+                Add More Contact Details
+			</Fab>
 		</>
 
 	);
 };
 
-export default renderFieldArray;
+export default renderContactDetail;
