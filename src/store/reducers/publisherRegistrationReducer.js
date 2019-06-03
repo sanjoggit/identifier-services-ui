@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -27,19 +26,20 @@
  *
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {PUBLISHER_REGISTRATION} from '../actions/types';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+const initialState = {
+	publisherRegistrations: []
+};
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default function (state = initialState, action) {
+	switch (action.type) {
+		case PUBLISHER_REGISTRATION:
+			return {
+				...state,
+				data: action.payload
+			};
+		default:
+			return state;
+	}
+}

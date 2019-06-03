@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,36 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {Typography, Grid} from '@material-ui/core';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+import useStyles from '../../styles/formList';
+import ModalLayout from '../ModalLayout';
+import UserRequestForm from '../form/UserRequestForm';
+import PublisherRegistrationForm from '../form/PublisherRegistrationForm';
+import ContactForm from '../form/ContactForm';
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+const formListsArray = [
+	{label: 'Publisher Registration', name: 'publisherRegistration', component: <PublisherRegistrationForm/>},
+	{label: 'Publication', name: 'publication', component: <UserRequestForm/>},
+	{label: 'Contact Form', name: 'contactForm', component: <ContactForm/>}
+
+];
+
+export default function () {
+	const classes = useStyles();
+	return (
+		<div className={classes.formListContainer}>
+			<Grid container spacing={2} className={classes.formContainer}>
+				<Grid item xs={12}>
+					<Typography variant="h4" align="center">Forms</Typography>
+				</Grid>
+
+				{formListsArray.map(item => (
+					<ModalLayout key={item.label} label={item.label} name={item.name}>
+						{item.component}
+					</ModalLayout>
+				))}
+			</Grid>
+		</div>
+	);
+}

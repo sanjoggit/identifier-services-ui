@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,46 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {PropTypes} from 'prop-types';
+import {Radio, FormControlLabel, RadioGroup, FormLabel} from '@material-ui/core';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+export default function ({option, name, label, input, meta: {touched, error}}) {
+	const component = (
+		<>
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+			<FormLabel component="legend">Gender</FormLabel>
+			<RadioGroup
+				{...input}
+				aria-label={label}
+				name={name}
+				error={touched && Boolean(error)}
+			>
+				{
+					option.map(item => (
+						<FormControlLabel
+							key={item.value}
+							value={item.value}
+							control={<Radio color="primary"/>}
+							label={item.label}
+						/>
+					))
+				}
+			</RadioGroup>
+		</>
+	);
+
+	return {
+		...component,
+		defaultProps: {
+			meta: {},
+			input: {}
+		},
+		propTypes: {
+			option: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+			input: PropTypes.shape({}),
+			label: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
+		}
+	};
+}

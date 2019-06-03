@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,25 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {Grid, Box} from '@material-ui/core';
+import useStyles from '../../styles/footer';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+export default function () {
+	const classes = useStyles();
+	return (
+		<Grid container className={classes.footer}>
+			<Grid item xs={12} className={classes.footerContainer}>
+				<Box component="span">
+                        The National Library of Finland <br/> P.O.Box 15(Unioninkatu 36) <br/> 00014 University of Helsinki
+				</Box>
+				<Box component="span">
+                        Telephone: <br/> +358294123196
+				</Box>
+				<Box component="span">
+                        &copy;University of Helsinki <br/> 2019
+				</Box>
+			</Grid>
+		</Grid>
+	);
+}
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));

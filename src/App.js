@@ -1,38 +1,67 @@
-import React from 'react';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import Navbar from './components/navbar/Navbar';
-import Footer from './components/Footer';
-import Home from './components/Home';
-import IsbnAndIsmn from './components/IsbnAndIsmn';
-import IdentifierApplication from './components/IsbnAndIsmn/IdentifierApplication';
-import Issn from './components/Issn';
-import {withStyles} from '@material-ui/core';
-import PropTypes from 'prop-types';
-import styles from './styles/app';
+/**
+ *
+ * @licstart  The following is the entire license notice for the JavaScript code in this file.
+ *
+ * UI microservice of Identifier Services
+ *
+ * Copyright (C) 2019 University Of Helsinki (The National Library Of Finland)
+ *
+ * This file is part of identifier-services-ui
+ *
+ * identifier-services-ui program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * identifier-services-ui is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in this file.
+ *
+ */
 
-const App = props => {
-	const {classes} = props;
+import React from 'react';
+import {createMuiTheme} from '@material-ui/core';
+import TopNav from './components/navbar/topNav/index';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Banner from './components/main/banner';
+import FormList from './components/main/formList';
+import IsbnIsmn from './components/main/isbn_ismn';
+import Issn from './components/main/issn';
+import Footer from './components/footer';
+import {MuiThemeProvider} from '@material-ui/core/styles';
+import SearchComponent from './components/main/searchComponent';
+
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#00224f'
+		}
+	},
+	typography: {
+		fontFamily: 'Poppins'
+	}
+});
+
+const App = () => {
 	return (
-		<Router>
-			<Navbar/>
-			<main className={classes.mainlayout}>
-				<Switch>
-					<Route exact path="/" component={Home}/>
-					<Route path="/isbn-and-ismn" component={IsbnAndIsmn}/>
-					<Route path="/issn" component={Issn}/>
-					<Route
-						path="/isbn-and-ismn-identifier-application-form"
-						component={IdentifierApplication}
-					/>
-				</Switch>
-			</main>
+		<MuiThemeProvider theme={theme}>
+			<TopNav/>
+			<CssBaseline/>
+			<Banner/>
+			<SearchComponent/>
+			<FormList/>
+			<IsbnIsmn/>
+			<Issn/>
 			<Footer/>
-		</Router>
+		</MuiThemeProvider>
 	);
 };
 
-App.propTypes = {
-	classes: PropTypes.objectOf(PropTypes.string).isRequired
-};
-
-export default withStyles(styles)(App);
+export default App;

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,20 +25,39 @@
  * for the JavaScript code in this file.
  *
  */
-
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {PropTypes} from 'prop-types';
+import {TextField} from '@material-ui/core';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+export default function ({input, label, className, meta: {touched, error}, children}) {
+	const component = (
+		<TextField
+			{...input}
+			multiline
+			label={label}
+			variant="outlined"
+			rows={4}
+			className={className}
+			error={touched && Boolean(error)}
+		>
+			{children}
+		</TextField>
+	);
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+	return {
+		...component,
+		defaultProps: {
+			meta: {},
+			children: null,
+			multiline: false
+		},
+		propTypes: {
+			input: PropTypes.shape({}).isRequired,
+			label: PropTypes.string.isRequired,
+			className: PropTypes.string.isRequired,
+			multiline: PropTypes.bool,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool}),
+			children: PropTypes.node
+		}
+	};
+}

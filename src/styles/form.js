@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,20 +26,40 @@
  * for the JavaScript code in this file.
  *
  */
+import {makeStyles} from '@material-ui/core/styles';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+const useStyles = makeStyles({
+	container: {
+		margin: '40px 0px 40px 0px',
+		flexGrow: 1
+	},
+	subContainer: {
+		flexGrow: 1,
+		padding: '0 10px'
+	},
+	btnContainer: {
+		marginTop: 35,
+		'& button': {
+			margin: '0 5px'
+		}
+	},
+	textField: {
+		height: '60px',
+		width: '-webkit-fill-available'
+	},
+	full: {
+		flexDirection: 'column'
+	},
+	half: {
+		flexDirection: 'row'
+	},
+	textArea: {
+		height: '180px',
+		width: '-webkit-fill-available'
+	},
+	stepLabel: {
+		textTransform: 'capitalize'
+	}
+});
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
-
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default useStyles;

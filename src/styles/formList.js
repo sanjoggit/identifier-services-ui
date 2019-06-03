@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -27,19 +26,25 @@
  *
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {makeStyles} from '@material-ui/core/styles';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+const useStyles = makeStyles({
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+	formListContainer: {
+		background: '#b7bed629',
+		height: '200px',
+		display: 'flex',
+		alignSelf: 'center'
+	},
+	formContainer: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		margin: '0'
+	},
+	button: {
+		marginBottom: '20px'
+	}
+
+});
+
+export default useStyles;

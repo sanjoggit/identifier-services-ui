@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,20 +25,47 @@
  * for the JavaScript code in this file.
  *
  */
-
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {PropTypes} from 'prop-types';
+import {TextField, InputAdornment, Typography} from '@material-ui/core';
+import ErrorIcons from '@material-ui/icons/ErrorOutline';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+import useStyles from '../../../styles/error';
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default function ({input, label, className, meta}) {
+	const {touched, error} = meta;
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const classes = useStyles();
+	const component = (
+		<>
+			<TextField
+				{...input}
+				label={label}
+				className={className}
+				error={touched && Boolean(error)}
+				InputProps={{
+					endAdornment:
+	<InputAdornment position="end">
+		{touched && (error &&
+		<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
+		)}
+	</InputAdornment>
+				}}
+			/>
+
+		</>
+	);
+
+	return {
+		...component,
+		defaultProps: {
+			meta: {error: undefined}
+		},
+		propTypes: {
+			input: PropTypes.shape({}).isRequired,
+			label: PropTypes.string.isRequired,
+			className: PropTypes.string.isRequired,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.string})
+		}
+	};
+}

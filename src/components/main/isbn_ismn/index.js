@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,38 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {Grid, Typography, Button} from '@material-ui/core';
+import RightIcon from '@material-ui/icons/ChevronRight';
+import useStyles from '../../../styles/isbnismn';
+import {para1, para2, para3} from './text';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
-
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default function () {
+	const classes = useStyles();
+	return (
+		<div className={classes.IsbnIsmnContainer}>
+			<Grid container>
+				<Grid item xs={12}>
+					<Typography variant="h4">ISBN and ISMN </Typography>
+					<hr/>
+					<Typography paragraph>
+						{para1}
+					</Typography>
+					<Typography paragraph>
+						{para2}
+					</Typography>
+					<Typography paragraph>
+						{para3}
+					</Typography>
+					<Button
+						color="primary"
+						href="https://www.kansalliskirjasto.fi/en/services/expert-services-of-data-description/isbn"
+						target="_blank"
+					>
+                        More in details
+						<RightIcon/>
+					</Button>
+				</Grid>
+			</Grid>
+		</div>
+	);
+}
