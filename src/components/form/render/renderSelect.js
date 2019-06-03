@@ -30,13 +30,13 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import {Input, InputLabel, NativeSelect} from '@material-ui/core';
 
-const renderSelect = ({label, input, meta: {touched, error}}) => {
-	return (
+export default function ({label, input, meta: {touched, error}}) {
+	const component = (
 		<>
 			<InputLabel htmlFor="age-native-helper">{label}</InputLabel>
 			<NativeSelect
 				{...input}
-				error={touched && error}
+				error={touched && Boolean(error)}
 				input={<Input name="select" id="age-native-helper"/>}
 			>
 				<option value=""/>
@@ -44,17 +44,17 @@ const renderSelect = ({label, input, meta: {touched, error}}) => {
 			</NativeSelect>
 		</>
 	);
-};
 
-export default renderSelect;
-
-renderSelect.propTypes = {
-	input: PropTypes.shape({}),
-	label: PropTypes.string.isRequired,
-	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
-};
-
-renderSelect.defaultProps = {
-	meta: {},
-	input: {}
-};
+	return {
+		...component,
+		defaultProps: {
+			meta: {},
+			input: {}
+		},
+		propTypes: {
+			input: PropTypes.shape({}),
+			label: PropTypes.string.isRequired,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
+		}
+	};
+}

@@ -30,9 +30,7 @@ import React from 'react';
 import {Grid, Box} from '@material-ui/core';
 import useStyles from '../../styles/footer';
 
-export default Footer;
-
-function Footer() {
+export default function () {
 	const classes = useStyles();
 	return (
 		<Grid container className={classes.footer}>

@@ -34,7 +34,7 @@ import {PropTypes} from 'prop-types';
 
 import useStyles from '../styles/modalLayout';
 
-const ModalLayout = props => {
+export default function (props) {
 	const {label, name, children} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
@@ -47,7 +47,7 @@ const ModalLayout = props => {
 		setOpen(false);
 	};
 
-	return (
+	const component = (
 		<>
 			<Grid item>
 				<Button variant="outlined" color="primary" className={classes.button} onClick={handleOpen}>
@@ -73,16 +73,16 @@ const ModalLayout = props => {
 			</Modal>
 		</>
 	);
-};
 
-export default ModalLayout;
-
-ModalLayout.propTypes = {
-	label: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
-	children: PropTypes.node
-};
-
-ModalLayout.defaultProps = {
-	children: null
-};
+	return {
+		...component,
+		defaultProps: {
+			children: null
+		},
+		propTypes: {
+			label: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired,
+			children: PropTypes.node
+		}
+	};
+}

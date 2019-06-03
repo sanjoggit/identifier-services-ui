@@ -32,17 +32,17 @@ import ErrorIcons from '@material-ui/icons/ErrorOutline';
 
 import useStyles from '../../../styles/error';
 
-const renderTextField = ({input, label, className, meta}) => {
+export default function ({input, label, className, meta}) {
 	const {touched, error} = meta;
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const classes = useStyles();
-	return (
+	const component = (
 		<>
 			<TextField
 				{...input}
 				label={label}
 				className={className}
-				error={touched && error}
+				error={touched && Boolean(error)}
 				InputProps={{
 					endAdornment:
 	<InputAdornment position="end">
@@ -55,17 +55,17 @@ const renderTextField = ({input, label, className, meta}) => {
 
 		</>
 	);
-};
 
-export default renderTextField;
-
-renderTextField.propTypes = {
-	input: PropTypes.shape({}).isRequired,
-	label: PropTypes.string.isRequired,
-	className: PropTypes.string.isRequired,
-	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.string})
-};
-
-renderTextField.defaultProps = {
-	meta: {error: undefined}
-};
+	return {
+		...component,
+		defaultProps: {
+			meta: {error: undefined}
+		},
+		propTypes: {
+			input: PropTypes.shape({}).isRequired,
+			label: PropTypes.string.isRequired,
+			className: PropTypes.string.isRequired,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.string})
+		}
+	};
+}

@@ -32,7 +32,7 @@ import RightIcon from '@material-ui/icons/ChevronRight';
 import useStyles from '../../../styles/isbnismn';
 import {para1, para2, para3} from './text';
 
-const IsbnIsmn = () => {
+export default function () {
 	const classes = useStyles();
 	return (
 		<div className={classes.IsbnIsmnContainer}>
@@ -61,6 +61,4 @@ const IsbnIsmn = () => {
 			</Grid>
 		</div>
 	);
-};
-
-export default IsbnIsmn;
+}

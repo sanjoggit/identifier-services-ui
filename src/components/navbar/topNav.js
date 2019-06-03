@@ -27,13 +27,13 @@
  */
 import React, {useState} from 'react';
 import {AppBar, Toolbar, Typography, Grid, Select, FormControl, NativeSelect, Button, Menu, MenuItem} from '@material-ui/core';
-import useStyles from '../../../styles/topNav';
+import useStyles from '../../styles/topNav';
 import Logo from '../../../assets/logo/logo.png';
 import PersonIcon from '@material-ui/icons/Person';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
-const TopNav = () => {
+export default function () {
 	const [state, setState] = useState({
 		lang: 'EN'
 	});
@@ -97,6 +97,4 @@ const TopNav = () => {
 			</Grid>
 		</Grid>
 	);
-};
-
-export default TopNav;
+}

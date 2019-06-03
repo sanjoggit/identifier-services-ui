@@ -30,31 +30,31 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import {TextField} from '@material-ui/core';
 
-const renderPickers = ({label, className, id, input, meta: {touched, error}}) => {
-	return (
+export default function ({label, className, id, input, meta: {touched, error}}) {
+	const component = (
 		<TextField
 			{...input}
 			id={id}
 			label={label}
 			type="date"
-			error={touched && error}
+			error={touched && Boolean(error)}
 			className={className}
 			InputLabelProps={{shrink: true}}
 		/>
 	);
-};
 
-export default renderPickers;
-
-renderPickers.propTypes = {
-	id: PropTypes.string.isRequired,
-	input: PropTypes.shape({}),
-	label: PropTypes.string.isRequired,
-	className: PropTypes.string.isRequired,
-	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
-};
-
-renderPickers.defaultProps = {
-	meta: {},
-	input: {}
+	return {
+		...component,
+		defaultProps: {
+			meta: {},
+			input: {}
+		},
+		propTypes: {
+			id: PropTypes.string.isRequired,
+			input: PropTypes.shape({}),
+			label: PropTypes.string.isRequired,
+			className: PropTypes.string.isRequired,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
+		}
+	}
 };

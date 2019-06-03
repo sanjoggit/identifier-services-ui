@@ -27,22 +27,36 @@
  */
 
 import React from 'react';
-import {Container, Typography} from '@material-ui/core';
+import {Typography, Grid} from '@material-ui/core';
 
-import useStyles from '../../../styles/banner';
+import useStyles from '../../styles/formList';
+import ModalLayout from '../ModalLayout';
+import UserRequestForm from '../form/UserRequestForm';
+import PublisherRegistrationForm from '../form/PublisherRegistrationForm';
+import ContactForm from '../form/ContactForm';
 
-const Banner = () => {
+const formListsArray = [
+	{label: 'Publisher Registration', name: 'publisherRegistration', component: <PublisherRegistrationForm/>},
+	{label: 'Publication', name: 'publication', component: <UserRequestForm/>},
+	{label: 'Contact Form', name: 'contactForm', component: <ContactForm/>}
+
+];
+
+export default function () {
 	const classes = useStyles();
 	return (
-		<div className={classes.bannerContainer}>
-			<Container className={classes.textContainer}>
-				<Typography variant="h2" align="center">Identifier Services</Typography>
-				<Typography variant="h5" align="center">
-                    ISBN identifies books, ISMN notated music publications and ISSN serial publications. In Finland, these identifiers are applied for from the Finnish ISBN and ISSN Agencies operating at the National Library of Finland. The identifiers are free of charge.
-				</Typography>
-			</Container>
+		<div className={classes.formListContainer}>
+			<Grid container spacing={2} className={classes.formContainer}>
+				<Grid item xs={12}>
+					<Typography variant="h4" align="center">Forms</Typography>
+				</Grid>
+
+				{formListsArray.map(item => (
+					<ModalLayout key={item.label} label={item.label} name={item.name}>
+						{item.component}
+					</ModalLayout>
+				))}
+			</Grid>
 		</div>
 	);
-};
-
-export default Banner;
+}

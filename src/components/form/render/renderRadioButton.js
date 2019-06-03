@@ -30,8 +30,8 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import {Radio, FormControlLabel, RadioGroup, FormLabel} from '@material-ui/core';
 
-const renderRadioButton = ({option, name, label, input, meta: {touched, error}}) => {
-	return (
+export default function ({option, name, label, input, meta: {touched, error}}) {
+	const component = (
 		<>
 
 			<FormLabel component="legend">Gender</FormLabel>
@@ -39,7 +39,7 @@ const renderRadioButton = ({option, name, label, input, meta: {touched, error}})
 				{...input}
 				aria-label={label}
 				name={name}
-				error={touched && error}
+				error={touched && Boolean(error)}
 			>
 				{
 					option.map(item => (
@@ -54,19 +54,19 @@ const renderRadioButton = ({option, name, label, input, meta: {touched, error}})
 			</RadioGroup>
 		</>
 	);
-};
 
-export default renderRadioButton;
-
-renderRadioButton.propTypes = {
-	option: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-	input: PropTypes.shape({}),
-	label: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
-	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
-};
-
-renderRadioButton.defaultProps = {
-	meta: {},
-	input: {}
-};
+	return {
+		...component,
+		defaultProps: {
+			meta: {},
+			input: {}
+		},
+		propTypes: {
+			option: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+			input: PropTypes.shape({}),
+			label: PropTypes.string.isRequired,
+			name: PropTypes.string.isRequired,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
+		}
+	};
+}

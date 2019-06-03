@@ -38,85 +38,89 @@ import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
 import {validate} from '@natlibfi/identifier-services-commons';
 
-const ContactForm = ({handleSubmit, pristine}) => {
-	const initialState = {};
-	const [state, setState] = useState(initialState);
+export default connect(mapStateToProps)(reduxForm({
+	form: 'contactForm'}, validate)(
+	({handleSubmit, pristine}) => {
+		const initialState = {};
+		const [state, setState] = useState(initialState);
 
-	const handleClick = values => {
-		setState({...state, values});
-	};
+		const handleClick = values => {
+			setState({...state, values});
+		};
 
-	const fieldArray = [
-		{
-			name: 'name',
-			type: 'text',
-			label: 'Name',
-			width: 'full'
-		},
-		{
-			name: 'email',
-			type: 'text',
-			label: 'Email',
-			width: 'full'
-		},
-		{
-			name: 'description',
-			type: 'multiline',
-			label: 'Description',
-			width: 'full'
-		}
-	];
-	const classes = useStyles();
-	return (
-		<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
-			<Grid container className={classes.subContainer} spacing={3} direction="row">
-				{
-					fieldArray.map(list => (
-						(list.type === 'text') ?
-							<Grid key={list.name} item xs={12}>
-								<Field
-									className={`${classes.textField} ${list.width}`}
-									component={renderTextField}
-									label={list.label}
-									name={list.name}
-									type={list.type}
-								/>
-							</Grid> :
-							<Grid key={list.name} item xs={12}>
-								<Field
-									className={`${classes.textArea} ${list.width}`}
-									component={renderTextArea}
-									label={list.label}
-									name={list.name}
-									type={list.type}
-								/>
-							</Grid>
-					))
-				}
-				<Grid item xs={6} className={classes.btnContainer}>
-					<Button
-						disabled={pristine}
-						variant="contained"
-						color="primary"
-						type="submit"
-						size="small"
-						fullWidth={false}
-					>
+		const fieldArray = [
+			{
+				name: 'name',
+				type: 'text',
+				label: 'Name',
+				width: 'full'
+			},
+			{
+				name: 'email',
+				type: 'text',
+				label: 'Email',
+				width: 'full'
+			},
+			{
+				name: 'description',
+				type: 'multiline',
+				label: 'Description',
+				width: 'full'
+			}
+		];
+		const classes = useStyles();
+
+		const component = (
+			<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
+				<Grid container className={classes.subContainer} spacing={3} direction="row">
+					{
+						fieldArray.map(list => (
+							(list.type === 'text') ?
+								<Grid key={list.name} item xs={12}>
+									<Field
+										className={`${classes.textField} ${list.width}`}
+										component={renderTextField}
+										label={list.label}
+										name={list.name}
+										type={list.type}
+									/>
+								</Grid> :
+								<Grid key={list.name} item xs={12}>
+									<Field
+										className={`${classes.textArea} ${list.width}`}
+										component={renderTextArea}
+										label={list.label}
+										name={list.name}
+										type={list.type}
+									/>
+								</Grid>
+						))
+					}
+					<Grid item xs={6} className={classes.btnContainer}>
+						<Button
+							disabled={pristine}
+							variant="contained"
+							color="primary"
+							type="submit"
+							size="small"
+							fullWidth={false}
+						>
 				Submit
-					</Button>
+						</Button>
+					</Grid>
 				</Grid>
-			</Grid>
-		</form>
-	);
-};
+			</form>
+		);
 
-const mapStateToProps = state => ({
-	pristine: isPristine('contactForm')(state)
-});
+		return {
+			...component,
+			propTypes: {
+				handleSubmit: PropTypes.func.isRequired,
+				pristine: PropTypes.bool.isRequired
+			}
+		};
+	}));
 
-export default connect(mapStateToProps)((reduxForm({form: 'contactForm'}, validate))(ContactForm));
-
-ContactForm.propTypes = {
-	handleSubmit: PropTypes.func.isRequired,
-	pristine: PropTypes.bool.isRequired
-};
+function mapStateToProps(state) {
+	return {pristine: isPristine('contactForm')(state)};
+}

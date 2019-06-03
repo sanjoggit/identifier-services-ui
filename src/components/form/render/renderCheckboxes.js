@@ -30,46 +30,48 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import {Checkbox, FormControlLabel, FormLabel, FormGroup} from '@material-ui/core';
 
-const renderCheckboxes = ({label, options, className, input, meta: {touched, error}}) => (
-	<>
-		<FormLabel component="legend">{label}</FormLabel>
-		<FormGroup>
-			{options.map(item => (
-				console.log(input) ||
-				<FormControlLabel
-					{...input}
-					key={item.label}
-					label={item.label}
-					className={className}
-					control={
-						<Checkbox
-							error={touched && error}
-							value={item.value}
-							onChange={input.onChange(`${item.name}`)}
-						/>
-					}
-				/>
-			))
-			}
-		</FormGroup>
-	</>
-);
+export default function ({label, options, className, input, meta: {touched, error}}) {
+	const component = (
+		<>
+			<FormLabel component="legend">{label}</FormLabel>
+			<FormGroup>
+				{options.map(item => (
+					console.log(input) ||
+					<FormControlLabel
+						{...input}
+						key={item.label}
+						label={item.label}
+						className={className}
+						control={
+							<Checkbox
+								error={touched && error}
+								value={item.value}
+								onChange={input.onChange(`${item.name}`)}
+							/>
+						}
+					/>
+				))
+				}
+			</FormGroup>
+		</>
+	);
 
-export default renderCheckboxes;
-
-renderCheckboxes.propTypes = {
-	input: PropTypes.shape({}),
-	options: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		label: PropTypes.string.isRequired,
-		value: PropTypes.string.isRequired
-	}).isRequired,
-	label: PropTypes.string.isRequired,
-	className: PropTypes.string.isRequired,
-	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
-};
-
-renderCheckboxes.defaultProps = {
-	meta: {},
-	input: {}
-};
+	return {
+		...component,
+		defaultProps: {
+			meta: {},
+			input: {}
+		},
+		propTypes: {
+			input: PropTypes.shape({}),
+			options: PropTypes.shape({
+				name: PropTypes.string.isRequired,
+				label: PropTypes.string.isRequired,
+				value: PropTypes.string.isRequired
+			}).isRequired,
+			label: PropTypes.string.isRequired,
+			className: PropTypes.string.isRequired,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
+		}
+	};
+}

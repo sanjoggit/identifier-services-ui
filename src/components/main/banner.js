@@ -27,35 +27,20 @@
  */
 
 import React from 'react';
-import {Grid, Typography, TextField, InputAdornment} from '@material-ui/core';
-import useStyles from '../../../styles/searchComponent';
-import SearchIcon from '@material-ui/icons/Search';
+import {Container, Typography} from '@material-ui/core';
 
-const SearchComponent = () => {
+import useStyles from '../../styles/banner';
+
+export default function () {
 	const classes = useStyles();
 	return (
-		<Grid container>
-			<Grid item xs={12} className={classes.searchContianer}>
-				<Typography variant="h4" align="center">Explore Finnish Publisher</Typography>
-				<form>
-					<TextField
-						id="outlined-bare"
-						placeholder="Search..."
-						margin="normal"
-						variant="outlined"
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<SearchIcon/>
-								</InputAdornment>
-							)
-						}}
-						className={classes.searchBox}
-					/>
-				</form>
-			</Grid>
-		</Grid>
+		<div className={classes.bannerContainer}>
+			<Container className={classes.textContainer}>
+				<Typography variant="h2" align="center">Identifier Services</Typography>
+				<Typography variant="h5" align="center">
+                    ISBN identifies books, ISMN notated music publications and ISSN serial publications. In Finland, these identifiers are applied for from the Finnish ISBN and ISSN Agencies operating at the National Library of Finland. The identifiers are free of charge.
+				</Typography>
+			</Container>
+		</div>
 	);
-};
-
-export default SearchComponent;
+}

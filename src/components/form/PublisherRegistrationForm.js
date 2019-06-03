@@ -69,7 +69,7 @@ const fieldArray = [
 			},
 			{
 				name: 'aliases',
-				type: 'chips',
+				type: 'arrayString',
 				label: 'Aliases',
 				width: 'full'
 			}
@@ -123,91 +123,97 @@ const fieldArray = [
 	}
 ];
 
+export default connect(null, {registerPublisher})(reduxForm({
+	form: 'publisherRegistrationForm',
+	validate
+})(
+	props => {
+		const {handleSubmit, pristine, valid, registerPublisher} = props;
+		const classes = useStyles();
+		const [activeStep, setActiveStep] = React.useState(0);
+		const steps = getSteps();
+
+		function getStepContent(step) {
+			switch (step) {
+				case 0:
+					return element(fieldArray[0].basicInformation, classes);
+				case 1:
+					return fieldArrayElement(fieldArray[1]);
+				case 2:
+					return element(fieldArray[2].address, classes);
+				default:
+					return 'Unknown step';
+			}
+		}
+
+		function handleNext() {
+			setActiveStep(activeStep + 1);
+		}
+
+		function handleBack() {
+			setActiveStep(activeStep - 1);
+		}
+
+		const handlePublisherRegistration = values => {
+			const newPublisher = {
+				...values
+			};
+			registerPublisher(newPublisher);
+		};
+
+		const component = (
+			<form className={classes.container} onSubmit={handleSubmit(handlePublisherRegistration)}>
+				<Stepper alternativeLabel activeStep={activeStep}>
+					{steps.map(label => (
+						<Step key={label}>
+							<StepLabel className={classes.stepLabel}>
+								{label}
+							</StepLabel>
+						</Step>
+					))}
+				</Stepper>
+				<div className={classes.subContainer}>
+					<Grid container spacing={3} direction="row">
+						{(getStepContent(activeStep))}
+					</Grid>
+					<div className={classes.btnContainer}>
+						<Button disabled={activeStep === 0} onClick={handleBack}>
+							Back
+						</Button>
+						{activeStep !== steps.length - 1 ?
+							<Button type="button" disabled={(pristine || !valid) || activeStep === steps.length - 1} variant="contained" color="primary" onClick={handleNext}>
+								Next
+							</Button> : null
+						}
+						{
+							activeStep === steps.length - 1 &&
+							<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
+								Submit
+							</Button>
+						}
+					</div>
+				</div>
+			</form>
+		);
+
+		return {
+			...component,
+			defaultProps: {
+				formSyncErrors: null
+			},
+			propTypes: {
+				handleSubmit: PropTypes.func.isRequired,
+				pristine: PropTypes.bool.isRequired,
+				formSyncErrors: PropTypes.shape({}),
+				registerPublisher: PropTypes.func.isRequired,
+				valid: PropTypes.bool.isRequired
+			}
+		};
+	}));
+
 function getSteps() {
 	return fieldArray.map(item => Object.keys(item));
 }
-
-const PublisherRegistrationForm = props => {
-	const {handleSubmit, pristine, valid, registerPublisher} = props;
-	const classes = useStyles();
-	const [activeStep, setActiveStep] = React.useState(0);
-	const steps = getSteps();
-
-	function getStepContent(step) {
-		switch (step) {
-			case 0:
-				return element(fieldArray[0].basicInformation, classes);
-			case 1:
-				return fieldArrayElement(fieldArray[1], classes);
-			case 2:
-				return element(fieldArray[2].address, classes);
-			default:
-				return 'Unknown step';
-		}
-	}
-
-	function handleNext() {
-		setActiveStep(activeStep + 1);
-	}
-
-	function handleBack() {
-		setActiveStep(activeStep - 1);
-	}
-
-	const handlePublisherRegistration = values => {
-		const newPublisher = {
-			...values
-		};
-		registerPublisher(newPublisher);
-	};
-
-	return (
-		<form className={classes.container} onSubmit={handleSubmit(handlePublisherRegistration)}>
-			<Stepper alternativeLabel activeStep={activeStep}>
-				{steps.map(label => (
-					<Step key={label}>
-						<StepLabel className={classes.stepLabel}>
-							{label}
-						</StepLabel>
-					</Step>
-				))}
-			</Stepper>
-			<div className={classes.subContainer}>
-				<Grid container spacing={3} direction="row">
-					{(getStepContent(activeStep))}
-				</Grid>
-				<div className={classes.btnContainer}>
-					<Button disabled={activeStep === 0} onClick={handleBack}>
-						Back
-					</Button>
-					{activeStep !== steps.length - 1 ?
-						<Button type="button" disabled={(pristine || !valid) || activeStep === steps.length - 1} variant="contained" color="primary" onClick={handleNext}>
-						Next
-						</Button> : null
-					}
-					{
-						activeStep === steps.length - 1 &&
-						<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
-						Submit
-						</Button>
-					}
-				</div>
-			</div>
-		</form>
-	);
-};
-
-PublisherRegistrationForm.propTypes = {
-	handleSubmit: PropTypes.func.isRequired,
-	pristine: PropTypes.bool.isRequired,
-	formSyncErrors: PropTypes.shape({}),
-	registerPublisher: PropTypes.func.isRequired,
-	valid: PropTypes.bool.isRequired
-};
-
-PublisherRegistrationForm.defaultProps = {
-	formSyncErrors: null
-};
 
 function element(array, classes, field) {
 	return array.map(list =>
@@ -223,11 +229,10 @@ function element(array, classes, field) {
 					type={list.type}
 				/>
 			</Grid> :
-			((list.type === 'chips') ?
+			((list.type === 'arrayString') ?
 				<Grid key={list.name} item xs={12}>
 					<FieldArray
 						component={renderAliases}
-						// ClassName={`${classes.chipField} ${list.width}`}
 						name={list.name}
 					/>
 				</Grid> :
@@ -243,21 +248,16 @@ function element(array, classes, field) {
 	);
 }
 
-function fieldArrayElement(array, classes) {
+function fieldArrayElement(array) {
 	return (
 		<FieldArray
 			component={renderContactDetail}
-			className={`${classes.chipField} full`}
+			className="full"
 			name="contactDetails"
 			props={array}
 		/>
 	);
 }
-
-export default connect(null, {registerPublisher})(reduxForm({
-	form: 'publisherRegistrationForm',
-	validate
-})(PublisherRegistrationForm));
 
 export function validate(values) {
 	const errors = {};

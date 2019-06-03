@@ -34,7 +34,7 @@ import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
 
-const UserRequestForm = ({handleSubmit}) => {
+export default reduxForm({form: 'userRequestForm'})(({handleSubmit}) => {
 	const classes = useStyles();
 	const initialState = {};
 	const [state, setState] = useState(initialState);
@@ -82,7 +82,7 @@ const UserRequestForm = ({handleSubmit}) => {
 		}
 	];
 
-	return (
+	const component = (
 		<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
 
 			<Grid container spacing={3} direction="row">
@@ -143,15 +143,15 @@ const UserRequestForm = ({handleSubmit}) => {
 			</Grid>
 		</form>
 	);
-};
 
-export default reduxForm({form: 'userRequestForm'})(UserRequestForm);
-
-UserRequestForm.propTypes = {
-	handleSubmit: PropTypes.func.isRequired,
-	classes: PropTypes.shape({})
-};
-
-UserRequestForm.defaultProps = {
-	classes: null
-};
+	return {
+		...component,
+		defaultProps: {
+			classes: null
+		},
+		propTypes: {
+			handleSubmit: PropTypes.func.isRequired,
+			classes: PropTypes.shape({})
+		}
+	};
+});

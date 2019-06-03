@@ -29,33 +29,35 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import {TextField} from '@material-ui/core';
 
-const renderTextArea = ({input, label, className, meta: {touched, error}, children}) => (
-	<TextField
-		{...input}
-		multiline
-		label={label}
-		variant="outlined"
-		rows={4}
-		className={className}
-		error={touched && error}
-	>
-		{children}
-	</TextField>
-);
+export default function ({input, label, className, meta: {touched, error}, children}) {
+	const component = (
+		<TextField
+			{...input}
+			multiline
+			label={label}
+			variant="outlined"
+			rows={4}
+			className={className}
+			error={touched && Boolean(error)}
+		>
+			{children}
+		</TextField>
+	);
 
-export default renderTextArea;
-
-renderTextArea.propTypes = {
-	input: PropTypes.shape({}).isRequired,
-	label: PropTypes.string.isRequired,
-	className: PropTypes.string.isRequired,
-	multiline: PropTypes.bool,
-	meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool}),
-	children: PropTypes.node
-};
-
-renderTextArea.defaultProps = {
-	meta: {},
-	children: null,
-	multiline: false
-};
+	return {
+		...component,
+		defaultProps: {
+			meta: {},
+			children: null,
+			multiline: false
+		},
+		propTypes: {
+			input: PropTypes.shape({}).isRequired,
+			label: PropTypes.string.isRequired,
+			className: PropTypes.string.isRequired,
+			multiline: PropTypes.bool,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool}),
+			children: PropTypes.node
+		}
+	};
+}
