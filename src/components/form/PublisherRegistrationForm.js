@@ -1,4 +1,5 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable complexity */
+/* eslint-disable no-negated-condition */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -27,16 +28,17 @@
  *
  */
 import React from 'react';
-import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm, isPristine } from 'redux-form';
-import { Button, Grid, Stepper, Step, StepButton } from '@material-ui/core';
+import {connect} from 'react-redux';
+import {Field, FieldArray, reduxForm} from 'redux-form';
+import {Button, Grid, Stepper, Step, StepLabel} from '@material-ui/core';
 import PropTypes from 'prop-types';
 // Import {validate} from '@natlibfi/identifier-services-commons';
 
 import renderTextField from './render/renderTextField';
-import RenderChipsField from './render/renderChipsField';
+import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
-import { registerPublisher } from '../../store/actions/publisherRegistration';
+import {registerPublisher} from '../../store/actions/publisherRegistration';
+import renderContactDetail from './render/renderContactDetail';
 
 const fieldArray = [
 	{
@@ -126,7 +128,7 @@ function getSteps() {
 }
 
 const PublisherRegistrationForm = props => {
-	const { handleSubmit, pristine, valid, registerPublisher } = props;
+	const {handleSubmit, pristine, valid, registerPublisher} = props;
 	const classes = useStyles();
 	const [activeStep, setActiveStep] = React.useState(0);
 	const steps = getSteps();
@@ -136,7 +138,7 @@ const PublisherRegistrationForm = props => {
 			case 0:
 				return element(fieldArray[0].basicInformation, classes);
 			case 1:
-				return fieldArrayElement(fieldArray[1].contactDetails, classes);
+				return fieldArrayElement(fieldArray[1], classes);
 			case 2:
 				return element(fieldArray[2].address, classes);
 			default:
@@ -145,11 +147,11 @@ const PublisherRegistrationForm = props => {
 	}
 
 	function handleNext() {
-		setActiveStep(prevActiveStep => prevActiveStep + 1);
+		setActiveStep(activeStep + 1);
 	}
 
 	function handleBack() {
-		setActiveStep(prevActiveStep => prevActiveStep - 1);
+		setActiveStep(activeStep - 1);
 	}
 
 	const handlePublisherRegistration = values => {
@@ -164,9 +166,9 @@ const PublisherRegistrationForm = props => {
 			<Stepper alternativeLabel activeStep={activeStep}>
 				{steps.map(label => (
 					<Step key={label}>
-						<StepButton className={classes.stepLabel}>
+						<StepLabel className={classes.stepLabel}>
 							{label}
-						</StepButton>
+						</StepLabel>
 					</Step>
 				))}
 			</Stepper>
@@ -178,14 +180,16 @@ const PublisherRegistrationForm = props => {
 					<Button disabled={activeStep === 0} onClick={handleBack}>
 						Back
 					</Button>
+					{activeStep !== steps.length - 1 ?
+						<Button type="button" disabled={(pristine || !valid) || activeStep === steps.length - 1} variant="contained" color="primary" onClick={handleNext}>
+						Next
+						</Button> : null
+					}
 					{
-						activeStep === steps.length - 1 ?
-							<Button type="submit" disabled={pristine} variant="contained" color="primary">
-								Submit
-							</Button> :
-							<Button type="button" disabled={pristine} variant="contained" color="primary" onClick={handleNext}>
-								Next
-							</Button>
+						activeStep === steps.length - 1 &&
+						<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
+						Submit
+						</Button>
 					}
 				</div>
 			</div>
@@ -193,16 +197,12 @@ const PublisherRegistrationForm = props => {
 	);
 };
 
-const mapStateToProps = state => ({
-	pristine: isPristine('publisherRegistrationForm')(state)
-	// FormSyncErrors: getFormSyncErrors('publisherRegistrationForm')(state)
-});
-
 PublisherRegistrationForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
 	pristine: PropTypes.bool.isRequired,
 	formSyncErrors: PropTypes.shape({}),
-	registerPublisher: PropTypes.func.isRequired
+	registerPublisher: PropTypes.func.isRequired,
+	valid: PropTypes.bool.isRequired
 };
 
 PublisherRegistrationForm.defaultProps = {
@@ -211,7 +211,7 @@ PublisherRegistrationForm.defaultProps = {
 
 function element(array, classes, field) {
 	return array.map(list =>
-		
+
 		// eslint-disable-next-line no-negated-condition
 		((list.width !== 'full') ?
 			<Grid key={list.name} item xs={6}>
@@ -224,14 +224,11 @@ function element(array, classes, field) {
 				/>
 			</Grid> :
 			((list.type === 'chips') ?
-			console.log(list.name) ||
 				<Grid key={list.name} item xs={12}>
 					<FieldArray
-						component={RenderChipsField}
-						className={`${classes.chipField} ${list.width}`}
-						label={list.label}
+						component={renderAliases}
+						// ClassName={`${classes.chipField} ${list.width}`}
 						name={list.name}
-						type={list.type}
 					/>
 				</Grid> :
 				<Grid key={list.name} item xs={12}>
@@ -249,36 +246,18 @@ function element(array, classes, field) {
 function fieldArrayElement(array, classes) {
 	return (
 		<FieldArray
-			component={renderFieldArray}
+			component={renderContactDetail}
 			className={`${classes.chipField} full`}
 			name="contactDetails"
+			props={array}
 		/>
 	);
-
-	function renderFieldArray({ fields, meta}) {
-		fields.getAll() === undefined && fields.push({});
-		return (
-			<>
-				{fields.map(field => array.map(list =>
-					(
-						<Grid key={list.name} item xs={12}>
-							<Field
-								className={`${classes.textField} ${list.width}`}
-								component={renderTextField}
-								label={list.label}
-								name={`${field}.${list.name}`}
-								type={list.type}
-							/>
-						</Grid>
-					)))}
-				<Button onClick={() => fields.push({})}>Plus</Button>
-			</>
-
-		);
-	}
 }
 
-export default connect(mapStateToProps, { registerPublisher })(reduxForm({ form: 'publisherRegistrationForm', validate, destroyOnUnmount: true })(PublisherRegistrationForm));
+export default connect(null, {registerPublisher})(reduxForm({
+	form: 'publisherRegistrationForm',
+	validate
+})(PublisherRegistrationForm));
 
 export function validate(values) {
 	const errors = {};
@@ -289,30 +268,6 @@ export function validate(values) {
 	} else if (/[0-9]/i.test(values.name)) {
 		errors.name = 'Name should not have numbers';
 	}
-
-	values.contactDetails && values.contactDetails.map(item => {
-		if (!item.givenName) {
-			errors.givenName = 'Given Name is Required!!';
-		} else if (item.length < 2 && item.length > 20) {
-			errors.givenName = 'Given Name length must be between 2-20';
-		} else if (/[0-9]/i.test(item.givenName)) {
-			errors.givenName = 'Given Name should not have numbers';
-		}
-
-		if (!item.familyName) {
-			errors.familyName = 'Family Name is Required!!';
-		} else if (item.length < 2 && item.length > 20) {
-			errors.familyName = 'Family Name length must be between 2-20';
-		} else if (/[0-9]/i.test(item.familyName)) {
-			errors.familyName = 'Family Name should not have numbers';
-		}
-
-		if (!item.email) {
-			errors.email = 'Email is Required!!!';
-		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(item.email)) {
-			errors.email = 'Invalid e-mail address';
-		}
-	})
 
 	if (!values.publisherEmail) {
 		errors.publisherEmail = 'Publisher\'s Email is required';
@@ -330,8 +285,59 @@ export function validate(values) {
 		errors.website = 'The Field cannot be left empty';
 	}
 
-	if (!values.aliases || values.aliases && values.aliases.length === 0) {
-		errors.aliases = 'Aliases cannot be empty';
+	if (!values.aliases || !values.aliases.length) {
+		errors.aliases = {_error: 'At least one member must be entered'};
+	} else {
+		const aliasesArrayErrors = [];
+		values.aliases.forEach((item, index) => {
+			if (!item) {
+				aliasesArrayErrors[index] = 'Aliases Required';
+			}
+		});
+		if (aliasesArrayErrors.length) {
+			errors.aliases = aliasesArrayErrors;
+		}
+	}
+
+	if (!values.contactDetails || !values.contactDetails.length) {
+		errors.contactDetails = {_error: 'Contact Details need to be provided'};
+	} else {
+		const contactDetailsErrors = [];
+		values.contactDetails.forEach((item, index) => {
+			const contactFieldsErrors = {};
+			if (!item || !item.givenName) {
+				contactFieldsErrors.givenName = 'Required';
+				contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (item.givenName.length < 2 || item.givenName.length > 20) {
+				contactFieldsErrors.givenName = 'Given Name length must be between 2-20';
+				contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (/[0-9]/i.test(item.givenName)) {
+				contactFieldsErrors.givenName = 'Given Name should not have numbers';
+				contactDetailsErrors[index] = contactFieldsErrors;
+			}
+
+			if (!item || !item.familyName) {
+				contactFieldsErrors.familyName = 'Required';
+				contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (item.familyName.length < 2 || item.familyName.length > 20) {
+				contactFieldsErrors.familyName = 'Family Name length must be between 2-20';
+				contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (/[0-9]/i.test(item.familyName)) {
+				contactFieldsErrors.familyName = 'Family Name should not have numbers';
+				contactDetailsErrors[index] = contactFieldsErrors;
+			}
+
+			if (!item || !item.email) {
+				contactFieldsErrors.email = 'Required';
+				contactDetailsErrors[index] = contactFieldsErrors;
+			} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(item.email)) {
+				contactFieldsErrors.email = 'Invalid e-mail address';
+				contactDetailsErrors[index] = contactFieldsErrors;
+			}
+		});
+		if (contactDetailsErrors.length) {
+			errors.contactDetails = contactDetailsErrors;
+		}
 	}
 
 	if (!values.streetAddress) {

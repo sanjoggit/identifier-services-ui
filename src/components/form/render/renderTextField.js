@@ -45,11 +45,11 @@ const renderTextField = ({input, label, className, meta}) => {
 				error={touched && error}
 				InputProps={{
 					endAdornment:
-						<InputAdornment position="end">
-							{touched && (error &&
-								<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
-							)}
-						</InputAdornment>
+	<InputAdornment position="end">
+		{touched && (error &&
+		<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
+		)}
+	</InputAdornment>
 				}}
 			/>
 
