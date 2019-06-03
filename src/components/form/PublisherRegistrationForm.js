@@ -132,7 +132,6 @@ export default connect(null, {registerPublisher})(reduxForm({
 		const classes = useStyles();
 		const [activeStep, setActiveStep] = React.useState(0);
 		const steps = getSteps();
-
 		function getStepContent(step) {
 			switch (step) {
 				case 0:
@@ -215,7 +214,7 @@ function getSteps() {
 	return fieldArray.map(item => Object.keys(item));
 }
 
-function element(array, classes, field) {
+function element(array, classes) {
 	return array.map(list =>
 
 		// eslint-disable-next-line no-negated-condition
@@ -225,7 +224,7 @@ function element(array, classes, field) {
 					className={`${classes.textField} ${list.width}`}
 					component={renderTextField}
 					label={list.label}
-					name={field ? `${field}.${list.name}` : list.name}
+					name={list.name}
 					type={list.type}
 				/>
 			</Grid> :

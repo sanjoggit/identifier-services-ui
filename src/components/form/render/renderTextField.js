@@ -32,14 +32,16 @@ import ErrorIcons from '@material-ui/icons/ErrorOutline';
 
 import useStyles from '../../../styles/error';
 
-export default function ({input, label, className, meta}) {
+export default function ({input, label, className, meta, ref}) {
 	const {touched, error} = meta;
+
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const classes = useStyles();
 	const component = (
 		<>
 			<TextField
 				{...input}
+				ref={ref}
 				label={label}
 				className={className}
 				error={touched && Boolean(error)}

@@ -28,7 +28,7 @@
 
 import React from 'react';
 import {createMuiTheme} from '@material-ui/core';
-import TopNav from './components/navbar/topNav/index';
+import TopNav from './components/navbar/topNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Banner from './components/main/banner';
 import FormList from './components/main/formList';

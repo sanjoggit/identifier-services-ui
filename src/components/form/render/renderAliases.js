@@ -26,39 +26,51 @@
  *
  */
 import React from 'react';
-import {Field} from 'redux-form';
-import {Button, Grid, IconButton} from '@material-ui/core';
+import {Field, getFormValues} from 'redux-form';
+import {Button, Grid, Chip} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear';
 import renderTextField from './renderTextField';
+import {connect} from 'react-redux';
+import {change} from 'redux-form';
 
-export default function ({fields, meta: {touched, error}}) {
+export default connect(state => ({
+	values: getFormValues('publisherRegistrationForm')(state)
+
+}))(props => {
+	const {fields, values, meta: {touched, error}} = props;
+	const handleAliasesClick = () => {
+		//fields.push(values.alias);
+		change('publisherRegistrationForm', 'alias', 'ssss');
+    };    
+
 	const component = (
 		<>
 			<Grid>
-				{fields.map((item, index) => (
-					<Grid key={index} item xs={6}>
-						<Field
-							name={item}
-							type="text"
-							component={renderTextField}
-							label={`Aliases ${index + 1}`}
-						/>
-						<IconButton aria-label="Delete" onClick={() => fields.remove(index)}>
-							<ClearIcon/>
-						</IconButton>
-					</Grid>
-				))}
+				<Grid item xs={6}>
+					<Field
+						name="alias"
+						type="text"
+						component={renderTextField}
+						label="Aliases"
+					/>
+				</Grid>
 			</Grid>
 			{touched && error && <span>{error}</span>}
+			{values && values.aliases && values.aliases.map((item, index) => (
+				<Chip
+					key={index}
+					label={item}
+					onDelete={() => fields.remove(index)}
+            	/>
+			))}
 			<Button
 				variant="outlined"
 				size="medium"
 				color="primary"
 				aria-label="Add"
 				style={{marginTop: '10px'}}
-				onClick={() => fields.push()}
+				onClick={handleAliasesClick}
 			>
 				<AddIcon/>
 				Add Aliases
@@ -76,4 +88,4 @@ export default function ({fields, meta: {touched, error}}) {
 			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
 		}
 	};
-}
+});
