@@ -1,7 +1,7 @@
 import React from 'react';
 import renderTextField from './renderTextField';
 import {Field} from 'redux-form';
-import {Fab, Grid, IconButton} from '@material-ui/core';
+import {Button, Grid, IconButton} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -23,8 +23,8 @@ const renderAliases = ({fields, meta: {touched, error}}) => (
         	))}
 		</Grid>
 		{touched && error && <span>{error}</span>}
-		<Fab
-			variant="extended"
+		<Button
+			variant="outlined"
 			size="medium"
 			color="primary"
 			aria-label="Add"
@@ -33,7 +33,7 @@ const renderAliases = ({fields, meta: {touched, error}}) => (
 		>
 			<AddIcon/>
             Add Aliases
-		</Fab>
+		</Button>
 	</>
 );
 

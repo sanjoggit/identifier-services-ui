@@ -30,7 +30,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Field, FieldArray, reduxForm} from 'redux-form';
-import {Button, Grid, Stepper, Step, StepButton} from '@material-ui/core';
+import {Button, Grid, Stepper, Step, StepLabel} from '@material-ui/core';
 import PropTypes from 'prop-types';
 // Import {validate} from '@natlibfi/identifier-services-commons';
 
@@ -147,11 +147,11 @@ const PublisherRegistrationForm = props => {
 	}
 
 	function handleNext() {
-		setActiveStep(prevActiveStep => prevActiveStep + 1);
+		setActiveStep(activeStep + 1);
 	}
 
 	function handleBack() {
-		setActiveStep(prevActiveStep => prevActiveStep - 1);
+		setActiveStep(activeStep - 1);
 	}
 
 	const handlePublisherRegistration = values => {
@@ -166,9 +166,9 @@ const PublisherRegistrationForm = props => {
 			<Stepper alternativeLabel activeStep={activeStep}>
 				{steps.map(label => (
 					<Step key={label}>
-						<StepButton className={classes.stepLabel}>
+						<StepLabel className={classes.stepLabel}>
 							{label}
-						</StepButton>
+						</StepLabel>
 					</Step>
 				))}
 			</Stepper>
@@ -180,14 +180,16 @@ const PublisherRegistrationForm = props => {
 					<Button disabled={activeStep === 0} onClick={handleBack}>
 						Back
 					</Button>
-					{
-						activeStep === steps.length - 1 ?
-							<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
-						Submit
-							</Button> :
-							<Button type="button" disabled={pristine || !valid} variant="contained" color="primary" onClick={handleNext}>
+					{activeStep !== steps.length - 1 ?
+						<Button type="button" disabled={(pristine || !valid) || activeStep === steps.length - 1} variant="contained" color="primary" onClick={handleNext}>
 						Next
-							</Button>
+						</Button> : null
+					}
+					{
+						activeStep === steps.length - 1 &&
+						<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
+						Submit
+						</Button>
 					}
 				</div>
 			</div>
