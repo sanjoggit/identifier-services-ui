@@ -25,46 +25,29 @@
  * for the JavaScript code in this file.
  *
  */
+import React, {useState} from 'react';
+import {Dialog, DialogContent, DialogContentText} from '@material-ui/core';
 
-import React from 'react';
-import {createMuiTheme} from '@material-ui/core';
-import TopNav from './components/navbar/topNav';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Banner from './components/main/banner';
-import FormList from './components/main/formList';
-import IsbnIsmn from './components/main/isbn_ismn';
-import Issn from './components/main/issn';
-import Footer from './components/footer';
-import {MuiThemeProvider} from '@material-ui/core/styles';
-import SearchComponent from './components/main/searchComponent';
-
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: '#00224f'
-		}
-	},
-	typography: {
-		fontFamily: 'Poppins'
-	},
-	muiChip: {
-		color: 'red'
-	}
-});
-
-const App = () => {
+export default function ({textInfo}) {
+	const [open, setOpen] = useState(true);
 	return (
-		<MuiThemeProvider theme={theme}>
-			<TopNav/>
-			<CssBaseline/>
-			<Banner/>
-			<SearchComponent/>
-			<FormList/>
-			<IsbnIsmn/>
-			<Issn/>
-			<Footer/>
-		</MuiThemeProvider>
-	);
-};
+		<Dialog
+			keepMounted
+			aria-labelledby="alert-dialog-slide-title"
+			aria-describedby="alert-dialog-slide-description"
+			open={open}
+			onClose={handleOnClose}
+		>
+			<DialogContent>
+				<DialogContentText id="alert-dialog-slide-description">
+					{textInfo}
+				</DialogContentText>
+			</DialogContent>
 
-export default App;
+		</Dialog>
+	);
+
+	function handleOnClose() {
+		setOpen(false);
+	}
+}

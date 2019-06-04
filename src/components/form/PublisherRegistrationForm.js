@@ -128,16 +128,16 @@ export default connect(null, {registerPublisher})(reduxForm({
 	validate
 })(
 	props => {
-		const {handleSubmit, pristine, valid, registerPublisher} = props;
+		const {handleSubmit, clearFields, pristine, valid, registerPublisher} = props;
 		const classes = useStyles();
 		const [activeStep, setActiveStep] = React.useState(0);
 		const steps = getSteps();
 		function getStepContent(step) {
 			switch (step) {
 				case 0:
-					return element(fieldArray[0].basicInformation, classes);
+					return element(fieldArray[0].basicInformation, classes, clearFields);
 				case 1:
-					return fieldArrayElement(fieldArray[1]);
+					return fieldArrayElement(fieldArray[1], clearFields);
 				case 2:
 					return element(fieldArray[2].address, classes);
 				default:
@@ -214,7 +214,7 @@ function getSteps() {
 	return fieldArray.map(item => Object.keys(item));
 }
 
-function element(array, classes) {
+function element(array, classes, clearFields) {
 	return array.map(list =>
 
 		// eslint-disable-next-line no-negated-condition
@@ -233,6 +233,7 @@ function element(array, classes) {
 					<FieldArray
 						component={renderAliases}
 						name={list.name}
+						props={{clearFields}}
 					/>
 				</Grid> :
 				<Grid key={list.name} item xs={12}>
@@ -247,13 +248,13 @@ function element(array, classes) {
 	);
 }
 
-function fieldArrayElement(array) {
+function fieldArrayElement(array, clearFields) {
 	return (
 		<FieldArray
 			component={renderContactDetail}
 			className="full"
 			name="contactDetails"
-			props={array}
+			props={{clearFields, array}}
 		/>
 	);
 }

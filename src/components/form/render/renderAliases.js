@@ -27,22 +27,40 @@
  */
 import React from 'react';
 import {Field, getFormValues} from 'redux-form';
-import {Button, Grid, Chip} from '@material-ui/core';
+import {Fab, Grid, Chip} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
-import renderTextField from './renderTextField';
 import {connect} from 'react-redux';
-import {change} from 'redux-form';
+
+import renderTextField from './renderTextField';
+import AlertDialog from '../../utils/alertDialog';
 
 export default connect(state => ({
 	values: getFormValues('publisherRegistrationForm')(state)
 
 }))(props => {
-	const {fields, values, meta: {touched, error}} = props;
+	const {fields, values, clearFields, meta: {touched, error}} = props;
 	const handleAliasesClick = () => {
-		//fields.push(values.alias);
-		change('publisherRegistrationForm', 'alias', 'ssss');
-    };    
+		if (values) {
+			if (values.alias) {
+				if (values.aliases) {
+					if (values.aliases.includes(values.alias)) {
+						alert("Alias already exist");
+					} else {
+						fields.push(values.alias);
+						clearFields(undefined, false, false, 'alias');
+					}
+				} else {
+					fields.push(values.alias);
+					clearFields(undefined, false, false, 'alias');
+				}
+			} else {
+				alert("Alias already exist");
+			}
+		} else {
+			alert("Alias already exist");
+		}
+    };
 
 	const component = (
 		<>
@@ -54,27 +72,24 @@ export default connect(state => ({
 						component={renderTextField}
 						label="Aliases"
 					/>
+					<Fab
+						color="primary"
+						aria-label="Add"
+						size="small"
+						onClick={handleAliasesClick}
+					>
+						<AddIcon/>
+					</Fab>
 				</Grid>
 			</Grid>
 			{touched && error && <span>{error}</span>}
 			{values && values.aliases && values.aliases.map((item, index) => (
 				<Chip
-					key={index}
+					key={item}
 					label={item}
 					onDelete={() => fields.remove(index)}
-            	/>
+				/>
 			))}
-			<Button
-				variant="outlined"
-				size="medium"
-				color="primary"
-				aria-label="Add"
-				style={{marginTop: '10px'}}
-				onClick={handleAliasesClick}
-			>
-				<AddIcon/>
-				Add Aliases
-			</Button>
 		</>
 	);
 

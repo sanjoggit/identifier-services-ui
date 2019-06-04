@@ -41,17 +41,18 @@ export default function ({input, label, className, meta, ref}) {
 		<>
 			<TextField
 				{...input}
-				ref={ref}
 				label={label}
 				className={className}
 				error={touched && Boolean(error)}
 				InputProps={{
 					endAdornment:
-	<InputAdornment position="end">
-		{touched && (error &&
-		<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
-		)}
-	</InputAdornment>
+						<InputAdornment position="end">
+							<>
+								{touched && (error &&
+								<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
+								)}
+							</>
+						</InputAdornment>
 				}}
 			/>
 
