@@ -33,19 +33,21 @@ import AddIcon from '@material-ui/icons/Add';
 import {connect} from 'react-redux';
 
 import renderTextField from './renderTextField';
-import AlertDialog from '../../utils/alertDialog';
 
 export default connect(state => ({
 	values: getFormValues('publisherRegistrationForm')(state)
 
 }))(props => {
-	const {fields, values, clearFields, meta: {touched, error}} = props;
+	const [errors, setErrors] = React.useState();
+	const {fields, values, className, clearFields} = props;
+
 	const handleAliasesClick = () => {
+		setErrors();
 		if (values) {
 			if (values.alias) {
 				if (values.aliases) {
 					if (values.aliases.includes(values.alias)) {
-						alert("Alias already exist");
+						setErrors('Alias already exist');
 					} else {
 						fields.push(values.alias);
 						clearFields(undefined, false, false, 'alias');
@@ -55,22 +57,24 @@ export default connect(state => ({
 					clearFields(undefined, false, false, 'alias');
 				}
 			} else {
-				alert("Alias already exist");
+				setErrors('Required');
 			}
 		} else {
-			alert("Alias already exist");
+			setErrors('Required');
 		}
-    };
+	};
 
 	const component = (
 		<>
 			<Grid>
 				<Grid item xs={6}>
 					<Field
+						className={className}
 						name="alias"
 						type="text"
 						component={renderTextField}
 						label="Aliases"
+						props={{errors}}
 					/>
 					<Fab
 						color="primary"
@@ -82,7 +86,6 @@ export default connect(state => ({
 					</Fab>
 				</Grid>
 			</Grid>
-			{touched && error && <span>{error}</span>}
 			{values && values.aliases && values.aliases.map((item, index) => (
 				<Chip
 					key={item}

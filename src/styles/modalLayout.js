@@ -32,15 +32,13 @@ const useStyles = makeStyles({
 
 	main: {
 		width: '60vw',
+		maxWidth: '1200px',
 		position: 'relative',
 		margin: '100px auto',
 		padding: 20,
 		borderRadius: 5,
 		backgroundColor: '#fff',
-		outline: 'none',
-		overflowY: 'auto',
-		height: '602px'
-
+		outline: 'none'
 	},
 	button: {
 		marginBottom: '20px'

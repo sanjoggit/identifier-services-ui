@@ -47,6 +47,10 @@ const useStyles = makeStyles({
 		height: '60px',
 		width: '-webkit-fill-available'
 	},
+	arrayString: {
+		height: '60px',
+		width: '90%'
+	},
 	full: {
 		flexDirection: 'column'
 	},

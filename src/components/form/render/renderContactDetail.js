@@ -40,7 +40,7 @@ export default connect(state => ({
 	values: getFormValues('publisherRegistrationForm')(state)
 
 }))(props => {
-	console.log(props);
+	const [errors, setErrors] = React.useState();
 	const {fields, array: {contactDetails}, clearFields, meta: {touched, error}, values} = props;
 
 	const contactDetail = values && {
@@ -48,23 +48,21 @@ export default connect(state => ({
 		familyName: values.familyName,
 		email: values.email
 	};
-	console.log(contactDetail);
 	const handleContactClick = () => {
+		setErrors();
 		if (values) {
 			if (contactDetail && (contactDetail.email !== undefined || contactDetail.givenName !== undefined)) {
 				if (values.contactDetails) {
 					if (values.contactDetails.some(item => item.email === contactDetail.email)) {
-						alert('already exist');
-					} else {
+						setErrors('already exist');
+					} else if (contactDetail.email !== undefined && contactDetail.familyName !== undefined && contactDetail.givenName !== undefined) {
 						fields.push(contactDetail);
 						clearFields(undefined, false, false, 'givenName', 'familyName', 'email');
 					}
-				}else {
+				} else if (contactDetail.email !== undefined && contactDetail.familyName !== undefined && contactDetail.givenName !== undefined) {
 					fields.push(contactDetail);
 					clearFields(undefined, false, false, 'givenName', 'familyName', 'email');
 				}
-			} else {
-				alert('no value');
 			}
 		}
 	};
@@ -82,6 +80,7 @@ export default connect(state => ({
 							label={list.label}
 							name={list.name}
 							type={list.type}
+							props={{errors}}
 						/>
 					</Grid>
 				))}
@@ -97,6 +96,7 @@ export default connect(state => ({
 				aria-label="Add"
 				color="primary"
 				title="Add more Contact Detail"
+				disabled={touched && Boolean(error)}
 				onClick={handleContactClick}
 			>
 				<AddIcon/>
