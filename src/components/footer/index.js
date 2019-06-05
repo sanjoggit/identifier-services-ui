@@ -42,7 +42,7 @@ export default function () {
                         Telephone: <br/> +358294123196
 				</Box>
 				<Box component="span">
-                        &copy;University of Helsinki <br/> 2019
+                        &copy;University of Helsinki 2019
 				</Box>
 			</Grid>
 		</Grid>

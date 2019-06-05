@@ -28,8 +28,7 @@
  */
 
 import React, {useState} from 'react';
-import {connect} from 'react-redux';
-import {Field, reduxForm, isPristine} from 'redux-form';
+import {Field, reduxForm} from 'redux-form';
 import {PropTypes} from 'prop-types';
 import {Grid, Button} from '@material-ui/core';
 
@@ -38,9 +37,9 @@ import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
 import {validate} from '@natlibfi/identifier-services-commons';
 
-export default connect(mapStateToProps)(reduxForm({
-	form: 'contactForm'}, validate)(
-	({handleSubmit, pristine}) => {
+export default reduxForm({
+	form: 'contactForm', validate})(
+	({handleSubmit, pristine, valid}) => {
 		const initialState = {};
 		const [state, setState] = useState(initialState);
 
@@ -98,7 +97,7 @@ export default connect(mapStateToProps)(reduxForm({
 					}
 					<Grid item xs={6} className={classes.btnContainer}>
 						<Button
-							disabled={pristine}
+							disabled={pristine || !valid}
 							variant="contained"
 							color="primary"
 							type="submit"
@@ -119,8 +118,4 @@ export default connect(mapStateToProps)(reduxForm({
 				pristine: PropTypes.bool.isRequired
 			}
 		};
-	}));
-
-function mapStateToProps(state) {
-	return {pristine: isPristine('contactForm')(state)};
-}
+	});

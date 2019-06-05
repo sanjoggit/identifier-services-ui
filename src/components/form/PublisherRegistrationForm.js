@@ -32,7 +32,7 @@ import {connect} from 'react-redux';
 import {Field, FieldArray, reduxForm} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepLabel} from '@material-ui/core';
 import PropTypes from 'prop-types';
-// Import {validate} from '@natlibfi/identifier-services-commons';
+import {validate} from '@natlibfi/identifier-services-commons';
 
 import renderTextField from './render/renderTextField';
 import renderAliases from './render/renderAliases';
@@ -260,83 +260,4 @@ function fieldArrayElement(array, clearFields) {
 			props={{clearFields, array}}
 		/>
 	);
-}
-
-export function validate(values) {
-	const errors = {};
-	if (!values.name) {
-		errors.name = 'Name is Required!!';
-	} else if (!/^[a-zA-Z\s]{3,20}$/i.test(values.name)) {
-		errors.name = 'Name should contains only 3-20 alphabets';
-	}
-
-	if (!values.publisherEmail) {
-		errors.publisherEmail = 'Publisher\'s Email is required';
-	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.publisherEmail)) {
-		errors.publisherEmail = 'Invalid e-mail address';
-	}
-
-	if (!values.publicationEstimate) {
-		errors.publicationEstimate = 'This Field cannot be left empty!!';
-	} else if (!/[0-9]/i.test(values.publicationEstimate)) {
-		errors.publicationEstimate = 'Numbers only!!!';
-	}
-
-	if (!values.website) {
-		errors.website = 'The Field cannot be left empty';
-	}
-
-	if (!values.aliases || !values.aliases.length) {
-		errors.aliases = {_error: 'At least one member must be enter'};
-	}
-
-	// If (!values.contactDetails || !values.contactDetails.length) {
-	// 	errors.contactDetails = {_error: 'At least one member must be enter'};
-	// }
-	if (values.contactDetails && values.contactDetails.length > 0) {
-		// ValidateContact();
-	} else {
-		validateContact();
-		errors.contactDetails = {_error: 'At least one member must be enter'};
-	}
-
-	function validateContact() {
-		if (!values.givenName) {
-			errors.givenName = 'Required';
-		} else if (!/^[a-zA-Z]{3,20}$/i.test(values.givenName)) {
-			errors.givenName = '3-20 Alphabets Only';
-		}
-
-		if (!values.familyName) {
-			errors.familyName = 'Required';
-		} else if (!/^[a-zA-Z]{3,20}$/i.test(values.familyName)) {
-			errors.familyName = '3-20 Alphabets Only';
-		}
-
-		if (!values.email) {
-			errors.email = 'Required';
-		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-			errors.email = 'Invalid e-mail address';
-		}
-	}
-
-	if (!values.streetAddress) {
-		errors.streetAddress = 'Required';
-	} else if (!/\w{2,}/i.test(values.streetAddress)) {
-		errors.streetAddress = 'Value must be between more than 2 characters';
-	}
-
-	if (!values.city) {
-		errors.city = 'Please specify a city';
-	} else if (!/\w{2,}/i.test(values.city)) {
-		errors.city = 'Value must be between more than 2 characters';
-	}
-
-	if (!values.zip) {
-		errors.zip = 'Zip code cannot be empty';
-	} else if (!/^\d{3,}$/i.test(values.zip)) {
-		errors.zip = 'Value must be numbers';
-	}
-
-	return errors;
 }
