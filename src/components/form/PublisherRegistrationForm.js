@@ -245,7 +245,6 @@ function element(array, classes, clearFields) {
 						label={list.label}
 						name={list.name}
 						type={list.type}
-
 					/>
 				</Grid>))
 	);
