@@ -32,8 +32,8 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles({
 	errors: {
 		position: 'absolute',
-        padding: 0,
-        right: 0
+		padding: 0,
+		right: 0
 	}
 
 });

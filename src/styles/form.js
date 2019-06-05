@@ -30,6 +30,8 @@ import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
 	container: {
+		width: '80vw',
+		maxWidth: 1200,
 		margin: '40px 0px 40px 0px',
 		flexGrow: 1
 	},
@@ -47,6 +49,10 @@ const useStyles = makeStyles({
 		height: '60px',
 		width: '-webkit-fill-available'
 	},
+	arrayString: {
+		height: '60px',
+		width: '90%'
+	},
 	full: {
 		flexDirection: 'column'
 	},
@@ -59,6 +65,9 @@ const useStyles = makeStyles({
 	},
 	stepLabel: {
 		textTransform: 'capitalize'
+	},
+	loginForm: {
+		width: '30vw',
 	}
 });
 

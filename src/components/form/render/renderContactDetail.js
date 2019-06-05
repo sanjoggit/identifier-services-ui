@@ -27,40 +27,79 @@
  */
 
 import React from 'react';
-import {Grid, Fab} from '@material-ui/core';
-import {Field} from 'redux-form';
-import renderTextField from './renderTextField';
+import {Grid, Fab, Chip} from '@material-ui/core';
+import {Field, getFormValues} from 'redux-form';
 import {PropTypes} from 'prop-types';
+import {connect} from 'react-redux';
+import AddIcon from '@material-ui/icons/Add';
+
+import renderTextField from './renderTextField';
 import useStyles from '../../../styles/form';
 
-export default function ({fields, contactDetails, meta}) {
+export default connect(state => ({
+	values: getFormValues('publisherRegistrationForm')(state)
+
+}))(props => {
+	const [errors, setErrors] = React.useState();
+	const {fields, array: {contactDetails}, clearFields, meta: {touched, error}, values} = props;
+
+	const contactDetail = values && {
+		givenName: values.givenName,
+		familyName: values.familyName,
+		email: values.email
+	};
+	const handleContactClick = () => {
+		setErrors();
+		if (values) {
+			if (contactDetail && (contactDetail.email !== undefined || contactDetail.givenName !== undefined)) {
+				if (values.contactDetails) {
+					if (values.contactDetails.some(item => item.email === contactDetail.email)) {
+						setErrors('already exist');
+					} else if (contactDetail.email !== undefined && contactDetail.familyName !== undefined && contactDetail.givenName !== undefined) {
+						fields.push(contactDetail);
+						clearFields(undefined, false, false, 'givenName', 'familyName', 'email');
+					}
+				} else if (contactDetail.email !== undefined && contactDetail.familyName !== undefined && contactDetail.givenName !== undefined) {
+					fields.push(contactDetail);
+					clearFields(undefined, false, false, 'givenName', 'familyName', 'email');
+				}
+			}
+		}
+	};
+
 	const classes = useStyles();
-	if (fields.getAll() === undefined) {
-		fields.push({});
-	}
 
 	const component = (
 		<>
-			{fields.map(field => contactDetails.map(list =>
+			{contactDetails.map(list =>
 				(
 					<Grid key={list.name} item xs={12}>
 						<Field
 							className={`${classes.textField} ${list.width}`}
 							component={renderTextField}
 							label={list.label}
-							name={field ? `${field}.${list.name}` : list.name}
+							name={list.name}
 							type={list.type}
+							props={{errors}}
 						/>
 					</Grid>
-				)))}
-			{meta.touched && meta.error && <span>{meta.error}</span>}
+				))}
+			{touched && error && <span>{error}</span>}
+			{values && values.contactDetails && values.contactDetails.map((item, index) => (
+				<Chip
+					key={item.email}
+					label={`${item.givenName}${item.familyName}`}
+					onDelete={() => fields.remove(index)}
+				/>
+			))}
 			<Fab
-				variant="extended"
-				size="medium"
+				aria-label="Add"
 				color="primary"
-				onClick={() => fields.push({})}
+				title="Add more Contact Detail"
+				disabled={touched && Boolean(error)}
+				onClick={handleContactClick}
 			>
-                Add More Contact Details
+				<AddIcon/>
 			</Fab>
 		</>
 	);
@@ -76,5 +115,5 @@ export default function ({fields, contactDetails, meta}) {
 			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
 		}
 	};
-}
+});
 

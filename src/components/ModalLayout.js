@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable no-unused-expressions */
 /**
  *
@@ -27,7 +28,7 @@
  *
  */
 import React, {useState} from 'react';
-import {Modal, Typography, Button, Grid, Chip} from '@material-ui/core';
+import {Modal, Typography, Button, Grid} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import {PropTypes} from 'prop-types';
@@ -35,7 +36,7 @@ import {PropTypes} from 'prop-types';
 import useStyles from '../styles/modalLayout';
 
 export default function (props) {
-	const {label, name, children} = props;
+	const {label, name, children, button} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 
@@ -49,14 +50,20 @@ export default function (props) {
 
 	const component = (
 		<>
-			<Grid item>
-				<Button variant="outlined" color="primary" className={classes.button} onClick={handleOpen}>
+			{button !== false ?
+				<Grid item>
+					<Button variant="outlined" color="primary" className={classes.button} onClick={handleOpen}>
+						{label}
+					</Button>
+				</Grid> :
+				<span variant="outlined" color="primary" onClick={handleOpen}>
 					{label}
-				</Button>
-			</Grid>
+				</span>
+			}
 
 			<Modal
 				disableRestoreFocus
+				className={classes.container}
 				aria-labelledby={`modal-${name}`}
 				aria-describedby="modal-description"
 				open={open}

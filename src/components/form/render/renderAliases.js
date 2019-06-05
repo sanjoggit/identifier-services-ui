@@ -26,43 +26,73 @@
  *
  */
 import React from 'react';
-import {Field} from 'redux-form';
-import {Button, Grid, IconButton} from '@material-ui/core';
+import {Field, getFormValues} from 'redux-form';
+import {Fab, Grid, Chip} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
-import ClearIcon from '@material-ui/icons/Clear';
+import {connect} from 'react-redux';
+
 import renderTextField from './renderTextField';
 
-export default function ({fields, meta: {touched, error}}) {
+export default connect(state => ({
+	values: getFormValues('publisherRegistrationForm')(state)
+
+}))(props => {
+	const [errors, setErrors] = React.useState();
+	const {fields, values, className, clearFields} = props;
+
+	const handleAliasesClick = () => {
+		setErrors();
+		if (values) {
+			if (values.alias) {
+				if (values.aliases) {
+					if (values.aliases.includes(values.alias)) {
+						setErrors('Alias already exist');
+					} else {
+						fields.push(values.alias);
+						clearFields(undefined, false, false, 'alias');
+					}
+				} else {
+					fields.push(values.alias);
+					clearFields(undefined, false, false, 'alias');
+				}
+			} else {
+				setErrors('Required');
+			}
+		} else {
+			setErrors('Required');
+		}
+	};
+
 	const component = (
 		<>
 			<Grid>
-				{fields.map((item, index) => (
-					<Grid key={index} item xs={6}>
-						<Field
-							name={item}
-							type="text"
-							component={renderTextField}
-							label={`Aliases ${index + 1}`}
-						/>
-						<IconButton aria-label="Delete" onClick={() => fields.remove(index)}>
-							<ClearIcon/>
-						</IconButton>
-					</Grid>
-				))}
+				<Grid item xs={6}>
+					<Field
+						className={className}
+						name="alias"
+						type="text"
+						component={renderTextField}
+						label="Aliases"
+						props={{errors}}
+					/>
+					<Fab
+						color="primary"
+						aria-label="Add"
+						size="small"
+						onClick={handleAliasesClick}
+					>
+						<AddIcon/>
+					</Fab>
+				</Grid>
 			</Grid>
-			{touched && error && <span>{error}</span>}
-			<Button
-				variant="outlined"
-				size="medium"
-				color="primary"
-				aria-label="Add"
-				style={{marginTop: '10px'}}
-				onClick={() => fields.push()}
-			>
-				<AddIcon/>
-				Add Aliases
-			</Button>
+			{values && values.aliases && values.aliases.map((item, index) => (
+				<Chip
+					key={item}
+					label={item}
+					onDelete={() => fields.remove(index)}
+				/>
+			))}
 		</>
 	);
 
@@ -76,4 +106,4 @@ export default function ({fields, meta: {touched, error}}) {
 			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
 		}
 	};
-}
+});

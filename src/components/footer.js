@@ -26,41 +26,26 @@
  *
  */
 
-import {makeStyles} from '@material-ui/core/styles';
+import React from 'react';
+import {Grid, Box} from '@material-ui/core';
+import useStyles from '../styles/footer';
 
-const useStyles = makeStyles({
-	container: {
-		display: 'grid'
-	},
-	main: {
-		maxWidth: 'fit-content',
-		height: 'fit-content',
-		position: 'relative',
-		margin: '0px auto',
-		padding: 20,
-		borderRadius: 5,
-		backgroundColor: '#fff',
-		outline: 'none'
-	},
-	button: {
-		marginBottom: '20px',
-		'&:hover': {
-			background: '#00224f',
-			color: 'white'
-		}
-	},
-	closeButton: {
-		'& span': {
-			width: '30px',
-			height: '30px',
-			fontSize: '1rem',
-			borderRadius: '50%'
-		},
-		position: 'absolute',
-		cursor: 'pointer',
-		right: 0,
-		top: 0
-	}
-});
+export default function () {
+	const classes = useStyles();
+	return (
+		<Grid container className={classes.footer}>
+			<Grid item xs={12} className={classes.footerContainer}>
+				<Box component="span">
+                        The National Library of Finland <br/> P.O.Box 15(Unioninkatu 36) <br/> 00014 University of Helsinki
+				</Box>
+				<Box component="span">
+                        Telephone: <br/> +358294123196
+				</Box>
+				<Box component="span">
+                        &copy;University of Helsinki 2019
+				</Box>
+			</Grid>
+		</Grid>
+	);
+}
 
-export default useStyles;

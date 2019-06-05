@@ -26,10 +26,10 @@
  *
  */
 import {combineReducers} from 'redux';
-import {reducer as formReducer} from 'redux-form';
+import {reducer as forms} from 'redux-form';
 
 const allReducers = combineReducers({
-	form: formReducer
+	form: forms
 });
 
 export default allReducers;

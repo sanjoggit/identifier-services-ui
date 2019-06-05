@@ -40,9 +40,6 @@ const useStyles = makeStyles({
 		justifyContent: 'center',
 		alignItems: 'center',
 		margin: '0'
-	},
-	button: {
-		marginBottom: '20px'
 	}
 
 });
