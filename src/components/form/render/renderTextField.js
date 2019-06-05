@@ -32,7 +32,8 @@ import ErrorIcons from '@material-ui/icons/ErrorOutline';
 
 import useStyles from '../../../styles/error';
 
-export default function ({input, label, className, meta}) {
+export default function (props) {
+	const {input, label, className, meta, errors} = props;
 	const {touched, error} = meta;
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const classes = useStyles();
@@ -45,11 +46,16 @@ export default function ({input, label, className, meta}) {
 				error={touched && Boolean(error)}
 				InputProps={{
 					endAdornment:
-	<InputAdornment position="end">
-		{touched && (error &&
-		<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
-		)}
-	</InputAdornment>
+						<InputAdornment position="end">
+							<>
+								{touched && (error &&
+								<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
+								)}
+								{touched && (errors &&
+								<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{errors}</Typography>
+								)}
+							</>
+						</InputAdornment>
 				}}
 			/>
 

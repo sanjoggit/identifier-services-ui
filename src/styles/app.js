@@ -25,14 +25,25 @@
  * for the JavaScript code in this file.
  *
  */
+import {createMuiTheme} from '@material-ui/core';
 
-const styles = theme => ({
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#00224f'
+		}
+	},
+	typography: {
+		fontFamily: 'Poppins'
+	},
+	overrides: {
+		MuiChip: {
+			root: {
+				marginRight: '5px'
 
-	mainLayout: {
-		width: '1200px',
-		margin: '0 auto',
-		color: 'red'
+			}
+		}
 	}
 });
 
-export default styles;
+export default theme;

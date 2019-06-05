@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable no-negated-condition */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,41 +28,20 @@
  *
  */
 
-import {makeStyles} from '@material-ui/core/styles';
+import React from 'react';
+import PersonIcon from '@material-ui/icons/Person';
+import ModalLayout from './ModalLayout';
+import LoginForm from './form/LoginForm';
+import useStyles from '../styles/modalLayout';
 
-const useStyles = makeStyles({
-	container: {
-		display: 'grid'
-	},
-	main: {
-		maxWidth: 'fit-content',
-		height: 'fit-content',
-		position: 'relative',
-		margin: '0px auto',
-		padding: 20,
-		borderRadius: 5,
-		backgroundColor: '#fff',
-		outline: 'none'
-	},
-	button: {
-		marginBottom: '20px',
-		'&:hover': {
-			background: '#00224f',
-			color: 'white'
-		}
-	},
-	closeButton: {
-		'& span': {
-			width: '30px',
-			height: '30px',
-			fontSize: '1rem',
-			borderRadius: '50%'
-		},
-		position: 'absolute',
-		cursor: 'pointer',
-		right: 0,
-		top: 0
-	}
-});
-
-export default useStyles;
+export default function ({label, name}) {
+	const classes = useStyles();
+	const component = (
+		<ModalLayout label={label} name={name} button={false}>
+			<LoginForm/>
+		</ModalLayout>
+	);
+	return {
+		...component
+	};
+}

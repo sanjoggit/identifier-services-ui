@@ -27,8 +27,7 @@
  */
 
 import React from 'react';
-import {createMuiTheme} from '@material-ui/core';
-import TopNav from './components/navbar/topNav/index';
+import TopNav from './components/navbar/topNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Banner from './components/main/banner';
 import FormList from './components/main/formList';
@@ -37,17 +36,7 @@ import Issn from './components/main/issn';
 import Footer from './components/footer';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import SearchComponent from './components/main/searchComponent';
-
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: '#00224f'
-		}
-	},
-	typography: {
-		fontFamily: 'Poppins'
-	}
-});
+import theme from './styles/app';
 
 const App = () => {
 	return (

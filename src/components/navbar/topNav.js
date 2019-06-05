@@ -25,27 +25,19 @@
  * for the JavaScript code in this file.
  *
  */
-import React, {useState} from 'react';
-import {AppBar, Toolbar, Typography, Grid, Select, FormControl, NativeSelect, Button, Menu, MenuItem} from '@material-ui/core';
-import useStyles from '../../styles/topNav';
-import Logo from '../../../assets/logo/logo.png';
+import React from 'react';
+import {AppBar, Toolbar, Typography, Grid, Button, Menu, MenuItem} from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
+import useStyles from '../../styles/topNav';
+import Logo from '../../assets/logo/logo.png';
+import Login from '../Login';
+
 export default function () {
-	const [state, setState] = useState({
-		lang: 'EN'
-	});
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const classes = useStyles();
-
-	const handleChange = e => {
-		setState({
-			...state,
-			lang: e.target.value
-		});
-	};
 
 	function handleClick(event) {
 		setAnchorEl(event.currentTarget);
@@ -54,8 +46,6 @@ export default function () {
 	function handleClose() {
 		setAnchorEl(null);
 	}
-
-	const val = [{value: 'EN', label: 'English'}, {value: 'FI', label: 'Suomi'}, {value: 'SV', label: 'Swedish'}];
 
 	return (
 		<Grid container className={classes.topBarContainer}>
@@ -74,21 +64,9 @@ export default function () {
 								<PersonIcon className={classes.personIcon}/>
 							</Button>
 							<Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-								<MenuItem onClick={handleClose}>Login</MenuItem>
+								<MenuItem><Login label="Login" name="login"/></MenuItem>
 							</Menu>
 							<LanguageIcon/>
-							{/* <FormControl className={classes.formControl}>
-								<NativeSelect
-									value={state.lang}
-									className={classes.selectEmpty}
-									onChange={handleChange}
-								>
-									<option>{state.lang}</option>
-									{val.map(item => (
-										<option key={item.value} value={item.value}>{item.label}</option>
-									))}
-								</NativeSelect>
-							</FormControl> */}
 							<span className={classes.languageSelect}>EN</span>
 							<ArrowDropDown/>
 						</div>
