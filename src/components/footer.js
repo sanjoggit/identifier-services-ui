@@ -28,7 +28,7 @@
 
 import React from 'react';
 import {Grid, Box} from '@material-ui/core';
-import useStyles from '../../styles/footer';
+import useStyles from '../styles/footer';
 
 export default function () {
 	const classes = useStyles();
