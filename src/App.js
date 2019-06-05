@@ -27,7 +27,6 @@
  */
 
 import React from 'react';
-import {createMuiTheme} from '@material-ui/core';
 import TopNav from './components/navbar/topNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Banner from './components/main/banner';
@@ -37,20 +36,7 @@ import Issn from './components/main/issn';
 import Footer from './components/footer';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import SearchComponent from './components/main/searchComponent';
-
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: '#00224f'
-		}
-	},
-	typography: {
-		fontFamily: 'Poppins'
-	},
-	muiChip: {
-		color: 'red'
-	}
-});
+import theme from './styles/app';
 
 const App = () => {
 	return (

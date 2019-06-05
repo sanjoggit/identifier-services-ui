@@ -41,7 +41,11 @@ const useStyles = makeStyles({
 		outline: 'none'
 	},
 	button: {
-		marginBottom: '20px'
+		marginBottom: '20px',
+		'&:hover': {
+			background: '#00224f',
+			color: 'white'
+		}
 	},
 	closeButton: {
 		'& span': {
