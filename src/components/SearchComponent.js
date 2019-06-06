@@ -27,25 +27,29 @@
  */
 
 import React from 'react';
-import {Grid, Box} from '@material-ui/core';
-import useStyles from '../../styles/footer';
+import {TextField, InputAdornment} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import useStyles from '../styles/searchComponent';
 
 export default function () {
 	const classes = useStyles();
+
 	return (
-		<Grid container className={classes.footer}>
-			<Grid item xs={12} className={classes.footerContainer}>
-				<Box component="span">
-                        The National Library of Finland <br/> P.O.Box 15(Unioninkatu 36) <br/> 00014 University of Helsinki
-				</Box>
-				<Box component="span">
-                        Telephone: <br/> +358294123196
-				</Box>
-				<Box component="span">
-                        &copy;University of Helsinki <br/> 2019
-				</Box>
-			</Grid>
-		</Grid>
+		<form>
+			<TextField
+				id="outlined-bare"
+				placeholder="Search..."
+				margin="normal"
+				variant="outlined"
+				InputProps={{
+					endAdornment: (
+						<InputAdornment position="end">
+							<SearchIcon/>
+						</InputAdornment>
+					)
+				}}
+				className={classes.searchBox}
+			/>
+		</form>
 	);
 }
-
