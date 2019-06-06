@@ -26,31 +26,14 @@
  *
  */
 
-import React from 'react';
-import TopNav from './components/navbar/topNav';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import {HashRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
+import {makeStyles} from '@material-ui/core/styles';
 
-import {MuiThemeProvider} from '@material-ui/core/styles';
-import Home from './components/main';
-import Publisher from './components/publishers';
-import Footer from './components/footer';
-import theme from './styles/app';
+const useStyles = makeStyles({
+	publisherListSearch: {
+        maxWidth: '1200px',
+        margin: '0 auto',
+        paddingTop: '20px'
+    }
+});
 
-const App = () => {
-	return (
-		<Router>
-			<MuiThemeProvider theme={theme}>
-				<TopNav/>
-				<CssBaseline/>
-				<Switch>
-					<Route exact path="/" component={Home}/>
-					<Route exact path="/publishers" component={Publisher}/>
-				</Switch>
-				<Footer/>
-			</MuiThemeProvider>
-		</Router>
-	);
-};
-
-export default App;
+export default useStyles;

@@ -27,30 +27,29 @@
  */
 
 import React from 'react';
-import TopNav from './components/navbar/topNav';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import {HashRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
+import {TextField, InputAdornment} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import useStyles from '../styles/searchComponent';
 
-import {MuiThemeProvider} from '@material-ui/core/styles';
-import Home from './components/main';
-import Publisher from './components/publishers';
-import Footer from './components/footer';
-import theme from './styles/app';
+export default function () {
+	const classes = useStyles();
 
-const App = () => {
 	return (
-		<Router>
-			<MuiThemeProvider theme={theme}>
-				<TopNav/>
-				<CssBaseline/>
-				<Switch>
-					<Route exact path="/" component={Home}/>
-					<Route exact path="/publishers" component={Publisher}/>
-				</Switch>
-				<Footer/>
-			</MuiThemeProvider>
-		</Router>
+		<form>
+			<TextField
+				id="outlined-bare"
+				placeholder="Search..."
+				margin="normal"
+				variant="outlined"
+				InputProps={{
+					endAdornment: (
+						<InputAdornment position="end">
+							<SearchIcon/>
+						</InputAdornment>
+					)
+				}}
+				className={classes.searchBox}
+			/>
+		</form>
 	);
-};
-
-export default App;
+}
