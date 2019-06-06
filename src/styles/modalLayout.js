@@ -41,7 +41,10 @@ const useStyles = makeStyles({
 		padding: 20,
 		borderRadius: 5,
 		backgroundColor: '#fff',
-		outline: 'none'
+		outline: 'none',
+		'& h5': {
+			textTransform: 'uppercase'
+		}
 	},
 	closeButton: {
 		'& span': {

@@ -78,6 +78,7 @@ export default reduxForm({
 					color="primary"
 					variant="contained"
 					type="submit"
+					size="small"
 					disabled={pristine || !valid}
 				>
 					Submit

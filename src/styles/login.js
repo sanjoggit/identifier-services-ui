@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 	hakaLogo: {
 		height: 300,
 		display: 'grid',
-		gridTemplateRows: '80% 20%',
+		gridTemplateRows: '8fr 2fr',
 		'& img': {
 			width: '100%',
 			alignSelf: 'center'
@@ -47,12 +47,15 @@ const useStyles = makeStyles({
 		padding: '5px 20px',
 		background: '#00224F20',
 		'& p': {
-			fontSize: '0.75rem'
+			fontSize: '0.75rem',
+			'& a': {
+				fontWeight: 700
+			}
 		}
 	},
 	loginForm: {
 		display: 'grid',
-		gridTemplateRows: '90% 10%',
+		gridTemplateRows: '9fr 1fr',
 		maxWidth: 700,
 		maxHeight: 400,
 		margin: '40px 0px 0px'

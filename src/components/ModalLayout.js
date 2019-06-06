@@ -52,7 +52,7 @@ export default function (props) {
 	const component = (
 		<>
 			<Grid item>
-				<Button variant={variant} color={color} className={classed} onClick={handleOpen}>
+				<Button variant={variant} color={color} className={classed} size="small" onClick={handleOpen}>
 					{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
 					{label}
 				</Button>
@@ -69,7 +69,7 @@ export default function (props) {
 					<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
 						<CloseIcon/>
 					</IconButton>
-					<Typography variant="h4" id={`modal-${name}`}>
+					<Typography variant="h5" id={`modal-${name}`}>
 						{label}
 					</Typography>
 					{children}
