@@ -26,27 +26,16 @@
  *
  */
 import React from 'react';
-import {AppBar, Toolbar, Typography, Grid, Button, Menu, MenuItem} from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
+import {AppBar, Toolbar, Typography, Grid} from '@material-ui/core';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
 import useStyles from '../../styles/topNav';
 import Logo from '../../assets/logo/logo.png';
-import Login from '../Login';
+import Login from '../login/Login';
 
 export default function () {
-	const [anchorEl, setAnchorEl] = React.useState(null);
 	const classes = useStyles();
-
-	function handleClick(event) {
-		setAnchorEl(event.currentTarget);
-	}
-
-	function handleClose() {
-		setAnchorEl(null);
-	}
-
 	return (
 		<Grid container className={classes.topBarContainer}>
 			<Grid item xs={12} className={classes.topBar}>
@@ -56,16 +45,7 @@ export default function () {
 							<img src={Logo} alt="" className={classes.mainLogo}/>
 						</Typography>
 						<div className={classes.rightMenu}>
-							<Button
-								aria-owns={anchorEl ? 'simple-menu' : undefined}
-								aria-haspopup="true"
-								onClick={handleClick}
-							>
-								<PersonIcon className={classes.personIcon}/>
-							</Button>
-							<Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-								<MenuItem><Login label="Login" name="login"/></MenuItem>
-							</Menu>
+							<Login name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton}/>
 							<LanguageIcon/>
 							<span className={classes.languageSelect}>EN</span>
 							<ArrowDropDown/>

@@ -29,42 +29,40 @@
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-	container: {
-		width: '80vw',
-		maxWidth: 1200,
-		margin: '40px 0px 40px 0px',
-		flexGrow: 1
+	main: {
+		maxWidth: 400
 	},
-	subContainer: {
-		flexGrow: 1,
-		padding: '0 10px'
+	hakaLogo: {
+		height: 300,
+		display: 'grid',
+		gridTemplateRows: '80% 20%',
+		'& img': {
+			width: '100%',
+			alignSelf: 'center'
+		}
+
 	},
-	btnContainer: {
-		marginTop: 35,
-		'& button': {
-			margin: '0 5px'
+	notes: {
+		margin: '10px -20px -20px',
+		padding: '5px 20px',
+		background: '#00224F20',
+		'& p': {
+			fontSize: '0.75rem'
 		}
 	},
-	textField: {
-		height: '60px',
-		width: '-webkit-fill-available'
+	loginForm: {
+		display: 'grid',
+		gridTemplateRows: '90% 10%',
+		maxWidth: 700,
+		maxHeight: 400,
+		margin: '40px 0px 0px'
 	},
-	arrayString: {
-		height: '60px',
-		width: '90%'
+	inputGap: {
+		marginBottom: 20
 	},
-	full: {
-		flexDirection: 'column'
-	},
-	half: {
-		flexDirection: 'row'
-	},
-	textArea: {
-		height: '180px',
-		width: '-webkit-fill-available'
-	},
-	stepLabel: {
-		textTransform: 'capitalize'
+	personIcon: {
+		height: 30,
+		width: 30
 	}
 });
 

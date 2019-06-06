@@ -30,7 +30,8 @@ import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
 	container: {
-		display: 'grid'
+		display: 'grid',
+		alignItems: 'center'
 	},
 	main: {
 		maxWidth: 'fit-content',
@@ -41,13 +42,6 @@ const useStyles = makeStyles({
 		borderRadius: 5,
 		backgroundColor: '#fff',
 		outline: 'none'
-	},
-	button: {
-		marginBottom: '20px',
-		'&:hover': {
-			background: '#00224f',
-			color: 'white'
-		}
 	},
 	closeButton: {
 		'& span': {
@@ -60,6 +54,12 @@ const useStyles = makeStyles({
 		cursor: 'pointer',
 		right: 0,
 		top: 0
+	},
+	personIcon: {
+		height: 30,
+		width: 30,
+		paddingRight: '10px',
+		cursor: 'pointer'
 	}
 });
 

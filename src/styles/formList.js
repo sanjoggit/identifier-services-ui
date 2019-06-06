@@ -40,6 +40,14 @@ const useStyles = makeStyles({
 		justifyContent: 'center',
 		alignItems: 'center',
 		margin: '0'
+	},
+	button: {
+		marginBottom: '20px',
+		fontSize: '0.87rem',
+		'&:hover': {
+			background: '#00224f',
+			color: 'white'
+		}
 	}
 
 });

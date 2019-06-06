@@ -29,29 +29,23 @@
  */
 
 import React from 'react';
-import {validate} from '@natlibfi/identifier-services-commons';
-import { mergeClasses } from '@material-ui/styles';
+import {Typography, Link} from '@material-ui/core';
+import useStyles from '../../styles/login';
 
-import {Field, reduxForm} from 'redux-form';
-import renderTextField from './render/renderTextField';
-import useStyles from '../../styles/form';
-
-export default reduxForm({
-	form: 'login', validate})(() => {
-
+export default function () {
 	const classes = useStyles();
-	
-	const component = (
-		<form className={classes.loginForm}>
-            <Field
-                name="userName"
-                label = "UserName"
-                component = {renderTextField}
-            />
-        </form>
+	const container = (
+		<div className={classes.hakaLogo}>
+			<img src="/src/assets/logo/Haka_login_vaaka.svg"/>
+			<div className={classes.notes}>
+				<Typography>When you log in using Haka, the service will store your user id, name and email address. Read more about management of personal information on the
+					<Link> Data protection page.</Link>
+				</Typography>
+			</div>
+		</div>
 	);
+
 	return {
-		...component
+		...container
 	};
 }
-);

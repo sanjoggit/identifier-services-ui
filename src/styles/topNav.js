@@ -48,24 +48,20 @@ const useStyles = makeStyles({
 		width: '75px',
 		paddingTop: '8px'
 	},
-	personIcon: {
-		height: '45px',
-		width: '45px',
-		paddingRight: '10px'
-	},
 	rightMenu: {
 		display: 'flex',
 		alignItems: 'center',
-		'& button': {
-			color: 'white'
-		}
+		color: 'white'
 	},
 	languageSelect: {
 		fontSize: '20px',
 		paddingLeft: '5px'
 	},
-	menu:{
-		
+	loginButton: {
+		marginRight: 10,
+		padding: '0 10px',
+		background: '#00224f',
+		color: 'white'
 	}
 });
 

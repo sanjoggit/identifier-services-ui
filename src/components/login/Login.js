@@ -29,19 +29,51 @@
  */
 
 import React from 'react';
-import PersonIcon from '@material-ui/icons/Person';
-import ModalLayout from './ModalLayout';
-import LoginForm from './form/LoginForm';
-import useStyles from '../styles/modalLayout';
+import {Typography, Tabs, Tab} from '@material-ui/core';
 
-export default function ({label, name}) {
+import ModalLayout from '../ModalLayout';
+import LoginForm from './LoginForm';
+import HakaLogin from './HakaLogin';
+import useStyles from '../../styles/login';
+
+export default function (props) {
+	const [value, setValue] = React.useState(0);
 	const classes = useStyles();
 	const component = (
-		<ModalLayout label={label} name={name} button={false}>
-			<LoginForm/>
+		<ModalLayout icon {...props}>
+			<div className={classes.main}>
+				<div>
+					<Tabs
+						value={value}
+						variant="scrollable"
+						scrollButtons="on"
+						indicatorColor="primary"
+						textColor="primary"
+						onChange={handleChange}
+					>
+						<Tab label="Normal Login"/>
+						<Tab label="HAKA Login"/>
+					</Tabs>
+					{value === 0 && <TabContainer><LoginForm/></TabContainer>}
+					{value === 1 && <TabContainer><HakaLogin/></TabContainer>}
+				</div>
+			</div>
 		</ModalLayout>
 	);
+
+	function handleChange(event, newValue) {
+		setValue(newValue);
+	}
+
 	return {
 		...component
 	};
+}
+
+function TabContainer(props) {
+	return (
+		<Typography component="div">
+			{props.children}
+		</Typography>
+	);
 }

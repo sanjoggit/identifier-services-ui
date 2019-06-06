@@ -31,12 +31,13 @@ import React, {useState} from 'react';
 import {Modal, Typography, Button, Grid} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import PersonIcon from '@material-ui/icons/Person';
 import {PropTypes} from 'prop-types';
 
 import useStyles from '../styles/modalLayout';
 
 export default function (props) {
-	const {label, name, children, button} = props;
+	const {label, name, children, icon, variant, color, classed} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 
@@ -50,16 +51,12 @@ export default function (props) {
 
 	const component = (
 		<>
-			{button !== false ?
-				<Grid item>
-					<Button variant="outlined" color="primary" className={classes.button} onClick={handleOpen}>
-						{label}
-					</Button>
-				</Grid> :
-				<span variant="outlined" color="primary" onClick={handleOpen}>
+			<Grid item>
+				<Button variant={variant} color={color} className={classed} onClick={handleOpen}>
+					{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
 					{label}
-				</span>
-			}
+				</Button>
+			</Grid>
 
 			<Modal
 				disableRestoreFocus

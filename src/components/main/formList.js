@@ -52,7 +52,7 @@ export default function () {
 				</Grid>
 
 				{formListsArray.map(item => (
-					<ModalLayout key={item.label} label={item.label} name={item.name}>
+					<ModalLayout key={item.label} label={item.label} name={item.name} variant="outlined" classed={classes.button} color="primary">
 						{item.component}
 					</ModalLayout>
 				))}
