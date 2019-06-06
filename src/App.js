@@ -29,13 +29,10 @@
 import React from 'react';
 import TopNav from './components/navbar/topNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Banner from './components/main/banner';
-import FormList from './components/main/formList';
-import IsbnIsmn from './components/main/isbn_ismn';
-import Issn from './components/main/issn';
+
 import Footer from './components/footer';
 import {MuiThemeProvider} from '@material-ui/core/styles';
-import SearchComponent from './components/main/searchComponent';
+import Home from './components/main';
 import theme from './styles/app';
 
 const App = () => {
@@ -43,11 +40,7 @@ const App = () => {
 		<MuiThemeProvider theme={theme}>
 			<TopNav/>
 			<CssBaseline/>
-			<Banner/>
-			<SearchComponent/>
-			<FormList/>
-			<IsbnIsmn/>
-			<Issn/>
+			<Home/>
 			<Footer/>
 		</MuiThemeProvider>
 	);
