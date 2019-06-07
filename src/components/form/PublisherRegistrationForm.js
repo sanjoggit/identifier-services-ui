@@ -38,7 +38,7 @@ import renderTextField from './render/renderTextField';
 import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
 import {registerPublisher} from '../../store/actions/publisherRegistration';
-import renderContactDetail from './render/renderContactDetail';
+import renderContactDetail from './render/renderPrimaryContact';
 
 const fieldArray = [
 	{
@@ -58,25 +58,26 @@ const fieldArray = [
 			{
 				name: 'publicationEstimate',
 				type: 'number',
+				parse: true,
 				label: 'Publication Estimate',
 				width: 'half'
 			},
 			{
 				name: 'website',
-				type: 'text',
+				type: 'url',
 				label: 'Website',
 				width: 'half'
 			},
 			{
 				name: 'aliases',
-				type: 'arrayString',
+				format: 'arrayString',
 				label: 'Aliases',
 				width: 'half'
 			}
 		]
 	},
 	{
-		contactDetails: [
+		primaryContact: [
 			{
 				name: 'givenName',
 				type: 'text',
@@ -101,7 +102,7 @@ const fieldArray = [
 	{
 		address: [
 			{
-				name: 'streetAddress',
+				name: 'address',
 				type: 'text',
 				label: 'Street Address',
 				width: 'full'
@@ -114,7 +115,7 @@ const fieldArray = [
 			},
 			{
 				name: 'zip',
-				type: 'number',
+				type: 'text',
 				label: 'Zip',
 				width: 'full'
 			}
@@ -133,13 +134,14 @@ export default connect(null, {registerPublisher})(reduxForm({
 		const [activeStep, setActiveStep] = React.useState(0);
 		const steps = getSteps();
 		function getStepContent(step) {
+			const name = 'streetAddress';
 			switch (step) {
 				case 0:
 					return element(fieldArray[0].basicInformation, classes, clearFields);
 				case 1:
 					return fieldArrayElement(fieldArray[1], clearFields);
 				case 2:
-					return element(fieldArray[2].address, classes);
+					return element(fieldArray[2].address, classes, undefined, name);
 				default:
 					return 'Unknown step';
 			}
@@ -154,9 +156,17 @@ export default connect(null, {registerPublisher})(reduxForm({
 		}
 
 		const handlePublisherRegistration = values => {
+			const tmpEmail = values.publisherEmail;
+			delete values.publisherEmail;
+			
 			const newPublisher = {
-				...values
+				...values,
+				email: tmpEmail,
+				state: 'published',
+				language: 'fin',
+				metadataDelivery: 'external'
 			};
+			console.log(newPublisher);
 			registerPublisher(newPublisher);
 		};
 
@@ -214,7 +224,8 @@ function getSteps() {
 	return fieldArray.map(item => Object.keys(item));
 }
 
-function element(array, classes, clearFields) {
+function element(array, classes, clearFields, name){
+
 	return array.map(list =>
 
 		// eslint-disable-next-line no-negated-condition
@@ -223,12 +234,13 @@ function element(array, classes, clearFields) {
 				<Field
 					className={`${classes.textField} ${list.width}`}
 					component={renderTextField}
+					parse={list.parse && (value => Number(value))}
 					label={list.label}
-					name={list.name}
+					name={name ? `${name}.${list.name}` : list.name}
 					type={list.type}
 				/>
 			</Grid> :
-			((list.type === 'arrayString') ?
+			((list.format === 'arrayString') ?
 				<Grid key={list.name} item xs={12}>
 					<FieldArray
 						className={`${classes.arrayString} ${list.width}`}
@@ -242,8 +254,9 @@ function element(array, classes, clearFields) {
 					<Field
 						className={`${classes.textField} ${list.width}`}
 						component={renderTextField}
+						parse={list.parse && (value => Number(value))}
 						label={list.label}
-						name={list.name}
+						name={name ? `${name}.${list.name}` : list.name}
 						type={list.type}
 					/>
 				</Grid>))
@@ -255,7 +268,7 @@ function fieldArrayElement(array, clearFields) {
 		<FieldArray
 			component={renderContactDetail}
 			className="full"
-			name="contactDetails"
+			name="primaryContact"
 			props={{clearFields, array}}
 		/>
 	);

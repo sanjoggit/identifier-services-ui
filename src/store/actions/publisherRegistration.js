@@ -25,6 +25,16 @@
  * for the JavaScript code in this file.
  *
  */
+import fetch from 'node-fetch';
+
 export const registerPublisher = values => async dispatch => {
-	console.log('----- from action', values);	
+	console.log('----- from action', JSON.stringify(values));
+	fetch('http://localhost:8081/publishers/requests', {
+		method: 'POST',
+		body: JSON.stringify(values),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	}).then(res => res.json()).then(response => console.log(response)).catch(error => console.log('error', error)
+	);
 };

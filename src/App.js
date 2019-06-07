@@ -29,7 +29,7 @@
 import React from 'react';
 import TopNav from './components/navbar/topNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {HashRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
+import {HashRouter as Router, Switch, Route} from 'react-router-dom'
 
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import Home from './components/main';

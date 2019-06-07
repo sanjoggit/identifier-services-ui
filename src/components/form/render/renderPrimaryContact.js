@@ -41,7 +41,7 @@ export default connect(state => ({
 
 }))(props => {
 	const [errors, setErrors] = React.useState();
-	const {fields, array: {contactDetails}, clearFields, meta: {touched, error}, values} = props;
+	const {fields, array: {primaryContact}, clearFields, meta: {touched, error}, values} = props;
 
 	const contactDetail = values && {
 		givenName: values.givenName,
@@ -52,8 +52,8 @@ export default connect(state => ({
 		setErrors();
 		if (values) {
 			if (contactDetail && (contactDetail.email !== undefined || contactDetail.givenName !== undefined)) {
-				if (values.contactDetails) {
-					if (values.contactDetails.some(item => item.email === contactDetail.email)) {
+				if (values.primaryContact) {
+					if (values.primaryContact.some(item => item.email === contactDetail.email)) {
 						setErrors('already exist');
 					} else if (contactDetail.email !== undefined && contactDetail.familyName !== undefined && contactDetail.givenName !== undefined) {
 						fields.push(contactDetail);
@@ -71,7 +71,7 @@ export default connect(state => ({
 
 	const component = (
 		<>
-			{contactDetails.map(list =>
+			{primaryContact.map(list =>
 				(
 					<Grid key={list.name} item xs={12}>
 						<Field
@@ -85,7 +85,7 @@ export default connect(state => ({
 					</Grid>
 				))}
 			{touched && error && <span>{error}</span>}
-			{values && values.contactDetails && values.contactDetails.map((item, index) => (
+			{values && values.primaryContact && values.primaryContact.map((item, index) => (
 				<Chip
 					key={item.email}
 					label={`${item.givenName}${item.familyName}`}
@@ -111,7 +111,7 @@ export default connect(state => ({
 		},
 		propTypes: {
 			fields: PropTypes.arrayOf(PropTypes.shape({})),
-			contactDetails: PropTypes.arrayOf(PropTypes.shape({})),
+			primaryContact: PropTypes.arrayOf(PropTypes.shape({})),
 			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
 		}
 	};

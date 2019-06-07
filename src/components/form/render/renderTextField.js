@@ -33,7 +33,7 @@ import ErrorIcons from '@material-ui/icons/ErrorOutline';
 import useStyles from '../../../styles/error';
 
 export default function (props) {
-	const {input, label, className, meta, errors} = props;
+	const {input, label, type, className, meta, errors} = props;
 	const {touched, error} = meta;
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const classes = useStyles();
@@ -43,6 +43,7 @@ export default function (props) {
 				{...input}
 				label={label}
 				className={className}
+				type={type}
 				error={touched && Boolean(error)}
 				InputProps={{
 					endAdornment:
