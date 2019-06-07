@@ -25,39 +25,23 @@
  * for the JavaScript code in this file.
  *
  */
-import {createMuiTheme} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main: '#00224f'
-		},
-		secondary: {
-			main: '#ffffff'
-		}
-	},
-	typography: {
-		fontFamily: 'Poppins'
-	},
-	overrides: {
-		MuiChip: {
-			root: {
-				marginRight: '5px'
+import React from 'react';
+import {Route, Redirect} from 'react-router-dom';
 
-			}
-		}
-	}
-});
+export default function ({location, user, name, component: Component, ...rest}) {
+	const component = (
+		<Route
+			{...rest}
+			render={() => {
+				if (!user) {
+					return <Redirect push to={{pathname: '/login', state: {from: location}}}/>;
+				}
 
-export default theme;
-
-export const useStyles = makeStyles({
-	adminNav: {
-		minHeight: 50,
-		display: 'grid',
-		width: '70%',
-		margin: '0px auto',
-		gridTemplateColumns: '2fr 2fr 2fr 2fr 2fr'
-	}
-});
+				return <Component/>;
+			}}/>
+	);
+	return {
+		...component
+	};
+}
