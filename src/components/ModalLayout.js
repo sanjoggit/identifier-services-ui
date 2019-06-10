@@ -32,12 +32,14 @@ import {Modal, Typography, Button, Grid} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import PersonIcon from '@material-ui/icons/Person';
+import EmailIcon from '@material-ui/icons/Email';
+
 import {PropTypes} from 'prop-types';
 
 import useStyles from '../styles/modalLayout';
 
 export default function (props) {
-	const {label, name, children, icon, variant, color, classed} = props;
+	const {label, name, children, icon, fab, variant, color, classed, loggedIn} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 
@@ -51,11 +53,18 @@ export default function (props) {
 
 	const component = (
 		<>
-			<Grid item>
-				<Button variant={variant} color={color} className={classed} size="small" onClick={handleOpen}>
-					{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
-					{label}
-				</Button>
+			<Grid item style={{display: 'inherit'}}>
+				{
+					loggedIn ?
+						<PersonIcon className={classes.personIcon} onClick={handleOpen}/> :
+						fab ?
+							<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
+							<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
+								{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
+								{label}
+							</Button>
+				}
+
 			</Grid>
 
 			<Modal

@@ -30,14 +30,15 @@ import {AppBar, Toolbar, Typography, Grid} from '@material-ui/core';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import useStyles from '../../styles/topNav';
 import Logo from '../../assets/logo/logo.png';
 import Login from '../login/Login';
 
-export default function () {
+export default function (props) {
 	const classes = useStyles();
-	return (
+	const component = (
 		<Grid container className={classes.topBarContainer}>
 			<Grid item xs={12} className={classes.topBar}>
 				<AppBar position="static">
@@ -46,7 +47,7 @@ export default function () {
 							<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
 						</Typography>
 						<div className={classes.rightMenu}>
-							<Login name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton}/>
+							<Login name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
 							<LanguageIcon/>
 							<span className={classes.languageSelect}>EN</span>
 							<ArrowDropDown/>
@@ -56,4 +57,10 @@ export default function () {
 			</Grid>
 		</Grid>
 	);
+	return {
+		...component,
+		propTypes: {
+			loggedIn: PropTypes.bool.isRequired
+		}
+	};
 }

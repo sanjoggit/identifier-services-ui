@@ -1,8 +1,7 @@
 import React from 'react';
 import {Modal, Typography} from '@material-ui/core';
 
-export default function Publisher({match}) {
-    console.log('match', match.params.id)
+export default function () {
 	return (
 
 		<Modal

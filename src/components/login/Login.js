@@ -30,6 +30,7 @@
 
 import React from 'react';
 import {Typography, Tabs, Tab} from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 import ModalLayout from '../ModalLayout';
 import LoginForm from './LoginForm';
@@ -42,21 +43,24 @@ export default function (props) {
 	const component = (
 		<ModalLayout icon {...props}>
 			<div className={classes.main}>
-				<div>
-					<Tabs
-						value={value}
-						variant="scrollable"
-						scrollButtons="on"
-						indicatorColor="primary"
-						textColor="primary"
-						onChange={handleChange}
-					>
-						<Tab label="Normal Login"/>
-						<Tab label="HAKA Login"/>
-					</Tabs>
-					{value === 0 && <TabContainer><LoginForm/></TabContainer>}
-					{value === 1 && <TabContainer><HakaLogin/></TabContainer>}
-				</div>
+				{(props.loggedIn) ?
+					<div>logout</div> :
+					<div>
+						<Tabs
+							value={value}
+							variant="scrollable"
+							scrollButtons="on"
+							indicatorColor="primary"
+							textColor="primary"
+							onChange={handleChange}
+						>
+							<Tab label="Normal Login"/>
+							<Tab label="HAKA Login"/>
+						</Tabs>
+						{value === 0 && <TabContainer><LoginForm/></TabContainer>}
+						{value === 1 && <TabContainer><HakaLogin/></TabContainer>}
+					</div>
+				}
 			</div>
 		</ModalLayout>
 	);
@@ -71,9 +75,14 @@ export default function (props) {
 }
 
 function TabContainer(props) {
-	return (
+	const component = (
 		<Typography component="div">
 			{props.children}
 		</Typography>
 	);
+	return {
+		...component,
+		children: PropTypes.node.isRequired
+	};
 }
+

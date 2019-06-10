@@ -27,24 +27,24 @@
  */
 
 import React from 'react';
-import TopNav from './components/navbar/topNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {HashRouter as Router, Switch, Route, withRouter} from 'react-router-dom';
+import {Switch, Route, withRouter} from 'react-router-dom';
 
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import Home from './components/main';
-import Publishers from './components/publishers/PublisherLists';
-import Publisher from './components/publishers/Publisher';
+import TopNav from './components/navbar/topNav';
+import AdminNav from './components/navbar/adminNav';
+import Publishers from './components/publishers/Publisher';
+import PublishersList from './components/publishers/PublishersList';
 import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
-import theme, {useStyles} from './styles/app';
-import {AppBar, Button, Typography} from '@material-ui/core';
+import theme from './styles/app';
+import Tooltips from './components/Tooltips';
 
 const App = props => {
 	const {user = 'admin'} = props;
-	const classes = useStyles();
 	const routeField = [
-		{path: '/', component: Home},
+		{path: '/', component: (user === 'admin') ? PublishersList : Home},
 		{path: '/publishers', component: Publishers}
 
 	];
@@ -89,15 +89,22 @@ const App = props => {
 
 	return (
 		<MuiThemeProvider theme={theme}>
-			<TopNav/>
+			<TopNav loggedIn/>
 			<CssBaseline/>
-			{(user === 'admin') &&
-					adminNav(classes)
-			}
-			<Switch>
-				{routes}
-			</Switch>
-			{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
+			<section>
+
+				{(user === 'admin') &&
+					<>
+						<AdminNav/>
+						<Tooltips label="contact form" title="contactForm"/>
+					</>
+				}
+				<Switch>
+					{routes}
+				</Switch>
+				{isModal ? <Route path="/publishers/:id" component={Publishers}/> : null}
+
+			</section>
 			<Footer/>
 		</MuiThemeProvider>
 	);
@@ -105,17 +112,3 @@ const App = props => {
 
 export default withRouter(App);
 
-function adminNav(classes) {
-	const nav = (
-		<AppBar position="static" color="secondary">
-			<Typography className={classes.adminNav}>
-				<Button>Publishers</Button>
-				<Button>Requests</Button>
-				<Button>Users</Button>
-				<Button>Identifier Rangess</Button>
-				<Button>Message Tempaltes</Button>
-			</Typography>
-		</AppBar>
-	);
-	return nav;
-}
