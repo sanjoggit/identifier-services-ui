@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,20 +25,39 @@
  * for the JavaScript code in this file.
  *
  */
+import {createMuiTheme} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#00224f'
+		},
+		secondary: {
+			main: '#ffffff'
+		}
+	},
+	typography: {
+		fontFamily: 'Poppins'
+	},
+	overrides: {
+		MuiChip: {
+			root: {
+				marginRight: '5px'
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+			}
+		}
+	}
+});
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default theme;
+
+export const useStyles = makeStyles({
+	adminNav: {
+		minHeight: 50,
+		display: 'grid',
+		width: '70%',
+		margin: '0px auto',
+		gridTemplateColumns: '2fr 2fr 2fr 2fr 2fr'
+	}
+});

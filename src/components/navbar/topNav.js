@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,20 +25,34 @@
  * for the JavaScript code in this file.
  *
  */
-
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {AppBar, Toolbar, Typography, Grid} from '@material-ui/core';
+import LanguageIcon from '@material-ui/icons/Language';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+import useStyles from '../../styles/topNav';
+import Logo from '../../assets/logo/logo.png';
+import Login from '../login/Login';
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default function () {
+	const classes = useStyles();
+	return (
+		<Grid container className={classes.topBarContainer}>
+			<Grid item xs={12} className={classes.topBar}>
+				<AppBar position="static">
+					<Toolbar className={classes.navbarContainer}>
+						<Typography variant="h6" color="inherit">
+							<img src={Logo} alt="" className={classes.mainLogo}/>
+						</Typography>
+						<div className={classes.rightMenu}>
+							<Login name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton}/>
+							<LanguageIcon/>
+							<span className={classes.languageSelect}>EN</span>
+							<ArrowDropDown/>
+						</div>
+					</Toolbar>
+				</AppBar>
+			</Grid>
+		</Grid>
+	);
+}

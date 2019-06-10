@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,34 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {PropTypes} from 'prop-types';
+import {Input, InputLabel, NativeSelect} from '@material-ui/core';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+export default function ({label, input, meta: {touched, error}}) {
+	const component = (
+		<>
+			<InputLabel htmlFor="age-native-helper">{label}</InputLabel>
+			<NativeSelect
+				{...input}
+				error={touched && Boolean(error)}
+				input={<Input name="select" id="age-native-helper"/>}
+			>
+				<option value=""/>
+				<option value={10}>Ten</option>
+			</NativeSelect>
+		</>
+	);
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+	return {
+		...component,
+		defaultProps: {
+			meta: {},
+			input: {}
+		},
+		propTypes: {
+			input: PropTypes.shape({}),
+			label: PropTypes.string.isRequired,
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
+		}
+	};
+}

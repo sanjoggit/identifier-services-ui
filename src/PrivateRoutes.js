@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,21 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {Route, Redirect} from 'react-router-dom';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+export default function ({location, user, name, component: Component, ...rest}) {
+	const component = (
+		<Route
+			{...rest}
+			render={() => {
+				if (!user) {
+					return <Redirect push to={{pathname: '/login', state: {from: location}}}/>;
+				}
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+				return <Component/>;
+			}}/>
+	);
+	return {
+		...component
+	};
+}

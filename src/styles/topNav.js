@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -27,19 +26,43 @@
  *
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {makeStyles} from '@material-ui/core/styles';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+const useStyles = makeStyles({
+	topBarContainer: {
+		backgroundColor: '#00224f'
+	},
+	topBar: {
+		maxWidth: '1200px',
+		margin: '0 auto',
+		'&  header': {
+			boxShadow: 'none'
+		}
+	},
+	navbarContainer: {
+		display: 'flex',
+		justifyContent: 'space-between'
+	},
+	mainLogo: {
+		height: '75px',
+		width: '75px',
+		paddingTop: '8px'
+	},
+	rightMenu: {
+		display: 'flex',
+		alignItems: 'center',
+		color: 'white'
+	},
+	languageSelect: {
+		fontSize: '20px',
+		paddingLeft: '5px'
+	},
+	loginButton: {
+		marginRight: 10,
+		padding: '0 10px',
+		background: '#00224f',
+		color: 'white'
+	}
+});
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default useStyles;

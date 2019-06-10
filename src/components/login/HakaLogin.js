@@ -1,4 +1,5 @@
-/* eslint-disable no-undef */
+/* eslint-disable complexity */
+/* eslint-disable no-negated-condition */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +29,23 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {Typography, Link} from '@material-ui/core';
+import useStyles from '../../styles/login';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+export default function () {
+	const classes = useStyles();
+	const container = (
+		<div className={classes.hakaLogo}>
+			<img src="/src/assets/logo/Haka_login_vaaka.svg"/>
+			<div className={classes.notes}>
+				<Typography>When you log in using Haka, the service will store your user id, name and email address. Read more about management of personal information on the
+					<Link> Data protection page.</Link>
+				</Typography>
+			</div>
+		</div>
+	);
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+	return {
+		...container
+	};
+}

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,20 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {Container, Typography} from '@material-ui/core';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+import useStyles from '../../styles/banner';
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default function () {
+	const classes = useStyles();
+	return (
+		<div className={classes.bannerContainer}>
+			<Container className={classes.textContainer}>
+				<Typography variant="h2" align="center">Identifier Services</Typography>
+				<Typography variant="h5" align="center">
+                    ISBN identifies books, ISMN notated music publications and ISSN serial publications. In Finland, these identifiers are applied for from the Finnish ISBN and ISSN Agencies operating at the National Library of Finland. The identifiers are free of charge.
+				</Typography>
+			</Container>
+		</div>
+	);
+}

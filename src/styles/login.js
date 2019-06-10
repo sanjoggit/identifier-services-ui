@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,20 +26,47 @@
  * for the JavaScript code in this file.
  *
  */
+import {makeStyles} from '@material-ui/core/styles';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+const useStyles = makeStyles({
+	main: {
+		maxWidth: 400
+	},
+	hakaLogo: {
+		height: 300,
+		display: 'grid',
+		gridTemplateRows: '8fr 2fr',
+		'& img': {
+			width: '100%',
+			alignSelf: 'center'
+		}
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+	},
+	notes: {
+		margin: '10px -20px -20px',
+		padding: '5px 20px',
+		background: '#00224F20',
+		'& p': {
+			fontSize: '0.75rem',
+			'& a': {
+				fontWeight: 700
+			}
+		}
+	},
+	loginForm: {
+		display: 'grid',
+		gridTemplateRows: '9fr 1fr',
+		maxWidth: 700,
+		maxHeight: 400,
+		margin: '40px 0px 0px'
+	},
+	inputGap: {
+		marginBottom: 20
+	},
+	personIcon: {
+		height: 30,
+		width: 30
+	}
+});
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+export default useStyles;

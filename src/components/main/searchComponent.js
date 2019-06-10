@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,19 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {Grid, Typography} from '@material-ui/core';
+import SearchComponent from '../SearchComponent';
+import useStyles from '../../styles/searchComponent';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+export default function () {
+	const classes = useStyles();
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+	return (
+		<Grid container>
+			<Grid item xs={12} className={classes.searchContianer}>
+				<Typography variant="h4" align="center">Explore Finnish Publisher</Typography>
+				<SearchComponent/>
+			</Grid>
+		</Grid>
+	);
+}

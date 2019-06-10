@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,18 +27,29 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
+import {TextField, InputAdornment} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+import useStyles from '../styles/searchComponent';
 
-const store = createStore(
-	allReducers,
-	compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+export default function () {
+	const classes = useStyles();
 
-ReactDOM.render(
-	<Provider store={store}>
-		<App/>
-	</Provider>, document.getElementById('app'));
+	return (
+		<form>
+			<TextField
+				id="outlined-bare"
+				placeholder="Search..."
+				margin="normal"
+				variant="outlined"
+				InputProps={{
+					endAdornment: (
+						<InputAdornment position="end">
+							<SearchIcon/>
+						</InputAdornment>
+					)
+				}}
+				className={classes.searchBox}
+			/>
+		</form>
+	);
+}
