@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 		maxWidth: '1200px',
 		margin: '0 auto',
 		paddingTop: '20px',
-		minHeight: '100vh'
+		minHeight: '76vh'
 	}
 });
 

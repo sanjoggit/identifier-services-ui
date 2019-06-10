@@ -34,8 +34,7 @@ import {Provider} from 'react-redux';
 import allReducers from './store/reducers';
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
-import {HashRouter as Router} from 'react-router-dom';
-
+import {BrowserRouter as Router} from 'react-router-dom';
 
 const store = createStore(
 	allReducers,
