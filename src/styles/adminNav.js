@@ -25,43 +25,18 @@
  * for the JavaScript code in this file.
  *
  */
-
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-	container: {
-		display: 'grid',
-		alignItems: 'center'
-	},
-	main: {
-		maxWidth: 'fit-content',
-		height: 'fit-content',
-		position: 'relative',
+	adminNav: {
+		minHeight: 50,
+		display: 'flex',
+		width: '70%',
 		margin: '0px auto',
-		padding: 20,
-		borderRadius: 5,
-		backgroundColor: '#fff',
-		outline: 'none',
-		'& h5': {
-			textTransform: 'uppercase'
-		}
+		justifyContent: 'space-around'
 	},
-	closeButton: {
-		'& span': {
-			width: '30px',
-			height: '30px',
-			fontSize: '1rem',
-			borderRadius: '50%'
-		},
-		position: 'absolute',
-		cursor: 'pointer',
-		right: 0,
-		top: 0
-	},
-	personIcon: {
-		height: 30,
-		width: 30,
-		cursor: 'pointer'
+	btnHolder: {
+		display: 'inherit'
 	}
 });
 
