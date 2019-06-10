@@ -34,6 +34,8 @@ import {Provider} from 'react-redux';
 import allReducers from './store/reducers';
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
+import {HashRouter as Router} from 'react-router-dom';
+
 
 const store = createStore(
 	allReducers,
@@ -41,5 +43,5 @@ const store = createStore(
 
 ReactDOM.render(
 	<Provider store={store}>
-		<App/>
+		<Router><App/></Router>
 	</Provider>, document.getElementById('app'));

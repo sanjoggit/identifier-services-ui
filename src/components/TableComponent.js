@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
@@ -6,6 +7,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import {Link} from 'react-router-dom';
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
@@ -44,14 +46,8 @@ function getSorting(order, orderBy) {
 	return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
 
-const headRows = [
-	{id: 'sn', label: 'SN'},
-	{id: 'name', label: 'Name'},
-	{id: 'age', label: 'Age'}
-];
-
 function EnhancedTableHead(props) {
-	const {order, orderBy, onRequestSort} = props;
+	const {order, orderBy, onRequestSort, headRows} = props;
 	const createSortHandler = property => event => {
 		onRequestSort(event, property);
 	};
@@ -83,7 +79,8 @@ function EnhancedTableHead(props) {
 EnhancedTableHead.propTypes = {
 	onRequestSort: PropTypes.func.isRequired,
 	order: PropTypes.string.isRequired,
-	orderBy: PropTypes.string.isRequired
+	orderBy: PropTypes.string.isRequired,
+	headRows: PropTypes.array.isRequired
 };
 
 const useStyles = makeStyles(theme => ({
@@ -125,7 +122,7 @@ function EnhancedTable(props) {
 	}
 
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.data.length - page * rowsPerPage);
-	const {data, handlePublisherClick} = props;
+	const {data, headRows, link} = props;
 	return (
 		<Paper className={classes.paper}>
 			<Table
@@ -136,17 +133,25 @@ function EnhancedTable(props) {
 					order={order}
 					orderBy={orderBy}
 					rowCount={data.length}
+					headRows={headRows}
 					onRequestSort={handleRequestSort}
 				/>
 				<TableBody>
 					{stableSort(data, getSorting(order, orderBy))
 						.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-						.map((row, index) => {
+						.map(row => {
 							return (
 								<TableRow key={row.name}>
-									<TableCell align="left">{`${index + 1}`}</TableCell>
-									<TableCell component="th" iscope="row" onClick={() => handlePublisherClick(row.id)}>
-										{row.name}
+									<TableCell component="th" iscope="row">
+										{link ?
+											<Link
+												to={{
+													pathname: `/publishers/${row.id}`,
+													state: {modal: true}
+												}}
+											>
+												{row.name}
+											</Link> : row.name}
 									</TableCell>
 									<TableCell align="left">{row.age}</TableCell>
 								</TableRow>
@@ -185,7 +190,8 @@ export default EnhancedTable;
 
 EnhancedTable.propTypes = {
 	data: PropTypes.array.isRequired,
-	handlePublisherClick: PropTypes.func.isRequired
+	link: PropTypes.bool,
+	headRows: PropTypes.array.isRequired
 };
 
 function TablePaginationActions(props) {

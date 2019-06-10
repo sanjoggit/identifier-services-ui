@@ -28,28 +28,31 @@
 
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {HashRouter as Router, Switch, Route} from 'react-router-dom';
+import {Switch, Route, withRouter} from 'react-router-dom';
 
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import Home from './components/main';
 import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
-import Publisher from './components/publishers';
+import Publishers from './components/publishers/Publisher';
+import PublishersList from './components/publishers/PublishersList';
 import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 
-const App = ({user = 'admin'}) => {
+const App = props => {
+	const {user = 'admin'} = props;
 	const routeField = [
-		{path: '/', component: (user === 'admin') ? Publisher : Home},
-		{path: '/publishers', component: Publisher}
+		{path: '/', component: (user === 'admin') ? PublishersList : Home},
+		{path: '/publishers', component: Publishers}
+
 	];
 
 	const privateRoutesList = [
+		{path: '/publishers/:id', role: ['admin', 'publisher-admin'], component: Publishers},
 		{path: '/templates/:id', role: ['admin'], component: ''},
 		{path: '/user/requests/:id', role: ['admin'], component: ''},
-		{path: '/publishers/:id', role: ['admin', 'publisher-admin'], component: Publisher},
 		{path: '/publishers/request/:id', role: ['admin'], component: ''},
 		{path: '/ranges/isbn/:id', role: ['admin'], component: ''},
 		{path: '/ranges/ismn/:id', role: ['admin'], component: ''},
@@ -58,7 +61,7 @@ const App = ({user = 'admin'}) => {
 	];
 
 	const routes = (
-		<Switch>
+		<>
 			{routeField.map(fields => (
 				<Route
 					key={fields.path}
@@ -77,28 +80,35 @@ const App = ({user = 'admin'}) => {
 					component={pRoute.component}
 				/>
 			))}
-		</Switch>
+		</>
 	);
-	return (
-		<Router>
-			<MuiThemeProvider theme={theme}>
-				<TopNav loggedIn/>
-				<CssBaseline/>
-				<section>
 
-					{(user === 'admin') &&
-						<>
-							<AdminNav/>
-							<Tooltips label="contact form" title="contactForm"/>
-						</>
-					}
+	console.log('--', props);
+	const {location} = props;
+    const isModal = location.state;
+
+	return (
+		<MuiThemeProvider theme={theme}>
+			<TopNav loggedIn/>
+			<CssBaseline/>
+			<section>
+
+				{(user === 'admin') &&
+					<>
+						<AdminNav/>
+						<Tooltips label="contact form" title="contactForm"/>
+					</>
+				}
+				<Switch>
 					{routes}
-				</section>
-				<Footer/>
-			</MuiThemeProvider>
-		</Router>
+				</Switch>
+				{isModal ? <Route path="/publishers/:id" component={Publishers}/> : null}
+
+			</section>
+			<Footer/>
+		</MuiThemeProvider>
 	);
 };
 
-export default App;
+export default withRouter(App);
 

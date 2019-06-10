@@ -29,6 +29,7 @@ import React from 'react';
 import {AppBar, Toolbar, Typography, Grid} from '@material-ui/core';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import useStyles from '../../styles/topNav';
@@ -43,7 +44,7 @@ export default function (props) {
 				<AppBar position="static">
 					<Toolbar className={classes.navbarContainer}>
 						<Typography variant="h6" color="inherit">
-							<img src={Logo} alt="" className={classes.mainLogo}/>
+							<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
 						</Typography>
 						<div className={classes.rightMenu}>
 							<Login name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
