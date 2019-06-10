@@ -1,4 +1,32 @@
 /* eslint-disable no-mixed-operators */
+/**
+ *
+ * @licstart  The following is the entire license notice for the JavaScript code in this file.
+ *
+ * UI microservice of Identifier Services
+ *
+ * Copyright (C) 2019 University Of Helsinki (The National Library Of Finland)
+ *
+ * This file is part of identifier-services-ui
+ *
+ * identifier-services-ui program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * identifier-services-ui is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in this file.
+ *
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
@@ -7,7 +35,6 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import {Link} from 'react-router-dom';
 
 const useStyles1 = makeStyles(theme => ({
 	root: {
@@ -100,7 +127,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function EnhancedTable(props) {
+export default function (props) {
 	const classes = useStyles();
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('calories');
@@ -122,8 +149,8 @@ function EnhancedTable(props) {
 	}
 
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.data.length - page * rowsPerPage);
-	const {data, headRows, link} = props;
-	return (
+	const {data, headRows, handlePublisherClick} = props;
+	const component = (
 		<Paper className={classes.paper}>
 			<Table
 				className={classes.table}
@@ -141,17 +168,9 @@ function EnhancedTable(props) {
 						.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						.map(row => {
 							return (
-								<TableRow key={row.name}>
+								<TableRow key={row.name} onClick={() => handlePublisherClick(row.id)}>
 									<TableCell component="th" iscope="row">
-										{link ?
-											<Link
-												to={{
-													pathname: `/publishers/${row.id}`,
-													state: {modal: true}
-												}}
-											>
-												{row.name}
-											</Link> : row.name}
+										{row.name}
 									</TableCell>
 									<TableCell align="left">{row.age}</TableCell>
 								</TableRow>
@@ -184,15 +203,15 @@ function EnhancedTable(props) {
 			</Table>
 		</Paper>
 	);
+
+	return {
+		...component,
+		propTypes: {
+			data: PropTypes.array.isRequired,
+			headRows: PropTypes.array.isRequired
+		}
+	};
 }
-
-export default EnhancedTable;
-
-EnhancedTable.propTypes = {
-	data: PropTypes.array.isRequired,
-	link: PropTypes.bool,
-	headRows: PropTypes.array.isRequired
-};
 
 function TablePaginationActions(props) {
 	const classes = useStyles1();

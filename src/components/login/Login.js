@@ -31,6 +31,7 @@
 import React from 'react';
 import {Typography, Tabs, Tab} from '@material-ui/core';
 import PropTypes from 'prop-types';
+import LogOutIcon from '@material-ui/icons/ExitToApp';
 
 import ModalLayout from '../ModalLayout';
 import LoginForm from './LoginForm';
@@ -44,7 +45,7 @@ export default function (props) {
 		<ModalLayout icon {...props}>
 			<div className={classes.main}>
 				{(props.loggedIn) ?
-					<div>logout</div> :
+					<div><LogOutIcon>Click Here to Logout...</LogOutIcon></div> :
 					<div>
 						<Tabs
 							value={value}

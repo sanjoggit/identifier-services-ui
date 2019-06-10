@@ -41,16 +41,16 @@ import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 
-const App = props => {
+export default withRouter(props => {
 	const {user = 'admin'} = props;
 	const routeField = [
 		{path: '/', component: (user === 'admin') ? PublishersList : Home},
-		{path: '/publishers', component: Publishers}
+		{path: '/publishers', component: PublishersList}
 
 	];
 
 	const privateRoutesList = [
-		{path: '/publishers/:id', role: ['admin', 'publisher-admin'], component: Publishers},
+		{path: '/publishers/:id', role: ['admin', 'publisher-admin'], component: PublishersList},
 		{path: '/templates/:id', role: ['admin'], component: ''},
 		{path: '/user/requests/:id', role: ['admin'], component: ''},
 		{path: '/publishers/request/:id', role: ['admin'], component: ''},
@@ -83,13 +83,12 @@ const App = props => {
 		</>
 	);
 
-	console.log('--', props);
 	const {location} = props;
-    const isModal = location.state;
+	const isModal = location.state;
 
-	return (
+	const component = (
 		<MuiThemeProvider theme={theme}>
-			<TopNav loggedIn/>
+			<TopNav loggedIn={Boolean(user)}/>
 			<CssBaseline/>
 			<section>
 
@@ -108,7 +107,9 @@ const App = props => {
 			<Footer/>
 		</MuiThemeProvider>
 	);
-};
 
-export default withRouter(App);
+	return {
+		...component
+	};
+});
 

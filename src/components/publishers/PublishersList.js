@@ -3,7 +3,6 @@ import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
-import {withRouter} from 'react-router-dom';
 
 // eslint-disable-next-line no-unused-vars
 export default (props => {
@@ -29,7 +28,14 @@ export default (props => {
 		{id: 7, name: 'Batman', age: 25},
 		{id: 8, name: 'Antman', age: 55}
 	];
-    const classes = useStyles();
+	const classes = useStyles();
+	const handlePublisherClick = id => {
+		props.history.push({
+			pathname: `/publishers/${id}`,
+			state: {modal: true}
+		});
+	};
+
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
@@ -49,6 +55,7 @@ export default (props => {
 				<TableComponent
 					link
 					data={data}
+					handlePublisherClick={handlePublisherClick}
 					headRows={headRows}/>
 			</Grid>
 		</Grid>

@@ -27,7 +27,8 @@
  * for the JavaScript code in this file.
  *
  */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {withRouter} from 'react-router-dom';
 import {Modal, Typography, Button, Grid} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
@@ -38,10 +39,14 @@ import {PropTypes} from 'prop-types';
 
 import useStyles from '../styles/modalLayout';
 
-export default function (props) {
-	const {label, name, children, icon, fab, variant, color, classed, loggedIn} = props;
+export default withRouter(props => {
+	const {label, name, children, icon, fab, variant, color, classed, loggedIn, isTableRow} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+		isTableRow && setOpen(isTableRow);
+	}, [isTableRow]);
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -49,41 +54,48 @@ export default function (props) {
 
 	const handleClose = () => {
 		setOpen(false);
+		isTableRow && props.history.push({
+			pathname: '/'
+		});
 	};
+
+	const element = (
+		<Modal
+			disableRestoreFocus
+			className={classes.container}
+			aria-labelledby={`modal-${name}`}
+			aria-describedby="modal-description"
+			open={open}
+		>
+			<div className={classes.main}>
+				<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
+					<CloseIcon/>
+				</IconButton>
+				<Typography variant="h5" id={`modal-${name}`}>
+					{label}
+				</Typography>
+				{children}
+			</div>
+		</Modal>
+	);
 
 	const component = (
 		<>
-			<Grid item style={{display: 'inherit'}}>
-				{
-					loggedIn ?
-						<PersonIcon className={classes.personIcon} onClick={handleOpen}/> :
-						fab ?
-							<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
-							<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
-								{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
-								{label}
-							</Button>
-				}
-
-			</Grid>
-
-			<Modal
-				disableRestoreFocus
-				className={classes.container}
-				aria-labelledby={`modal-${name}`}
-				aria-describedby="modal-description"
-				open={open}
-			>
-				<div className={classes.main}>
-					<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
-						<CloseIcon/>
-					</IconButton>
-					<Typography variant="h5" id={`modal-${name}`}>
-						{label}
-					</Typography>
-					{children}
-				</div>
-			</Modal>
+			{!isTableRow ?
+				<Grid item style={{display: 'inherit'}}>
+					{
+						loggedIn ?
+							<PersonIcon className={classes.personIcon} onClick={handleOpen}/> :
+							fab ?
+								<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
+								<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
+									{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
+									{label}
+								</Button>
+					}
+				</Grid>	: null
+			}
+			{element}
 		</>
 	);
 
@@ -98,4 +110,4 @@ export default function (props) {
 			children: PropTypes.node
 		}
 	};
-}
+});
