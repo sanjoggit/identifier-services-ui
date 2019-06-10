@@ -29,27 +29,30 @@
 import React from 'react';
 import TopNav from './components/navbar/topNav';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {HashRouter as Router, Switch, Route} from 'react-router-dom';
+import {HashRouter as Router, Switch, Route, withRouter} from 'react-router-dom';
 
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import Home from './components/main';
-import Publisher from './components/publishers';
+import Publishers from './components/publishers/PublisherLists';
+import Publisher from './components/publishers/Publisher';
 import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
 import theme, {useStyles} from './styles/app';
 import {AppBar, Button, Typography} from '@material-ui/core';
 
-const App = ({user = 'admin'}) => {
+const App = props => {
+	const {user = 'admin'} = props;
 	const classes = useStyles();
 	const routeField = [
 		{path: '/', component: Home},
-		{path: '/publishers', component: Publisher}
+		{path: '/publishers', component: Publishers}
+
 	];
 
 	const privateRoutesList = [
+		{path: '/publishers/:id', role: ['admin', 'publisher-admin'], component: Publishers},
 		{path: '/templates/:id', role: ['admin'], component: ''},
 		{path: '/user/requests/:id', role: ['admin'], component: ''},
-		{path: '/publishers/:id', role: ['admin', 'publisher-admin'], component: Publisher},
 		{path: '/publishers/request/:id', role: ['admin'], component: ''},
 		{path: '/ranges/isbn/:id', role: ['admin'], component: ''},
 		{path: '/ranges/ismn/:id', role: ['admin'], component: ''},
@@ -58,7 +61,7 @@ const App = ({user = 'admin'}) => {
 	];
 
 	const routes = (
-		<Switch>
+		<>
 			{routeField.map(fields => (
 				<Route
 					key={fields.path}
@@ -77,24 +80,30 @@ const App = ({user = 'admin'}) => {
 					component={pRoute.component}
 				/>
 			))}
-		</Switch>
+		</>
 	);
+
+	console.log('--', props);
+	const {location} = props;
+    const isModal = location.state;
+
 	return (
-		<Router>
-			<MuiThemeProvider theme={theme}>
-				<TopNav/>
-				<CssBaseline/>
-				{(user === 'admin') &&
+		<MuiThemeProvider theme={theme}>
+			<TopNav/>
+			<CssBaseline/>
+			{(user === 'admin') &&
 					adminNav(classes)
-				}
+			}
+			<Switch>
 				{routes}
-				<Footer/>
-			</MuiThemeProvider>
-		</Router>
+			</Switch>
+			{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
+			<Footer/>
+		</MuiThemeProvider>
 	);
 };
 
-export default App;
+export default withRouter(App);
 
 function adminNav(classes) {
 	const nav = (
