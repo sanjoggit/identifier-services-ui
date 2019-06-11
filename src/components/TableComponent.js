@@ -117,11 +117,21 @@ const useStyles = makeStyles(theme => ({
 	},
 	paper: {
 		width: '100%',
-		marginBottom: theme.spacing(2)
+		marginBottom: theme.spacing(2),
+		boxShadow: 'none',
+		background: 'inherit',
+		cursor: 'pointer'
 	},
 	table: {
 		minWidth: 500
+
 	},
+	tableRow: {
+		'&:hover': {
+			background: '#00224f29'
+		}
+	},
+
 	tableWrapper: {
 		overflowX: 'auto'
 	}
@@ -168,8 +178,8 @@ export default function (props) {
 						.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						.map(row => {
 							return (
-								<TableRow key={row.name} onClick={() => handlePublisherClick(row.id)}>
-									<TableCell component="th" iscope="row">
+								<TableRow key={row.name} className={classes.tableRow} onClick={() => handlePublisherClick(row.id)}>
+									<TableCell component="th" scope="row">
 										{row.name}
 									</TableCell>
 									<TableCell align="left">{row.age}</TableCell>

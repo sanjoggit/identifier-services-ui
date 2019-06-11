@@ -27,15 +27,16 @@
  */
 
 import React from 'react';
-import {TextField, InputAdornment} from '@material-ui/core';
+import {TextField, InputAdornment, IconButton} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import useStyles from '../styles/searchComponent';
 
-export default function () {
+export default (props => {
+	const {inputVal, handleInputChange, handleSubmit} = props;
 	const classes = useStyles();
 
-	return (
-		<form>
+	const component = (
+		<form onSubmit={handleSubmit}>
 			<TextField
 				id="outlined-bare"
 				placeholder="Search..."
@@ -44,12 +45,19 @@ export default function () {
 				InputProps={{
 					endAdornment: (
 						<InputAdornment position="end">
-							<SearchIcon/>
+							<IconButton onClick={handleSubmit}><SearchIcon/></IconButton>
 						</InputAdornment>
 					)
 				}}
 				className={classes.searchBox}
+				value={inputVal}
+				onChange={handleInputChange}
 			/>
 		</form>
 	);
-}
+
+	return {
+		...component
+	};
+});
+
