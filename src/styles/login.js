@@ -34,8 +34,6 @@ const useStyles = makeStyles({
 	},
 	logout: {
 		margin: '30px 10px',
-		borderTop: '1px solid black',
-		borderBottom: '1px solid black',
 		alignItems: 'center',
 		borderRadius: 0
 	},

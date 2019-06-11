@@ -47,7 +47,7 @@ export default function (props) {
 							<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
 						</Typography>
 						<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
-							<Login name="login" label={props.loggedIn ? null : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
+							<Login name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
 							<LanguageIcon/>
 							<span className={classes.languageSelect}>EN</span>
 							<ArrowDropDown/>
