@@ -46,8 +46,8 @@ export default function (props) {
 						<Typography variant="h6" color="inherit">
 							<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
 						</Typography>
-						<div className={classes.rightMenu}>
-							<Login name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
+						<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
+							<Login name="login" label={props.loggedIn ? null : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
 							<LanguageIcon/>
 							<span className={classes.languageSelect}>EN</span>
 							<ArrowDropDown/>

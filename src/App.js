@@ -42,9 +42,9 @@ import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 
 export default withRouter(props => {
-	const {user = ''} = props;
+	const [user, setUser] = React.useState({role: 'admin'});
 	const routeField = [
-		{path: '/', component: (user === 'admin') ? PublishersList : Home},
+		{path: '/', component: (user.role === 'admin' || user.role === 'publisher') ? PublishersList : Home},
 		{path: '/publishers', component: PublishersList},
 		{path: '/publishers/:id', component: PublishersList}
 
@@ -70,11 +70,11 @@ export default withRouter(props => {
 					component={fields.component}
 				/>
 			))}
-			{privateRoutesList.map(pRoute => pRoute.role.includes(user) && (
+			{privateRoutesList.map(pRoute => pRoute.role.includes(user.role) && (
 				<PrivateRoute
 					key={pRoute.path}
 					exact
-					user={user}
+					user={user.role}
 					name={pRoute.path}
 					path={pRoute.path}
 					component={pRoute.component}
@@ -86,15 +86,20 @@ export default withRouter(props => {
 	const {location} = props;
 	const isModal = location.state;
 
+	const handleLogOut = () => {
+		setUser({role: ''});
+		props.history.push('/publishers');
+	};
+
 	const component = (
 		<MuiThemeProvider theme={theme}>
-			<TopNav/>
+			<TopNav loggedIn={Boolean(user.role !== '')} role={user.role} logOut={handleLogOut}/>
 			<CssBaseline/>
 			<section>
 
-				{(user === 'admin') &&
+				{(user.role === 'admin' || user.role === 'publisher') &&
 					<>
-						<AdminNav/>
+						<AdminNav role={user.role}/>
 						<Tooltips label="contact form" title="contactForm"/>
 					</>
 				}
@@ -107,7 +112,6 @@ export default withRouter(props => {
 			<Footer/>
 		</MuiThemeProvider>
 	);
-
 	return {
 		...component
 	};

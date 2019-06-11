@@ -36,7 +36,12 @@ const useStyles = makeStyles({
 		justifyContent: 'space-around'
 	},
 	btnHolder: {
-		display: 'inherit'
+		display: 'inherit',
+		alignItems: 'center'
+	},
+	selected: {
+		borderBottom: '2px solid #00224F',
+		borderRadius: 0
 	}
 });
 

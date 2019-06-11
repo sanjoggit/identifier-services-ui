@@ -28,40 +28,61 @@
  */
 import React from 'react';
 import {AppBar, Button, Menu, MenuItem} from '@material-ui/core';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
 import useStyles from '../../styles/adminNav';
 
-export default function () {
+export default function ({role}) {
 	const classes = useStyles();
 	const obj = [
 		{
-			label: 'Publishers'
+			label: 'Publishers',
+			roleView: ['admin', 'publisher'],
+			path: '/publishers',
+			selected: true
+		},
+		{
+			label: 'Publications',
+			roleView: ['publisher'],
+			listItem: [
+				{label: 'ISBN', roleView: ['publisher']},
+				{label: 'ISMN', roleView: ['publisher']},
+				{label: 'ISSN', roleView: ['publisher']}
+			]
 		},
 		{
 			label: 'requests',
+			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'Publisher'}, {label: 'Publications'}, {label: 'Users'}
+				{label: 'Publisher', roleView: ['admin']},
+				{label: 'Publications', roleView: ['admin', 'publisher']},
+				{label: 'Users', roleView: ['admin', 'publisher']}
 			]
 		},
 		{
-			label: 'users'
+			label: 'users',
+			roleView: ['admin', 'publisher']
 		},
 		{
 			label: 'identifier Ranges',
+			roleView: ['admin'],
 			listItem: [
-				{label: 'ISBN'}, {label: 'ISMN'}, {label: 'ISSN'}
+				{label: 'ISBN', roleView: ['admin']},
+				{label: 'ISMN', roleView: ['admin']},
+				{label: 'ISSN', roleView: ['admin']}
 			]
 		},
 		{
-			label: 'message templates'
+			label: 'message templates',
+			roleView: ['admin']
 		}
 	];
 	const nav = (
 		<AppBar position="static" color="secondary">
 			<div className={classes.adminNav}>
-				{obj.map(list => (
+				{obj.map(list => list.roleView.includes(role) && (
 					<div key={list.label} className={classes.btnHolder}>
-						{CustomizedMenus(list)}
+						{CustomizedMenus(list, role)}
 					</div>
 				))}
 			</div>
@@ -72,9 +93,9 @@ export default function () {
 	};
 }
 
-function CustomizedMenus(list) {
-	const classes = useStyles();
+function CustomizedMenus(list, role) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	const classes = useStyles();
 
 	function handleClick(event) {
 		setAnchorEl(event.currentTarget);
@@ -86,9 +107,13 @@ function CustomizedMenus(list) {
 
 	return (
 		<>
-			<Button onClick={handleClick}>
-				{list.label}
-			</Button>
+			<>
+				<Button className={list.selected && classes.selected} onClick={handleClick}>
+					{list.label}
+					{list.listItem && <ArrowDropDown/>}
+				</Button>
+			</>
+
 			{list.listItem &&
 				<Menu
 					keepMounted
@@ -107,7 +132,7 @@ function CustomizedMenus(list) {
 					open={Boolean(anchorEl)}
 					onClose={handleClose}
 				>
-					{list.listItem.map(item =>
+					{list.listItem.map(item => item.roleView && item.roleView.includes(role) &&
 						<MenuItem key={item.label}>{item.label}</MenuItem>
 					)}
 				</Menu>

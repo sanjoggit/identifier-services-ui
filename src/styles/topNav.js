@@ -49,12 +49,18 @@ const useStyles = makeStyles({
 		paddingTop: '8px'
 	},
 	rightMenu: {
+		display: 'grid',
+		gridTemplateColumns: '6fr 1fr 1fr 1fr',
+		alignItems: 'center',
+		color: 'white'
+	},
+	rightMenuLogIn: {
 		display: 'flex',
 		alignItems: 'center',
 		color: 'white'
 	},
 	languageSelect: {
-		fontSize: '20px',
+		fontSize: '1rem',
 		paddingLeft: '5px'
 	},
 	loginButton: {

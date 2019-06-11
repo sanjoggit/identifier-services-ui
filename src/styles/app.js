@@ -26,7 +26,6 @@
  *
  */
 import {createMuiTheme} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
 	palette: {
@@ -38,26 +37,25 @@ const theme = createMuiTheme({
 		}
 	},
 	typography: {
-		fontFamily: 'Poppins'
+		fontFamily: 'Open Sans, Helvetica, Arial'
 	},
 	overrides: {
 		MuiChip: {
 			root: {
 				marginRight: '5px'
-
+			}
+		},
+		MuiList: {
+			root: {
+				minWidth: 200
+			}
+		},
+		MuiMenu: {
+			paper: {
+				boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)'
 			}
 		}
 	}
 });
 
 export default theme;
-
-export const useStyles = makeStyles({
-	adminNav: {
-		minHeight: 50,
-		display: 'grid',
-		width: '70%',
-		margin: '0px auto',
-		gridTemplateColumns: '2fr 2fr 2fr 2fr 2fr'
-	}
-});

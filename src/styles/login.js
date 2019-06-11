@@ -32,6 +32,13 @@ const useStyles = makeStyles({
 	main: {
 		maxWidth: 400
 	},
+	logout: {
+		margin: '30px 10px',
+		borderTop: '1px solid black',
+		borderBottom: '1px solid black',
+		alignItems: 'center',
+		borderRadius: 0
+	},
 	hakaLogo: {
 		height: 300,
 		display: 'grid',
@@ -55,7 +62,6 @@ const useStyles = makeStyles({
 	},
 	loginForm: {
 		display: 'grid',
-		gridTemplateRows: '9fr 1fr',
 		maxWidth: 700,
 		maxHeight: 400,
 		margin: '40px 0px 0px'

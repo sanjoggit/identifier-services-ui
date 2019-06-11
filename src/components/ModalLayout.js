@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-undef */
 /* eslint-disable no-negated-condition */
 /* eslint-disable no-unused-expressions */
 /**
@@ -40,7 +42,7 @@ import {PropTypes} from 'prop-types';
 import useStyles from '../styles/modalLayout';
 
 export default withRouter(props => {
-	const {label, name, children, icon, fab, variant, color, classed, loggedIn, isTableRow} = props;
+	const {label, name, children, icon, fab, variant, color, classed, loggedIn, isTableRow, role, form} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 
@@ -66,6 +68,12 @@ export default withRouter(props => {
 			aria-labelledby={`modal-${name}`}
 			aria-describedby="modal-description"
 			open={open}
+			// eslint-disable-next-line no-alert
+			onClose={(form || fab) ? (() => {
+				if (window.confirm('Do you want to exit?')) {
+					handleClose();
+				}
+			}) : handleClose}
 		>
 			<div className={classes.main}>
 				<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
@@ -82,10 +90,13 @@ export default withRouter(props => {
 	const component = (
 		<>
 			{!isTableRow ?
-				<Grid item style={{display: 'inherit'}}>
+				<Grid item className={classes.welcomeAvatar}>
 					{
 						loggedIn ?
-							<PersonIcon className={classes.personIcon} onClick={handleOpen}/> :
+							<>
+								<PersonIcon className={classes.personIcon} onClick={handleOpen}/>
+								<Typography variant="inherit">Welcome, {role.toUpperCase()}</Typography>
+							</> :
 							fab ?
 								<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
 								<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
@@ -93,7 +104,7 @@ export default withRouter(props => {
 									{label}
 								</Button>
 					}
-				</Grid>	: null
+				</Grid> : null
 			}
 			{element}
 		</>
