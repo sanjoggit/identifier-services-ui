@@ -34,7 +34,7 @@ import {MuiThemeProvider} from '@material-ui/core/styles';
 import Home from './components/main';
 import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
-import Publishers from './components/publishers/Publisher';
+import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
 import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
@@ -42,15 +42,15 @@ import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 
 export default withRouter(props => {
-	const {user = 'admin'} = props;
+	const {user = ''} = props;
 	const routeField = [
 		{path: '/', component: (user === 'admin') ? PublishersList : Home},
-		{path: '/publishers', component: PublishersList}
+		{path: '/publishers', component: PublishersList},
+		{path: '/publishers/:id', component: PublishersList}
 
 	];
 
 	const privateRoutesList = [
-		{path: '/publishers/:id', role: ['admin', 'publisher-admin'], component: PublishersList},
 		{path: '/templates/:id', role: ['admin'], component: ''},
 		{path: '/user/requests/:id', role: ['admin'], component: ''},
 		{path: '/publishers/request/:id', role: ['admin'], component: ''},
@@ -88,7 +88,7 @@ export default withRouter(props => {
 
 	const component = (
 		<MuiThemeProvider theme={theme}>
-			<TopNav loggedIn={Boolean(user)}/>
+			<TopNav/>
 			<CssBaseline/>
 			<section>
 
@@ -101,7 +101,7 @@ export default withRouter(props => {
 				<Switch>
 					{routes}
 				</Switch>
-				{isModal ? <Route path="/publishers/:id" component={Publishers}/> : null}
+				{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
 
 			</section>
 			<Footer/>
@@ -112,4 +112,3 @@ export default withRouter(props => {
 		...component
 	};
 });
-

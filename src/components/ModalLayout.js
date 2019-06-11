@@ -55,7 +55,7 @@ export default withRouter(props => {
 	const handleClose = () => {
 		setOpen(false);
 		isTableRow && props.history.push({
-			pathname: '/'
+			pathname: '/publishers'
 		});
 	};
 
