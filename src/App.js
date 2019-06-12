@@ -40,9 +40,10 @@ import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
+import NotificationBar from './components/NotificationBar';
 
 export default withRouter(props => {
-	const [user, setUser] = React.useState({role: 'admin'});
+	const [user, setUser] = React.useState({role: 'publisher'});
 	const routeField = [
 		{path: '/', component: (user.role === 'admin' || user.role === 'publisher') ? PublishersList : Home},
 		{path: '/publishers', component: PublishersList},
@@ -93,15 +94,13 @@ export default withRouter(props => {
 
 	const component = (
 		<MuiThemeProvider theme={theme}>
+			<NotificationBar/>
 			<TopNav loggedIn={Boolean(user.role !== '')} role={user.role} logOut={handleLogOut}/>
 			<CssBaseline/>
+			<AdminNav role={user.role}/>
 			<section>
-
-				{(user.role === 'admin' || user.role === 'publisher') &&
-					<>
-						<AdminNav role={user.role}/>
-						<Tooltips label="contact form" title="contactForm"/>
-					</>
+				{(user.role === 'publisher') &&
+					<Tooltips label="contact form" title="contactForm"/>
 				}
 				<Switch>
 					{routes}

@@ -26,17 +26,28 @@
  *
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
 import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
+import {getPublisherList} from '../../store/reducers';
+import * as actions from '../../store/actions';
 
 // eslint-disable-next-line no-unused-vars
-export default (props => {
+export default connect(mapStateToProps, actions)(props => {
+	const {fetchPublishersList, publishersList} = props;
 	const [state, setState] = React.useState({
 		checked: false
 	});
+	const [publishers, setPublishers] = React.useState([]);
+
+	useEffect(() => {
+		fetchPublishersList();
+		setPublishers(publishersList);
+	}, []);
+
 	const handleChange = name => event => {
 		setState({...state, [name]: event.target.checked});
 	};
@@ -57,6 +68,7 @@ export default (props => {
 		{id: 8, name: 'Antman', age: 55}
 	];
 	const classes = useStyles();
+
 	const handlePublisherClick = id => {
 		props.history.push({
 			pathname: `/publishers/${id}`,
@@ -66,6 +78,7 @@ export default (props => {
 
 	const component = (
 		<Grid>
+			{console.log(publishers)}
 			<Grid item xs={12} className={classes.publisherListSearch}>
 				<Typography variant="h5">Search Publisher By Name or Aliases</Typography>
 				<SearchComponent/>
@@ -92,3 +105,9 @@ export default (props => {
 		...component
 	};
 });
+
+function mapStateToProps(state) {
+	return ({
+		publishersList: getPublisherList(state)
+	});
+}

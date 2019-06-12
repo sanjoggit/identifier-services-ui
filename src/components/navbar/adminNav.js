@@ -27,13 +27,32 @@
  *
  */
 import React from 'react';
-import {AppBar, Button, Menu, MenuItem} from '@material-ui/core';
+import {AppBar, Button, Menu, MenuItem, Link} from '@material-ui/core';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 import useStyles from '../../styles/adminNav';
 
 export default function ({role}) {
+	const [anchorEl, setAnchorEl] = React.useState(null);
 	const classes = useStyles();
+
+	function handleClick(event) {
+		setAnchorEl(event.currentTarget);
+	}
+
+	function handleClose() {
+		setAnchorEl(null);
+	}
+
+	function HomeIcon(props) {
+		return (
+			<SvgIcon {...props}>
+				<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+			</SvgIcon>
+		);
+	}
+
 	const obj = [
 		{
 			label: 'Publishers',
@@ -80,63 +99,51 @@ export default function ({role}) {
 	const nav = (
 		<AppBar position="static" color="secondary">
 			<div className={classes.adminNav}>
-				{obj.map(list => list.roleView.includes(role) && (
-					<div key={list.label} className={classes.btnHolder}>
-						{CustomizedMenus(list, role)}
-					</div>
-				))}
+				<HomeIcon className={classes.homeIcon} fontSize="large"/>
+				<div className={classes.adminNavTabs}>
+
+					{obj.map(list => list.roleView.includes(role) && (
+						<div key={list.label} className={classes.btnHolder}>
+							<>
+								<Button className={list.selected && classes.selected} onClick={handleClick}>
+									{list.label}
+									{list.listItem && <ArrowDropDown/>}
+								</Button>
+							</>
+
+							{list.listItem &&
+							<Menu
+								keepMounted
+								elevation={0}
+								getContentAnchorEl={null}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'center'
+								}}
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'center'
+								}}
+								id="customized-menu"
+								anchorEl={anchorEl}
+								open={Boolean(anchorEl)}
+								onClose={handleClose}
+							>
+								{list.listItem.map(item => item.roleView && item.roleView.includes(role) &&
+									<MenuItem key={item.label}>{item.label}</MenuItem>
+								)}
+							</Menu>
+							}
+						</div>
+					))}
+				</div>
+
 			</div>
 		</AppBar>
 	);
+
 	return {
 		...nav
 	};
 }
 
-function CustomizedMenus(list, role) {
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const classes = useStyles();
-
-	function handleClick(event) {
-		setAnchorEl(event.currentTarget);
-	}
-
-	function handleClose() {
-		setAnchorEl(null);
-	}
-
-	return (
-		<>
-			<>
-				<Button className={list.selected && classes.selected} onClick={handleClick}>
-					{list.label}
-					{list.listItem && <ArrowDropDown/>}
-				</Button>
-			</>
-
-			{list.listItem &&
-				<Menu
-					keepMounted
-					elevation={0}
-					getContentAnchorEl={null}
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'center'
-					}}
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'center'
-					}}
-					id="customized-menu"
-					anchorEl={anchorEl}
-					open={Boolean(anchorEl)}
-					onClose={handleClose}
-				>
-					{list.listItem.map(item => item.roleView && item.roleView.includes(role) &&
-						<MenuItem key={item.label}>{item.label}</MenuItem>
-					)}
-				</Menu>
-			}
-		</>
-	);
-}

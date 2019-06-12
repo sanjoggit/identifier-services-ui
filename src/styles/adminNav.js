@@ -33,6 +33,13 @@ const useStyles = makeStyles({
 		display: 'flex',
 		width: '70%',
 		margin: '0px auto',
+		alignItems: 'center'
+	},
+	adminNavTabs: {
+		minHeight: 50,
+		display: 'flex',
+		width: '70%',
+		margin: '0px auto',
 		justifyContent: 'space-around'
 	},
 	btnHolder: {

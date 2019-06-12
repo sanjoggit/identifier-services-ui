@@ -25,13 +25,21 @@
  * for the JavaScript code in this file.
  *
  */
-import {combineReducers} from 'redux';
-import {reducer as forms} from 'redux-form';
-import publisherReducer from './publisher';
+import React from 'react';
+import {AppBar} from '@material-ui/core';
+import useStyles from '../styles/notificationBar';
 
-export default combineReducers({
-	form: forms,
-	publisher: publisherReducer
-});
+export default function () {
+	const classes = useStyles();
 
-export const getPublisherList = state => state.publisher.publishersList;
+	const component = (
+		<AppBar className={classes.bar} color="secondary">
+			Hello World! This is a notification...
+		</AppBar>
+	);
+
+	return {
+		...component
+	};
+}
+

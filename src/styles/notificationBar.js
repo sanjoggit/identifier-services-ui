@@ -25,13 +25,19 @@
  * for the JavaScript code in this file.
  *
  */
-import {combineReducers} from 'redux';
-import {reducer as forms} from 'redux-form';
-import publisherReducer from './publisher';
 
-export default combineReducers({
-	form: forms,
-	publisher: publisherReducer
+import {makeStyles} from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+
+	bar: {
+		position: 'sticky',
+		minHeight: 30,
+		padding: 10,
+		background: 'orange',
+		textAlign: 'center'
+	}
+
 });
 
-export const getPublisherList = state => state.publisher.publishersList;
+export default useStyles;

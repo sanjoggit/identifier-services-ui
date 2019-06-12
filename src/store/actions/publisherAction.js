@@ -25,13 +25,20 @@
  * for the JavaScript code in this file.
  *
  */
-import {combineReducers} from 'redux';
-import {reducer as forms} from 'redux-form';
-import publisherReducer from './publisher';
+import fetch from 'node-fetch';
+import {PUBLISHERS_LIST} from './types';
 
-export default combineReducers({
-	form: forms,
-	publisher: publisherReducer
-});
+function success(type, payload) {
+	return ({
+		type: type,
+		payload: payload
+	});
+}
 
-export const getPublisherList = state => state.publisher.publishersList;
+export const fetchPublishersList = () => dispatch => {
+	fetch('http://localhost:8081/publishers/query', {
+		method: 'POST'
+	}).then(res => res.json()).then(result =>
+		dispatch(success(PUBLISHERS_LIST, result.data)));
+};
+
