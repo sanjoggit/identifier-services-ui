@@ -69,7 +69,6 @@ const useStyles = makeStyles({
 			color: '#f1f1f1',
 			marginTop: '-48px',
 			width: 'fit-content',
-			/* border: 1px solid; */
 			borderRadius: 5,
 			padding: 10,
 			background: '#00224f'

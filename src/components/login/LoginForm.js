@@ -78,10 +78,10 @@ export default reduxForm({
 					color="primary"
 					variant="contained"
 					type="submit"
-					size="small"
+					size="large"
 					disabled={pristine || !valid}
 				>
-					Submit
+					Login
 				</Button>
 				<div>
 					<Link
