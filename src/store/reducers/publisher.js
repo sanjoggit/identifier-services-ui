@@ -25,13 +25,22 @@
  * for the JavaScript code in this file.
  *
  */
-import {combineReducers} from 'redux';
-import {reducer as forms} from 'redux-form';
-import publisherReducer from './publisher';
 
-export default combineReducers({
-	form: forms,
-	publisher: publisherReducer
-});
+import {PUBLISHERS_LIST} from '../actions/types';
 
-export const getPublisherList = state => state.publisher.publishersList;
+const initialState = {
+	publishersList: []
+};
+
+export default function (state = initialState, action) {
+	console.log(action)
+	switch (action.type) {
+		case PUBLISHERS_LIST:
+			return {
+				...state,
+				publishersList: action.payload
+			};
+		default:
+			return state;
+	}
+}

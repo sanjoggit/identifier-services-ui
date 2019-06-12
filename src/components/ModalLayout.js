@@ -31,7 +31,7 @@
  */
 import React, {useState, useEffect} from 'react';
 import {withRouter} from 'react-router-dom';
-import {Modal, Typography, Button, Grid, Zoom} from '@material-ui/core';
+import {Modal, Typography, Button, Grid} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import PersonIcon from '@material-ui/icons/Person';
