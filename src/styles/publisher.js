@@ -28,11 +28,16 @@
 
 import {makeStyles} from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
-	publisher: {
-		minWidth: '600px',
-		padding: '20px 0px'
-	}
-});
+const useStyles = makeStyles(
+	{
+		publisher: {
+			minWidth: '750px',
+			padding: '20px 0px',
+			display: 'flex'
+		},
+		publisherEditIcon: {
+			alignSelf: 'flex-end'
+		}
+	});
 
 export default useStyles;
