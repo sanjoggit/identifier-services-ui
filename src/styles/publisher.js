@@ -1,4 +1,3 @@
-
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,50 +25,13 @@
  * for the JavaScript code in this file.
  *
  */
+
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-	main: {
-		maxWidth: 400
-	},
-	logout: {
-		margin: '30px 10px',
-		alignItems: 'center',
-		borderRadius: 0
-	},
-	hakaLogo: {
-		height: 300,
-		display: 'grid',
-		gridTemplateRows: '8fr 2fr',
-		'& img': {
-			width: '100%',
-			alignSelf: 'center'
-		}
-
-	},
-	notes: {
-		margin: '10px -20px -20px',
-		padding: '10px 20px',
-		background: '#00224F20',
-		'& p': {
-			fontSize: '0.75rem',
-			'& a': {
-				fontWeight: 700
-			}
-		}
-	},
-	loginForm: {
-		display: 'grid',
-		maxWidth: 700,
-		maxHeight: 400,
-		margin: '40px 0px 0px'
-	},
-	inputGap: {
-		marginBottom: 20
-	},
-	personIcon: {
-		height: 30,
-		width: 30
+	publisher: {
+		minWidth: '600px',
+		padding: '20px 0px'
 	}
 });
 
