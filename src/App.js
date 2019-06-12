@@ -97,13 +97,10 @@ export default withRouter(props => {
 			<NotificationBar/>
 			<TopNav loggedIn={Boolean(user.role !== '')} role={user.role} logOut={handleLogOut}/>
 			<CssBaseline/>
+			<AdminNav role={user.role}/>
 			<section>
-
-				{(user.role === 'admin' || user.role === 'publisher') &&
-					<>
-						<AdminNav role={user.role}/>
-						<Tooltips label="contact form" title="contactForm"/>
-					</>
+				{(user.role === 'publisher') &&
+					<Tooltips label="contact form" title="contactForm"/>
 				}
 				<Switch>
 					{routes}
