@@ -12,7 +12,7 @@ export default function () {
 		// 	aria-describedby="simple-modal-description"
 		// >
 		// </Modal>
-		<ModalLayout isTableRow color="primary">
+		<ModalLayout isTableRow color="primary" label="Publisher Details">
 			<div>
 				<Typography variant="h6" id="modal-title">
             Text in a modal

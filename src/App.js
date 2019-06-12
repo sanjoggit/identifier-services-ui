@@ -42,7 +42,7 @@ import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 
 export default withRouter(props => {
-	const [user, setUser] = React.useState({role: 'admin'});
+	const [user, setUser] = React.useState({role: 'publisher'});
 	const routeField = [
 		{path: '/', component: (user.role === 'admin' || user.role === 'publisher') ? PublishersList : Home},
 		{path: '/publishers', component: PublishersList},

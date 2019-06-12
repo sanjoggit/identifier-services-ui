@@ -47,7 +47,14 @@ const theme = createMuiTheme({
 		},
 		MuiList: {
 			root: {
-				minWidth: 200
+				minWidth: 200,
+				'& li:not(:last-child)': {
+					borderBottom: '1px solid rgba(224, 224, 224, 1)'
+				}
+			},
+			padding: {
+				paddingTop: 0,
+				paddingBottom: 0
 			}
 		},
 		MuiMenu: {

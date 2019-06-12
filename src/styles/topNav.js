@@ -50,7 +50,7 @@ const useStyles = makeStyles({
 	},
 	rightMenu: {
 		display: 'grid',
-		gridTemplateColumns: '6fr 1fr 1fr 1fr',
+		gridTemplateColumns: '9fr 1fr 1fr 1fr',
 		alignItems: 'center',
 		color: 'white'
 	},
