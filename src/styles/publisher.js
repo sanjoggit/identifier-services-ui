@@ -37,6 +37,10 @@ const useStyles = makeStyles(
 		},
 		publisherEditIcon: {
 			alignSelf: 'flex-end'
+		},
+		btnContainer: {
+			display: 'flex',
+			justifyContent: 'flex-end'
 		}
 	});
 

@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {PUBLISHERS_LIST} from './types';
+import {PUBLISHERS_LIST, PUBLISHER} from './types';
 
 function success(type, payload) {
 	return ({
@@ -42,3 +42,9 @@ export const fetchPublishersList = () => dispatch => {
 		dispatch(success(PUBLISHERS_LIST, result.data)));
 };
 
+export const fetchPublisher = id => dispatch => {
+	fetch(`http://localhost:8081/publishers/${id}`, {
+		method: 'GET'
+	}).then(res => res.json()).then(result =>
+		dispatch(success(PUBLISHER, result.data)));
+};
