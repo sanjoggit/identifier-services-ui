@@ -25,42 +25,23 @@
  * for the JavaScript code in this file.
  *
  */
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-	entry: path.resolve(path.join(__dirname, '..', 'src', 'index.js')),
-	output: {
-		path: path.join(__dirname, '../dist'),
-		filename: 'index-bundle.js'
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader'
-				}
-			},
-			{
-				test: /\.(jpg|gif|png)$/,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: 'images/[name]-[hash:8].[ext]',
-							outputPath: 'images/'
-						}
-					}
-				]
-			}
-		]
-	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			template: path.resolve(path.join(__dirname, '../public/index.html')),
-			filename: 'index.html'
-		})
-	]
-};
+export const HTTP_PORT = readEnvironmentVariable('HTTP_PORT', {
+	defaultValue: 8080,
+	format: v => Number(v)
+});
+
+function readEnvironmentVariable(name, {defaultValue = undefined, hideDefault = false, format = v => v} = {}) {
+	if (process.env[name] === undefined) {
+		if (defaultValue === undefined) {
+			throw new Error(`Mandatory environment variable missing: ${name}`);
+		}
+
+		const defaultValuePrintable = typeof defaultValue === 'object' ? JSON.stringify(defaultValue) : defaultValue;
+
+		console.error(`No environment variable set for ${name}, using default value: ${hideDefault ? '[hidden]' : defaultValuePrintable}`);
+		return defaultValue;
+	}
+
+	return format(process.env[name]);
+}
