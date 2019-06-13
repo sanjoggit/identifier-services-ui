@@ -35,17 +35,14 @@ import TableComponent from '../TableComponent';
 import {getPublisherList} from '../../store/reducers';
 import * as actions from '../../store/actions';
 
-// eslint-disable-next-line no-unused-vars
 export default connect(mapStateToProps, actions)(props => {
 	const {fetchPublishersList, publishersList} = props;
 	const [state, setState] = React.useState({
 		checked: false
 	});
-	const [publishers, setPublishers] = React.useState([]);
 
 	useEffect(() => {
 		fetchPublishersList();
-		setPublishers(publishersList);
 	}, []);
 
 	const handleChange = name => event => {
@@ -75,7 +72,6 @@ export default connect(mapStateToProps, actions)(props => {
 			state: {modal: true}
 		});
 	};
-
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>

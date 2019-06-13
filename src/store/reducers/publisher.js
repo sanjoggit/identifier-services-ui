@@ -26,10 +26,11 @@
  *
  */
 
-import {PUBLISHERS_LIST} from '../actions/types';
+import {PUBLISHERS_LIST, PUBLISHER} from '../actions/types';
 
 const initialState = {
-	publishersList: []
+	publishersList: [],
+	publisher: {}
 };
 
 export default function (state = initialState, action) {
@@ -38,6 +39,11 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				publishersList: action.payload
+			};
+		case PUBLISHER:
+			return {
+				...state,
+				publisher: action.payload
 			};
 		default:
 			return state;

@@ -26,8 +26,24 @@
  *
  */
 
-import React from 'react';
-import {Typography, Grid, List, ListItem, ListItemText, Fab, Chip, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails} from '@material-ui/core';
+import React, {useState} from 'react';
+import {
+	Typography,
+	Button,
+	Grid,
+	List,
+	ListItem,
+	ListItemText,
+	Fab,
+	Chip,
+	Table,
+	TableHead,
+	TableRow,
+	TableBody,
+	TableCell,
+	ExpansionPanel,
+	ExpansionPanelSummary,
+	ExpansionPanelDetails} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import useStyles from '../../styles/publisher';
@@ -36,15 +52,17 @@ import ModalLayout from '../ModalLayout';
 
 export default function () {
 	const classes = useStyles();
+	const [isEdit, setIsEdit] = useState(false);
+
 	const publisherDetail = {
-		name: 'Sanjog Shrestha',
+		name: 'sanjog',
 		publicationEstimate: 44,
 		publisherEmail: 'sanjog@gmail.com',
 		streetAddress: 'Asiakkankatu',
-		Website: 'something.com',
+		website: 'something.com',
 		zip: 440,
 		city: 'Helsinki',
-		aliases: ['alias1', 'alias2', 'alias3'],
+		aliases: ['alias1', 'alias2', 'alias3', 'lonngggggggggggggggggggggg alias'],
 		contactDetails: [
 			{
 				givenName: 'Raj',
@@ -62,90 +80,248 @@ export default function () {
 				email: 'ra@gmail.com'
 			}
 		]
+
 	};
+	const listData = [
+		{
+			basicInfo: [
+				{
+					label: 'Name',
+					value: publisherDetail.name
+				},
+				{
+					label: 'Publisher Email',
+					value: publisherDetail.publisherEmail
+				},
+				{
+					label: 'Publication Estimate',
+					value: publisherDetail.publicationEstimate
+				},
+				{
+					label: 'Website',
+					value: publisherDetail.website
+				},
+				{
+					label: 'Aliases',
+					value: publisherDetail.aliases.map((item, index) => (
+						<Chip
+							key={index}
+							label={item}
+						/>
+					))
+				}
+			]
+		},
+		{
+			address: [
+				{
+					label: 'Street Address',
+					value: publisherDetail.streetAddress
+				},
+				{
+					label: 'City',
+					value: publisherDetail.city
+				},
+				{
+					label: 'Zip',
+					value: publisherDetail.zip
+				}
+			]
+		}
+	];
+	const handleEditClick = () => {
+		setIsEdit(true);
+	};
+
+	const handleCancel = () => {
+		setIsEdit(false);
+	};
+
 	return (
 		<ModalLayout isTableRow color="primary" label="Publisher Detail">
-			<div className={classes.publisher}>
-				<Grid container spacing={3}>
-					<Grid item xs={12} md={6}>
-						<Typography variant="h6">
+			{isEdit ?
+				<div className={classes.publisher}>
+					<form>
+						<Grid container spacing={3}>
+							<Grid item xs={12} md={6}>
+								<Typography variant="h6">
                             Basic Information
-						</Typography>
-						<List>
-							<ListItem>
-								<ListItemText>Name: {publisherDetail.name}</ListItemText>
-							</ListItem>
-							<ListItem>
-								<ListItemText>Publisher Email :{publisherDetail.publisherEmail}</ListItemText>
-							</ListItem>
-							<ListItem>
-								<ListItemText>Publication Estimate :{publisherDetail.publicationEstimate}</ListItemText>
-							</ListItem>
-							<ListItem>
-								<ListItemText>Website :{publisherDetail.Website}</ListItemText>
-							</ListItem>
-							<ListItem>
-								<ListItemText>Aliases :	{publisherDetail.aliases.map((item, index) => (
-									<Chip
-										key={index}
-										label={item}
-									/>
-								))}
-								</ListItemText>
-							</ListItem>
-						</List>
-					</Grid>
-					<Grid item xs={12} md={6}>
-						<Typography variant="h6">
-                            Address
-						</Typography>
-						<List>
-							<ListItem>
-								<ListItemText>Street Address: {publisherDetail.streetAddress}</ListItemText>
-							</ListItem>
-							<ListItem>
-								<ListItemText>City: {publisherDetail.city}</ListItemText>
-							</ListItem>
-							<ListItem>
-								<ListItemText>Zip: {publisherDetail.zip}</ListItemText>
-							</ListItem>
-						</List>
-
-					</Grid>
-					<Grid item xs={6}>
-						{publisherDetail.contactDetails.map((item, index) => (
-							<ExpansionPanel key={index}>
-								<ExpansionPanelSummary
-									expandIcon={<ExpandMoreIcon/>}
-									aria-controls="panel1a-content"
-									id="panel1a-header"
-								>
-									<Typography variant="h6">
-                                            Contact Detail {index + 1}
-									</Typography>
-								</ExpansionPanelSummary>
-								<ExpansionPanelDetails>
-									<List>
-
+								</Typography>
+								{listData[0].basicInfo.map(item => (
+									<List key={item.value}>
 										<ListItem>
-											<ListItemText>Given Name: {item.givenName}</ListItemText>
-										</ListItem>
-										<ListItem>
-											<ListItemText>Family Name :	{item.familyName}</ListItemText>
-										</ListItem>
-										<ListItem>
-											<ListItemText>Email : {item.email}</ListItemText>
+											<ListItemText>
+												<Grid container>
+													<Grid item xs={6}>{item.label}:</Grid>
+													<Grid item xs={6}>{item.value}</Grid>
+												</Grid>
+											</ListItemText>
 										</ListItem>
 									</List>
-								</ExpansionPanelDetails>
-							</ExpansionPanel>
-						))}
+								))}
+							</Grid>
+							<Grid item xs={12} md={6}>
+								<Typography variant="h6">
+                            Address
+								</Typography>
+								{listData[1].address.map(item => (
+									<List key={item.value}>
+										<ListItem>
+											<ListItemText>
+												<Grid container>
+													<Grid item xs={6}>{item.label}:</Grid>
+													<Grid item xs={6}>{item.value}</Grid>
+												</Grid>
+											</ListItemText>
+										</ListItem>
+									</List>
+								))}
+
+							</Grid>
+							<Grid item xs={12} md={6}>
+								{publisherDetail.contactDetails.map((item, index) => (
+									<ExpansionPanel key={index}>
+										<ExpansionPanelSummary
+											expandIcon={<ExpandMoreIcon/>}
+											aria-controls="panel1a-content"
+											id="panel1a-header"
+										>
+											<Typography variant="h6">
+                                            Contact Detail {index + 1}
+											</Typography>
+										</ExpansionPanelSummary>
+										<ExpansionPanelDetails>
+											<List style={{width: '100%'}}>
+												<ListItem>
+													<ListItemText>
+														<Grid container spacing={2}>
+															<Grid item xs={6}>Given Name:</Grid>
+															<Grid item xs={6}>{item.givenName}</Grid>
+														</Grid>
+													</ListItemText>
+												</ListItem>
+												<ListItem>
+													<ListItemText>
+														<Grid container>
+															<Grid item xs={6}>Family Name:</Grid>
+															<Grid item xs={6}>{item.familyName}</Grid>
+														</Grid>
+													</ListItemText>
+												</ListItem>
+												<ListItem>
+													<ListItemText>
+														<Grid container>
+															<Grid item xs={6}>Email:</Grid>
+															<Grid item xs={6}>{item.email}</Grid>
+														</Grid>
+													</ListItemText>
+												</ListItem>
+											</List>
+										</ExpansionPanelDetails>
+									</ExpansionPanel>
+								))}
+							</Grid>
+						</Grid>
+						<div className={classes.btnContainer}>
+							<Button onClick={handleCancel}>Cancel</Button>
+							<Button variant="contained" color="primary">
+                            UPDATE
+							</Button>
+						</div>
+					</form>
+				</div> :
+				<div className={classes.publisher}>
+					<Grid container spacing={3}>
+						<Grid item xs={12} md={6}>
+							<Typography variant="h6" className={classes.detailHeading}>
+                            Basic Information
+							</Typography>
+							{listData[0].basicInfo.map(item => (
+								<List key={item.value}>
+									<ListItem>
+										<ListItemText>
+											<Grid container>
+												<Grid item xs={6}>{item.label}:</Grid>
+												<Grid item xs={6}>{item.value}</Grid>
+											</Grid>
+										</ListItemText>
+									</ListItem>
+								</List>
+							))}
+						</Grid>
+						<Grid item xs={12} md={6}>
+							<Typography variant="h6" className={classes.detailHeading}>
+                            Address
+							</Typography>
+							{listData[1].address.map(item => (
+								<List key={item.value}>
+									<ListItem>
+										<ListItemText>
+											<Grid container>
+												<Grid item xs={6}>{item.label}:</Grid>
+												<Grid item xs={6}>{item.value}</Grid>
+											</Grid>
+										</ListItemText>
+									</ListItem>
+								</List>
+							))}
+
+						</Grid>
+						<Grid item xs={12} md={6}>
+							{publisherDetail.contactDetails.map((item, index) => (
+								<ExpansionPanel key={index}>
+									<ExpansionPanelSummary
+										expandIcon={<ExpandMoreIcon/>}
+										aria-controls="panel1a-content"
+										id="panel1a-header"
+									>
+										<Typography variant="h6">
+                                            Contact Detail {index + 1}
+										</Typography>
+									</ExpansionPanelSummary>
+									<ExpansionPanelDetails>
+										<List style={{width: '100%'}}>
+											<ListItem>
+												<ListItemText>
+													<Grid container spacing={2}>
+														<Grid item xs={6}>Given Name:</Grid>
+														<Grid item xs={6}>{item.givenName}</Grid>
+													</Grid>
+												</ListItemText>
+											</ListItem>
+											<ListItem>
+												<ListItemText>
+													<Grid container>
+														<Grid item xs={6}>Family Name:</Grid>
+														<Grid item xs={6}>{item.familyName}</Grid>
+													</Grid>
+												</ListItemText>
+											</ListItem>
+											<ListItem>
+												<ListItemText>
+													<Grid container>
+														<Grid item xs={6}>Email:</Grid>
+														<Grid item xs={6}>{item.email}</Grid>
+													</Grid>
+												</ListItemText>
+											</ListItem>
+										</List>
+									</ExpansionPanelDetails>
+								</ExpansionPanel>
+							))}
+						</Grid>
 					</Grid>
-				</Grid>
-				<Fab color="primary" aria-label="Add" className={classes.publisherEditIcon} title="Edit Publisher Detail">
-					<EditIcon/>
-				</Fab>
-			</div>
+					<Fab
+						color="primary"
+						size="small"
+						className={classes.publisherEditIcon}
+						title="Edit Publisher Detail"
+						onClick={handleEditClick}
+					>
+						<EditIcon/>
+					</Fab>
+				</div>
+			}
 		</ModalLayout>
 	);
 }
