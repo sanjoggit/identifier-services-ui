@@ -40,7 +40,6 @@ import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
-import NotificationBar from './components/NotificationBar';
 
 export default withRouter(props => {
 	const [user, setUser] = React.useState({role: 'publisher', isLoggedIn: true});
@@ -94,7 +93,6 @@ export default withRouter(props => {
 
 	const component = (
 		<MuiThemeProvider theme={theme}>
-			<NotificationBar/>
 			<TopNav loggedIn={user.isLoggedIn} role={user.role} logOut={handleLogOut}/>
 			<CssBaseline/>
 			<AdminNav user={user}/>

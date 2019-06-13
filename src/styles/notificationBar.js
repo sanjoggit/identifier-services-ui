@@ -33,9 +33,14 @@ const useStyles = makeStyles({
 	bar: {
 		position: 'sticky',
 		minHeight: 30,
-		padding: 10,
-		background: 'orange',
-		textAlign: 'center'
+		background: 'orange',	
+		justifyContent: 'center',
+		display: 'flex',
+		flexDirection: 'row',
+		'& button': {
+			position: 'absolute',
+			right: 20
+		}
 	}
 
 });

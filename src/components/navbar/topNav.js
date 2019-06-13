@@ -35,27 +35,37 @@ import PropTypes from 'prop-types';
 import useStyles from '../../styles/topNav';
 import Logo from '../../assets/logo/logo.png';
 import Login from '../login/Login';
+import NotificationBar from '../../components/NotificationBar';
 
 export default function (props) {
 	const classes = useStyles();
+	const [openNotification, setOpenNotification] = React.useState(true);
+
+	const handleCloseNotification = () => {
+		setOpenNotification(false);
+	};
+
 	const component = (
-		<Grid container className={classes.topBarContainer}>
-			<Grid item xs={12} className={classes.topBar}>
-				<AppBar position="static">
-					<Toolbar className={classes.navbarContainer}>
-						<Typography variant="h6" color="inherit">
-							<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
-						</Typography>
-						<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
-							<Login name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
-							<LanguageIcon/>
-							<span className={classes.languageSelect}>EN</span>
-							<ArrowDropDown/>
-						</div>
-					</Toolbar>
-				</AppBar>
+		<>
+			{openNotification && <NotificationBar handleClose={handleCloseNotification}/>}
+			<Grid container className={classes.topBarContainer}>
+				<Grid item xs={12} className={classes.topBar}>
+					<AppBar position="static">
+						<Toolbar className={classes.navbarContainer}>
+							<Typography variant="h6" color="inherit">
+								<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
+							</Typography>
+							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
+								<Login name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
+								<LanguageIcon/>
+								<span className={classes.languageSelect}>EN</span>
+								<ArrowDropDown/>
+							</div>
+						</Toolbar>
+					</AppBar>
+				</Grid>
 			</Grid>
-		</Grid>
+		</>
 	);
 	return {
 		...component,
