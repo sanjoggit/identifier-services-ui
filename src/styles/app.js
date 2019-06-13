@@ -64,12 +64,20 @@ const theme = createMuiTheme({
 		},
 		MuiListItem: {
 			gutters: {
-				paddingLeft: 0
+				//paddingLeft: 0
+			},
+			root: {
+				paddingBottom: 0
 			}
 		},
 		MuiPaper: {
 			elevation1: {
 				boxShadow: 'none'
+			}
+		},
+		MuiExpansionPanelDetails: {
+			root: {
+				padding: '0 24px 0'
 			}
 		}
 	}

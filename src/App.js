@@ -43,7 +43,7 @@ import Tooltips from './components/Tooltips';
 import NotificationBar from './components/NotificationBar';
 
 export default withRouter(props => {
-	const [user, setUser] = React.useState({role: 'publisher'});
+	const [user, setUser] = React.useState({role: 'admin'});
 	const routeField = [
 		{path: '/', component: (user.role === 'admin' || user.role === 'publisher') ? PublishersList : Home},
 		{path: '/publishers', component: PublishersList},

@@ -36,6 +36,11 @@ import {
 	ListItemText,
 	Fab,
 	Chip,
+	Table,
+	TableHead,
+	TableRow,
+	TableBody,
+	TableCell,
 	ExpansionPanel,
 	ExpansionPanelSummary,
 	ExpansionPanelDetails} from '@material-ui/core';
@@ -48,15 +53,16 @@ import ModalLayout from '../ModalLayout';
 export default function () {
 	const classes = useStyles();
 	const [isEdit, setIsEdit] = useState(false);
+
 	const publisherDetail = {
-		name: 'Sanjog Shrestha',
+		name: 'sanjog',
 		publicationEstimate: 44,
 		publisherEmail: 'sanjog@gmail.com',
 		streetAddress: 'Asiakkankatu',
-		Website: 'something.com',
+		website: 'something.com',
 		zip: 440,
 		city: 'Helsinki',
-		aliases: ['alias1', 'alias2', 'alias3'],
+		aliases: ['alias1', 'alias2', 'alias3', 'lonngggggggggggggggggggggg alias'],
 		contactDetails: [
 			{
 				givenName: 'Raj',
@@ -76,6 +82,53 @@ export default function () {
 		]
 
 	};
+	const listData = [
+		{
+			basicInfo: [
+				{
+					label: 'Name',
+					value: publisherDetail.name
+				},
+				{
+					label: 'Publisher Email',
+					value: publisherDetail.publisherEmail
+				},
+				{
+					label: 'Publication Estimate',
+					value: publisherDetail.publicationEstimate
+				},
+				{
+					label: 'Website',
+					value: publisherDetail.website
+				},
+				{
+					label: 'Aliases',
+					value: publisherDetail.aliases.map((item, index) => (
+						<Chip
+							key={index}
+							label={item}
+						/>
+					))
+				}
+			]
+		},
+		{
+			address: [
+				{
+					label: 'Street Address',
+					value: publisherDetail.streetAddress
+				},
+				{
+					label: 'City',
+					value: publisherDetail.city
+				},
+				{
+					label: 'Zip',
+					value: publisherDetail.zip
+				}
+			]
+		}
+	];
 	const handleEditClick = () => {
 		setIsEdit(true);
 	};
@@ -94,48 +147,38 @@ export default function () {
 								<Typography variant="h6">
                             Basic Information
 								</Typography>
-								<List>
-									<ListItem>
-										<ListItemText>Name: {publisherDetail.name}</ListItemText>
-									</ListItem>
-									<ListItem>
-										<ListItemText>Publisher Email :{publisherDetail.publisherEmail}</ListItemText>
-									</ListItem>
-									<ListItem>
-										<ListItemText>Publication Estimate :{publisherDetail.publicationEstimate}</ListItemText>
-									</ListItem>
-									<ListItem>
-										<ListItemText>Website :{publisherDetail.Website}</ListItemText>
-									</ListItem>
-									<ListItem>
-										<ListItemText>Aliases :	{publisherDetail.aliases.map((item, index) => (
-											<Chip
-												key={index}
-												label={item}
-											/>
-										))}
-										</ListItemText>
-									</ListItem>
-								</List>
+								{listData[0].basicInfo.map(item => (
+									<List key={item.value}>
+										<ListItem>
+											<ListItemText>
+												<Grid container>
+													<Grid item xs={6}>{item.label}:</Grid>
+													<Grid item xs={6}>{item.value}</Grid>
+												</Grid>
+											</ListItemText>
+										</ListItem>
+									</List>
+								))}
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<Typography variant="h6">
                             Address
 								</Typography>
-								<List>
-									<ListItem>
-										<ListItemText>Street Address: {publisherDetail.streetAddress}</ListItemText>
-									</ListItem>
-									<ListItem>
-										<ListItemText>City: {publisherDetail.city}</ListItemText>
-									</ListItem>
-									<ListItem>
-										<ListItemText>Zip: {publisherDetail.zip}</ListItemText>
-									</ListItem>
-								</List>
+								{listData[1].address.map(item => (
+									<List key={item.value}>
+										<ListItem>
+											<ListItemText>
+												<Grid container>
+													<Grid item xs={6}>{item.label}:</Grid>
+													<Grid item xs={6}>{item.value}</Grid>
+												</Grid>
+											</ListItemText>
+										</ListItem>
+									</List>
+								))}
 
 							</Grid>
-							<Grid item xs={6}>
+							<Grid item xs={12} md={6}>
 								{publisherDetail.contactDetails.map((item, index) => (
 									<ExpansionPanel key={index}>
 										<ExpansionPanelSummary
@@ -148,16 +191,30 @@ export default function () {
 											</Typography>
 										</ExpansionPanelSummary>
 										<ExpansionPanelDetails>
-											<List>
-
+											<List style={{width: '100%'}}>
 												<ListItem>
-													<ListItemText>Given Name: {item.givenName}</ListItemText>
+													<ListItemText>
+														<Grid container spacing={2}>
+															<Grid item xs={6}>Given Name:</Grid>
+															<Grid item xs={6}>{item.givenName}</Grid>
+														</Grid>
+													</ListItemText>
 												</ListItem>
 												<ListItem>
-													<ListItemText>Family Name :	{item.familyName}</ListItemText>
+													<ListItemText>
+														<Grid container>
+															<Grid item xs={6}>Family Name:</Grid>
+															<Grid item xs={6}>{item.familyName}</Grid>
+														</Grid>
+													</ListItemText>
 												</ListItem>
 												<ListItem>
-													<ListItemText>Email : {item.email}</ListItemText>
+													<ListItemText>
+														<Grid container>
+															<Grid item xs={6}>Email:</Grid>
+															<Grid item xs={6}>{item.email}</Grid>
+														</Grid>
+													</ListItemText>
 												</ListItem>
 											</List>
 										</ExpansionPanelDetails>
@@ -176,51 +233,41 @@ export default function () {
 				<div className={classes.publisher}>
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={6}>
-							<Typography variant="h6">
+							<Typography variant="h6" className={classes.detailHeading}>
                             Basic Information
 							</Typography>
-							<List>
-								<ListItem>
-									<ListItemText>Name: {publisherDetail.name}</ListItemText>
-								</ListItem>
-								<ListItem>
-									<ListItemText>Publisher Email :{publisherDetail.publisherEmail}</ListItemText>
-								</ListItem>
-								<ListItem>
-									<ListItemText>Publication Estimate :{publisherDetail.publicationEstimate}</ListItemText>
-								</ListItem>
-								<ListItem>
-									<ListItemText>Website :{publisherDetail.Website}</ListItemText>
-								</ListItem>
-								<ListItem>
-									<ListItemText>Aliases :	{publisherDetail.aliases.map((item, index) => (
-										<Chip
-											key={index}
-											label={item}
-										/>
-									))}
-									</ListItemText>
-								</ListItem>
-							</List>
+							{listData[0].basicInfo.map(item => (
+								<List key={item.value}>
+									<ListItem>
+										<ListItemText>
+											<Grid container>
+												<Grid item xs={6}>{item.label}:</Grid>
+												<Grid item xs={6}>{item.value}</Grid>
+											</Grid>
+										</ListItemText>
+									</ListItem>
+								</List>
+							))}
 						</Grid>
 						<Grid item xs={12} md={6}>
-							<Typography variant="h6">
+							<Typography variant="h6" className={classes.detailHeading}>
                             Address
 							</Typography>
-							<List>
-								<ListItem>
-									<ListItemText>Street Address: {publisherDetail.streetAddress}</ListItemText>
-								</ListItem>
-								<ListItem>
-									<ListItemText>City: {publisherDetail.city}</ListItemText>
-								</ListItem>
-								<ListItem>
-									<ListItemText>Zip: {publisherDetail.zip}</ListItemText>
-								</ListItem>
-							</List>
+							{listData[1].address.map(item => (
+								<List key={item.value}>
+									<ListItem>
+										<ListItemText>
+											<Grid container>
+												<Grid item xs={6}>{item.label}:</Grid>
+												<Grid item xs={6}>{item.value}</Grid>
+											</Grid>
+										</ListItemText>
+									</ListItem>
+								</List>
+							))}
 
 						</Grid>
-						<Grid item xs={6}>
+						<Grid item xs={12} md={6}>
 							{publisherDetail.contactDetails.map((item, index) => (
 								<ExpansionPanel key={index}>
 									<ExpansionPanelSummary
@@ -233,16 +280,30 @@ export default function () {
 										</Typography>
 									</ExpansionPanelSummary>
 									<ExpansionPanelDetails>
-										<List>
-
+										<List style={{width: '100%'}}>
 											<ListItem>
-												<ListItemText>Given Name: {item.givenName}</ListItemText>
+												<ListItemText>
+													<Grid container spacing={2}>
+														<Grid item xs={6}>Given Name:</Grid>
+														<Grid item xs={6}>{item.givenName}</Grid>
+													</Grid>
+												</ListItemText>
 											</ListItem>
 											<ListItem>
-												<ListItemText>Family Name :	{item.familyName}</ListItemText>
+												<ListItemText>
+													<Grid container>
+														<Grid item xs={6}>Family Name:</Grid>
+														<Grid item xs={6}>{item.familyName}</Grid>
+													</Grid>
+												</ListItemText>
 											</ListItem>
 											<ListItem>
-												<ListItemText>Email : {item.email}</ListItemText>
+												<ListItemText>
+													<Grid container>
+														<Grid item xs={6}>Email:</Grid>
+														<Grid item xs={6}>{item.email}</Grid>
+													</Grid>
+												</ListItemText>
 											</ListItem>
 										</List>
 									</ExpansionPanelDetails>
