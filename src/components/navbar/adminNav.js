@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -27,29 +26,22 @@
  *
  */
 import React from 'react';
-import {AppBar, Button, Menu, MenuItem, Link} from '@material-ui/core';
-import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import {Link} from 'react-router-dom';
+import {AppBar, Button} from '@material-ui/core';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 import useStyles from '../../styles/adminNav';
+import MenuTabs from './menuTabs';
 
-export default function ({role}) {
-	const [anchorEl, setAnchorEl] = React.useState(null);
+export default function ({user: {role, isLoggedIn}}) {
 	const classes = useStyles();
-
-	function handleClick(event) {
-		setAnchorEl(event.currentTarget);
-	}
-
-	function handleClose() {
-		setAnchorEl(null);
-	}
-
 	function HomeIcon(props) {
 		return (
-			<SvgIcon {...props}>
-				<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-			</SvgIcon>
+			<Link to="/">
+				<SvgIcon {...props}>
+					<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+				</SvgIcon>
+			</Link>
 		);
 	}
 
@@ -62,11 +54,11 @@ export default function ({role}) {
 		},
 		{
 			label: 'Publications',
-			roleView: ['publisher'],
+			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'ISBN', roleView: ['publisher']},
-				{label: 'ISMN', roleView: ['publisher']},
-				{label: 'ISSN', roleView: ['publisher']}
+				{label: 'ISBN', roleView: ['admin', 'publisher']},
+				{label: 'ISMN', roleView: ['admin', 'publisher']},
+				{label: 'ISSN', roleView: ['admin', 'publisher']}
 			]
 		},
 		{
@@ -98,46 +90,18 @@ export default function ({role}) {
 	];
 	const nav = (
 		<AppBar position="static" color="secondary">
-			<div className={classes.adminNav}>
-				<HomeIcon className={classes.homeIcon} fontSize="large"/>
-				<div className={classes.adminNavTabs}>
-
-					{obj.map(list => list.roleView.includes(role) && (
+			<div className={isLoggedIn ? classes.adminNavLoggedIn : classes.adminNav}>
+				{isLoggedIn ?
+					obj.map(list => list.roleView.includes(role) && (
 						<div key={list.label} className={classes.btnHolder}>
-							<>
-								<Button className={list.selected && classes.selected} onClick={handleClick}>
-									{list.label}
-									{list.listItem && <ArrowDropDown/>}
-								</Button>
-							</>
-
-							{list.listItem &&
-							<Menu
-								keepMounted
-								elevation={0}
-								getContentAnchorEl={null}
-								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'center'
-								}}
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'center'
-								}}
-								id="customized-menu"
-								anchorEl={anchorEl}
-								open={Boolean(anchorEl)}
-								onClose={handleClose}
-							>
-								{list.listItem.map(item => item.roleView && item.roleView.includes(role) &&
-									<MenuItem key={item.label}>{item.label}</MenuItem>
-								)}
-							</Menu>
-							}
+							<MenuTabs role={role} list={list}/>
 						</div>
-					))}
-				</div>
-
+					)) :
+					<>
+						<HomeIcon className={classes.homeIcon} fontSize="large"/>
+						<Button className={classes.selected}>Publishers</Button>
+					</>
+				}
 			</div>
 		</AppBar>
 	);

@@ -28,19 +28,20 @@
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+	adminNavLoggedIn: {
+		minHeight: 50,
+		display: 'flex',
+		width: 1200,
+		margin: '0px auto',
+		alignItems: 'center',
+		justifyContent: 'space-evenly'
+	},
 	adminNav: {
 		minHeight: 50,
 		display: 'flex',
-		width: '70%',
+		width: 1200,
 		margin: '0px auto',
 		alignItems: 'center'
-	},
-	adminNavTabs: {
-		minHeight: 50,
-		display: 'flex',
-		width: '70%',
-		margin: '0px auto',
-		justifyContent: 'space-around'
 	},
 	btnHolder: {
 		display: 'inherit',
@@ -49,6 +50,9 @@ const useStyles = makeStyles({
 	selected: {
 		borderBottom: '2px solid #00224F',
 		borderRadius: 0
+	},
+	homeIcon: {
+		margin: '0px 30px 0px 0px'
 	}
 });
 
