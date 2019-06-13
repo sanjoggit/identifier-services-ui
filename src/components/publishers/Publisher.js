@@ -36,21 +36,20 @@ import {
 	ListItemText,
 	Fab,
 	Chip,
-	Table,
-	TableHead,
-	TableRow,
-	TableBody,
-	TableCell,
 	ExpansionPanel,
 	ExpansionPanelSummary,
-	ExpansionPanelDetails} from '@material-ui/core';
+	ExpansionPanelDetails
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {Field, reduxForm} from 'redux-form';
+import renderTextField from '../form/render/renderTextField';
 import useStyles from '../../styles/publisher';
-
 import ModalLayout from '../ModalLayout';
 
-export default function () {
+export default (reduxForm({
+	form: 'publisherDetail'
+})(() => {
 	const classes = useStyles();
 	const [isEdit, setIsEdit] = useState(false);
 
@@ -137,7 +136,7 @@ export default function () {
 		setIsEdit(false);
 	};
 
-	return (
+	const component = (
 		<ModalLayout isTableRow color="primary" label="Publisher Detail">
 			{isEdit ?
 				<div className={classes.publisher}>
@@ -153,7 +152,12 @@ export default function () {
 											<ListItemText>
 												<Grid container>
 													<Grid item xs={6}>{item.label}:</Grid>
-													<Grid item xs={6}>{item.value}</Grid>
+													<Grid item xs={6}>
+														<Field
+															component={renderTextField}
+															name="name"
+														/>
+													</Grid>
 												</Grid>
 											</ListItemText>
 										</ListItem>
@@ -324,4 +328,7 @@ export default function () {
 			}
 		</ModalLayout>
 	);
-}
+	return {
+		...component
+	};
+}))
