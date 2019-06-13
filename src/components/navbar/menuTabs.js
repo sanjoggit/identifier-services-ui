@@ -25,30 +25,58 @@
  * for the JavaScript code in this file.
  *
  */
-import React, {useState} from 'react';
-import {AppBar, IconButton} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import useStyles from '../styles/notificationBar';
+import React from 'react';
+import {Button, Menu, MenuItem} from '@material-ui/core';
+import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
-export default function ({handleClose}) {
+import useStyles from '../../styles/adminNav';
+
+export default function (props) {
+	const {list, role} = props;
 	const classes = useStyles();
-	// const [open, setOpen] = useState(true);
+	const [anchorEl, setAnchorEl] = React.useState(null);
 
-	// const handleClose = () =>{
-	// 	setOpen(false);
-	// }
+	function handleClick(event) {
+		setAnchorEl(event.currentTarget);
+	}
+
+	function handleClose() {
+		setAnchorEl(null);
+	}
 
 	const component = (
-		<AppBar className={classes.bar} color="secondary" >
-			<p>Hello World! This is a notification...</p>
-			<IconButton key="close" aria-label="Close" color="inherit" onClick={handleClose}>
-				<CloseIcon className={classes.icon}/>
-			</IconButton>
-		</AppBar>
-	);
+		<>
+			<Button className={list.selected && classes.selected} onClick={handleClick}>
+				{list.label}
+				{list.listItem && <ArrowDropDown/>}
+			</Button>
 
+			{list.listItem &&
+			<Menu
+				keepMounted
+				elevation={0}
+				getContentAnchorEl={null}
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'center'
+				}}
+				transformOrigin={{
+					vertical: 'top',
+					horizontal: 'center'
+				}}
+				id="customized-menu"
+				anchorEl={anchorEl}
+				open={Boolean(anchorEl)}
+				onClose={handleClose}
+			>
+				{list.listItem.map(item => item.roleView && item.roleView.includes(role) &&
+				<MenuItem key={item.label}>{item.label}</MenuItem>
+				)}
+			</Menu>
+			}
+		</>
+	);
 	return {
 		...component
 	};
 }
-
