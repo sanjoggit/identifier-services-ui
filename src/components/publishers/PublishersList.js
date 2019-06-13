@@ -53,7 +53,7 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'name', label: 'Name'},
 		{id: 'age', label: 'Age'}
 	];
-
+	console.log('--', publishersList)
 	const data = [
 		{id: 1, name: 'Rojak', age: 22},
 		{id: 2, name: 'Sanjog', age: 23},
@@ -72,6 +72,7 @@ export default connect(mapStateToProps, actions)(props => {
 			state: {modal: true}
 		});
 	};
+
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
