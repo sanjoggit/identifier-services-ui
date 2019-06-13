@@ -25,42 +25,25 @@
  * for the JavaScript code in this file.
  *
  */
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-	entry: path.resolve(path.join(__dirname, '..', 'src', 'index.js')),
-	output: {
-		path: path.join(__dirname, '../dist'),
-		filename: 'index-bundle.js'
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader'
-				}
-			},
-			{
-				test: /\.(jpg|gif|png)$/,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: 'images/[name]-[hash:8].[ext]',
-							outputPath: 'images/'
-						}
-					}
-				]
-			}
-		]
-	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			template: path.resolve(path.join(__dirname, '../public/index.html')),
-			filename: 'index.html'
-		})
-	]
-};
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+
+const PORT = 8080;
+
+const app = express();
+app.use(cors());
+
+process.on('SIGINT', () => {
+	process.exit(-1);
+});
+
+app.use(express.static(path.resolve(__dirname, '..', 'dist', 'public')));
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+});
+
+app.listen(PORT, () => console.log('info', `Application Started on port ${PORT}`));
+
