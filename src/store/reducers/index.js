@@ -33,3 +33,4 @@ export default combineReducers({
 	form: forms,
 	publisher: publisherReducer
 });
+

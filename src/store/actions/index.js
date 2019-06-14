@@ -26,4 +26,9 @@
  *
  */
 
-export {fetchPublishersList, fetchPublisher, updatePublisher} from './publisherAction';
+export {
+	fetchPublishersList,
+	fetchPublisher,
+	updatePublisher,
+	searchPublisher
+} from './publisherAction';

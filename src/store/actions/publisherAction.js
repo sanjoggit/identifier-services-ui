@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, UPDATE_PUBLISHER, ERROR} from './types';
+import {PUBLISHERS_LIST, PUBLISHER, UPDATE_PUBLISHER, ERROR, SEARCH} from './types';
 import {setLoader} from './loaderAction';
 
 function success(type, payload) {
@@ -87,3 +87,5 @@ export const updatePublisher = (id, values) => async dispatch => {
 		});
 	}
 };
+
+export const searchPublisher = value => ({type: SEARCH, payload: value});

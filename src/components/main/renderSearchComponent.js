@@ -26,36 +26,20 @@
  *
  */
 
-import React, {useState} from 'react';
+import React from 'react';
 import {Grid, Typography} from '@material-ui/core';
 import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/searchComponent';
-import {withRouter} from 'react-router-dom';
 
-export default withRouter(props => {
+export default function () {
 	const classes = useStyles();
-	const [inputVal, setInputVal] = useState('');
-
-	const handleInputChange = e => {
-		setInputVal(e.target.value);
-	};
-
-	const handleSubmit = e => {
-		e.preventDefault();
-		props.history.push('/publishers');
-	};
 
 	return (
 		<Grid container>
 			<Grid item xs={12} className={classes.searchContianer}>
 				<Typography variant="h4" align="center">Explore Finnish Publisher</Typography>
-				<SearchComponent
-					inputVal={inputVal}
-					handleInputChange={handleInputChange}
-					handleSubmit={handleSubmit}
-				/>
+				<SearchComponent/>
 			</Grid>
 		</Grid>
 	);
 }
-);
