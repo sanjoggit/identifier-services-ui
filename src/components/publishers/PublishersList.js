@@ -33,13 +33,12 @@ import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
-import {getPublisherList} from '../../store/reducers';
 import * as actions from '../../store/actions';
 import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {fetchPublishersList, publishers} = props;
+	const {fetchPublishersList, publishers, loading, error} = props;
 	const [state, setState] = React.useState({
 		checked: false
 	});
@@ -64,7 +63,7 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'phone', label: 'Phone'}
 	];
 	let publishersData;
-	if ((publishers.publishersList.Publishers === undefined) || (publishers.loading)) {
+	if ((publishers.publishersList.Publishers === undefined) || (loading)) {
 		publishersData = <Spinner/>;
 	} else {
 		publishersData = (
@@ -81,7 +80,7 @@ export default connect(mapStateToProps, actions)(props => {
 			/>
 		);
 	}
-
+	console.log('err', error)
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
@@ -109,6 +108,6 @@ export default connect(mapStateToProps, actions)(props => {
 
 function mapStateToProps(state) {
 	return ({
-		publishers: getPublisherList(state)
+		publishers: state.publisher
 	});
 }
