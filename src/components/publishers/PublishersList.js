@@ -27,7 +27,7 @@
  *
  */
 
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 import SearchComponent from '../SearchComponent';
@@ -38,8 +38,9 @@ import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {fetchPublishersList, publishers, loading, error} = props;
-	const [state, setState] = React.useState({
+	const {fetchPublishersList, publishers, loading, location} = props;
+	const searchResult = location.state;
+	const [state, setState] = useState({
 		checked: false
 	});
 
@@ -63,24 +64,27 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'phone', label: 'Phone'}
 	];
 	let publishersData;
-	if ((publishers.publishersList.Publishers === undefined) || (loading)) {
+	if ((publishers.publishersList === undefined) || (loading)) {
 		publishersData = <Spinner/>;
 	} else {
 		publishersData = (
+
 			<TableComponent
-				data={publishers.publishersList.Publishers.map(item => {
-					return {
-						id: item._id,
-						name: item.name,
-						phone: item.phone
-					};
-				})}
+				data={searchResult !== undefined && searchResult.length > 0 && searchResult.map(item => searchResultRender(item._id, item.name, item.phone))}
 				handlePublisherClick={handlePublisherClick}
 				headRows={headRows}
 			/>
 		);
 	}
-	console.log('err', error)
+
+	function searchResultRender(id, name, phone) {
+		return {
+			id: id,
+			name: name,
+			phone: phone
+		};
+	}
+
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
@@ -97,7 +101,7 @@ export default connect(mapStateToProps, actions)(props => {
 					}
 					label="Show only active publishers"
 				/>
-				{publishersData}
+				{(searchResult !== undefined && searchResult.length > 0) ? publishersData : null}
 			</Grid>
 		</Grid>
 	);

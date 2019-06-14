@@ -99,7 +99,7 @@ export default function ({user: {role, isLoggedIn}}) {
 					)) :
 					<>
 						<HomeIcon className={classes.homeIcon} fontSize="large"/>
-						<Button className={classes.selected}>Publishers</Button>
+						<Link to="/publishers"><Button className={classes.selected}>Publishers</Button></Link>
 					</>
 				}
 			</div>

@@ -33,3 +33,5 @@ export default combineReducers({
 	form: forms,
 	publisher: publisherReducer
 });
+
+export const getSearchedData = state => state.publisher.searchedData;

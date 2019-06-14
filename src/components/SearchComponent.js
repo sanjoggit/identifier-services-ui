@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,14 +27,36 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import {TextField, InputAdornment, IconButton} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import useStyles from '../styles/searchComponent';
 
-export default (props => {
-	const {inputVal, handleInputChange, handleSubmit} = props;
+import useStyles from '../styles/searchComponent';
+import * as actions from '../store/actions';
+import {getSearchedData} from '../store/reducers';
+
+export default connect(mapStateToProps, actions)(withRouter(props => {
+	const {fetchPublishersList, searchPublisher, searchedData} = props;
 	const classes = useStyles();
+	const [inputVal, setInputVal] = useState('');
+	const [searchResult, setSearchResult] = useState([]);
+
+	useEffect(() => {
+		fetchPublishersList();
+		searchPublisher(inputVal);
+		setSearchResult(searchedData);
+	}, [inputVal]);
+
+	const handleInputChange = e => {
+		setInputVal(e.target.value);
+	};
+
+	const handleSubmit = e => {
+		e.preventDefault();
+		props.history.push('/publishers', searchResult);
+	};
 
 	const component = (
 		<form onSubmit={handleSubmit}>
@@ -59,5 +82,10 @@ export default (props => {
 	return {
 		...component
 	};
-});
+}));
+function mapStateToProps(state) {
+	return ({
+		searchedData: getSearchedData(state)
+	});
+}
 

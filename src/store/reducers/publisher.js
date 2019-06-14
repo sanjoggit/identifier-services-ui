@@ -26,11 +26,12 @@
  *
  */
 
-import {PUBLISHERS_LIST, PUBLISHER, LOADER, ERROR} from '../actions/types';
+import {PUBLISHERS_LIST, PUBLISHER, LOADER, ERROR, SEARCH} from '../actions/types';
 
 const initialState = {
 	publishersList: [],
 	publisher: {},
+	searchedData: [],
 	loading: false,
 	error: {}
 };
@@ -45,7 +46,7 @@ export default function (state = initialState, action) {
 		case PUBLISHERS_LIST:
 			return {
 				...state,
-				publishersList: action.payload,
+				publishersList: action.payload !== undefined && action.payload.Publishers,
 				loading: false
 			};
 		case PUBLISHER:
@@ -60,6 +61,20 @@ export default function (state = initialState, action) {
 				error: action.payload,
 				loading: false
 			};
+		case SEARCH: {
+			const {payload} = action;
+			const data = (!payload || payload !== '') ?
+				state.publishersList !== undefined && state.publishersList.filter(publisher => Object.keys(publisher).some(key => {
+					if ((key === 'aliases' || key === 'name')) {
+						return publisher[key].toString().toLowerCase().includes(payload.toString().toLowerCase());
+					}
+				})) :
+				[];
+			return {
+				searchedData: data
+			};
+		}
+
 		default:
 			return state;
 	}

@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, ERROR} from './types';
+import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH} from './types';
 import {setLoader} from './loaderAction';
 
 function success(type, payload) {
@@ -59,3 +59,5 @@ export const fetchPublisher = id => dispatch => {
 	}).then(res => res.json()).then(result =>
 		dispatch(success(PUBLISHER, result.data)));
 };
+
+export const searchPublisher = value => ({type: SEARCH, payload: value});
