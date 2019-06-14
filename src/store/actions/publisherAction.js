@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, ERROR} from './types';
+import {PUBLISHERS_LIST, PUBLISHER, UPDATE_PUBLISHER, ERROR} from './types';
 import {setLoader} from './loaderAction';
 
 function success(type, payload) {
@@ -52,10 +52,38 @@ export const fetchPublishersList = () => async dispatch => {
 	}
 };
 
-export const fetchPublisher = id => dispatch => {
+export const fetchPublisher = id => async dispatch => {
 	dispatch(setLoader());
-	fetch(`http://localhost:8081/publishers/${id}`, {
-		method: 'GET'
-	}).then(res => res.json()).then(result =>
-		dispatch(success(PUBLISHER, result.data)));
+	try {
+		const response = await fetch(`http://localhost:8081/publishers/${id}`, {
+			method: 'GET'
+		});
+		const result = await response.json();
+		dispatch(success(PUBLISHER, result.data));
+	} catch (err) {
+		dispatch({
+			type: ERROR,
+			payload: err
+		});
+	}
+};
+
+export const updatePublisher = (id, values) => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch(`http://localhost:8081/publishers/${id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(values)
+		});
+		const result = await response.json();
+		dispatch(success(PUBLISHER, result.data));
+	} catch (err) {
+		dispatch({
+			type: ERROR,
+			payload: err
+		});
+	}
 };

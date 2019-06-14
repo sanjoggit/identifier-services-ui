@@ -38,7 +38,7 @@ import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {fetchPublishersList, publishers, loading, error} = props;
+	const {fetchPublishersList, publishers, loading} = props;
 	const [state, setState] = React.useState({
 		checked: false
 	});
@@ -80,7 +80,7 @@ export default connect(mapStateToProps, actions)(props => {
 			/>
 		);
 	}
-	console.log('err', error)
+
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
