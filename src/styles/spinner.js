@@ -25,37 +25,14 @@
  * for the JavaScript code in this file.
  *
  */
-import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, ERROR} from './types';
-import {setLoader} from './loaderAction';
 
-function success(type, payload) {
-	return ({
-		type: type,
-		payload: payload
-	});
-}
+import {makeStyles} from '@material-ui/core/styles';
 
-export const fetchPublishersList = () => async dispatch => {
-	dispatch(setLoader());
-	try {
-		const response = await fetch('http://localhost:8081/publishers/query', {
-			method: 'POST'
-		});
-		const result = await response.json();
-		dispatch(success(PUBLISHERS_LIST, result.data));
-	} catch (err) {
-		dispatch({
-			type: ERROR,
-			payload: err
-		});
+const useStyles = makeStyles({
+	spinner: {
+		display: 'flex',
+		justifyContent: 'center'
 	}
-};
+});
 
-export const fetchPublisher = id => dispatch => {
-	dispatch(setLoader());
-	fetch(`http://localhost:8081/publishers/${id}`, {
-		method: 'GET'
-	}).then(res => res.json()).then(result =>
-		dispatch(success(PUBLISHER, result.data)));
-};
+export default useStyles;

@@ -25,37 +25,11 @@
  * for the JavaScript code in this file.
  *
  */
-import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, ERROR} from './types';
-import {setLoader} from './loaderAction';
+import {LOADER} from './types';
 
-function success(type, payload) {
-	return ({
-		type: type,
-		payload: payload
-	});
-}
-
-export const fetchPublishersList = () => async dispatch => {
-	dispatch(setLoader());
-	try {
-		const response = await fetch('http://localhost:8081/publishers/query', {
-			method: 'POST'
-		});
-		const result = await response.json();
-		dispatch(success(PUBLISHERS_LIST, result.data));
-	} catch (err) {
-		dispatch({
-			type: ERROR,
-			payload: err
-		});
-	}
+export const setLoader = () => {
+	return {
+		type: LOADER
+	};
 };
 
-export const fetchPublisher = id => dispatch => {
-	dispatch(setLoader());
-	fetch(`http://localhost:8081/publishers/${id}`, {
-		method: 'GET'
-	}).then(res => res.json()).then(result =>
-		dispatch(success(PUBLISHER, result.data)));
-};

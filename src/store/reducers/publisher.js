@@ -26,24 +26,39 @@
  *
  */
 
-import {PUBLISHERS_LIST, PUBLISHER} from '../actions/types';
+import {PUBLISHERS_LIST, PUBLISHER, LOADER, ERROR} from '../actions/types';
 
 const initialState = {
 	publishersList: [],
-	publisher: {}
+	publisher: {},
+	loading: false,
+	error: {}
 };
 
 export default function (state = initialState, action) {
 	switch (action.type) {
+		case LOADER:
+			return {
+				...state,
+				loading: true
+			};
 		case PUBLISHERS_LIST:
 			return {
 				...state,
-				publishersList: action.payload
+				publishersList: action.payload,
+				loading: false
 			};
 		case PUBLISHER:
 			return {
 				...state,
-				publisher: action.payload
+				publisher: action.payload,
+				loading: false
+			};
+		case ERROR:
+			return {
+				...state,
+				error: action.payload,
+				loading: false
 			};
 		default:
 			return state;

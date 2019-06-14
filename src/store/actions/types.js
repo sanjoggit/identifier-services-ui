@@ -29,5 +29,7 @@
 export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
 export const PUBLISHERS_LIST = 'PUBLISHERS_LIST';
 export const PUBLISHER = 'PUBLISHER';
+export const LOADER = 'LOADER';
+export const ERROR = 'ERROR';
 
 export const CONTACT = 'CONTACT';

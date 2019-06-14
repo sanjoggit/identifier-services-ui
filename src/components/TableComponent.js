@@ -183,7 +183,7 @@ export default function (props) {
 									<TableCell component="th" scope="row">
 										{row.name}
 									</TableCell>
-									<TableCell align="left">{row.age}</TableCell>
+									<TableCell align="left">{row.phone}</TableCell>
 								</TableRow>
 							);
 						})}

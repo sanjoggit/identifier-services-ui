@@ -26,4 +26,5 @@
  *
  */
 
- export {fetchPublishersList} from './publisherAction';
+export {fetchPublishersList} from './publisherAction';
+export {fetchPublisher} from './publisherAction';

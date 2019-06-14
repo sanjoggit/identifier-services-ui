@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,7 +27,7 @@
  *
  */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
 	Typography,
 	Button,
@@ -45,13 +46,20 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {Field, reduxForm} from 'redux-form';
 import renderTextField from '../form/render/renderTextField';
 import useStyles from '../../styles/publisher';
+import * as actions from '../../store/actions';
+import { connect } from 'react-redux';
 import ModalLayout from '../ModalLayout';
 
-export default (reduxForm({
+export default connect(null, actions)(reduxForm({
 	form: 'publisherDetail'
-})(() => {
+})(props => {
+	const {fetchPublisher, match} = props;
 	const classes = useStyles();
 	const [isEdit, setIsEdit] = useState(false);
+
+	useEffect(() => {
+		fetchPublisher(match.params.id);
+	}, []);
 
 	const publisherDetail = {
 		name: 'sanjog',
@@ -135,7 +143,7 @@ export default (reduxForm({
 	const handleCancel = () => {
 		setIsEdit(false);
 	};
-
+	console.log('---', props)
 	const component = (
 		<ModalLayout isTableRow color="primary" label="Publisher Detail">
 			{isEdit ?
@@ -331,4 +339,5 @@ export default (reduxForm({
 	return {
 		...component
 	};
-}))
+}));
+

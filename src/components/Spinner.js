@@ -25,37 +25,14 @@
  * for the JavaScript code in this file.
  *
  */
-import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, ERROR} from './types';
-import {setLoader} from './loaderAction';
 
-function success(type, payload) {
-	return ({
-		type: type,
-		payload: payload
-	});
+import React from 'react';
+import {CircularProgress} from '@material-ui/core';
+import useStyles from '../styles/spinner';
+
+export default function () {
+	const classes = useStyles();
+	return (
+		<div className={classes.spinner}><CircularProgress color="primary"/></div>
+	);
 }
-
-export const fetchPublishersList = () => async dispatch => {
-	dispatch(setLoader());
-	try {
-		const response = await fetch('http://localhost:8081/publishers/query', {
-			method: 'POST'
-		});
-		const result = await response.json();
-		dispatch(success(PUBLISHERS_LIST, result.data));
-	} catch (err) {
-		dispatch({
-			type: ERROR,
-			payload: err
-		});
-	}
-};
-
-export const fetchPublisher = id => dispatch => {
-	dispatch(setLoader());
-	fetch(`http://localhost:8081/publishers/${id}`, {
-		method: 'GET'
-	}).then(res => res.json()).then(result =>
-		dispatch(success(PUBLISHER, result.data)));
-};
