@@ -35,107 +35,31 @@ import {
 	List,
 	ListItem,
 	ListItemText,
-	Fab,
-	Chip,
-	ExpansionPanel,
-	ExpansionPanelSummary,
-	ExpansionPanelDetails
+	Fab
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {Field, reduxForm} from 'redux-form';
-import renderTextField from '../form/render/renderTextField';
+import {reduxForm, Field} from 'redux-form';
 import useStyles from '../../styles/publisher';
 import * as actions from '../../store/actions';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
+import {validate} from '@natlibfi/identifier-services-commons';
 import ModalLayout from '../ModalLayout';
+import Spinner from '../Spinner';
+import renderTextField from '../form/render/renderTextField';
 
-export default connect(null, actions)(reduxForm({
-	form: 'publisherDetail'
+export default connect(mapStateToProps, actions)(reduxForm({
+	form: 'publisherDetailForm',
+	validate,
+	enableReinitialize: true
 })(props => {
-	const {fetchPublisher, match} = props;
+	const {fetchPublisher, updatePublisher, match, publisher, loading, handleSubmit} = props;
 	const classes = useStyles();
 	const [isEdit, setIsEdit] = useState(false);
 
 	useEffect(() => {
 		fetchPublisher(match.params.id);
-	}, []);
+	}, [publisher === undefined]);
 
-	const publisherDetail = {
-		name: 'sanjog',
-		publicationEstimate: 44,
-		publisherEmail: 'sanjog@gmail.com',
-		streetAddress: 'Asiakkankatu',
-		website: 'something.com',
-		zip: 440,
-		city: 'Helsinki',
-		aliases: ['alias1', 'alias2', 'alias3', 'lonngggggggggggggggggggggg alias'],
-		contactDetails: [
-			{
-				givenName: 'Raj',
-				familyName: 'Shrestha',
-				email: 'random@gmail.com'
-			},
-			{
-				givenName: 'Rojak',
-				familyName: 'Amatya',
-				email: 'ra@gmail.com'
-			},
-			{
-				givenName: 'Lassi',
-				familyName: 'Amatya',
-				email: 'ra@gmail.com'
-			}
-		]
-
-	};
-	const listData = [
-		{
-			basicInfo: [
-				{
-					label: 'Name',
-					value: publisherDetail.name
-				},
-				{
-					label: 'Publisher Email',
-					value: publisherDetail.publisherEmail
-				},
-				{
-					label: 'Publication Estimate',
-					value: publisherDetail.publicationEstimate
-				},
-				{
-					label: 'Website',
-					value: publisherDetail.website
-				},
-				{
-					label: 'Aliases',
-					value: publisherDetail.aliases.map((item, index) => (
-						<Chip
-							key={index}
-							label={item}
-						/>
-					))
-				}
-			]
-		},
-		{
-			address: [
-				{
-					label: 'Street Address',
-					value: publisherDetail.streetAddress
-				},
-				{
-					label: 'City',
-					value: publisherDetail.city
-				},
-				{
-					label: 'Zip',
-					value: publisherDetail.zip
-				}
-			]
-		}
-	];
 	const handleEditClick = () => {
 		setIsEdit(true);
 	};
@@ -143,7 +67,68 @@ export default connect(null, actions)(reduxForm({
 	const handleCancel = () => {
 		setIsEdit(false);
 	};
-	console.log('---', props)
+
+	let publisherDetail;
+	if (publisher === undefined || loading) {
+		publisherDetail = <Spinner/>;
+	} else {
+		publisherDetail = (
+			<List>
+				<ListItem>
+					<ListItemText>
+						<Grid container>
+							<Grid item xs={6}>Name:</Grid>
+							{isEdit ? <Grid item xs={6}><Field name="name" component={renderTextField}/></Grid> :
+								<Grid item xs={6}>{publisher.name}</Grid>}
+						</Grid>
+					</ListItemText>
+				</ListItem>
+				<ListItem>
+					<ListItemText>
+						<Grid container>
+							<Grid item xs={6}>Language:</Grid>
+							{isEdit ? <Grid item xs={6}><Field name="language" component={renderTextField}/></Grid> :
+								<Grid item xs={6}>{publisher.language}</Grid>}
+						</Grid>
+					</ListItemText>
+				</ListItem>
+				<ListItem>
+					<ListItemText>
+						<Grid container>
+							<Grid item xs={6}>Email:</Grid>
+							{isEdit ? <Grid item xs={6}><Field name="email" component={renderTextField}/></Grid> :
+								<Grid item xs={6}>{publisher.email}</Grid>}
+						</Grid>
+					</ListItemText>
+				</ListItem>
+				<ListItem>
+					<ListItemText>
+						<Grid container>
+							<Grid item xs={6}>Phone:</Grid>
+							{isEdit ? <Grid item xs={6}><Field name="phone" component={renderTextField}/></Grid> :
+								<Grid item xs={6}>{publisher.phone}</Grid>}
+						</Grid>
+					</ListItemText>
+				</ListItem>
+				<ListItem>
+					<ListItemText>
+						<Grid container>
+							<Grid item xs={6}>Website:</Grid>
+							{isEdit ? <Grid item xs={6}><Field name="website" component={renderTextField}/></Grid> :
+								<Grid item xs={6}>{publisher.website}</Grid>}
+						</Grid>
+					</ListItemText>
+				</ListItem>
+			</List>
+		);
+	}
+
+	const handlePublisherUpdate = values => {
+		const {_id, ...updateValues} = values;
+		updatePublisher(match.params.id, updateValues);
+		setIsEdit(false);
+	};
+
 	const component = (
 		<ModalLayout isTableRow color="primary" label="Publisher Detail">
 			{isEdit ?
@@ -152,91 +137,14 @@ export default connect(null, actions)(reduxForm({
 						<Grid container spacing={3}>
 							<Grid item xs={12} md={6}>
 								<Typography variant="h6">
-                            Basic Information
+								Publisher Detail
 								</Typography>
-								{listData[0].basicInfo.map(item => (
-									<List key={item.value}>
-										<ListItem>
-											<ListItemText>
-												<Grid container>
-													<Grid item xs={6}>{item.label}:</Grid>
-													<Grid item xs={6}>
-														<Field
-															component={renderTextField}
-															name="name"
-														/>
-													</Grid>
-												</Grid>
-											</ListItemText>
-										</ListItem>
-									</List>
-								))}
-							</Grid>
-							<Grid item xs={12} md={6}>
-								<Typography variant="h6">
-                            Address
-								</Typography>
-								{listData[1].address.map(item => (
-									<List key={item.value}>
-										<ListItem>
-											<ListItemText>
-												<Grid container>
-													<Grid item xs={6}>{item.label}:</Grid>
-													<Grid item xs={6}>{item.value}</Grid>
-												</Grid>
-											</ListItemText>
-										</ListItem>
-									</List>
-								))}
-
-							</Grid>
-							<Grid item xs={12} md={6}>
-								{publisherDetail.contactDetails.map((item, index) => (
-									<ExpansionPanel key={index}>
-										<ExpansionPanelSummary
-											expandIcon={<ExpandMoreIcon/>}
-											aria-controls="panel1a-content"
-											id="panel1a-header"
-										>
-											<Typography variant="h6">
-                                            Contact Detail {index + 1}
-											</Typography>
-										</ExpansionPanelSummary>
-										<ExpansionPanelDetails>
-											<List style={{width: '100%'}}>
-												<ListItem>
-													<ListItemText>
-														<Grid container spacing={2}>
-															<Grid item xs={6}>Given Name:</Grid>
-															<Grid item xs={6}>{item.givenName}</Grid>
-														</Grid>
-													</ListItemText>
-												</ListItem>
-												<ListItem>
-													<ListItemText>
-														<Grid container>
-															<Grid item xs={6}>Family Name:</Grid>
-															<Grid item xs={6}>{item.familyName}</Grid>
-														</Grid>
-													</ListItemText>
-												</ListItem>
-												<ListItem>
-													<ListItemText>
-														<Grid container>
-															<Grid item xs={6}>Email:</Grid>
-															<Grid item xs={6}>{item.email}</Grid>
-														</Grid>
-													</ListItemText>
-												</ListItem>
-											</List>
-										</ExpansionPanelDetails>
-									</ExpansionPanel>
-								))}
+								{publisherDetail}
 							</Grid>
 						</Grid>
 						<div className={classes.btnContainer}>
 							<Button onClick={handleCancel}>Cancel</Button>
-							<Button variant="contained" color="primary">
+							<Button variant="contained" color="primary" onClick={handleSubmit(handlePublisherUpdate)}>
                             UPDATE
 							</Button>
 						</div>
@@ -245,93 +153,22 @@ export default connect(null, actions)(reduxForm({
 				<div className={classes.publisher}>
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={6}>
-							<Typography variant="h6" className={classes.detailHeading}>
-                            Basic Information
+							<Typography variant="h6">
+                            Publisher Detail
 							</Typography>
-							{listData[0].basicInfo.map(item => (
-								<List key={item.value}>
-									<ListItem>
-										<ListItemText>
-											<Grid container>
-												<Grid item xs={6}>{item.label}:</Grid>
-												<Grid item xs={6}>{item.value}</Grid>
-											</Grid>
-										</ListItemText>
-									</ListItem>
-								</List>
-							))}
-						</Grid>
-						<Grid item xs={12} md={6}>
-							<Typography variant="h6" className={classes.detailHeading}>
-                            Address
-							</Typography>
-							{listData[1].address.map(item => (
-								<List key={item.value}>
-									<ListItem>
-										<ListItemText>
-											<Grid container>
-												<Grid item xs={6}>{item.label}:</Grid>
-												<Grid item xs={6}>{item.value}</Grid>
-											</Grid>
-										</ListItemText>
-									</ListItem>
-								</List>
-							))}
-
-						</Grid>
-						<Grid item xs={12} md={6}>
-							{publisherDetail.contactDetails.map((item, index) => (
-								<ExpansionPanel key={index}>
-									<ExpansionPanelSummary
-										expandIcon={<ExpandMoreIcon/>}
-										aria-controls="panel1a-content"
-										id="panel1a-header"
-									>
-										<Typography variant="h6">
-                                            Contact Detail {index + 1}
-										</Typography>
-									</ExpansionPanelSummary>
-									<ExpansionPanelDetails>
-										<List style={{width: '100%'}}>
-											<ListItem>
-												<ListItemText>
-													<Grid container spacing={2}>
-														<Grid item xs={6}>Given Name:</Grid>
-														<Grid item xs={6}>{item.givenName}</Grid>
-													</Grid>
-												</ListItemText>
-											</ListItem>
-											<ListItem>
-												<ListItemText>
-													<Grid container>
-														<Grid item xs={6}>Family Name:</Grid>
-														<Grid item xs={6}>{item.familyName}</Grid>
-													</Grid>
-												</ListItemText>
-											</ListItem>
-											<ListItem>
-												<ListItemText>
-													<Grid container>
-														<Grid item xs={6}>Email:</Grid>
-														<Grid item xs={6}>{item.email}</Grid>
-													</Grid>
-												</ListItemText>
-											</ListItem>
-										</List>
-									</ExpansionPanelDetails>
-								</ExpansionPanel>
-							))}
+							{publisherDetail}
 						</Grid>
 					</Grid>
-					<Fab
-						color="primary"
-						size="small"
-						className={classes.publisherEditIcon}
-						title="Edit Publisher Detail"
-						onClick={handleEditClick}
-					>
-						<EditIcon/>
-					</Fab>
+					<div className={classes.btnContainer}>
+						<Fab
+							color="primary"
+							size="small"
+							title="Edit Publisher Detail"
+							onClick={handleEditClick}
+						>
+							<EditIcon/>
+						</Fab>
+					</div>
 				</div>
 			}
 		</ModalLayout>
@@ -341,3 +178,10 @@ export default connect(null, actions)(reduxForm({
 	};
 }));
 
+function mapStateToProps(state) {
+	return ({
+		publisher: state.publisher.publisher.Publisher,
+		loading: state.publisher.loading,
+		initialValues: state.publisher.publisher.Publisher
+	});
+}

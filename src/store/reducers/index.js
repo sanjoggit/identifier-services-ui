@@ -34,4 +34,3 @@ export default combineReducers({
 	publisher: publisherReducer
 });
 
-export const getSearchedData = state => state.publisher.searchedData;

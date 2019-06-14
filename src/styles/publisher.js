@@ -32,11 +32,7 @@ const useStyles = makeStyles(
 	{
 		publisher: {
 			minWidth: '750px',
-			padding: '20px 0px',
-			display: 'flex'
-		},
-		publisherEditIcon: {
-			alignSelf: 'flex-end'
+			padding: '20px 0px'
 		},
 		btnContainer: {
 			display: 'flex',

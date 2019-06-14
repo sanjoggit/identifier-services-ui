@@ -27,7 +27,7 @@
  *
  */
 
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {TextField, InputAdornment, IconButton} from '@material-ui/core';
@@ -85,7 +85,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 }));
 function mapStateToProps(state) {
 	return ({
-		searchedData: getSearchedData(state)
+		searchedData: state.publisher.searchedData
 	});
 }
 

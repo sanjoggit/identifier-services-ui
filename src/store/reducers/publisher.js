@@ -46,7 +46,7 @@ export default function (state = initialState, action) {
 		case PUBLISHERS_LIST:
 			return {
 				...state,
-				publishersList: action.payload !== undefined && action.payload.Publishers,
+				publishersList: action.payload,
 				loading: false
 			};
 		case PUBLISHER:
@@ -64,13 +64,14 @@ export default function (state = initialState, action) {
 		case SEARCH: {
 			const {payload} = action;
 			const data = (!payload || payload !== '') ?
-				state.publishersList !== undefined && state.publishersList.filter(publisher => Object.keys(publisher).some(key => {
+				state.publishersList !== undefined && state.publishersList.Publishers !== undefined && state.publishersList.Publishers.filter(publisher => Object.keys(publisher).some(key => {
 					if ((key === 'aliases' || key === 'name')) {
 						return publisher[key].toString().toLowerCase().includes(payload.toString().toLowerCase());
 					}
 				})) :
 				[];
 			return {
+				...state,
 				searchedData: data
 			};
 		}

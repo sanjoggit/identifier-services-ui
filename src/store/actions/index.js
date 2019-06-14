@@ -29,5 +29,6 @@
 export {
 	fetchPublishersList,
 	fetchPublisher,
+	updatePublisher,
 	searchPublisher
 } from './publisherAction';
