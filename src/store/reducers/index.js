@@ -34,4 +34,4 @@ export default combineReducers({
 	publisher: publisherReducer
 });
 
-export const getPublisherList = state => state.publisher.publishersList;
+export const getPublisherList = state => state.publisher;

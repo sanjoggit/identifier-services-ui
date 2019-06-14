@@ -27,6 +27,7 @@
  */
 import fetch from 'node-fetch';
 import {PUBLISHERS_LIST, PUBLISHER} from './types';
+import {setLoader} from './loaderAction';
 
 function success(type, payload) {
 	return ({
@@ -36,6 +37,7 @@ function success(type, payload) {
 }
 
 export const fetchPublishersList = () => dispatch => {
+	dispatch(setLoader());
 	fetch('http://localhost:8081/publishers/query', {
 		method: 'POST'
 	}).then(res => res.json()).then(result =>

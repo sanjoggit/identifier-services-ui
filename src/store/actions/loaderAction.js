@@ -25,10 +25,11 @@
  * for the JavaScript code in this file.
  *
  */
+import {LOADER} from './types';
 
-export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
-export const PUBLISHERS_LIST = 'PUBLISHERS_LIST';
-export const PUBLISHER = 'PUBLISHER';
-export const LOADER = 'LOADER';
+export const setLoader = () => {
+	return {
+		type: LOADER
+	};
+};
 
-export const CONTACT = 'CONTACT';

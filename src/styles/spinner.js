@@ -26,9 +26,13 @@
  *
  */
 
-export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
-export const PUBLISHERS_LIST = 'PUBLISHERS_LIST';
-export const PUBLISHER = 'PUBLISHER';
-export const LOADER = 'LOADER';
+import {makeStyles} from '@material-ui/core/styles';
 
-export const CONTACT = 'CONTACT';
+const useStyles = makeStyles({
+	spinner: {
+		display: 'flex',
+		justifyContent: 'center'
+	}
+});
+
+export default useStyles;

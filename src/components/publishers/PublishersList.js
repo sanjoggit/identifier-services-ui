@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -34,9 +35,11 @@ import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
 import {getPublisherList} from '../../store/reducers';
 import * as actions from '../../store/actions';
+import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
-	const {fetchPublishersList, publishersList} = props;
+	const classes = useStyles();
+	const {fetchPublishersList, publishers} = props;
 	const [state, setState] = React.useState({
 		checked: false
 	});
@@ -49,29 +52,35 @@ export default connect(mapStateToProps, actions)(props => {
 		setState({...state, [name]: event.target.checked});
 	};
 
-	const headRows = [
-		{id: 'name', label: 'Name'},
-		{id: 'age', label: 'Age'}
-	];
-	console.log('--', publishersList)
-	const data = [
-		{id: 1, name: 'Rojak', age: 22},
-		{id: 2, name: 'Sanjog', age: 23},
-		{id: 3, name: 'Arturi', age: 25},
-		{id: 4, name: 'Lassi', age: 55},
-		{id: 5, name: 'Kingsman', age: 22},
-		{id: 6, name: 'Spiderman', age: 23},
-		{id: 7, name: 'Batman', age: 25},
-		{id: 8, name: 'Antman', age: 55}
-	];
-	const classes = useStyles();
-
 	const handlePublisherClick = id => {
 		props.history.push({
 			pathname: `/publishers/${id}`,
 			state: {modal: true}
 		});
 	};
+
+	const headRows = [
+		{id: 'name', label: 'Name'},
+		{id: 'phone', label: 'Phone'}
+	];
+	let publishersData;
+	if ((publishers.publishersList.Publishers === undefined) || (publishers.loading)) {
+		publishersData = <Spinner/>;
+	} else {
+		publishersData = (
+			<TableComponent
+				data={publishers.publishersList.Publishers.map(item => {
+					return {
+						id: item._id,
+						name: item.name,
+						phone: item.phone
+					};
+				})}
+				handlePublisherClick={handlePublisherClick}
+				headRows={headRows}
+			/>
+		);
+	}
 
 	const component = (
 		<Grid>
@@ -89,11 +98,7 @@ export default connect(mapStateToProps, actions)(props => {
 					}
 					label="Show only active publishers"
 				/>
-				<TableComponent
-					link
-					data={data}
-					handlePublisherClick={handlePublisherClick}
-					headRows={headRows}/>
+				{publishersData}
 			</Grid>
 		</Grid>
 	);
@@ -104,6 +109,6 @@ export default connect(mapStateToProps, actions)(props => {
 
 function mapStateToProps(state) {
 	return ({
-		publishersList: getPublisherList(state)
+		publishers: getPublisherList(state)
 	});
 }

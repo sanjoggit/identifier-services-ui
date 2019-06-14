@@ -26,9 +26,13 @@
  *
  */
 
-export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
-export const PUBLISHERS_LIST = 'PUBLISHERS_LIST';
-export const PUBLISHER = 'PUBLISHER';
-export const LOADER = 'LOADER';
+import React from 'react';
+import {CircularProgress} from '@material-ui/core';
+import useStyles from '../styles/spinner';
 
-export const CONTACT = 'CONTACT';
+export default function () {
+	const classes = useStyles();
+	return (
+		<div className={classes.spinner}><CircularProgress color="primary"/></div>
+	);
+}
