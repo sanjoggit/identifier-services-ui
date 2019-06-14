@@ -45,6 +45,7 @@ export const fetchPublishersList = () => dispatch => {
 };
 
 export const fetchPublisher = id => dispatch => {
+	dispatch(setLoader());
 	fetch(`http://localhost:8081/publishers/${id}`, {
 		method: 'GET'
 	}).then(res => res.json()).then(result =>

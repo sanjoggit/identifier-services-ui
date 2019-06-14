@@ -40,7 +40,7 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				loading: true
-			}
+			};
 		case PUBLISHERS_LIST:
 			return {
 				...state,
@@ -50,7 +50,8 @@ export default function (state = initialState, action) {
 		case PUBLISHER:
 			return {
 				...state,
-				publisher: action.payload
+				publisher: action.payload,
+				loading: false
 			};
 		default:
 			return state;
