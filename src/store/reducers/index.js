@@ -28,8 +28,10 @@
 import {combineReducers} from 'redux';
 import {reducer as forms} from 'redux-form';
 import publisherReducer from './publisher';
+import localeReducer from './localeReducer.js';
 
 export default combineReducers({
+	locale: localeReducer,
 	form: forms,
 	publisher: publisherReducer
 });

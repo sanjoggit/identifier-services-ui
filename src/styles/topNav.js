@@ -60,8 +60,12 @@ const useStyles = makeStyles({
 		color: 'white'
 	},
 	languageSelect: {
-		fontSize: '1rem',
-		paddingLeft: '5px'
+		display: 'inherit',
+		cursor: 'pointer',
+		'& span': {
+			fontSize: '1rem',
+			paddingLeft: '5px'
+		}
 	},
 	loginButton: {
 		marginRight: 10,

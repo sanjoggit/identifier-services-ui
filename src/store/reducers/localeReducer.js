@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,35 +25,23 @@
  * for the JavaScript code in this file.
  *
  */
+import {LOCALE_SET} from '../actions/types';
+import {getMessages} from '../../intl/getMessages';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
-import {BrowserRouter as Router} from 'react-router-dom';
-import {addLocaleData} from 'react-intl';
-import {setLocale} from './store/actions/localeAction';
-import en from 'react-intl/locale-data/en';
-import fi from 'react-intl/locale-data/fi';
-import sv from 'react-intl/locale-data/sv';
+const initialState = {
+	lang: 'en',
+	message: {}
+};
 
-addLocaleData([...en, ...fi, ...sv]);
-
-const composeEnhancers =
-process.env.NODE_ENV === 'development' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ :
-	compose;
-
-const store = createStore(allReducers, composeEnhancers(applyMiddleware(thunk)));
-
-if (localStorage.allLang) {
-	store.dispatch(setLocale(localStorage.allLang));
+export default function (state = initialState, action) {
+	switch (action.type) {
+		case LOCALE_SET:
+			return {
+				...state,
+				lang: action.payload,
+				message: getMessages(action.lang)
+			};
+		default:
+			return state;
+	}
 }
-
-ReactDOM.render(
-	<Provider store={store}>
-		<Router><App/></Router>
-	</Provider>, document.getElementById('app'));

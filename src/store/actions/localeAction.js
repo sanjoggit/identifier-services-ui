@@ -26,35 +26,12 @@
  * for the JavaScript code in this file.
  *
  */
+import {LOCALE_SET} from './types';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import allReducers from './store/reducers';
-import thunk from 'redux-thunk';
-import {createStore, applyMiddleware, compose} from 'redux';
-import {BrowserRouter as Router} from 'react-router-dom';
-import {addLocaleData} from 'react-intl';
-import {setLocale} from './store/actions/localeAction';
-import en from 'react-intl/locale-data/en';
-import fi from 'react-intl/locale-data/fi';
-import sv from 'react-intl/locale-data/sv';
-
-addLocaleData([...en, ...fi, ...sv]);
-
-const composeEnhancers =
-process.env.NODE_ENV === 'development' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ :
-	compose;
-
-const store = createStore(allReducers, composeEnhancers(applyMiddleware(thunk)));
-
-if (localStorage.allLang) {
-	store.dispatch(setLocale(localStorage.allLang));
-}
-
-ReactDOM.render(
-	<Provider store={store}>
-		<Router><App/></Router>
-	</Provider>, document.getElementById('app'));
+export const setLocale = lang => dispatch => {
+	localStorage.allLang = lang;
+	dispatch({
+		type: LOCALE_SET,
+		payload: lang
+	});
+};

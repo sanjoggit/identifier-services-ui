@@ -33,5 +33,6 @@ export const UPDATE_PUBLISHER = 'UPDATE_PUBLISHER';
 export const LOADER = 'LOADER';
 export const SEARCH = 'SEARCH';
 export const ERROR = 'ERROR';
+export const LOCALE_SET = 'LOCALE_SET';
 
 export const CONTACT = 'CONTACT';
