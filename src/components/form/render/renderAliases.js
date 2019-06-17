@@ -67,7 +67,7 @@ export default connect(state => ({
 	const component = (
 		<>
 			<Grid>
-				<Grid item xs={6}>
+				<Grid item>
 					<Field
 						className={className}
 						name="alias"

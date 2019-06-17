@@ -64,11 +64,19 @@ export default function (state = initialState, action) {
 		case SEARCH: {
 			const {payload} = action;
 			const data = (!payload || payload !== '') ?
-				state.publishersList !== undefined && state.publishersList.Publishers !== undefined && state.publishersList.Publishers.filter(publisher => Object.keys(publisher).some(key => {
-					if ((key === 'aliases' || key === 'name')) {
-						return publisher[key].toString().toLowerCase().includes(payload.toString().toLowerCase());
-					}
-				})) :
+				state.publishersList !== undefined &&
+				state.publishersList.Publishers !==
+				undefined &&
+				state.publishersList.Publishers
+					.filter(publisher => Object.keys(publisher).some(key => {
+						if ((key === 'aliases' || key === 'name')) {
+							return publisher[key]
+								.toString()
+								.toLowerCase()
+								.includes(payload.toString()
+									.toLowerCase());
+						}
+					})) :
 				[];
 			return {
 				...state,
