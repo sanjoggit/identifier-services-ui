@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, UPDATE_PUBLISHER, ERROR, SEARCH} from './types';
+import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER} from './types';
 import {setLoader} from './loaderAction';
 
 const BASE_URL = 'http://localhost:8081/publishers';
@@ -88,4 +88,16 @@ export const updatePublisher = (id, values) => async dispatch => {
 	}
 };
 
-export const searchPublisher = value => ({type: SEARCH, payload: value});
+export const searchPublisher = data => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch(`${BASE_URL}/query?q=${data}`, {
+			method: 'POST'
+		});
+		const result = await response.json();
+		dispatch(success(SEARCH_PUBLISHER, result.data));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+};
+

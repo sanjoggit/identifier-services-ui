@@ -27,7 +27,7 @@
  *
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 import SearchComponent from '../SearchComponent';
@@ -38,15 +38,10 @@ import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {fetchPublishersList, publishers, loading, location} = props;
-	const searchResult = location.state;
+	const {loading, searchedPublishers} = props;
 	const [state, setState] = useState({
 		checked: false
 	});
-
-	useEffect(() => {
-		fetchPublishersList();
-	}, []);
 
 	const handleChange = name => event => {
 		setState({...state, [name]: event.target.checked});
@@ -64,13 +59,15 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'phone', label: 'Phone'}
 	];
 	let publishersData;
-	if ((publishers.publishersList === undefined) || (loading)) {
+	if ((searchedPublishers === undefined) || (loading)) {
 		publishersData = <Spinner/>;
+	} else if (searchedPublishers.length === 0) {
+		publishersData = <p>No Search Result</p>;
 	} else {
 		publishersData = (
 
 			<TableComponent
-				data={searchResult !== undefined && searchResult.length > 0 && searchResult.map(item => searchResultRender(item._id, item.name, item.phone))}
+				data={searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
 				handlePublisherClick={handlePublisherClick}
 				headRows={headRows}
 			/>
@@ -101,7 +98,7 @@ export default connect(mapStateToProps, actions)(props => {
 					}
 					label="Show only active publishers"
 				/>
-				{(searchResult !== undefined && searchResult.length > 0) ? publishersData : null}
+				{publishersData}
 			</Grid>
 		</Grid>
 	);
@@ -112,6 +109,7 @@ export default connect(mapStateToProps, actions)(props => {
 
 function mapStateToProps(state) {
 	return ({
-		publishers: state.publisher
+		loading: state.publisher.loading,
+		searchedPublishers: state.publisher.searchedPublisher.Publishers
 	});
 }
