@@ -30,7 +30,7 @@ import {getMessages} from '../../intl/getMessages';
 
 const initialState = {
 	lang: 'en',
-	message: {}
+	messages: {}
 };
 
 export default function (state = initialState, action) {
@@ -39,7 +39,7 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				lang: action.payload,
-				message: getMessages(action.lang)
+				messages: getMessages(action.payload)
 			};
 		default:
 			return state;

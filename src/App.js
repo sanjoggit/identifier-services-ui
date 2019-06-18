@@ -31,6 +31,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import {IntlProvider} from 'react-intl';
+import {connect} from 'react-redux';
 import Home from './components/main';
 import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
@@ -44,7 +45,8 @@ import enMessages from './intl/translations/en.json';
 import fiMessages from './intl/translations/fi.json';
 import svMessages from './intl/translations/sv.json';
 
-export default withRouter(props => {
+export default connect(mapStateToProps)(withRouter(props => {
+	const {lang} = props;
 	const [user, setUser] = React.useState({role: '', isLoggedIn: false});
 	const routeField = [
 		{path: '/', component: (user.role === 'admin' || user.role === 'publisher') ? PublishersList : Home},
@@ -95,14 +97,14 @@ export default withRouter(props => {
 	};
 
 	const translations = {
-		fi: fiMessages,
-		en: enMessages,
-		sv: svMessages
+		'fi': fiMessages,
+		'en': enMessages,
+		'sv': svMessages
 
-	}
+	};
 
 	const component = (
-		<IntlProvider locale={props.lang} messages={translations[props.lang]}>
+		<IntlProvider locale={lang} messages={translations[lang]}>
 			<MuiThemeProvider theme={theme}>
 				<TopNav loggedIn={user.isLoggedIn} role={user.role} logOut={handleLogOut}/>
 				<CssBaseline/>
@@ -124,4 +126,10 @@ export default withRouter(props => {
 	return {
 		...component
 	};
-});
+}));
+
+function mapStateToProps(state) {
+	return {
+		lang: state.locale.lang
+	};
+}
