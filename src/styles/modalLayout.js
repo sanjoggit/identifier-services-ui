@@ -86,6 +86,10 @@ const useStyles = makeStyles({
 		right: 0,
 		top: 0
 	},
+	userContainer: {
+		display: 'flex',
+		alignItems: 'center'
+	},
 	personIcon: {
 		height: 30,
 		width: 30,
@@ -93,9 +97,8 @@ const useStyles = makeStyles({
 	},
 	welcomeAvatar: {
 		display: 'inherit',
-		gridTemplateColumns: '1fr 4fr',
 		alignItems: 'center',
-		justifyItems: 'flex-start'
+		justifyItems: 'flex-end'
 	}
 });
 

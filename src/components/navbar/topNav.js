@@ -26,7 +26,7 @@
  *
  */
 import React from 'react';
-import {AppBar, Toolbar, Typography, Grid, Menu, MenuItem} from '@material-ui/core';
+import {AppBar, Typography, Grid, Menu, MenuItem} from '@material-ui/core';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import {Link} from 'react-router-dom';
@@ -87,7 +87,7 @@ export default connect(mapStateToProps, {setLocale})(props => {
 			<Grid container className={classes.topBarContainer}>
 				<Grid item xs={12} className={classes.topBar}>
 					<AppBar position="static">
-						<Toolbar className={classes.navbarContainer}>
+						<div className={classes.navbarContainer}>
 							<Typography variant="h6" color="inherit">
 								<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
 							</Typography>
@@ -117,7 +117,7 @@ export default connect(mapStateToProps, {setLocale})(props => {
 									<MenuItem onClick={changeLangSv}>Svenska</MenuItem>
 								</Menu>
 							</div>
-						</Toolbar>
+						</div>
 					</AppBar>
 				</Grid>
 			</Grid>

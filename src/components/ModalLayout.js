@@ -93,10 +93,10 @@ export default withRouter(props => {
 				<Grid item className={classes.welcomeAvatar}>
 					{
 						loggedIn ?
-							<>
+							<div className={classes.userContainer}>
 								<PersonIcon className={classes.personIcon} onClick={handleOpen}/>
 								<Typography variant="inherit">Welcome, {role.toUpperCase()}</Typography>
-							</> :
+							</div> :
 							fab ?
 								<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
 								<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>

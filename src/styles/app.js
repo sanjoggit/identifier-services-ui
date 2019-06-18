@@ -65,11 +65,20 @@ const theme = createMuiTheme({
 		MuiPaper: {
 			elevation1: {
 				boxShadow: 'none'
-			}
+			},
+			// elevation4: {
+			// 	boxShadow: 'none'
+			// }
 		},
 		MuiExpansionPanelDetails: {
 			root: {
 				padding: '0 24px 0'
+			}
+		},
+		MuiToolbar: {
+			gutters: {
+				paddingLeft: 0,
+				paddingRight: 0
 			}
 		}
 	}

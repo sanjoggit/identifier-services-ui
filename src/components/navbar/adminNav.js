@@ -27,23 +27,15 @@
  */
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {AppBar, Button} from '@material-ui/core';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import {AppBar, Toolbar, Button, Grid} from '@material-ui/core';
+import HomeIcon from '@material-ui/icons/Home';
 
 import useStyles from '../../styles/adminNav';
 import MenuTabs from './menuTabs';
 
 export default function ({user: {role, isLoggedIn}}) {
 	const classes = useStyles();
-	function HomeIcon(props) {
-		return (
-			<Link to="/">
-				<SvgIcon {...props}>
-					<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-				</SvgIcon>
-			</Link>
-		);
-	}
+
 
 	const obj = [
 		{
@@ -89,21 +81,27 @@ export default function ({user: {role, isLoggedIn}}) {
 		}
 	];
 	const nav = (
-		<AppBar position="static" color="secondary">
-			<div className={isLoggedIn ? classes.adminNavLoggedIn : classes.adminNav}>
-				{isLoggedIn ?
-					obj.map(list => list.roleView.includes(role) && (
-						<div key={list.label} className={classes.btnHolder}>
-							<MenuTabs role={role} list={list}/>
+		<Grid container>
+			<Grid item xs={12}>
+				<AppBar position="static" color="secondary">
+					<div>
+						<div className={classes.adminMenu}>
+							{isLoggedIn ?
+								obj.map(list => list.roleView.includes(role) && (
+									<div key={list.label}>
+										<MenuTabs role={role} list={list}/>
+									</div>
+								)) :
+								<div className={classes.publicMenu}>
+									<Link to="/"><HomeIcon fontSize="default"/></Link>
+									<Link to="/publishers"><Button className={classes.selected}>Publishers</Button></Link>
+								</div>
+							}
 						</div>
-					)) :
-					<>
-						<HomeIcon className={classes.homeIcon} fontSize="large"/>
-						<Link to="/publishers"><Button className={classes.selected}>Publishers</Button></Link>
-					</>
-				}
-			</div>
-		</AppBar>
+					</div>
+				</AppBar>
+			</Grid>
+		</Grid>
 	);
 
 	return {

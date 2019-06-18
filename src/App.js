@@ -47,7 +47,7 @@ import svMessages from './intl/translations/sv.json';
 
 export default connect(mapStateToProps)(withRouter(props => {
 	const {lang} = props;
-	const [user, setUser] = React.useState({role: '', isLoggedIn: false});
+	const [user, setUser] = React.useState({role: 'admin', isLoggedIn: true});
 	const routeField = [
 		{path: '/', component: (user.role === 'admin' || user.role === 'publisher') ? PublishersList : Home},
 		{path: '/publishers', component: PublishersList},

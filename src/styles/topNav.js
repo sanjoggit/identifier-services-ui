@@ -50,9 +50,12 @@ const useStyles = makeStyles({
 	},
 	rightMenu: {
 		display: 'grid',
-		gridTemplateColumns: '9fr 1fr 1fr 1fr',
+		gridTemplateColumns: '4fr 1fr 1fr 1fr',
 		alignItems: 'center',
-		color: 'white'
+		color: 'white',
+		'& svg': {
+			justifySelf:'right'
+		}
 	},
 	rightMenuLogIn: {
 		display: 'flex',
@@ -61,6 +64,7 @@ const useStyles = makeStyles({
 	},
 	languageSelect: {
 		display: 'inherit',
+		gridTemplateColumns: '1fr 1fr',
 		cursor: 'pointer',
 		'& span': {
 			fontSize: '1rem',

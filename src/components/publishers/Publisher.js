@@ -245,7 +245,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 			{isEdit ?
 				<div className={classes.publisher}>
 					<form>
-						<Grid container spacing={3}>
+						<Grid container spacing={3} className={classes.publisherSpinner}>
 							{publisherDetail}
 						</Grid>
 						<div className={classes.btnContainer}>
@@ -257,7 +257,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 					</form>
 				</div> :
 				<div className={classes.publisher}>
-					<Grid container spacing={3}>
+					<Grid container spacing={3} className={classes.publisherSpinner}>
 						{publisherDetail}
 					</Grid>
 					<div className={classes.btnContainer}>

@@ -35,6 +35,9 @@ const useStyles = makeStyles(
 			minWidth: '750px',
 			padding: '20px 0px'
 		},
+		publisherSpinner:{
+			justifyContent: 'center'
+		},
 		btnContainer: {
 			display: 'flex',
 			justifyContent: 'flex-end'
