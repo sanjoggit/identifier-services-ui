@@ -97,9 +97,9 @@ export default connect(mapStateToProps)(withRouter(props => {
 	};
 
 	const translations = {
-		'fi': fiMessages,
-		'en': enMessages,
-		'sv': svMessages
+		fi: fiMessages,
+		en: enMessages,
+		sv: svMessages
 
 	};
 
