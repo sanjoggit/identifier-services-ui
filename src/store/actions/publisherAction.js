@@ -27,7 +27,7 @@
  */
 import fetch from 'node-fetch';
 import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER} from './types';
-import {setLoader} from './loaderAction';
+import {setLoader} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081/publishers';
 
@@ -85,6 +85,23 @@ export const updatePublisher = (id, values) => async dispatch => {
 		dispatch(success(PUBLISHER, result.data));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
+<<<<<<< HEAD
+	}
+};
+
+export const searchPublisher = data => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch(`${BASE_URL}/query?q=${data}`, {
+			method: 'POST'
+		});
+		const result = await response.json();
+		dispatch(success(SEARCH_PUBLISHER, result.data));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+};
+=======
 	}
 };
 
@@ -101,3 +118,4 @@ export const searchPublisher = data => async dispatch => {
 	}
 };
 
+>>>>>>> 206e1c0fb7745330f5e43df05d53b52f2ea446e6

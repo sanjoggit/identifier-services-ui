@@ -28,7 +28,22 @@
 
 // import axios from 'axios';
 import {CONTACT} from './types';
+import fetch from 'node-fetch';
+import {setLoader} from './commonAction';
 
 export const contact = values => async dispatch => {
-	console.log(values);
+	dispatch(setLoader());
+	const response = await fetch('http://localhost:8080/message', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(values)
+	});
+	if (response.status === 200) {
+		dispatch({
+			type: CONTACT,
+			payload: 'Message Sent'
+		});
+	}
 };

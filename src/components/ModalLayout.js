@@ -82,7 +82,7 @@ export default withRouter(props => {
 				<Typography variant="h5" id={`modal-${name}`}>
 					{label}
 				</Typography>
-				{children}
+				{React.cloneElement(children, {handleClose: handleClose})}
 			</div>
 		</Modal>
 	);

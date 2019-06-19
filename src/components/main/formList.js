@@ -28,6 +28,7 @@
 
 import React from 'react';
 import {Typography, Grid} from '@material-ui/core';
+import {withRouter} from 'react-router-dom';
 
 import useStyles from '../../styles/formList';
 import ModalLayout from '../ModalLayout';
@@ -35,14 +36,12 @@ import UserRequestForm from '../form/UserRequestForm';
 import PublisherRegistrationForm from '../form/PublisherRegistrationForm';
 import ContactForm from '../form/ContactForm';
 
-const formListsArray = [
-	{label: 'Publisher Registration', name: 'publisherRegistration', component: <PublisherRegistrationForm/>},
-	{label: 'Publication', name: 'publication', component: <UserRequestForm/>},
-	{label: 'Contact Form', name: 'contactForm', component: <ContactForm/>}
-
-];
-
-export default function () {
+export default withRouter(props => {
+	const formListsArray = [
+		{label: 'Publisher Registration', name: 'publisherRegistration', component: <PublisherRegistrationForm {...props}/>},
+		{label: 'Publication', name: 'publication', component: <UserRequestForm {...props}/>},
+		{label: 'Contact Form', name: 'contactForm', component: <ContactForm {...props}/>}
+	];
 	const classes = useStyles();
 	return (
 		<div className={classes.formListContainer}>
@@ -59,4 +58,4 @@ export default function () {
 			</Grid>
 		</div>
 	);
-}
+});

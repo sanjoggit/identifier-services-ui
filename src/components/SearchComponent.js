@@ -66,7 +66,6 @@ export default connect(null, actions)(withRouter(props => {
 					)
 				}}
 				className={classes.searchBox}
-				value={inputVal}
 				onChange={handleInputChange}
 			/>
 		</form>

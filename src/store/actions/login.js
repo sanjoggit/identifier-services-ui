@@ -25,17 +25,20 @@
  * for the JavaScript code in this file.
  *
  */
+import {AUTHENTICATION} from './types';
+import {setLoader} from './commonAction';
 
-export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
-export const PUBLISHERS_LIST = 'PUBLISHERS_LIST';
-export const PUBLISHER = 'PUBLISHER';
-export const UPDATE_PUBLISHER = 'UPDATE_PUBLISHER';
 
-export const LOADER = 'LOADER';
-export const SEARCH_PUBLISHER = 'SEARCH_PUBLISHER';
-export const ERROR = 'ERROR';
-export const LOCALE_SET = 'LOCALE_SET';
+export const fakeLogin = values => {
+	if (values.username === 'admin' || values.username === 'publisher') {
+		return {
+			type: AUTHENTICATION,
+			payload: {isLogin: true, user: values.username}
+		};
+	}
 
-export const CONTACT = 'CONTACT';
-
-export const AUTHENTICATION = 'AUTHENTICATION';
+	return {
+		type: AUTHENTICATION,
+		payload: {isLogin: false, user: null}
+	};
+};

@@ -39,12 +39,14 @@ import PersonIcon from '@material-ui/icons/Person';
 import Visibility from '@material-ui/icons/Visibility';
 
 export default reduxForm({
-	form: 'login', validate})(({pristine, valid}) => {
+	form: 'login', validate})(props => {
+	console.log(props);
+	const {pristine, valid, fakeLogin, handleSubmit} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 
 	const component = (
-		<form className={classes.loginForm}>
+		<form className={classes.loginForm} onSubmit={handleSubmit(fakeLogin)}>
 			<section>
 				<Grid container className={classes.inputGap} spacing={4} alignItems="flex-end">
 					<Grid item xs={1}>

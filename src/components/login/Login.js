@@ -32,13 +32,15 @@ import React from 'react';
 import {Typography, Tabs, Tab, Fab} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
+import {connect} from 'react-redux';
 
 import ModalLayout from '../ModalLayout';
 import LoginForm from './LoginForm';
 import HakaLogin from './HakaLogin';
 import useStyles from '../../styles/login';
+import * as actions from '../../store/actions';
 
-export default function (props) {
+export default connect(mspStateToProps, actions)(props => {
 	const [value, setValue] = React.useState(0);
 	const classes = useStyles();
 	const component = (
@@ -61,7 +63,7 @@ export default function (props) {
 							<Tab label="Normal Login"/>
 							<Tab label="HAKA Login"/>
 						</Tabs>
-						{value === 0 && <TabContainer><LoginForm/></TabContainer>}
+						{value === 0 && <TabContainer><LoginForm {...props}/></TabContainer>}
 						{value === 1 && <TabContainer><HakaLogin/></TabContainer>}
 					</div>
 				}
@@ -76,7 +78,7 @@ export default function (props) {
 	return {
 		...component
 	};
-}
+});
 
 function TabContainer(props) {
 	const component = (
@@ -88,5 +90,11 @@ function TabContainer(props) {
 		...component,
 		children: PropTypes.node.isRequired
 	};
+}
+
+function mspStateToProps(state) {
+	return ({
+		user: state
+	});
 }
 
