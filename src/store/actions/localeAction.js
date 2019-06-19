@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -25,23 +26,12 @@
  * for the JavaScript code in this file.
  *
  */
+import {LOCALE_SET} from './types';
 
-import React from 'react';
-import {Container, Typography} from '@material-ui/core';
-import {FormattedMessage} from 'react-intl';
-
-import useStyles from '../../styles/banner';
-
-export default function () {
-	const classes = useStyles();
-	return (
-		<div className={classes.bannerContainer}>
-			<Container className={classes.textContainer}>
-				<Typography variant="h2" align="center"><FormattedMessage id="app.home.title"/></Typography>
-				<Typography variant="h5" align="center">
-					<FormattedMessage id="app.home.description"/>
-				</Typography>
-			</Container>
-		</div>
-	);
-}
+export const setLocale = lang => dispatch => {
+	localStorage.allLang = lang;
+	dispatch({
+		type: LOCALE_SET,
+		payload: lang
+	});
+};

@@ -50,7 +50,7 @@ const useStyles = makeStyles({
 	},
 	arrayString: {
 		height: '60px',
-		width: '90%'
+		width: '95%'
 	},
 	full: {
 		flexDirection: 'column'
@@ -64,6 +64,13 @@ const useStyles = makeStyles({
 	},
 	stepLabel: {
 		textTransform: 'capitalize'
+	},
+	editForm: {
+		display: 'flex'
+	},
+	editFormAliases: {
+		display: 'flex',
+		width: '90%'
 	}
 });
 

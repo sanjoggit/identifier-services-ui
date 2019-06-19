@@ -25,23 +25,23 @@
  * for the JavaScript code in this file.
  *
  */
+import {LOCALE_SET} from '../actions/types';
+import {getMessages} from '../../intl/getMessages';
 
-import React from 'react';
-import {Container, Typography} from '@material-ui/core';
-import {FormattedMessage} from 'react-intl';
+const initialState = {
+	lang: 'en',
+	messages: {}
+};
 
-import useStyles from '../../styles/banner';
-
-export default function () {
-	const classes = useStyles();
-	return (
-		<div className={classes.bannerContainer}>
-			<Container className={classes.textContainer}>
-				<Typography variant="h2" align="center"><FormattedMessage id="app.home.title"/></Typography>
-				<Typography variant="h5" align="center">
-					<FormattedMessage id="app.home.description"/>
-				</Typography>
-			</Container>
-		</div>
-	);
+export default function (state = initialState, action) {
+	switch (action.type) {
+		case LOCALE_SET:
+			return {
+				...state,
+				lang: action.payload,
+				messages: getMessages(action.payload)
+			};
+		default:
+			return state;
+	}
 }

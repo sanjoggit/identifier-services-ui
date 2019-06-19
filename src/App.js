@@ -29,8 +29,10 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Switch, Route, withRouter} from 'react-router-dom';
-
+import {connect} from 'react-redux';
 import {MuiThemeProvider} from '@material-ui/core/styles';
+import {IntlProvider} from 'react-intl';
+
 import Home from './components/main';
 import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
@@ -40,9 +42,13 @@ import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
+import enMessages from './intl/translations/en.json';
+import fiMessages from './intl/translations/fi.json';
+import svMessages from './intl/translations/sv.json';
 
-export default withRouter(props => {
-	const [user, setUser] = React.useState({role: 'admin', isLoggedIn: true});
+export default connect(mapStateToProps)(withRouter(props => {
+	const {lang} = props;
+	const [user, setUser] = React.useState({role: '', isLoggedIn: false});
 	const routeField = [
 		{path: '/', component: (user.role === 'admin' || user.role === 'publisher') ? PublishersList : Home},
 		{path: '/publishers', component: PublishersList},
@@ -91,25 +97,40 @@ export default withRouter(props => {
 		props.history.push('/publishers');
 	};
 
-	const component = (
-		<MuiThemeProvider theme={theme}>
-			<TopNav loggedIn={user.isLoggedIn} role={user.role} logOut={handleLogOut}/>
-			<CssBaseline/>
-			<AdminNav user={user}/>
-			<section>
-				{(user.role === 'publisher') &&
-					<Tooltips label="contact form" title="contactForm"/>
-				}
-				<Switch>
-					{routes}
-				</Switch>
-				{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
+	const translations = {
+		fi: fiMessages,
+		en: enMessages,
+		sv: svMessages
 
-			</section>
-			<Footer/>
-		</MuiThemeProvider>
+	};
+
+	const component = (
+		<IntlProvider locale={lang} messages={translations[lang]}>
+			<MuiThemeProvider theme={theme}>
+				<TopNav loggedIn={user.isLoggedIn} role={user.role} logOut={handleLogOut}/>
+				<CssBaseline/>
+				<AdminNav user={user}/>
+				<section>
+					{(user.role === 'publisher') &&
+					<Tooltips label="contact form" title="contactForm"/>
+					}
+					<Switch>
+						{routes}
+					</Switch>
+					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
+
+				</section>
+				<Footer/>
+			</MuiThemeProvider>
+		</IntlProvider>
 	);
 	return {
 		...component
 	};
-});
+}));
+
+function mapStateToProps(state) {
+	return {
+		lang: state.locale.lang
+	};
+}

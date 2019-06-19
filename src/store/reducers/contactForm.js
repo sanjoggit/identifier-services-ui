@@ -25,11 +25,28 @@
  * for the JavaScript code in this file.
  *
  */
-import {LOADER} from './types';
 
-export const setLoader = () => {
-	return {
-		type: LOADER
-	};
+import {CONTACT, LOADER} from '../actions/types';
+
+const initialState = {
+	responseMessage: null,
+	loading: false
 };
 
+export default function (state = initialState, action) {
+	switch (action.type) {
+		case LOADER:
+			return {
+				...state,
+				loading: true
+			};
+		case CONTACT:
+			return {
+				...state,
+				responseMessage: action.payload,
+				loading: false
+			};
+		default:
+			return state;
+	}
+}

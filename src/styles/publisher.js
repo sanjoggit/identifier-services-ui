@@ -31,8 +31,12 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles(
 	{
 		publisher: {
+			width: '1200px',
 			minWidth: '750px',
 			padding: '20px 0px'
+		},
+		publisherSpinner: {
+			justifyContent: 'center'
 		},
 		btnContainer: {
 			display: 'flex',
@@ -41,6 +45,11 @@ const useStyles = makeStyles(
 		detailHeading: {
 			paddingLeft: '12px',
 			borderBottom: '1px solid'
+		},
+		notesContainer: {
+			height: '300px',
+			overflow: 'auto',
+			wordBreak: 'break-all'
 		}
 	});
 

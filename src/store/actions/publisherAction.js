@@ -26,10 +26,19 @@
  *
  */
 import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, UPDATE_PUBLISHER, ERROR, SEARCH} from './types';
-import {setLoader} from './loaderAction';
+import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER} from './types';
+import {setLoader} from './commonAction';
+
+const BASE_URL = 'http://localhost:8081/publishers';
 
 function success(type, payload) {
+	return ({
+		type: type,
+		payload: payload
+	});
+}
+
+function fail(type, payload) {
 	return ({
 		type: type,
 		payload: payload
@@ -39,39 +48,33 @@ function success(type, payload) {
 export const fetchPublishersList = () => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch('http://localhost:8081/publishers/query', {
+		const response = await fetch(`${BASE_URL}/query`, {
 			method: 'POST'
 		});
 		const result = await response.json();
 		dispatch(success(PUBLISHERS_LIST, result.data));
 	} catch (err) {
-		dispatch({
-			type: ERROR,
-			payload: err
-		});
+		dispatch(fail(ERROR, err));
 	}
 };
 
 export const fetchPublisher = id => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`http://localhost:8081/publishers/${id}`, {
+		const response = await fetch(`${BASE_URL}/${id}`, {
 			method: 'GET'
 		});
 		const result = await response.json();
 		dispatch(success(PUBLISHER, result.data));
 	} catch (err) {
-		dispatch({
-			type: ERROR,
-			payload: err
-		});
+		dispatch(fail(ERROR, err));
 	}
 };
 
 export const updatePublisher = (id, values) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`http://localhost:8081/publishers/${id}`, {
+		const response = await fetch(`${BASE_URL}/${id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json'
@@ -81,11 +84,19 @@ export const updatePublisher = (id, values) => async dispatch => {
 		const result = await response.json();
 		dispatch(success(PUBLISHER, result.data));
 	} catch (err) {
-		dispatch({
-			type: ERROR,
-			payload: err
-		});
+		dispatch(fail(ERROR, err));
 	}
 };
 
-export const searchPublisher = value => ({type: SEARCH, payload: value});
+export const searchPublisher = data => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch(`${BASE_URL}/query?q=${data}`, {
+			method: 'POST'
+		});
+		const result = await response.json();
+		dispatch(success(SEARCH_PUBLISHER, result.data));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+};

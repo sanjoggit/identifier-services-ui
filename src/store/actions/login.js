@@ -25,23 +25,20 @@
  * for the JavaScript code in this file.
  *
  */
+import {AUTHENTICATION} from './types';
+import {setLoader} from './commonAction';
 
-import React from 'react';
-import {Container, Typography} from '@material-ui/core';
-import {FormattedMessage} from 'react-intl';
 
-import useStyles from '../../styles/banner';
+export const fakeLogin = values => {
+	if (values.username === 'admin' || values.username === 'publisher') {
+		return {
+			type: AUTHENTICATION,
+			payload: {isLogin: true, user: values.username}
+		};
+	}
 
-export default function () {
-	const classes = useStyles();
-	return (
-		<div className={classes.bannerContainer}>
-			<Container className={classes.textContainer}>
-				<Typography variant="h2" align="center"><FormattedMessage id="app.home.title"/></Typography>
-				<Typography variant="h5" align="center">
-					<FormattedMessage id="app.home.description"/>
-				</Typography>
-			</Container>
-		</div>
-	);
-}
+	return {
+		type: AUTHENTICATION,
+		payload: {isLogin: false, user: null}
+	};
+};

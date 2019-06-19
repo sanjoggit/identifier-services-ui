@@ -32,8 +32,7 @@ const useStyles = makeStyles({
 	IsbnIsmnContainer: {
 		maxWidth: '1200px',
 		margin: '0 auto',
-		marginTop: '30px',
-		padding: '0 15px'
+		marginTop: '30px'
 	}
 });
 

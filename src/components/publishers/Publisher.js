@@ -35,25 +35,35 @@ import {
 	List,
 	ListItem,
 	ListItemText,
-	Fab
+	Fab,
+	Chip,
+	Paper,
+	ExpansionPanel,
+	ExpansionPanelDetails,
+	ExpansionPanelSummary
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import {reduxForm, Field} from 'redux-form';
+import {reduxForm, Field, FieldArray} from 'redux-form';
 import useStyles from '../../styles/publisher';
+import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
 import {connect} from 'react-redux';
 import {validate} from '@natlibfi/identifier-services-commons';
 import ModalLayout from '../ModalLayout';
 import Spinner from '../Spinner';
 import renderTextField from '../form/render/renderTextField';
+import renderAliases from '../form/render/renderAliases';
+import renderTextArea from '../form/render/renderTextArea';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default connect(mapStateToProps, actions)(reduxForm({
-	form: 'publisherDetailForm',
+	form: 'publisherRegistrationForm',
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {fetchPublisher, updatePublisher, match, publisher, loading, handleSubmit} = props;
+	const {fetchPublisher, updatePublisher, match, publisher, loading, handleSubmit, clearFields} = props;
 	const classes = useStyles();
+	const formClasses = useFormStyles();
 	const [isEdit, setIsEdit] = useState(false);
 
 	useEffect(() => {
@@ -73,53 +83,154 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		publisherDetail = <Spinner/>;
 	} else {
 		publisherDetail = (
-			<List>
-				<ListItem>
-					<ListItemText>
-						<Grid container>
-							<Grid item xs={6}>Name:</Grid>
-							{isEdit ? <Grid item xs={6}><Field name="name" component={renderTextField}/></Grid> :
-								<Grid item xs={6}>{publisher.name}</Grid>}
-						</Grid>
-					</ListItemText>
-				</ListItem>
-				<ListItem>
-					<ListItemText>
-						<Grid container>
-							<Grid item xs={6}>Language:</Grid>
-							{isEdit ? <Grid item xs={6}><Field name="language" component={renderTextField}/></Grid> :
-								<Grid item xs={6}>{publisher.language}</Grid>}
-						</Grid>
-					</ListItemText>
-				</ListItem>
-				<ListItem>
-					<ListItemText>
-						<Grid container>
-							<Grid item xs={6}>Email:</Grid>
-							{isEdit ? <Grid item xs={6}><Field name="email" component={renderTextField}/></Grid> :
-								<Grid item xs={6}>{publisher.email}</Grid>}
-						</Grid>
-					</ListItemText>
-				</ListItem>
-				<ListItem>
-					<ListItemText>
-						<Grid container>
-							<Grid item xs={6}>Phone:</Grid>
-							{isEdit ? <Grid item xs={6}><Field name="phone" component={renderTextField}/></Grid> :
-								<Grid item xs={6}>{publisher.phone}</Grid>}
-						</Grid>
-					</ListItemText>
-				</ListItem>
-				<ListItem>
-					<ListItemText>
-						<Grid container>
-							<Grid item xs={6}>Website:</Grid>
-							{isEdit ? <Grid item xs={6}><Field name="website" component={renderTextField}/></Grid> :
-								<Grid item xs={6}>{publisher.website}</Grid>}
-						</Grid>
-					</ListItemText>
-				</ListItem>
-			</List>
+			<>
+				<Grid item xs={12} md={6}>
+					<Typography variant="h6">
+				Publisher Detail
+					</Typography>
+					<List>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Name:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="name" className={formClasses.editForm} component={renderTextField}/></Grid> :
+									<Grid item xs={8}>{publisher.name}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Language:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="language" className={formClasses.editForm} component={renderTextField}/></Grid> :
+										<Grid item xs={8}>{publisher.language}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Metadata Delivery:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="metadataDelivery" className={formClasses.editForm} component={renderTextField}/></Grid> :
+										<Grid item xs={8}>{publisher.metadataDelivery}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Email:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="email" className={formClasses.editForm} component={renderTextField}/></Grid> :
+										<Grid item xs={8}>{publisher.email}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Phone:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="phone" className={formClasses.editForm} component={renderTextField}/></Grid> :
+									<Grid item xs={8}>{publisher.phone}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Website:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="website" className={formClasses.editForm} component={renderTextField}/></Grid> :
+										<Grid item xs={8}>{publisher.website}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Aliases:</Grid>
+									{isEdit ? <Grid item xs={8}><FieldArray name="aliases" className={formClasses.editForm} component={renderAliases} props={{clearFields}}/></Grid> :
+										<Grid item xs={8}>{publisher.aliases.map((item, i) => {
+											return (
+												<Chip key={i} label={item}/>
+											);
+										})}
+										</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+					</List>
+				</Grid>
+				<Grid item xs={12} md={6}>
+					<Typography variant="h6">
+				Publisher Detail
+					</Typography>
+					<List>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Address:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="streetAddress['address']" className={formClasses.editForm} component={renderTextField}/></Grid> :
+										<Grid item xs={8}>{publisher.streetAddress.address}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>City:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="streetAddress['city']" className={formClasses.editForm} component={renderTextField}/></Grid> :
+										<Grid item xs={8}>{publisher.streetAddress.city}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Zip:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="streetAddress['zip']" className={formClasses.editForm} component={renderTextField}/></Grid> :
+										<Grid item xs={8}>{publisher.streetAddress.zip}</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<Grid container>
+									<Grid item xs={4}>Primary Contact:</Grid>
+									{isEdit ? <Grid item xs={8}><Field name="primaryContact" className={formClasses.editForm} component={renderTextField}/></Grid> :
+									<Grid item xs={8}>{publisher.primaryContact.map((item, i) => {
+											return (
+												<Chip key={i} label={item}/>
+											);
+										})}
+										</Grid>}
+								</Grid>
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								{isEdit ? null :
+									<Grid container>
+										<Grid item xs={4}>Notes:</Grid>
+									<Grid item xs={8}>{publisher.notes.map((item, i) => {
+											return (
+												<ExpansionPanel key={i}>
+													<ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+														<Typography className={classes.heading}>Expansion Panel 1</Typography>
+													</ExpansionPanelSummary>
+													<ExpansionPanelDetails>
+														<Paper className={classes.notesContainer}>
+															{item}
+														</Paper>
+													</ExpansionPanelDetails>
+												</ExpansionPanel>
+											);
+										})}
+										</Grid>
+									</Grid>}
+							</ListItemText>
+						</ListItem>
+					</List>
+				</Grid>
+			</>
 		);
 	}
 
@@ -134,13 +245,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 			{isEdit ?
 				<div className={classes.publisher}>
 					<form>
-						<Grid container spacing={3}>
-							<Grid item xs={12} md={6}>
-								<Typography variant="h6">
-								Publisher Detail
-								</Typography>
-								{publisherDetail}
-							</Grid>
+						<Grid container spacing={3} className={classes.publisherSpinner}>
+							{publisherDetail}
 						</Grid>
 						<div className={classes.btnContainer}>
 							<Button onClick={handleCancel}>Cancel</Button>
@@ -151,13 +257,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 					</form>
 				</div> :
 				<div className={classes.publisher}>
-					<Grid container spacing={3}>
-						<Grid item xs={12} md={6}>
-							<Typography variant="h6">
-                            Publisher Detail
-							</Typography>
-							{publisherDetail}
-						</Grid>
+					<Grid container spacing={3} className={classes.publisherSpinner}>
+						{publisherDetail}
 					</Grid>
 					<div className={classes.btnContainer}>
 						<Fab

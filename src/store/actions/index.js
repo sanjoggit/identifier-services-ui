@@ -32,3 +32,15 @@ export {
 	updatePublisher,
 	searchPublisher
 } from './publisherAction';
+
+export {
+	fakeLogin
+} from './login';
+
+export {
+	contact
+} from './contactFormActions';
+
+export {
+	setLoader
+} from './commonAction';

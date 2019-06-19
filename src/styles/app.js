@@ -62,22 +62,23 @@ const theme = createMuiTheme({
 				boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)'
 			}
 		},
-		MuiListItem: {
-			gutters: {
-				//paddingLeft: 0
-			},
-			root: {
-				paddingBottom: 0
-			}
-		},
 		MuiPaper: {
 			elevation1: {
 				boxShadow: 'none'
-			}
+			},
+			// elevation4: {
+			// 	boxShadow: 'none'
+			// }
 		},
 		MuiExpansionPanelDetails: {
 			root: {
 				padding: '0 24px 0'
+			}
+		},
+		MuiToolbar: {
+			gutters: {
+				paddingLeft: 0,
+				paddingRight: 0
 			}
 		}
 	}

@@ -45,7 +45,7 @@ export default function (props) {
 	}
 
 	const component = (
-		<>
+		<div>
 			<Button className={list.selected && classes.selected} onClick={handleClick}>
 				{list.label}
 				{list.listItem && <ArrowDropDown/>}
@@ -74,7 +74,7 @@ export default function (props) {
 				)}
 			</Menu>
 			}
-		</>
+		</div>
 	);
 	return {
 		...component

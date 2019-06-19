@@ -41,8 +41,7 @@ const useStyles = makeStyles({
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		color: '#ffffff',
-		padding: '0 15px'
+		color: '#ffffff'
 
 	}
 });
