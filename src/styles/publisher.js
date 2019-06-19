@@ -35,7 +35,7 @@ const useStyles = makeStyles(
 			minWidth: '750px',
 			padding: '20px 0px'
 		},
-		publisherSpinner:{
+		publisherSpinner: {
 			justifyContent: 'center'
 		},
 		btnContainer: {
