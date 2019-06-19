@@ -85,6 +85,7 @@ export const updatePublisher = (id, values) => async dispatch => {
 		dispatch(success(PUBLISHER, result.data));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
+<<<<<<< HEAD
 	}
 };
 
@@ -100,3 +101,21 @@ export const searchPublisher = data => async dispatch => {
 		dispatch(fail(ERROR, err));
 	}
 };
+=======
+	}
+};
+
+export const searchPublisher = data => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch(`${BASE_URL}/query?q=${data}`, {
+			method: 'POST'
+		});
+		const result = await response.json();
+		dispatch(success(SEARCH_PUBLISHER, result.data));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+};
+
+>>>>>>> 206e1c0fb7745330f5e43df05d53b52f2ea446e6
