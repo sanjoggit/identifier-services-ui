@@ -26,27 +26,47 @@
  *
  */
 
-import {CONTACT, LOADER} from '../actions/types';
+import React from 'react';
+import {Snackbar, SnackbarContent, IconButton} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import useStyles from '../styles/snackBar';
 
-const initialState = {
-	responseMessage: 'null',
-	loading: false
-};
+export default function (props) {
+	const {message, other, openSnackBar} = props;
+	const classes = useStyles();
+	const [open, setOpen] = React.useState(openSnackBar);
 
-export default function (state = initialState, action) {
-	switch (action.type) {
-		case LOADER:
-			return {
-				...state,
-				loading: true
-			};
-		case CONTACT:
-			return {
-				...state,
-				responseMessage: action.payload,
-				loading: false
-			};
-		default:
-			return state;
+	function handleClose() {
+		setOpen(false);
 	}
+
+	const component = (
+		<Snackbar
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'left'
+			}}
+			open={open}
+			autoHideDuration={6000}
+			onClose={handleClose}
+		>
+
+			<SnackbarContent
+				aria-describedby="client-snackbar"
+				message={
+					<span>
+						{message}
+					</span>
+				}
+				action={[
+					<IconButton key="close" aria-label="Close" color="inherit" onClick={handleClose}>
+						<CloseIcon/>
+					</IconButton>
+				]}
+				{...other}/>
+		</Snackbar>
+	);
+	return {
+		...component
+	};
 }

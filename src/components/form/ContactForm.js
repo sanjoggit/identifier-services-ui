@@ -44,10 +44,10 @@ export default connect(mapToProps, actions)(reduxForm({
 	form: 'contactForm', validate
 })(
 	props => {
-		const {handleSubmit, pristine, valid, contact, loading, history, responseMessage, handleClose} = props;
+		const {handleSubmit, pristine, valid, contact, loading, history, handleClose} = props;
 		const initialState = {};
 		const [state, setState] = useState(initialState);
-		console.log(props)
+		console.log(props);
 
 		useEffect(() => {
 			return () => {
@@ -65,8 +65,8 @@ export default connect(mapToProps, actions)(reduxForm({
 
 		const handleClick = values => {
 			setState({...state, values});
-			contact(values); // need to build inorder for this function to work
-			handleClose()
+			contact(values); // Need to build inorder for this function to work
+			handleClose();
 			history.push('/');
 		};
 

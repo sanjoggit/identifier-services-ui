@@ -45,6 +45,7 @@ import Tooltips from './components/Tooltips';
 import enMessages from './intl/translations/en.json';
 import fiMessages from './intl/translations/fi.json';
 import svMessages from './intl/translations/sv.json';
+import SnackBar from './components/SnackBar';
 
 export default connect(mapStateToProps)(withRouter(props => {
 	const {lang} = props;
@@ -89,7 +90,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 		</>
 	);
 
-	const {location} = props;
+	const {location, responseMessage} = props;
 	const isModal = location.state;
 
 	const handleLogOut = () => {
@@ -118,7 +119,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 						{routes}
 					</Switch>
 					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
-
+					{responseMessage && <SnackBar message={responseMessage} openSnackBar={Boolean(responseMessage)}/>}
 				</section>
 				<Footer/>
 			</MuiThemeProvider>
@@ -131,6 +132,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 
 function mapStateToProps(state) {
 	return {
-		lang: state.locale.lang
+		lang: state.locale.lang,
+		responseMessage: state.contact.responseMessage
 	};
 }

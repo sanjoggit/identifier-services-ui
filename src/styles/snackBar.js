@@ -26,27 +26,13 @@
  *
  */
 
-import {CONTACT, LOADER} from '../actions/types';
+import {makeStyles} from '@material-ui/core/styles';
 
-const initialState = {
-	responseMessage: 'null',
-	loading: false
-};
-
-export default function (state = initialState, action) {
-	switch (action.type) {
-		case LOADER:
-			return {
-				...state,
-				loading: true
-			};
-		case CONTACT:
-			return {
-				...state,
-				responseMessage: action.payload,
-				loading: false
-			};
-		default:
-			return state;
+const useStyles = makeStyles({
+	main: {
+		display: 'flex',
+		justifyContent: 'center'
 	}
-}
+});
+
+export default useStyles;
