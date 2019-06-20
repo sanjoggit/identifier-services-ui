@@ -34,6 +34,7 @@ import useStyles from '../../../styles/error';
 
 export default function (props) {
 	const {input, label, className, meta, errors} = props;
+	console.log(className)
 	const {touched, error} = meta;
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const classes = useStyles();
