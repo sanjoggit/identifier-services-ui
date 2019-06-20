@@ -39,12 +39,12 @@ import Spinner from '../Spinner';
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, searchedPublishers} = props;
-	const [state, setState] = useState({
+	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
 
 	const handleChange = name => event => {
-		setState({...state, [name]: event.target.checked});
+		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
 
 	const handlePublisherClick = id => {
@@ -65,9 +65,11 @@ export default connect(mapStateToProps, actions)(props => {
 		publishersData = <p>No Search Result</p>;
 	} else {
 		publishersData = (
-
 			<TableComponent
-				data={searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
+				data={activeCheck.checked ? searchedPublishers
+					.filter(item => item.activity.active === true)
+					.map(item => searchResultRender(item._id, item.name, item.phone)) :
+					searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
 				handlePublisherClick={handlePublisherClick}
 				headRows={headRows}
 			/>
@@ -90,7 +92,7 @@ export default connect(mapStateToProps, actions)(props => {
 				<FormControlLabel
 					control={
 						<Checkbox
-							checked={state.checked}
+							checked={activeCheck.checked}
 							value="checked"
 							color="primary"
 							onChange={handleChange('checked')}
