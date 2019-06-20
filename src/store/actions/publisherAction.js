@@ -27,7 +27,7 @@
  */
 import fetch from 'node-fetch';
 import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER} from './types';
-import {setLoader} from './loaderAction';
+import {setLoader} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081/publishers';
 
@@ -100,4 +100,3 @@ export const searchPublisher = data => async dispatch => {
 		dispatch(fail(ERROR, err));
 	}
 };
-

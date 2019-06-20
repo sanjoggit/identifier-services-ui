@@ -26,16 +26,28 @@
  *
  */
 
-export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
-export const PUBLISHERS_LIST = 'PUBLISHERS_LIST';
-export const PUBLISHER = 'PUBLISHER';
-export const UPDATE_PUBLISHER = 'UPDATE_PUBLISHER';
+import {AUTHENTICATION, LOADER} from '../actions/types';
 
-export const LOADER = 'LOADER';
-export const SEARCH_PUBLISHER = 'SEARCH_PUBLISHER';
-export const ERROR = 'ERROR';
-export const LOCALE_SET = 'LOCALE_SET';
+const initialState = {
+	userStatus: {},
+	loading: false,
+	error: {}
+};
 
-export const CONTACT = 'CONTACT';
-
-export const AUTHENTICATION = 'AUTHENTICATION';
+export default function (state = initialState, action) {
+	switch (action.type) {
+		case LOADER:
+			return {
+				...state,
+				loading: true
+			};
+		case AUTHENTICATION:
+			return {
+				...state,
+				userStatus: action.payload,
+				loading: false
+			};
+		default:
+			return state;
+	}
+}

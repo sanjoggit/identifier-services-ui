@@ -27,24 +27,47 @@
  *
  */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {PropTypes} from 'prop-types';
 import {Grid, Button} from '@material-ui/core';
+import Recaptcha from 'react-recaptcha';
+import {validate} from '@natlibfi/identifier-services-commons';
+import {connect} from 'react-redux';
 
 import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
-import {validate} from '@natlibfi/identifier-services-commons';
+import * as actions from '../../store/actions';
 
-export default reduxForm({
-	form: 'contactForm', validate})(
-	({handleSubmit, pristine, valid}) => {
+export default connect(mapToProps, actions)(reduxForm({
+	form: 'contactForm', validate
+})(
+	props => {
+		const {handleSubmit, pristine, valid, contact, loading, history, handleClose} = props;
 		const initialState = {};
 		const [state, setState] = useState(initialState);
+		console.log(props);
+
+		useEffect(() => {
+			return () => {
+				// LoadReCaptcha(RECAPTCHA_SITE_KEY);
+			};
+		}, []);
+
+		function recaptchaloaded() {
+			console.log('dddd');
+		}
+
+		function verifyCallback(response) {
+			console.log(response);
+		}
 
 		const handleClick = values => {
 			setState({...state, values});
+			contact(values); // Need to build inorder for this function to work
+			handleClose();
+			history.push('/');
 		};
 
 		const fieldArray = [
@@ -71,6 +94,12 @@ export default reduxForm({
 
 		const component = (
 			<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
+				<Recaptcha
+					sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+					render="explicit"
+					onloadCallback={recaptchaloaded}
+					verifyCallback={verifyCallback}
+				/>
 				<Grid container className={classes.subContainer} spacing={3} direction="row">
 					{
 						fieldArray.map(list => (
@@ -104,7 +133,7 @@ export default reduxForm({
 							size="small"
 							fullWidth={false}
 						>
-				Submit
+							Submit
 						</Button>
 					</Grid>
 				</Grid>
@@ -118,4 +147,11 @@ export default reduxForm({
 				pristine: PropTypes.bool.isRequired
 			}
 		};
+	}));
+
+function mapToProps(state) {
+	return ({
+		responseMessage: state.contact.responseMessage,
+		loading: state.contact.loading
 	});
+}

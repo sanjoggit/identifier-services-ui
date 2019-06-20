@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -27,51 +26,47 @@
  *
  */
 
-import React, {useState} from 'react';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
-import {TextField, InputAdornment, IconButton} from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import React from 'react';
+import {Snackbar, SnackbarContent, IconButton} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import useStyles from '../styles/snackBar';
 
-import useStyles from '../styles/searchComponent';
-import * as actions from '../store/actions';
-
-export default connect(null, actions)(withRouter(props => {
-	const {searchPublisher, history} = props;
+export default function (props) {
+	const {message, other, openSnackBar} = props;
 	const classes = useStyles();
-	const [inputVal, setInputVal] = useState('');
+	const [open, setOpen] = React.useState(openSnackBar);
 
-	const handleInputChange = e => {
-		setInputVal(e.target.value);
-	};
-
-	const handleSubmit = e => {
-		e.preventDefault();
-		searchPublisher(inputVal);
-		history.push('/publishers');
-	};
+	function handleClose() {
+		setOpen(false);
+	}
 
 	const component = (
-		<form onSubmit={handleSubmit}>
-			<TextField
-				id="outlined-bare"
-				placeholder="Search..."
-				margin="normal"
-				variant="outlined"
-				InputProps={{
-					endAdornment: (
-						<InputAdornment position="end">
-							<IconButton onClick={handleSubmit}><SearchIcon/></IconButton>
-						</InputAdornment>
-					)
-				}}
-				className={classes.searchBox}
-				onChange={handleInputChange}
-			/>
-		</form>
-	);
+		<Snackbar
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'left'
+			}}
+			open={open}
+			autoHideDuration={6000}
+			onClose={handleClose}
+		>
 
+			<SnackbarContent
+				aria-describedby="client-snackbar"
+				message={
+					<span>
+						{message}
+					</span>
+				}
+				action={[
+					<IconButton key="close" aria-label="Close" color="inherit" onClick={handleClose}>
+						<CloseIcon/>
+					</IconButton>
+				]}
+				{...other}/>
+		</Snackbar>
+	);
 	return {
 		...component
 	};
-}));
+}

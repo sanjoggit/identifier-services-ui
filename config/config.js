@@ -31,6 +31,12 @@ export const HTTP_PORT = readEnvironmentVariable('HTTP_PORT', {
 	format: v => Number(v)
 });
 
+export const SMTP_URL = readEnvironmentVariable('SMTP_URL');
+
+export const RECAPTCHA_SITE_KEY = readEnvironmentVariable('RECAPTCHA_SITE_KEY', {
+	defaultValue: '6LeuOqkUAAAAAHVZ3zkP19U3DfH4dAhY68uia6Ry'
+});
+
 function readEnvironmentVariable(name, {defaultValue = undefined, hideDefault = false, format = v => v} = {}) {
 	if (process.env[name] === undefined) {
 		if (defaultValue === undefined) {

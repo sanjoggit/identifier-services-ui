@@ -26,16 +26,13 @@
  *
  */
 
-export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
-export const PUBLISHERS_LIST = 'PUBLISHERS_LIST';
-export const PUBLISHER = 'PUBLISHER';
-export const UPDATE_PUBLISHER = 'UPDATE_PUBLISHER';
+import {makeStyles} from '@material-ui/core/styles';
 
-export const LOADER = 'LOADER';
-export const SEARCH_PUBLISHER = 'SEARCH_PUBLISHER';
-export const ERROR = 'ERROR';
-export const LOCALE_SET = 'LOCALE_SET';
+const useStyles = makeStyles({
+	main: {
+		display: 'flex',
+		justifyContent: 'center'
+	}
+});
 
-export const CONTACT = 'CONTACT';
-
-export const AUTHENTICATION = 'AUTHENTICATION';
+export default useStyles;
