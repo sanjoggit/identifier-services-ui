@@ -29,7 +29,7 @@
 import {CONTACT, LOADER} from '../actions/types';
 
 const initialState = {
-	responseMessage: 'null',
+	responseMessage: null,
 	loading: false
 };
 
