@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable complexity */
 /* eslint-disable no-negated-condition */
 /**
@@ -28,25 +29,42 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Grid, Button, Link, Typography} from '@material-ui/core';
 import {validate} from '@natlibfi/identifier-services-commons';
+import PersonIcon from '@material-ui/icons/Person';
+import Visibility from '@material-ui/icons/Visibility';
 import {Field, reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
+import {withCookies} from 'react-cookie';
+
 import renderTextField from '../form/render/renderTextField';
 import useStyles from '../../styles/login';
 import useFormStyles from '../../styles/form';
-import PersonIcon from '@material-ui/icons/Person';
-import Visibility from '@material-ui/icons/Visibility';
+import * as actions from '../../store/actions';
 
-export default reduxForm({
+export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 	form: 'login', validate})(props => {
-	console.log(props);
-	const {pristine, valid, fakeLogin, handleSubmit} = props;
+	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose, cookies, getUserInfo} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
+	const loginCookie = cookies.get('login-cookie');
+
+	const [token, setToken] = useState(loginCookie);
+
+	useEffect(() => {
+		setToken(loginCookie);
+		getUserInfo(token);
+	}, []);
+	
+	function handleLogin(values) {
+		normalLogin(values);
+		redirectTo('/publishers');
+		handleClose();
+	}
 
 	const component = (
-		<form className={classes.loginForm} onSubmit={handleSubmit(fakeLogin)}>
+		<form className={classes.loginForm} onSubmit={handleSubmit(handleLogin)}>
 			<section>
 				<Grid container className={classes.inputGap} spacing={4} alignItems="flex-end">
 					<Grid item xs={1}>
@@ -108,4 +126,11 @@ export default reduxForm({
 		...component
 	};
 }
-);
+)));
+
+function mapStateToProps(state) {
+	return ({
+		user: state.login.user,
+		isLogin: state.login.isLogin
+	});
+}

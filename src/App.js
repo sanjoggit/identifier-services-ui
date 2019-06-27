@@ -39,7 +39,7 @@ import AdminNav from './components/navbar/adminNav';
 import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
 import Footer from './components/footer';
-import PrivateRoute from './PrivateRoutes';
+// import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 import enMessages from './intl/translations/en.json';
@@ -48,24 +48,23 @@ import svMessages from './intl/translations/sv.json';
 import SnackBar from './components/SnackBar';
 
 export default connect(mapStateToProps)(withRouter(props => {
-	const {lang} = props;
-	const [user, setUser] = React.useState({role: '', isLoggedIn: false});
+	const {lang, userInfo, isLogin, history, location, responseMessage} = props;
 	const routeField = [
-		{path: '/', component: (user.role === 'admin' || user.role === 'publisher') ? PublishersList : Home},
+		{path: '/', component: (userInfo.groups !== undefined && (userInfo.groups.includes('admin') || userInfo.groups.includes('publisher')) ? PublishersList : Home)},
 		{path: '/publishers', component: PublishersList},
 		{path: '/publishers/:id', component: PublishersList}
 
 	];
 
-	const privateRoutesList = [
-		{path: '/templates/:id', role: ['admin'], component: ''},
-		{path: '/user/requests/:id', role: ['admin'], component: ''},
-		{path: '/publishers/request/:id', role: ['admin'], component: ''},
-		{path: '/ranges/isbn/:id', role: ['admin'], component: ''},
-		{path: '/ranges/ismn/:id', role: ['admin'], component: ''},
-		{path: '/ranges/issn/:id', role: ['admin'], component: ''}
+	// Const privateRoutesList = [
+	// 	{path: '/templates/:id', role: ['admin'], component: ''},
+	// 	{path: '/user/requests/:id', role: ['admin'], component: ''},
+	// 	{path: '/publishers/request/:id', role: ['admin'], component: ''},
+	// 	{path: '/ranges/isbn/:id', role: ['admin'], component: ''},
+	// 	{path: '/ranges/ismn/:id', role: ['admin'], component: ''},
+	// 	{path: '/ranges/issn/:id', role: ['admin'], component: ''}
 
-	];
+	// ];
 
 	const routes = (
 		<>
@@ -77,7 +76,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 					component={fields.component}
 				/>
 			))}
-			{privateRoutesList.map(pRoute => pRoute.role.includes(user.role) && (
+			{/* {privateRoutesList.map(pRoute => pRoute.role.includes(user.role) && (
 				<PrivateRoute
 					key={pRoute.path}
 					exact
@@ -86,17 +85,22 @@ export default connect(mapStateToProps)(withRouter(props => {
 					path={pRoute.path}
 					component={pRoute.component}
 				/>
-			))}
+			))} */}
 		</>
 	);
 
-	const {location, responseMessage} = props;
 	const isModal = location.state;
 
 	const handleLogOut = () => {
-		setUser({role: ''});
-		props.history.push('/publishers');
+		redirectTo('/publishers');
 	};
+
+	function redirectTo(path, state) {
+		history.push({
+			pathname: path,
+			state: state
+		});
+	}
 
 	const translations = {
 		fi: fiMessages,
@@ -108,11 +112,11 @@ export default connect(mapStateToProps)(withRouter(props => {
 	const component = (
 		<IntlProvider locale={lang} messages={translations[lang]}>
 			<MuiThemeProvider theme={theme}>
-				<TopNav loggedIn={user.isLoggedIn} role={user.role} logOut={handleLogOut}/>
+				<TopNav loggedIn={isLogin} redirectTo={redirectTo} user={userInfo} logOut={handleLogOut}/>
 				<CssBaseline/>
-				<AdminNav user={user}/>
+				<AdminNav user={userInfo} loggedIn={isLogin}/>
 				<section>
-					{(user.role === 'publisher') &&
+					{(userInfo.groups !== undefined && userInfo.groups.includes('publisher')) &&
 					<Tooltips label="contact form" title="contactForm"/>
 					}
 					<Switch>
@@ -133,6 +137,8 @@ export default connect(mapStateToProps)(withRouter(props => {
 function mapStateToProps(state) {
 	return {
 		lang: state.locale.lang,
-		responseMessage: state.contact.responseMessage
+		responseMessage: state.contact.responseMessage,
+		isLogin: state.login.isLogin,
+		userInfo: state.login.userInfo
 	};
 }

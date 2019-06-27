@@ -47,7 +47,6 @@ export default connect(mapToProps, actions)(reduxForm({
 		const {handleSubmit, pristine, valid, contact, loading, history, handleClose} = props;
 		const initialState = {};
 		const [state, setState] = useState(initialState);
-		console.log(props);
 
 		useEffect(() => {
 			return () => {

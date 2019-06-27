@@ -79,6 +79,7 @@ export const updatePublisher = (id, values) => async dispatch => {
 			headers: {
 				'Content-Type': 'application/json'
 			},
+			credentials: 'same-origin',
 			body: JSON.stringify(values)
 		});
 		const result = await response.json();

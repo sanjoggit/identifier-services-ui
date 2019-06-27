@@ -33,7 +33,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import useStyles from '../../styles/adminNav';
 import MenuTabs from './menuTabs';
 
-export default function ({user: {role, isLoggedIn}}) {
+export default function ({user: {role}, loggedIn}) {
 	const classes = useStyles();
 
 
@@ -86,7 +86,7 @@ export default function ({user: {role, isLoggedIn}}) {
 				<AppBar position="static" color="secondary">
 					<div>
 						<div className={classes.adminMenu}>
-							{isLoggedIn ?
+							{loggedIn ?
 								obj.map(list => list.roleView.includes(role) && (
 									<div key={list.label}>
 										<MenuTabs role={role} list={list}/>

@@ -33,6 +33,10 @@ export const HTTP_PORT = readEnvironmentVariable('HTTP_PORT', {
 
 export const SMTP_URL = readEnvironmentVariable('SMTP_URL');
 
+export const BASE_URL = readEnvironmentVariable('BASE_URL', {
+	defaultValue: 'http://localhost:8081/auth'
+});
+
 export const RECAPTCHA_SITE_KEY = readEnvironmentVariable('RECAPTCHA_SITE_KEY', {
 	defaultValue: '6LeuOqkUAAAAAHVZ3zkP19U3DfH4dAhY68uia6Ry'
 });
