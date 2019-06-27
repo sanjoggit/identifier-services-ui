@@ -25,30 +25,42 @@
  * for the JavaScript code in this file.
  *
  */
-import {AUTHENTICATION} from './types';
-import fetch from 'node-fetch';
 
-const AUTHENTICATION_URL = 'http://localhost:8080/auth';
+import {AUTHENTICATION, LOADER, LOG_OUT} from '../actions/types';
 
-export const normalLogin = values => async dispatch => {
-	const response = await fetch(AUTHENTICATION_URL, {
-		method: 'POST',
-		body: JSON.stringify(values),
-		headers: {'Content-Type': 'application/json'}
-	});
-	return response.status;
+const initialState = {
+	userInfo: {user: 'User', role: 'any'},
+	loading: false,
+	error: {},
+	isLogin: false
 };
 
-export const getUserInfo = token => async dispatch => {
-	const result = await fetch('http://localhost:8081/auth', {
-		method: 'GET',
-		headers: {
-			Authorization: 'Bearer ' + token
-		}
-	});
-	const user = await result.json();
-	dispatch({
-		type: AUTHENTICATION,
-		payload: {isLogin: true, user: user.name.givenName, role: 'admin'}
-	});
-};
+export default function (state = initialState, action) {
+	switch (action.type) {
+		case LOADER:
+			return {
+				...state,
+				loading: true
+			};
+		case AUTHENTICATION:
+			return {
+				userInfo: {
+					user: action.payload.user,
+					role: action.payload.role
+				},
+				isLogin: action.payload.isLogin,
+				loading: false
+			};
+		case LOG_OUT:
+			return {
+				userInfo: {
+					user: action.payload.user,
+					role: action.payload.role
+				},
+				isLogin: action.payload.isLogin,
+				loading: false
+			};
+		default:
+			return state;
+	}
+}

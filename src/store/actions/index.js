@@ -35,8 +35,9 @@ export {
 
 export {
 	normalLogin,
-	getUserInfo
-} from './login';
+	getUserInfo,
+	logOut
+} from './auth';
 
 export {
 	contact

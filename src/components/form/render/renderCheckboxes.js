@@ -36,7 +36,6 @@ export default function ({label, options, className, input, meta: {touched, erro
 			<FormLabel component="legend">{label}</FormLabel>
 			<FormGroup>
 				{options.map(item => (
-					console.log(input) ||
 					<FormControlLabel
 						{...input}
 						key={item.label}

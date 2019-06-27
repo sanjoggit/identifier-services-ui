@@ -27,7 +27,7 @@
  *
  */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 
@@ -36,25 +36,32 @@ import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
 import * as actions from '../../store/actions';
 import Spinner from '../Spinner';
+import {withCookies} from 'react-cookie';
 
-export default connect(mapStateToProps, actions)(props => {
+export default connect(mapStateToProps, actions)(withCookies(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers} = props;
+	const {loading, searchedPublishers, cookies, getUserInfo} = props;
 	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
-	
+	const [token, setToken] = useState(null);
+
+	useEffect(() => {
+		setToken(cookies.get('login-cookie'));
+		token !== null && getUserInfo(token);
+	}, [token]);
+
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
-	
+
 	const handlePublisherClick = id => {
 		props.history.push({
 			pathname: `/publishers/${id}`,
 			state: {modal: true}
 		});
 	};
-	
+
 	const headRows = [
 		{id: 'name', label: 'Name'},
 		{id: 'phone', label: 'Phone'}
@@ -67,16 +74,16 @@ export default connect(mapStateToProps, actions)(props => {
 	} else {
 		publishersData = (
 			<TableComponent
-			data={activeCheck.checked ? searchedPublishers
-				.filter(item => item.activity.active === true)
-				.map(item => searchResultRender(item._id, item.name, item.phone)) :
+				data={activeCheck.checked ? searchedPublishers
+					.filter(item => item.activity.active === true)
+					.map(item => searchResultRender(item._id, item.name, item.phone)) :
 					searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
-					handlePublisherClick={handlePublisherClick}
+				handlePublisherClick={handlePublisherClick}
 				headRows={headRows}
 			/>
-			);
+		);
 	}
-	
+
 	function searchResultRender(id, name, phone) {
 		return {
 			id: id,
@@ -84,7 +91,7 @@ export default connect(mapStateToProps, actions)(props => {
 			phone: phone
 		};
 	}
-	
+
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
@@ -108,7 +115,7 @@ export default connect(mapStateToProps, actions)(props => {
 	return {
 		...component
 	};
-});
+}));
 
 function mapStateToProps(state) {
 	return ({

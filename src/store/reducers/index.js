@@ -28,7 +28,7 @@
 import {combineReducers} from 'redux';
 import {reducer as forms} from 'redux-form';
 import publisherReducer from './publisher';
-import loginReducer from './loginReducer';
+import loginReducer from './authReducer';
 import localeReducer from './localeReducer';
 import contact from './contactForm';
 import common from './commonReducer';
