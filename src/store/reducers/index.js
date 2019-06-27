@@ -41,4 +41,3 @@ export default combineReducers({
 	contact: contact,
 	common: common
 });
-

@@ -34,7 +34,8 @@ export {
 } from './publisherAction';
 
 export {
-	fakeLogin
+	normalLogin,
+	getUserInfo
 } from './login';
 
 export {

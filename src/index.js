@@ -40,6 +40,7 @@ import {setLocale} from './store/actions/localeAction';
 import en from 'react-intl/locale-data/en';
 import fi from 'react-intl/locale-data/fi';
 import sv from 'react-intl/locale-data/sv';
+import {CookiesProvider} from 'react-cookie';
 
 addLocaleData([...en, ...fi, ...sv]);
 
@@ -56,5 +57,9 @@ if (localStorage.allLang) {
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Router><App/></Router>
+			<CookiesProvider>
+		<Router>
+				<App/>
+				</Router>
+				</CookiesProvider>
 	</Provider>, document.getElementById('app'));

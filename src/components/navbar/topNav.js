@@ -35,12 +35,12 @@ import {connect} from 'react-redux';
 
 import useStyles from '../../styles/topNav';
 import Logo from '../../assets/logo/logo.png';
-import Login from '../login/Login';
 import NotificationBar from '../../components/NotificationBar';
-import {setLocale} from '../../store/actions/localeAction';
+import * as actions from '../../store/actions';
+import LoginLayout from '../login/LoginLayout';
 
-export default connect(mapStateToProps, {setLocale})(props => {
-	const {setLocale} = props;
+export default connect(mapStateToProps, actions)(props => {
+	const {setLocale, userInfo} = props;
 	const classes = useStyles();
 	const [openNotification, setOpenNotification] = React.useState(true);
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -89,10 +89,13 @@ export default connect(mapStateToProps, {setLocale})(props => {
 					<AppBar position="static">
 						<div className={classes.navbarContainer}>
 							<Typography variant="h6" color="inherit">
-								<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
+								{userInfo.role === 'any' ?
+									<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link> :
+									<img src={Logo} alt="" className={classes.mainLogo}/>
+								}
 							</Typography>
 							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
-								<Login name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
+								<LoginLayout name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
 								<LanguageIcon/>
 								<div className={classes.languageSelect} onClick={handleClick}>
 									<span>{lang}</span>
@@ -133,6 +136,7 @@ export default connect(mapStateToProps, {setLocale})(props => {
 
 function mapStateToProps(state) {
 	return ({
-		lang: state.locale.lang
+		lang: state.locale.lang,
+		userInfo: state.login.userInfo
 	});
 }

@@ -30,6 +30,7 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
+
 import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
@@ -39,21 +40,21 @@ import Spinner from '../Spinner';
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, searchedPublishers} = props;
-	const [state, setState] = useState({
+	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
-
+	
 	const handleChange = name => event => {
-		setState({...state, [name]: event.target.checked});
+		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
-
+	
 	const handlePublisherClick = id => {
 		props.history.push({
 			pathname: `/publishers/${id}`,
 			state: {modal: true}
 		});
 	};
-
+	
 	const headRows = [
 		{id: 'name', label: 'Name'},
 		{id: 'phone', label: 'Phone'}
@@ -65,15 +66,17 @@ export default connect(mapStateToProps, actions)(props => {
 		publishersData = <p>No Search Result</p>;
 	} else {
 		publishersData = (
-
 			<TableComponent
-				data={searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
-				handlePublisherClick={handlePublisherClick}
+			data={activeCheck.checked ? searchedPublishers
+				.filter(item => item.activity.active === true)
+				.map(item => searchResultRender(item._id, item.name, item.phone)) :
+					searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
+					handlePublisherClick={handlePublisherClick}
 				headRows={headRows}
 			/>
-		);
+			);
 	}
-
+	
 	function searchResultRender(id, name, phone) {
 		return {
 			id: id,
@@ -81,7 +84,7 @@ export default connect(mapStateToProps, actions)(props => {
 			phone: phone
 		};
 	}
-
+	
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
@@ -90,7 +93,7 @@ export default connect(mapStateToProps, actions)(props => {
 				<FormControlLabel
 					control={
 						<Checkbox
-							checked={state.checked}
+							checked={activeCheck.checked}
 							value="checked"
 							color="primary"
 							onChange={handleChange('checked')}

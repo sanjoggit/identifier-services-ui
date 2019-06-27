@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable no-negated-condition */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,32 +28,19 @@
  *
  */
 
-import {AUTHENTICATION, LOADER} from '../actions/types';
+import React from 'react';
 
-const initialState = {
-	userInfo: {user: 'User', role: 'any'},
-	loading: false,
-	error: {},
-	isLogin: false
-};
+import ModalLayout from '../ModalLayout';
+import Login from './Login';   
 
-export default function (state = initialState, action) {
-	switch (action.type) {
-		case LOADER:
-			return {
-				...state,
-				loading: true
-			};
-		case AUTHENTICATION:
-			return {
-				userInfo: {
-					user: action.payload.user,
-					role: action.payload.role
-				},
-				isLogin: action.payload.isLogin,
-				loading: false
-			};
-		default:
-			return state;
-	}
-}
+export default (props => {
+	const component = (
+		<ModalLayout icon {...props}>
+			<Login {...props}/>
+		</ModalLayout>
+	);
+	return {
+		...component
+	};
+});
+

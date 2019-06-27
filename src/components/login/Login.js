@@ -34,45 +34,48 @@ import PropTypes from 'prop-types';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
 import {connect} from 'react-redux';
 
-import ModalLayout from '../ModalLayout';
 import LoginForm from './LoginForm';
 import HakaLogin from './HakaLogin';
 import useStyles from '../../styles/login';
 import * as actions from '../../store/actions';
 
-export default connect(mspStateToProps, actions)(props => {
+export default connect(mapStateToProps, actions)(props => {
 	const [value, setValue] = React.useState(0);
 	const classes = useStyles();
 	const component = (
-		<ModalLayout icon {...props}>
-			<div className={classes.main}>
-				{(props.loggedIn) ?
-					<Fab variant="extended" className={classes.logout} color="secondary" onClick={props.logOut}>
-						<LogOutIcon fontSize="large"/>
-						<span>Click Here to Logout...</span>
-					</Fab> :
-					<div>
-						<Tabs
-							value={value}
-							variant="scrollable"
-							scrollButtons="on"
-							indicatorColor="primary"
-							textColor="primary"
-							onChange={handleChange}
-						>
-							<Tab label="Normal Login"/>
-							<Tab label="HAKA Login"/>
-						</Tabs>
-						{value === 0 && <TabContainer><LoginForm {...props}/></TabContainer>}
-						{value === 1 && <TabContainer><HakaLogin/></TabContainer>}
-					</div>
-				}
-			</div>
-		</ModalLayout>
+		<div className={classes.main}>
+			{(props.loggedIn) ?
+				<Fab variant="extended" className={classes.logout} color="secondary" onClick={handleLogOut}>
+					<LogOutIcon fontSize="large"/>
+					<span>Click Here to Logout...</span>
+				</Fab> :
+				<div>
+					<Tabs
+						value={value}
+						variant="scrollable"
+						scrollButtons="on"
+						indicatorColor="primary"
+						textColor="primary"
+						onChange={handleChange}
+					>
+						<Tab label="Normal Login"/>
+						<Tab label="HAKA Login"/>
+					</Tabs>
+					{value === 0 && <TabContainer><LoginForm redirectTo={props.redirectTo} {...props}/></TabContainer>}
+					{value === 1 && <TabContainer><HakaLogin/></TabContainer>}
+				</div>
+			}
+		</div>
 	);
 
 	function handleChange(event, newValue) {
 		setValue(newValue);
+	}
+
+	function handleLogOut() {
+		props.logOut();
+		// Removing cookies not implemented yet
+		props.handleClose();
 	}
 
 	return {
@@ -92,7 +95,7 @@ function TabContainer(props) {
 	};
 }
 
-function mspStateToProps(state) {
+function mapStateToProps(state) {
 	return ({
 		user: state
 	});

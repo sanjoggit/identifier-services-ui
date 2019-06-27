@@ -34,7 +34,10 @@ import nodemailer from 'nodemailer';
 import bodyParser from 'body-parser';
 import validateContentType from '@natlibfi/express-validate-content-type';
 import parse from 'url-parse';
-import {HTTP_PORT, SMTP_URL} from '../config/config';
+import {HTTP_PORT, SMTP_URL, BASE_URL} from '../config/config';
+import fetch from 'node-fetch';
+import base64 from 'base-64';
+import HttpStatus from 'http-status';
 
 function bodyParse() {
 	validateContentType({
@@ -82,11 +85,23 @@ app.post('/message', (req, res) => {
 			text: 'hello World!!',
 			html: emailcontent
 		});
-		console.log('Message sent: ', info.messageId);
 		res.send('Message Sent');
 	}
 
 	main().catch(console.error);
+});
+
+app.post('/auth', async (req, res) => {
+	const result = await fetch(BASE_URL, {
+		method: 'POST',
+		headers: {
+			Authorization: 'Basic ' + base64.encode(req.body.username + ':' + req.body.password)
+		},
+		credentials: 'include'
+	});
+	const token = result.headers.get('Token');
+	res.cookie('login-cookie', token, {maxAge: 60000, httpOnly: false});
+	res.sendStatus(HttpStatus.OK);
 });
 
 app.get('*', (req, res) => {

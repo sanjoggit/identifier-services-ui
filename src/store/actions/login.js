@@ -26,19 +26,29 @@
  *
  */
 import {AUTHENTICATION} from './types';
-import {setLoader} from './commonAction';
+import fetch from 'node-fetch';
 
+const AUTHENTICATION_URL = 'http://localhost:8080/auth';
 
-export const fakeLogin = values => {
-	if (values.username === 'admin' || values.username === 'publisher') {
-		return {
-			type: AUTHENTICATION,
-			payload: {isLogin: true, user: values.username}
-		};
-	}
+export const normalLogin = values => async dispatch => {
+	const response = await fetch(AUTHENTICATION_URL, {
+		method: 'POST',
+		body: JSON.stringify(values),
+		headers: {'Content-Type': 'application/json'}
+	});
+	return response.status;
+};
 
-	return {
+export const getUserInfo = token => async dispatch => {
+	const result = await fetch('http://localhost:8081/auth', {
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + token
+		}
+	});
+	const user = await result.json();
+	dispatch({
 		type: AUTHENTICATION,
-		payload: {isLogin: false, user: null}
-	};
+		payload: {isLogin: true, user: user.name.givenName, role: 'admin'}
+	});
 };
