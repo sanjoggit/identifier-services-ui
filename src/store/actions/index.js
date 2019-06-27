@@ -43,5 +43,7 @@ export {
 } from './contactFormActions';
 
 export {
-	setLoader
+	setLoader,
+	loadSvgCaptcha,
+	postCaptchaInput
 } from './commonAction';

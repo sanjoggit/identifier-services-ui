@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable no-negated-condition */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,19 +28,19 @@
  *
  */
 
-import {makeStyles} from '@material-ui/core/styles';
+import React from 'react';
+import ModalLayout from '../ModalLayout';
+import {Link} from '@material-ui/core';
 
-const useStyles = makeStyles({
-	snackbarContent: {
-		background: '#43a047'
-	},
-	iconText: {
-		display: 'flex',
-		alignItems: 'center',
-		'& svg': {
-			marginRight: '5px'
-		}
-	}
+export default (() => {
+	const component = (
+		<ModalLayout label="Forgot your Password?">
+			<span>Form comes here</span>
+		</ModalLayout>
+	);
+
+	return {
+		...component
+	};
 });
 
-export default useStyles;

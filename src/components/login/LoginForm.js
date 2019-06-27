@@ -42,6 +42,7 @@ import renderTextField from '../form/render/renderTextField';
 import useStyles from '../../styles/login';
 import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
+import PasswordResetForm from '../form/PasswordResetForm';
 
 export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 	form: 'login', validate})(props => {
@@ -104,15 +105,7 @@ export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 					Login
 				</Button>
 				<div>
-					<Link
-						component="button"
-						variant="body2"
-						onClick={() => {
-							alert('I\'m a button.');
-						}}
-					>
-						Forgot your Password?
-					</Link>
+					<PasswordResetForm/>
 				</div>
 			</section>
 			<div className={classes.notes}>

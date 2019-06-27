@@ -25,10 +25,59 @@
  * for the JavaScript code in this file.
  *
  */
-import {LOADER} from './types';
+import fetch from 'node-fetch';
+import {LOADER, GET_CAPTCHA, ERROR} from './types';
+
+function success(type, payload) {
+	return ({
+		type: type,
+		payload: payload
+	});
+}
+
+function fail(type, payload) {
+	return ({
+		type: type,
+		payload: payload
+	});
+}
 
 export const setLoader = () => {
 	return {
 		type: LOADER
 	};
+};
+
+export const loadSvgCaptcha = () => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch('http://localhost:8080/captcha', {
+			method: 'GET'
+		});
+		const result = await response.json();
+		dispatch(success(GET_CAPTCHA, result));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+};
+
+export const postCaptchaInput = (inputData, id) => async dispatch => {
+	const body = {
+		captchaInput: inputData,
+		id
+	};
+	dispatch(setLoader());
+	try {
+		const response = await fetch('http://localhost:8080/captcha', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(body)
+		});
+		const result = await response.json();
+		return result;
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
 };

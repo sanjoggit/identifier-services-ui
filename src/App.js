@@ -123,7 +123,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 						{routes}
 					</Switch>
 					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
-					{responseMessage && <SnackBar message={responseMessage} openSnackBar={Boolean(responseMessage)}/>}
+					{responseMessage && <SnackBar message={responseMessage} variant="success" openSnackBar={Boolean(responseMessage)}/>}
 				</section>
 				<Footer/>
 			</MuiThemeProvider>

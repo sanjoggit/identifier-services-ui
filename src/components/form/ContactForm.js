@@ -1,3 +1,7 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-alert */
+/* eslint-disable react/no-danger */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-expressions */
 /**
  *
@@ -30,8 +34,7 @@
 import React, {useState, useEffect} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {PropTypes} from 'prop-types';
-import {Grid, Button} from '@material-ui/core';
-import Recaptcha from 'react-recaptcha';
+import {Grid, Button, TextField} from '@material-ui/core';
 import {validate} from '@natlibfi/identifier-services-commons';
 import {connect} from 'react-redux';
 
@@ -44,29 +47,43 @@ export default connect(mapToProps, actions)(reduxForm({
 	form: 'contactForm', validate
 })(
 	props => {
-		const {handleSubmit, pristine, valid, contact, loading, history, handleClose} = props;
+		const {handleSubmit,
+			pristine,
+			valid,
+			contact,
+			history,
+			handleClose,
+			loadSvgCaptcha,
+			postCaptchaInput,
+			captcha} = props;
 		const initialState = {};
 		const [state, setState] = useState(initialState);
+		const [captchaInput, setCaptchaInput] = useState('');
+		const classes = useStyles();
 
 		useEffect(() => {
-			return () => {
-				// LoadReCaptcha(RECAPTCHA_SITE_KEY);
-			};
+			loadSvgCaptcha();
 		}, []);
 
-		function recaptchaloaded() {
-			console.log('dddd');
-		}
-
-		function verifyCallback(response) {
-			console.log(response);
-		}
-
-		const handleClick = values => {
+		const handleClick = async values => {
 			setState({...state, values});
-			contact(values); // Need to build inorder for this function to work
-			handleClose();
-			history.push('/');
+			if (captchaInput.length === 0) {
+				alert('Captcha not provided');
+			} else if (captchaInput.length > 0) {
+				const result = await postCaptchaInput(captchaInput, captcha.id);
+				if (result === true) {
+					contact(values); // Need to build inorder for this function to work
+					handleClose();
+					history.push('/');
+				} else {
+					alert('Please type the correct word in the image below');
+					loadSvgCaptcha();
+				}
+			}
+		};
+
+		const handleCaptchaInput = e => {
+			setCaptchaInput(e.target.value);
 		};
 
 		const fieldArray = [
@@ -89,16 +106,9 @@ export default connect(mapToProps, actions)(reduxForm({
 				width: 'full'
 			}
 		];
-		const classes = useStyles();
 
 		const component = (
 			<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
-				<Recaptcha
-					sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-					render="explicit"
-					onloadCallback={recaptchaloaded}
-					verifyCallback={verifyCallback}
-				/>
 				<Grid container className={classes.subContainer} spacing={3} direction="row">
 					{
 						fieldArray.map(list => (
@@ -123,7 +133,15 @@ export default connect(mapToProps, actions)(reduxForm({
 								</Grid>
 						))
 					}
-					<Grid item xs={6} className={classes.btnContainer}>
+					<Grid item xs={12}>
+						<TextField
+							variant="outlined"
+							label="Type the word in the picture"
+							value={captchaInput}
+							onChange={handleCaptchaInput}/>
+						<span dangerouslySetInnerHTML={{__html: captcha.data}}/>
+					</Grid>
+					<Grid item xs={12} className={classes.btnContainer}>
 						<Button
 							disabled={pristine || !valid}
 							variant="contained"
@@ -151,6 +169,7 @@ export default connect(mapToProps, actions)(reduxForm({
 function mapToProps(state) {
 	return ({
 		responseMessage: state.contact.responseMessage,
-		loading: state.contact.loading
+		loading: state.contact.loading,
+		captcha: state.common.captcha
 	});
 }

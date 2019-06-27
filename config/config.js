@@ -37,10 +37,6 @@ export const BASE_URL = readEnvironmentVariable('BASE_URL', {
 	defaultValue: 'http://localhost:8081/auth'
 });
 
-export const RECAPTCHA_SITE_KEY = readEnvironmentVariable('RECAPTCHA_SITE_KEY', {
-	defaultValue: '6LeuOqkUAAAAAHVZ3zkP19U3DfH4dAhY68uia6Ry'
-});
-
 function readEnvironmentVariable(name, {defaultValue = undefined, hideDefault = false, format = v => v} = {}) {
 	if (process.env[name] === undefined) {
 		if (defaultValue === undefined) {

@@ -35,6 +35,8 @@ import bodyParser from 'body-parser';
 import validateContentType from '@natlibfi/express-validate-content-type';
 import parse from 'url-parse';
 import {HTTP_PORT, SMTP_URL, BASE_URL} from '../config/config';
+import svgCaptcha from 'svg-captcha';
+import uuidv4 from 'uuid/v4';
 import fetch from 'node-fetch';
 import base64 from 'base-64';
 import HttpStatus from 'http-status';
@@ -79,7 +81,7 @@ app.post('/message', (req, res) => {
 
 		let info = await transporter.sendMail({
 			from: 'test@test.com',
-			to: 'rojakamatya@gmail.com',
+			to: 'sanjogstha7@gmail.com',
 			replyTo: 'test@test.com',
 			subject: 'New Message',
 			text: 'hello World!!',
@@ -90,7 +92,29 @@ app.post('/message', (req, res) => {
 
 	main().catch(console.error);
 });
+let captchaList = [];
+let captcha;
 
+app.get('/captcha', (req, res) => {
+	captcha = svgCaptcha.create({
+		size: 6,
+		noise: 4
+	});
+	captcha.id = uuidv4();
+	const {text, ...captchaWithoutText} = captcha;
+	res.type('svg');
+	captchaList.push(captcha);
+
+	res.json(captchaWithoutText);
+});
+
+app.post('/captcha', (req, res) => {
+	// eslint-disable-next-line no-unused-expressions
+	captchaList.some(item => (item.id === req.body.id) && item.text === req.body.captchaInput) ?
+		(res.send(true) && captchaList.map((item, i) => (item.text === req.body.captchaInput) &&
+		captchaList.splice(i, 1))) : res.send(false) && captchaList.map((item, i) => (item.id === req.body.id) &&
+		captchaList.splice(i, 1));
+});
 app.post('/auth', async (req, res) => {
 	const result = await fetch(BASE_URL, {
 		method: 'POST',

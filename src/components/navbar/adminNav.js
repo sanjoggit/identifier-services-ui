@@ -93,7 +93,7 @@ export default function ({user: {role}, loggedIn}) {
 									</div>
 								)) :
 								<div className={classes.publicMenu}>
-									<Link to="/"><HomeIcon fontSize="default"/></Link>
+									<Link to="/"><HomeIcon fontSize="default" color="primary"/></Link>
 									<Link to="/publishers"><Button className={classes.selected}>Publishers</Button></Link>
 								</div>
 							}

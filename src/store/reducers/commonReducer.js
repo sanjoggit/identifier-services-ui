@@ -26,14 +26,28 @@
  *
  */
 
-import {} from '../actions/types';
+import {GET_CAPTCHA, LOADER} from '../actions/types';
 
 const initialState = {
-	modelStatus: false
+	captcha: {},
+	modelStatus: false,
+	loading: false
 };
 
 export default function (state = initialState, action) {
 	switch (action.type) {
+		case LOADER:
+			return {
+				...state,
+				loading: true
+			};
+		case GET_CAPTCHA:
+			return {
+				...state,
+				captcha: action.payload,
+				loading: false
+			};
+
 		default:
 			return state;
 	}
