@@ -35,13 +35,16 @@ export {
 
 export {
 	normalLogin,
-	getUserInfo
-} from './login';
+	getUserInfo,
+	logOut
+} from './auth';
 
 export {
 	contact
 } from './contactFormActions';
 
 export {
-	setLoader
+	setLoader,
+	loadSvgCaptcha,
+	postCaptchaInput
 } from './commonAction';

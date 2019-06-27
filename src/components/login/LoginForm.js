@@ -29,7 +29,7 @@
  *
  */
 
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Grid, Button, Link, Typography} from '@material-ui/core';
 import {validate} from '@natlibfi/identifier-services-commons';
 import PersonIcon from '@material-ui/icons/Person';
@@ -42,21 +42,14 @@ import renderTextField from '../form/render/renderTextField';
 import useStyles from '../../styles/login';
 import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
+import PasswordResetForm from '../form/PasswordResetForm';
 
 export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 	form: 'login', validate})(props => {
-	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose, cookies, getUserInfo} = props;
+	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
-	const loginCookie = cookies.get('login-cookie');
 
-	const [token, setToken] = useState(loginCookie);
-
-	useEffect(() => {
-		setToken(loginCookie);
-		getUserInfo(token);
-	}, []);
-	
 	function handleLogin(values) {
 		normalLogin(values);
 		redirectTo('/publishers');
@@ -104,15 +97,7 @@ export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 					Login
 				</Button>
 				<div>
-					<Link
-						component="button"
-						variant="body2"
-						onClick={() => {
-							alert('I\'m a button.');
-						}}
-					>
-						Forgot your Password?
-					</Link>
+					<PasswordResetForm/>
 				</div>
 			</section>
 			<div className={classes.notes}>

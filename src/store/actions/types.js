@@ -35,7 +35,10 @@ export const LOADER = 'LOADER';
 export const SEARCH_PUBLISHER = 'SEARCH_PUBLISHER';
 export const ERROR = 'ERROR';
 export const LOCALE_SET = 'LOCALE_SET';
+export const GET_CAPTCHA = 'GET_CAPTCHA';
+export const POST_CAPTCHA = 'POST_CAPTCHA';
 
 export const CONTACT = 'CONTACT';
 
 export const AUTHENTICATION = 'AUTHENTICATION';
+export const LOG_OUT = 'LOG_OUT';

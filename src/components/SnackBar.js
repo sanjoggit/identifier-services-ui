@@ -29,6 +29,7 @@
 import React from 'react';
 import {Snackbar, SnackbarContent, IconButton} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import useStyles from '../styles/snackBar';
 
 export default function (props) {
@@ -54,10 +55,12 @@ export default function (props) {
 			<SnackbarContent
 				aria-describedby="client-snackbar"
 				message={
-					<span>
+					<span className={classes.iconText}>
+						<CheckCircleIcon/>
 						{message}
 					</span>
 				}
+				className={classes.snackbarContent}
 				action={[
 					<IconButton key="close" aria-label="Close" color="inherit" onClick={handleClose}>
 						<CloseIcon/>

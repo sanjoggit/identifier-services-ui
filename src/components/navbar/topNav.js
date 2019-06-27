@@ -44,7 +44,6 @@ export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const [openNotification, setOpenNotification] = React.useState(true);
 	const [anchorEl, setAnchorEl] = React.useState(null);
-
 	function handleClick(event) {
 		setAnchorEl(event.currentTarget);
 	}
