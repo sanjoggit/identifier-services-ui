@@ -32,7 +32,7 @@
 import React, {useState, useEffect} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {Modal, Typography, Button, Grid} from '@material-ui/core';
+import {Modal, Typography, Button} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import PersonIcon from '@material-ui/icons/Person';
@@ -42,8 +42,7 @@ import {PropTypes} from 'prop-types';
 import useStyles from '../styles/modalLayout';
 
 export default connect(mapStateToProps)(withRouter(props => {
-	const {label, name, children, icon, fab, variant, color, classed, isLogin, isTableRow, userInfo, form} = props;
-	console.log('-----', isTableRow)
+	const {label, name, children, icon, fab, variant, color, classed, isTableRow, form} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	useEffect(() => {
@@ -61,12 +60,15 @@ export default connect(mapStateToProps)(withRouter(props => {
 		});
 	};
 
-	const element = (
+	const component = (
 		<>
-			<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
-				{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
-				{label}
-			</Button>
+			{fab ?
+				<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
+				<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
+					{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
+					{label}
+				</Button>
+			}
 			<Modal
 				disableRestoreFocus
 				className={classes.container}
@@ -90,29 +92,6 @@ export default connect(mapStateToProps)(withRouter(props => {
 					{React.cloneElement(children, {handleClose: handleClose})}
 				</div>
 			</Modal>
-		</>
-	);
-
-	const component = (
-		<>
-			{!isTableRow ?
-				<Grid item className={classes.welcomeAvatar}>
-					{
-						isLogin ?
-							<div className={classes.userContainer}>
-								<PersonIcon className={classes.personIcon} onClick={handleOpen}/>
-								<Typography variant="inherit">Welcome, {userInfo !== undefined && (userInfo.user.toUpperCase())} </Typography>
-							</div> :
-							fab ?
-								<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
-								<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
-									{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
-									{label}
-								</Button>
-					}
-				</Grid> : null
-			}
-			{element}
 		</>
 	);
 

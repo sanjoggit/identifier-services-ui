@@ -25,33 +25,42 @@
  * for the JavaScript code in this file.
  *
  */
+import {AUTHENTICATION, LOG_OUT} from './types';
+import fetch from 'node-fetch';
 
-import {AUTHENTICATION, LOADER} from '../actions/types';
+const AUTHENTICATION_URL = 'http://localhost:8080/auth';
+const LOGOUT_URL = 'http://localhost:8080/logout';
 
-const initialState = {
-	userInfo: {user: 'User', role: 'user'},
-	loading: false,
-	error: {},
-	isLogin: false
+export const normalLogin = values => async () => {
+	const response = await fetch(AUTHENTICATION_URL, {
+		method: 'POST',
+		body: JSON.stringify(values),
+		headers: {'Content-Type': 'application/json'}
+	});
+	return response.status;
 };
 
-export default function (state = initialState, action) {
-	switch (action.type) {
-		case LOADER:
-			return {
-				...state,
-				loading: true
-			};
-		case AUTHENTICATION:
-			return {
-				userInfo: {
-					user: action.payload.user,
-					role: action.payload.role
-				},
-				isLogin: action.payload.isLogin,
-				loading: false
-			};
-		default:
-			return state;
-	}
+export const getUserInfo = token => async dispatch => {
+	const result = await fetch('http://localhost:8081/auth', {
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + token
+		}
+	});
+	const user = await result.json();
+	dispatch({
+		type: AUTHENTICATION,
+		payload: {isLogin: true, user: user.displayName, role: user.role}
+	});
+};
+
+export const logOut = () => async dispatch => {
+	await fetch(LOGOUT_URL, {
+		method: 'GET'
+	});
+	dispatch({
+		type: LOG_OUT,
+		payload: {isLogin: false, user: 'user', role: ['any']}
+	});
 }
+

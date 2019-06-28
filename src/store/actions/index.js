@@ -35,19 +35,20 @@ export {
 
 export {
 	normalLogin,
-	getUserInfo
-} from './login';
+	getUserInfo,
+	logOut
+} from './auth';
 
 export {
 	contact
 } from './contactFormActions';
 
 export {
+	setLocale
+} from './localeAction';
+
+export {
 	setLoader,
 	loadSvgCaptcha,
 	postCaptchaInput
 } from './commonAction';
-
-export {
-	setLocale
-} from './localeAction';

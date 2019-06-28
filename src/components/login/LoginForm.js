@@ -29,14 +29,13 @@
  *
  */
 
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Grid, Button, Link, Typography} from '@material-ui/core';
 import {validate} from '@natlibfi/identifier-services-commons';
 import PersonIcon from '@material-ui/icons/Person';
 import Visibility from '@material-ui/icons/Visibility';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {withCookies} from 'react-cookie';
 
 import renderTextField from '../form/render/renderTextField';
 import useStyles from '../../styles/login';
@@ -44,20 +43,12 @@ import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
 import PasswordResetForm from '../form/PasswordResetForm';
 
-export default connect(mapStateToProps, actions)(withCookies(reduxForm({
+export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'login', validate})(props => {
-	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose, cookies, getUserInfo, setPwd} = props;
+	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
-	const loginCookie = cookies.get('login-cookie');
 
-	const [token, setToken] = useState(loginCookie);
-
-	useEffect(() => {
-		setToken(loginCookie);
-		getUserInfo(token);
-	}, []);
-	
 	function handleLogin(values) {
 		normalLogin(values);
 		redirectTo('/publishers');
@@ -119,7 +110,7 @@ export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 		...component
 	};
 }
-)));
+));
 
 function mapStateToProps(state) {
 	return ({

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -46,11 +47,12 @@ import enMessages from './intl/translations/en.json';
 import fiMessages from './intl/translations/fi.json';
 import svMessages from './intl/translations/sv.json';
 import SnackBar from './components/SnackBar';
+import {logOut} from './store/actions/auth';
 
-export default connect(mapStateToProps)(withRouter(props => {
+export default connect(mapStateToProps, {logOut})(withRouter(props => {
 	const {lang, userInfo, isLogin, history, location, responseMessage} = props;
 	const routeField = [
-		{path: '/', component: (userInfo.groups !== undefined && (userInfo.groups.includes('admin') || userInfo.groups.includes('publisher')) ? PublishersList : Home)},
+		{path: '/', component: (userInfo.role !== undefined && (userInfo.role.includes('admin') || userInfo.role.includes('publisher')) ? PublishersList : Home)},
 		{path: '/publishers', component: PublishersList},
 		{path: '/publishers/:id', component: PublishersList}
 
@@ -92,7 +94,8 @@ export default connect(mapStateToProps)(withRouter(props => {
 	const isModal = location.state;
 
 	const handleLogOut = () => {
-		redirectTo('/publishers');
+		logOut();
+		redirectTo('/');
 	};
 
 	function redirectTo(path, state) {
@@ -100,6 +103,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 			pathname: path,
 			state: state
 		});
+		window.location.reload();
 	}
 
 	const translations = {
@@ -112,11 +116,11 @@ export default connect(mapStateToProps)(withRouter(props => {
 	const component = (
 		<IntlProvider locale={lang} messages={translations[lang]}>
 			<MuiThemeProvider theme={theme}>
-				<TopNav loggedIn={isLogin} redirectTo={redirectTo} user={userInfo} logOut={handleLogOut}/>
+				<TopNav loggedIn={isLogin} redirectTo={redirectTo} logOut={handleLogOut}/>
 				<CssBaseline/>
 				<AdminNav user={userInfo} loggedIn={isLogin}/>
 				<section>
-					{(userInfo.groups !== undefined && userInfo.groups.includes('publisher')) &&
+					{(userInfo.role !== undefined && userInfo.role.includes('publisher')) &&
 					<Tooltips label="contact form" title="contactForm"/>
 					}
 					<Switch>

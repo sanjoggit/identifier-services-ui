@@ -71,12 +71,13 @@ export const fetchPublisher = id => async dispatch => {
 	}
 };
 
-export const updatePublisher = (id, values) => async dispatch => {
+export const updatePublisher = (id, values, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/${id}`, {
 			method: 'PUT',
 			headers: {
+				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
 			},
 			credentials: 'same-origin',

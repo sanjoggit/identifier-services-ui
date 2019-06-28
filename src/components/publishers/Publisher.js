@@ -44,6 +44,8 @@ import {
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import {reduxForm, Field, FieldArray} from 'redux-form';
+import {useCookies} from 'react-cookie';
+
 import useStyles from '../../styles/publisher';
 import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
@@ -53,7 +55,6 @@ import ModalLayout from '../ModalLayout';
 import Spinner from '../Spinner';
 import renderTextField from '../form/render/renderTextField';
 import renderAliases from '../form/render/renderAliases';
-import renderTextArea from '../form/render/renderTextArea';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default connect(mapStateToProps, actions)(reduxForm({
@@ -61,10 +62,12 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {fetchPublisher, updatePublisher, match, publisher, loading, handleSubmit, clearFields} = props;
+	const {fetchPublisher, updatePublisher, match, publisher, loading, handleSubmit, clearFields, userInfo} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
+	const {role} = userInfo;
 	const [isEdit, setIsEdit] = useState(false);
+	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
 		fetchPublisher(match.params.id);
@@ -91,7 +94,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Name:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="name" className={formClasses.editForm} component={renderTextField}/></Grid> :
-									<Grid item xs={8}>{publisher.name}</Grid>}
+										<Grid item xs={8}>{publisher.name}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -100,7 +103,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Language:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="language" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.language}</Grid>}
+									<Grid item xs={8}>{publisher.language}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -109,7 +112,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Metadata Delivery:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="metadataDelivery" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.metadataDelivery}</Grid>}
+									<Grid item xs={8}>{publisher.metadataDelivery}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -118,7 +121,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Email:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="email" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.email}</Grid>}
+									<Grid item xs={8}>{publisher.email}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -127,7 +130,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Phone:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="phone" className={formClasses.editForm} component={renderTextField}/></Grid> :
-									<Grid item xs={8}>{publisher.phone}</Grid>}
+										<Grid item xs={8}>{publisher.phone}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -136,7 +139,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Website:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="website" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.website}</Grid>}
+									<Grid item xs={8}>{publisher.website}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -145,7 +148,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Aliases:</Grid>
 									{isEdit ? <Grid item xs={8}><FieldArray name="aliases" className={formClasses.editForm} component={renderAliases} props={{clearFields}}/></Grid> :
-										<Grid item xs={8}>{publisher.aliases.map((item, i) => {
+									<Grid item xs={8}>{publisher.aliases.map((item, i) => {
 											return (
 												<Chip key={i} label={item}/>
 											);
@@ -163,7 +166,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Address:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="streetAddress['address']" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.streetAddress.address}</Grid>}
+									<Grid item xs={8}>{publisher.streetAddress.address}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -172,7 +175,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>City:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="streetAddress['city']" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.streetAddress.city}</Grid>}
+									<Grid item xs={8}>{publisher.streetAddress.city}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -181,7 +184,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Zip:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="streetAddress['zip']" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.streetAddress.zip}</Grid>}
+									<Grid item xs={8}>{publisher.streetAddress.zip}</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
@@ -190,21 +193,21 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Primary Contact:</Grid>
 									{isEdit ? <Grid item xs={8}><Field name="primaryContact" className={formClasses.editForm} component={renderTextField}/></Grid> :
-									<Grid item xs={8}>{publisher.primaryContact.map((item, i) => {
+										<Grid item xs={8}>{publisher.primaryContact.map((item, i) => {
 											return (
 												<Chip key={i} label={item}/>
 											);
 										})}
-										</Grid>}
+									</Grid>}
 								</Grid>
 							</ListItemText>
 						</ListItem>
 						<ListItem>
 							<ListItemText>
 								{isEdit ? null :
-									<Grid container>
+								<Grid container>
 										<Grid item xs={4}>Notes:</Grid>
-									<Grid item xs={8}>{publisher.notes.map((item, i) => {
+										<Grid item xs={8}>{publisher.notes.map((item, i) => {
 											return (
 												<ExpansionPanel key={i}>
 													<ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
@@ -218,7 +221,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 												</ExpansionPanel>
 											);
 										})}
-										</Grid>
+         </Grid>
 									</Grid>}
 							</ListItemText>
 						</ListItem>
@@ -230,7 +233,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 	const handlePublisherUpdate = values => {
 		const {_id, ...updateValues} = values;
-		updatePublisher(match.params.id, updateValues);
+		const token = cookie['login-cookie'];
+		updatePublisher(match.params.id, updateValues, token);
 		setIsEdit(false);
 	};
 
@@ -254,16 +258,17 @@ export default connect(mapStateToProps, actions)(reduxForm({
 					<Grid container spacing={3} className={classes.publisherSpinner}>
 						{publisherDetail}
 					</Grid>
-					<div className={classes.btnContainer}>
-						<Fab
-							color="primary"
-							size="small"
-							title="Edit Publisher Detail"
-							onClick={handleEditClick}
-						>
-							<EditIcon/>
-						</Fab>
-					</div>
+					{role.some(item => item === 'publisher') &&
+						<div className={classes.btnContainer}>
+							<Fab
+								color="primary"
+								size="small"
+								title="Edit Publisher Detail"
+								onClick={handleEditClick}
+							>
+								<EditIcon/>
+							</Fab>
+						</div>}
 				</div>
 			}
 		</ModalLayout>
@@ -277,6 +282,7 @@ function mapStateToProps(state) {
 	return ({
 		publisher: state.publisher.publisher.Publisher,
 		loading: state.publisher.loading,
-		initialValues: state.publisher.publisher.Publisher
+		initialValues: state.publisher.publisher.Publisher,
+		userInfo: state.login.userInfo
 	});
 }

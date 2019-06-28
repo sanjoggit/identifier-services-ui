@@ -41,3 +41,4 @@ export const POST_CAPTCHA = 'POST_CAPTCHA';
 export const CONTACT = 'CONTACT';
 
 export const AUTHENTICATION = 'AUTHENTICATION';
+export const LOG_OUT = 'LOG_OUT';
