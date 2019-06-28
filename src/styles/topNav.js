@@ -76,6 +76,11 @@ const useStyles = makeStyles({
 		padding: '0 10px',
 		background: '#00224f',
 		color: 'white'
+	},
+	icon: {
+		height: 30,
+		width: 30,
+		cursor: 'pointer'
 	}
 });
 

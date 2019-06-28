@@ -37,6 +37,7 @@ export const normalLogin = values => async () => {
 		body: JSON.stringify(values),
 		headers: {'Content-Type': 'application/json'}
 	});
+	console.log(response);
 	return response.status;
 };
 
@@ -48,9 +49,10 @@ export const getUserInfo = token => async dispatch => {
 		}
 	});
 	const user = await result.json();
+	console.log(user)
 	dispatch({
 		type: AUTHENTICATION,
-		payload: {isLogin: true, user: user.displayName, role: 'publisher'}
+		payload: {isLogin: true, user: user.displayName, role: ['publisher']}
 	});
 };
 
@@ -60,6 +62,6 @@ export const logOut = () => async dispatch => {
 	});
 	dispatch({
 		type: LOG_OUT,
-		payload: {isLogin: false, user: 'user', role: 'any'}
+		payload: {isLogin: false, user: 'user', role: ['any']}
 	});
 }

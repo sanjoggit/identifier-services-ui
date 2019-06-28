@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 		margin: '0'
 	},
 	button: {
-		marginBottom: '20px',
+		margin: '0 5px',
 		fontSize: '0.87rem',
 		'&:hover': {
 			background: '#00224f',

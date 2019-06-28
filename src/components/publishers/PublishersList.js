@@ -48,6 +48,7 @@ export default connect(mapStateToProps, actions)(withCookies(props => {
 
 	useEffect(() => {
 		setToken(cookies.get('login-cookie'));
+		console.log(token)
 		token !== null && getUserInfo(token);
 	}, [token]);
 
