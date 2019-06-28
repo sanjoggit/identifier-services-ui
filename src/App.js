@@ -52,7 +52,7 @@ import {logOut} from './store/actions/auth';
 export default connect(mapStateToProps, {logOut})(withRouter(props => {
 	const {lang, userInfo, isLogin, history, location, responseMessage} = props;
 	const routeField = [
-		{path: '/', component: (userInfo.groups !== undefined && (userInfo.groups.includes('admin') || userInfo.groups.includes('publisher')) ? PublishersList : Home)},
+		{path: '/', component: (userInfo.role !== undefined && (userInfo.role.includes('admin') || userInfo.role.includes('publisher')) ? PublishersList : Home)},
 		{path: '/publishers', component: PublishersList},
 		{path: '/publishers/:id', component: PublishersList}
 
@@ -120,7 +120,7 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 				<CssBaseline/>
 				<AdminNav user={userInfo} loggedIn={isLogin}/>
 				<section>
-					{(userInfo.groups !== undefined && userInfo.groups.includes('publisher')) &&
+					{(userInfo.role !== undefined && userInfo.role.includes('publisher')) &&
 					<Tooltips label="contact form" title="contactForm"/>
 					}
 					<Switch>

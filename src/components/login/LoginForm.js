@@ -36,7 +36,6 @@ import PersonIcon from '@material-ui/icons/Person';
 import Visibility from '@material-ui/icons/Visibility';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {withCookies} from 'react-cookie';
 
 import renderTextField from '../form/render/renderTextField';
 import useStyles from '../../styles/login';
@@ -44,7 +43,7 @@ import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
 import PasswordResetForm from '../form/PasswordResetForm';
 
-export default connect(mapStateToProps, actions)(withCookies(reduxForm({
+export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'login', validate})(props => {
 	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose} = props;
 	const classes = useStyles();
@@ -111,7 +110,7 @@ export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 		...component
 	};
 }
-)));
+));
 
 function mapStateToProps(state) {
 	return ({

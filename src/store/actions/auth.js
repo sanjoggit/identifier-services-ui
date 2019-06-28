@@ -50,7 +50,7 @@ export const getUserInfo = token => async dispatch => {
 	const user = await result.json();
 	dispatch({
 		type: AUTHENTICATION,
-		payload: {isLogin: true, user: user.displayName, role: 'publisher'}
+		payload: {isLogin: true, user: user.displayName, role: user.role}
 	});
 };
 
@@ -60,6 +60,7 @@ export const logOut = () => async dispatch => {
 	});
 	dispatch({
 		type: LOG_OUT,
-		payload: {isLogin: false, user: 'user', role: 'any'}
+		payload: {isLogin: false, user: 'user', role: ['any']}
 	});
 }
+
