@@ -85,9 +85,6 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		publisherDetail = (
 			<>
 				<Grid item xs={12} md={6}>
-					<Typography variant="h6">
-				Publisher Detail
-					</Typography>
 					<List>
 						<ListItem>
 							<ListItemText>
@@ -160,9 +157,6 @@ export default connect(mapStateToProps, actions)(reduxForm({
 					</List>
 				</Grid>
 				<Grid item xs={12} md={6}>
-					<Typography variant="h6">
-				Publisher Detail
-					</Typography>
 					<List>
 						<ListItem>
 							<ListItemText>

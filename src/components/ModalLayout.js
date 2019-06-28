@@ -43,9 +43,9 @@ import useStyles from '../styles/modalLayout';
 
 export default connect(mapStateToProps)(withRouter(props => {
 	const {label, name, children, icon, fab, variant, color, classed, isLogin, isTableRow, userInfo, form} = props;
+	console.log('-----', isTableRow)
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
-
 	useEffect(() => {
 		isTableRow && setOpen(isTableRow);
 	}, [isTableRow]);
@@ -62,29 +62,35 @@ export default connect(mapStateToProps)(withRouter(props => {
 	};
 
 	const element = (
-		<Modal
-			disableRestoreFocus
-			className={classes.container}
-			aria-labelledby={`modal-${name}`}
-			aria-describedby="modal-description"
-			open={open}
-			// eslint-disable-next-line no-alert
-			onClose={(form || fab) ? (() => {
-				if (window.confirm('Do you want to exit?')) {
-					handleClose();
-				}
-			}) : handleClose}
-		>
-			<div className={classes.main}>
-				<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
-					<CloseIcon/>
-				</IconButton>
-				<Typography variant="h5" id={`modal-${name}`}>
-					{label}
-				</Typography>
-				{React.cloneElement(children, {handleClose: handleClose})}
-			</div>
-		</Modal>
+		<>
+			<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
+				{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
+				{label}
+			</Button>
+			<Modal
+				disableRestoreFocus
+				className={classes.container}
+				aria-labelledby={`modal-${name}`}
+				aria-describedby="modal-description"
+				open={open}
+				// eslint-disable-next-line no-alert
+				onClose={(form || fab) ? (() => {
+					if (window.confirm('Do you want to exit?')) {
+						handleClose();
+					}
+				}) : handleClose}
+			>
+				<div className={classes.main}>
+					<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
+						<CloseIcon/>
+					</IconButton>
+					<Typography variant="h5" id={`modal-${name}`}>
+						{label}
+					</Typography>
+					{React.cloneElement(children, {handleClose: handleClose})}
+				</div>
+			</Modal>
+		</>
 	);
 
 	const component = (

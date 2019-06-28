@@ -41,6 +41,7 @@ import * as actions from '../../store/actions';
 
 export default connect(mapStateToProps, actions)(props => {
 	const [value, setValue] = React.useState(0);
+	const [forgotPwd, setPwd] = React.useState(false);
 	const classes = useStyles();
 	const component = (
 		<div className={classes.main}>
@@ -49,21 +50,26 @@ export default connect(mapStateToProps, actions)(props => {
 					<LogOutIcon fontSize="large"/>
 					<span>Click Here to Logout...</span>
 				</Fab> :
-				<div>
-					<Tabs
-						value={value}
-						variant="scrollable"
-						scrollButtons="on"
-						indicatorColor="primary"
-						textColor="primary"
-						onChange={handleChange}
-					>
-						<Tab label="Normal Login"/>
-						<Tab label="HAKA Login"/>
-					</Tabs>
-					{value === 0 && <TabContainer><LoginForm redirectTo={props.redirectTo} {...props}/></TabContainer>}
-					{value === 1 && <TabContainer><HakaLogin/></TabContainer>}
-				</div>
+				<>
+					{forgotPwd ?
+						<div>ForgotPwd</div> :
+						<div>
+							<Tabs
+								value={value}
+								variant="scrollable"
+								scrollButtons="on"
+								indicatorColor="primary"
+								textColor="primary"
+								onChange={handleChange}
+							>
+								<Tab label="Normal Login"/>
+								<Tab label="HAKA Login"/>
+							</Tabs>
+							{value === 0 && <TabContainer><LoginForm redirectTo={props.redirectTo} setPwd={setPwd} {...props}/></TabContainer>}
+							{value === 1 && <TabContainer><HakaLogin/></TabContainer>}
+        				</div>
+					}
+				</>
 			}
 		</div>
 	);

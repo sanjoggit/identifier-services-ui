@@ -47,3 +47,7 @@ export {
 	loadSvgCaptcha,
 	postCaptchaInput
 } from './commonAction';
+
+export {
+	setLocale
+} from './localeAction';

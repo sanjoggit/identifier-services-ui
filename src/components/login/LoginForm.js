@@ -46,7 +46,7 @@ import PasswordResetForm from '../form/PasswordResetForm';
 
 export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 	form: 'login', validate})(props => {
-	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose, cookies, getUserInfo} = props;
+	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose, cookies, getUserInfo, setPwd} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 	const loginCookie = cookies.get('login-cookie');
@@ -105,7 +105,7 @@ export default connect(mapStateToProps, actions)(withCookies(reduxForm({
 					Login
 				</Button>
 				<div>
-					<PasswordResetForm/>
+					<span onClick={() => setPwd(true)}>Forgot Password ?</span>
 				</div>
 			</section>
 			<div className={classes.notes}>
