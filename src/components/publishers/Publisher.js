@@ -44,6 +44,8 @@ import {
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import {reduxForm, Field, FieldArray} from 'redux-form';
+import {useCookies} from 'react-cookie';
+
 import useStyles from '../../styles/publisher';
 import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
@@ -53,7 +55,6 @@ import ModalLayout from '../ModalLayout';
 import Spinner from '../Spinner';
 import renderTextField from '../form/render/renderTextField';
 import renderAliases from '../form/render/renderAliases';
-import renderTextArea from '../form/render/renderTextArea';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default connect(mapStateToProps, actions)(reduxForm({
@@ -65,6 +66,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 	const [isEdit, setIsEdit] = useState(false);
+	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
 		fetchPublisher(match.params.id);
@@ -236,7 +238,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 	const handlePublisherUpdate = values => {
 		const {_id, ...updateValues} = values;
-		updatePublisher(match.params.id, updateValues);
+		const token = cookie['login-cookie'];
+		updatePublisher(match.params.id, updateValues, token);
 		setIsEdit(false);
 	};
 

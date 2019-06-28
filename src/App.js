@@ -91,7 +91,6 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 		</>
 	);
 
-	const {location, responseMessage} = props;
 	const isModal = location.state;
 
 	const handleLogOut = () => {

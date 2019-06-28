@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
@@ -36,18 +37,19 @@ import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
 import * as actions from '../../store/actions';
 import Spinner from '../Spinner';
-import {withCookies} from 'react-cookie';
+import {useCookies} from 'react-cookie';
 
-export default connect(mapStateToProps, actions)(withCookies(props => {
+export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, cookies, getUserInfo} = props;
+	const {loading, searchedPublishers, getUserInfo} = props;
 	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
 	const [token, setToken] = useState(null);
+	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
-		setToken(cookies.get('login-cookie'));
+		setToken(cookie['login-cookie']);
 		token !== null && getUserInfo(token);
 	}, [token]);
 
@@ -115,7 +117,7 @@ export default connect(mapStateToProps, actions)(withCookies(props => {
 	return {
 		...component
 	};
-}));
+});
 
 function mapStateToProps(state) {
 	return ({
