@@ -36,7 +36,6 @@ import MenuTabs from './menuTabs';
 export default function ({user: {role}, loggedIn}) {
 	const classes = useStyles();
 
-
 	const obj = [
 		{
 			label: 'Publishers',
@@ -87,7 +86,7 @@ export default function ({user: {role}, loggedIn}) {
 					<div>
 						<div className={classes.adminMenu}>
 							{loggedIn ?
-								obj.map(list => list.roleView.includes(role) && (
+								obj.map(list => role.some(item => list.roleView.includes(item)) && (
 									<div key={list.label}>
 										<MenuTabs role={role} list={list}/>
 									</div>

@@ -104,6 +104,11 @@ app.post('/auth', async (req, res) => {
 	res.sendStatus(HttpStatus.OK);
 });
 
+app.get('/logOut', (req, res) => {
+	res.clearCookie('login-cookie');
+	res.send('cookie cleared');
+});
+
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../dist/public/index.html'));
 });

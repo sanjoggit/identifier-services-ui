@@ -44,6 +44,10 @@ export {
 } from './contactFormActions';
 
 export {
+	setLocale
+} from './localeAction';
+
+export {
 	setLoader,
 	loadSvgCaptcha,
 	postCaptchaInput

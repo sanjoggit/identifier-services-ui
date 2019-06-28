@@ -69,7 +69,7 @@ export default function (props) {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			>
-				{list.listItem.map(item => item.roleView && item.roleView.includes(role) &&
+				{list.listItem.map(item => item.roleView && role.some(item => list.roleView.includes(item)) &&
 				<MenuItem key={item.label}>{item.label}</MenuItem>
 				)}
 			</Menu>

@@ -26,7 +26,9 @@
  *
  */
 import React from 'react';
-import {AppBar, Typography, Grid, Menu, MenuItem} from '@material-ui/core';
+import {AppBar, Typography, Grid, Menu, MenuItem, Button} from '@material-ui/core';
+
+import PersonIcon from '@material-ui/icons/Person';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import {Link} from 'react-router-dom';
@@ -38,6 +40,7 @@ import Logo from '../../assets/logo/logo.png';
 import NotificationBar from '../../components/NotificationBar';
 import * as actions from '../../store/actions';
 import LoginLayout from '../login/LoginLayout';
+import ModalLayout from '../ModalLayout';
 
 export default connect(mapStateToProps, actions)(props => {
 	const {setLocale, userInfo} = props;
@@ -88,13 +91,17 @@ export default connect(mapStateToProps, actions)(props => {
 					<AppBar position="static">
 						<div className={classes.navbarContainer}>
 							<Typography variant="h6" color="inherit">
-								{userInfo.role === 'any' ?
+								{userInfo.role.some(item=> item === 'any') ?
 									<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link> :
 									<img src={Logo} alt="" className={classes.mainLogo}/>
 								}
 							</Typography>
 							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
-								<LoginLayout name="login" label={props.loggedIn ? 'logout' : 'login'} variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
+								{props.loggedIn ?
+									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/>:
+									<LoginLayout name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
+								}
+
 								<LanguageIcon/>
 								<div className={classes.languageSelect} onClick={handleClick}>
 									<span>{lang}</span>

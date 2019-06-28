@@ -32,7 +32,7 @@
 import React, {useState, useEffect} from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {Modal, Typography, Button, Grid} from '@material-ui/core';
+import {Modal, Typography, Button} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import PersonIcon from '@material-ui/icons/Person';
@@ -42,7 +42,7 @@ import {PropTypes} from 'prop-types';
 import useStyles from '../styles/modalLayout';
 
 export default connect(mapStateToProps)(withRouter(props => {
-	const {label, name, children, icon, fab, variant, color, classed, isLogin, isTableRow, userInfo, form} = props;
+	const {label, name, children, icon, fab, variant, color, classed, isTableRow, form} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 
@@ -61,52 +61,38 @@ export default connect(mapStateToProps)(withRouter(props => {
 		});
 	};
 
-	const element = (
-		<Modal
-			disableRestoreFocus
-			className={classes.container}
-			aria-labelledby={`modal-${name}`}
-			aria-describedby="modal-description"
-			open={open}
-			// eslint-disable-next-line no-alert
-			onClose={(form || fab) ? (() => {
-				if (window.confirm('Do you want to exit?')) {
-					handleClose();
-				}
-			}) : handleClose}
-		>
-			<div className={classes.main}>
-				<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
-					<CloseIcon/>
-				</IconButton>
-				<Typography variant="h5" id={`modal-${name}`}>
-					{label}
-				</Typography>
-				{React.cloneElement(children, {handleClose: handleClose})}
-			</div>
-		</Modal>
-	);
-
 	const component = (
 		<>
-			{!isTableRow ?
-				<Grid item className={classes.welcomeAvatar}>
-					{
-						isLogin ?
-							<div className={classes.userContainer}>
-								<PersonIcon className={classes.personIcon} onClick={handleOpen}/>
-								<Typography variant="inherit">Welcome, {userInfo !== undefined && (userInfo.user.toUpperCase())} </Typography>
-							</div> :
-							fab ?
-								<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
-								<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
-									{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
-									{label}
-								</Button>
-					}
-				</Grid> : null
+			{fab ?
+				<EmailIcon className={classes.personIcon} onClick={handleOpen}/> :
+				<Button variant={variant} color={color} className={classed} size="medium" onClick={handleOpen}>
+					{icon === true && <PersonIcon className={classes.personIcon} onClick={handleOpen}/>}
+					{label}
+				</Button>
 			}
-			{element}
+			<Modal
+				disableRestoreFocus
+				className={classes.container}
+				aria-labelledby={`modal-${name}`}
+				aria-describedby="modal-description"
+				open={open}
+				// eslint-disable-next-line no-alert
+				onClose={(form || fab) ? (() => {
+					if (window.confirm('Do you want to exit?')) {
+						handleClose();
+					}
+				}) : handleClose}
+			>
+				<div className={classes.main}>
+					<IconButton aria-label="Close" className={classes.closeButton} onClick={handleClose}>
+						<CloseIcon/>
+					</IconButton>
+					<Typography variant="h5" id={`modal-${name}`}>
+						{label}
+					</Typography>
+					{React.cloneElement(children, {handleClose: handleClose})}
+				</div>
+			</Modal>
 		</>
 	);
 

@@ -81,16 +81,11 @@ const useStyles = makeStyles({
 		display: 'flex',
 		alignItems: 'center'
 	},
-	personIcon: {
-		height: 30,
-		width: 30,
-		cursor: 'pointer'
-	},
 	welcomeAvatar: {
 		display: 'inherit',
 		alignItems: 'center',
 		justifyItems: 'flex-end'
-	}
+	},
 });
 
 export default useStyles;

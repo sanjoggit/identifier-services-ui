@@ -50,7 +50,7 @@ export const getUserInfo = token => async dispatch => {
 	const user = await result.json();
 	dispatch({
 		type: AUTHENTICATION,
-		payload: {isLogin: true, user: user.displayName, role: ['publisher']}
+		payload: {isLogin: true, user: user.displayName, role: user.role}
 	});
 };
 
