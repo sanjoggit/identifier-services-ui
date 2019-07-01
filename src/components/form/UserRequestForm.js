@@ -26,132 +26,198 @@
  * for the JavaScript code in this file.
  *
  */
-import React, {useState} from 'react';
-import {Field, reduxForm} from 'redux-form';
+import React from 'react';
+import {connect} from 'react-redux';
+import {Field, FieldArray, reduxForm} from 'redux-form';
 import {Button, Grid} from '@material-ui/core';
-import {PropTypes} from 'prop-types';
+import PropTypes from 'prop-types';
+import {validate} from '@natlibfi/identifier-services-commons';
+
 import renderTextField from './render/renderTextField';
-import renderTextArea from './render/renderTextArea';
+import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
+import {registerPublisher} from '../../store/actions/publisherRegistration';
+import renderContactDetail from './render/renderContactDetail';
+import renderCheckboxes from './render/renderCheckboxes';
 
-export default reduxForm({form: 'userRequestForm'})(({handleSubmit}) => {
-	const classes = useStyles();
-	const initialState = {};
-	const [state, setState] = useState(initialState);
+const roleOption = [
+	{label: 'system', value: 'system'},
+	{label: 'admin', value: 'admin'},
+	{label: 'publisher-admin', value: 'publisher-admin'},
+	{label: 'publisher', value: 'publisher'}
+]
 
-	const handleClick = values => {
-		setState({...state, values});
-	};
+const fieldArray = [
+	{
+		name: 'displayName',
+		type: 'text',
+		label: 'Display Name',
+		width: 'half'
+	},
+	{
+		name: 'role',
+		type: 'check',
+		label: 'Role',
+		option: roleOption,
+		width: 'half'
+	},
+	{
+		name: 'givenName',
+		type: 'text',
+		label: 'Given Name',
+		width: 'half'
+	},
+	{
+		name: 'familyName',
+		type: 'text',
+		label: 'Family Name',
+		width: 'half'
+	},
+	{
+		name: 'organizations',
+		subName: 'organization',
+		type: 'arrayString',
+		label: 'Organization',
+		width: 'half'
+	},
+	{
+		name: 'emails',
+		subName: 'email',
+		type: 'arrayString',
+		label: 'Emails',
+		width: 'half'
+	}
+];
 
-	const fieldArray = [
-		{
-			name: 'userId',
-			type: 'text',
-			label: 'UserId',
-			width: 'half'
-		},
-		{
-			name: 'email',
-			type: 'text',
-			label: 'Email',
-			width: 'half'
-		},
-		{
-			name: 'publishers',
-			type: 'text',
-			label: 'Publishers',
-			width: 'full'
-		},
-		{
-			name: 'givenName',
-			type: 'text',
-			label: 'Given Name',
-			width: 'half'
-		},
-		{
-			name: 'familyName',
-			type: 'text',
-			label: 'Family Name',
-			width: 'half'
-		},
-		{
-			name: 'notes',
-			type: 'multiline',
-			label: 'Notes',
-			width: 'full'
+export default connect(null, {registerPublisher})(reduxForm({
+	form: 'userCreation',
+	validate
+})(
+	props => {
+		const {handleSubmit, clearFields, pristine, valid, registerPublisher} = props;
+		const classes = useStyles();
+		const [activeStep, setActiveStep] = React.useState(0);
+		const steps = getSteps();
+		function getStepContent() {
+			return element(fieldArray, classes, clearFields);
 		}
-	];
 
-	const component = (
-		<form className={classes.container} onSubmit={handleSubmit(handleClick)}>
+		function handleNext() {
+			setActiveStep(activeStep + 1);
+		}
 
-			<Grid container spacing={3} direction="row">
-				{
-					fieldArray.map(list =>
-						// eslint-disable-next-line no-negated-condition
-						((list.width !== 'full') ?
-							<Grid key={list.name} item xs={6}>
-								<Field
-									className={`${classes.textField} ${list.width}`}
-									component={renderTextField}
-									label={list.label}
-									name={list.name}
-									type={list.type}
-								/>
-							</Grid>		:
-							((list.type === 'multiline') ?
-								<Grid key={list.name} item xs={12}>
-									<Field
-										className={`${classes.textArea} ${list.width}`}
-										component={renderTextArea}
-										label={list.label}
-										name={list.name}
-										type={list.type}
-									/>
-								</Grid>	:
-								<Grid key={list.name} item xs={12}>
-									<Field
-										className={`${classes.textField} ${list.width}`}
-										component={renderTextField}
-										label={list.label}
-										name={list.name}
-										type={list.type}
-									/>
-								</Grid>))
-					)
-				}
-				<Grid item xs={6} className={classes.btnContainer}>
-					<Button
-						variant="outlined"
-						color="primary"
-						type="submit"
-						size="small"
-						fullWidth={false}
-					>
-				Back
-					</Button>
-					<Button
-						variant="contained"
-						color="primary"
-						type="submit"
-						size="small"
-						fullWidth={false}
-					>
-				Submit
-					</Button>
-				</Grid>
-			</Grid>
-		</form>
+		function handleBack() {
+			setActiveStep(activeStep - 1);
+		}
+
+		const handlePublisherRegistration = values => {
+			const newPublisher = {
+				...values
+			};
+			registerPublisher(newPublisher);
+		};
+
+		const component = (
+			<form className={classes.container} onSubmit={handleSubmit(handlePublisherRegistration)}>
+				<div className={classes.subContainer}>
+					<Grid container spacing={3} direction="row">
+						{(getStepContent(activeStep))}
+					</Grid>
+					<div className={classes.btnContainer}>
+						<Button disabled={activeStep === 0} onClick={handleBack}>
+							Back
+						</Button>
+						{activeStep !== steps.length - 1 ?
+							<Button type="button" disabled={(pristine || !valid) || activeStep === steps.length - 1} variant="contained" color="primary" onClick={handleNext}>
+								Next
+							</Button> : null
+						}
+						{
+							activeStep === steps.length - 1 &&
+							<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
+								Submit
+							</Button>
+						}
+					</div>
+				</div>
+			</form>
+		);
+
+		return {
+			...component,
+			defaultProps: {
+				formSyncErrors: null
+			},
+			propTypes: {
+				handleSubmit: PropTypes.func.isRequired,
+				pristine: PropTypes.bool.isRequired,
+				formSyncErrors: PropTypes.shape({}),
+				registerPublisher: PropTypes.func.isRequired,
+				valid: PropTypes.bool.isRequired
+			}
+		};
+	}));
+
+function getSteps() {
+	return fieldArray.map(item => Object.keys(item));
+}
+
+function element(array, classes, clearFields) {
+	return array.map(list =>
+
+		// eslint-disable-next-line no-negated-condition
+		((list.width !== 'half') ?
+			<Grid key={list.name} item xs={12}>
+				<Field
+					className={`${classes.textField} ${list.width}`}
+					component={renderTextField}
+					label={list.label}
+					name={list.name}
+					type={list.type}
+				/>
+			</Grid> :
+			((list.type === 'arrayString') ?
+				<Grid key={list.name} item xs={12}>
+					<FieldArray
+						className={`${classes.arrayString} ${list.width}`}
+						component={renderAliases}
+						name={list.name}
+						type={list.type}
+						label={list.label}
+						props={{clearFields, name: list.name, subName: list.subName}}
+					/>
+				</Grid> :
+				((list.type === 'check') ?
+					<Grid key={list.name} item xs={6}>
+						<Field
+							className={`${classes.textField} ${list.width}`}
+							component={renderCheckboxes}
+							label={list.label}
+							name={list.name}
+							type={list.type}
+							options={list.option}
+							props={{name: list.name}}
+						/>
+					</Grid>	:
+					<Grid key={list.name} item xs={6}>
+						<Field
+							className={`${classes.textField} ${list.width}`}
+							component={renderTextField}
+							label={list.label}
+							name={list.name}
+							type={list.type}
+						/>
+					</Grid>)))
 	);
+}
 
-	return {
-		...component,
-		defaultProps: {
-			classes: null
-		},
-		propTypes: {
-			handleSubmit: PropTypes.func.isRequired,
-			classes: PropTypes.shape({})
-		}
-	};
-});
+function fieldArrayElement(array, clearFields) {
+	return (
+		<FieldArray
+			component={renderContactDetail}
+			className="full"
+			name="contactDetails"
+			props={{clearFields, array}}
+		/>
+	);
+}

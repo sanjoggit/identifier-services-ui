@@ -235,7 +235,8 @@ function element(array, classes, clearFields) {
 						component={renderAliases}
 						name={list.name}
 						type={list.type}
-						props={{clearFields}}
+						label={list.label}
+						props={{clearFields, name: list.name, subName: 'alias'}}
 					/>
 				</Grid> :
 				<Grid key={list.name} item xs={6}>

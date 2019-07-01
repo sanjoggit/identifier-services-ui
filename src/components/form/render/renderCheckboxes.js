@@ -30,7 +30,13 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import {Checkbox, FormControlLabel, FormLabel, FormGroup} from '@material-ui/core';
 
-export default function ({label, options, className, input, meta: {touched, error}}) {
+export default function (props) {
+	const {label, options, className, input, name, meta: {touched, error}} = props;
+
+	function handleOnChange(){
+
+	}
+
 	const component = (
 		<>
 			<FormLabel component="legend">{label}</FormLabel>
@@ -43,9 +49,9 @@ export default function ({label, options, className, input, meta: {touched, erro
 						className={className}
 						control={
 							<Checkbox
-								error={touched && error}
+								error={touched ? error : undefined}
 								value={item.value}
-								onChange={input.onChange(`${item.name}`)}
+								onChange={handleOnChange}
 							/>
 						}
 					/>
@@ -70,7 +76,7 @@ export default function ({label, options, className, input, meta: {touched, erro
 			}).isRequired,
 			label: PropTypes.string.isRequired,
 			className: PropTypes.string.isRequired,
-			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.string})
 		}
 	};
 }

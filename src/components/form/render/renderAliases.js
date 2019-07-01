@@ -26,7 +26,7 @@
  *
  */
 import React from 'react';
-import {Field, getFormValues} from 'redux-form';
+import {Field, getFormValues, getFormMeta} from 'redux-form';
 import {Fab, Grid, Chip} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
@@ -35,25 +35,27 @@ import {connect} from 'react-redux';
 import renderTextField from './renderTextField';
 
 export default connect(state => ({
-	values: getFormValues('publisherRegistrationForm')(state)
+	values: getFormValues('userCreation')(state) || getFormValues('publisherRegistrationForm')(state)
 
 }))(props => {
 	const [errors, setErrors] = React.useState();
-	const {fields, values, className, clearFields} = props;
+	const {fields, values, className, clearFields, name, subName, label} = props;
+	const aliases = name;
+	const alias = subName;
 
 	const handleAliasesClick = () => {
 		setErrors();
 		if (values) {
-			if (values.alias) {
-				if (values.aliases) {
-					if (values.aliases.includes(values.alias)) {
+			if (values[alias]) {
+				if (values[aliases]) {
+					if (values[aliases].includes(values[alias])) {
 						setErrors('Alias already exist');
 					} else {
-						fields.push(values.alias);
+						fields.push(values[alias]);
 						clearFields(undefined, false, false, 'alias');
 					}
 				} else {
-					fields.push(values.alias);
+					fields.push(values[alias]);
 					clearFields(undefined, false, false, 'alias');
 				}
 			} else {
@@ -69,11 +71,11 @@ export default connect(state => ({
 			<Grid>
 				<Grid item>
 					<Field
-						className={className}
-						name="alias"
+						class={className}
+						name={subName}
 						type="text"
 						component={renderTextField}
-						label="Aliases"
+						label={label}
 						props={{errors}}
 					/>
 					<Fab
@@ -86,7 +88,7 @@ export default connect(state => ({
 					</Fab>
 				</Grid>
 			</Grid>
-			{values && values.aliases && values.aliases.map((item, index) => (
+			{values && values[aliases] && values[aliases].map((item, index) => (
 				<Chip
 					key={item}
 					label={item}
