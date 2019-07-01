@@ -118,7 +118,7 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 			<MuiThemeProvider theme={theme}>
 				<TopNav loggedIn={isLogin} redirectTo={redirectTo} logOut={handleLogOut}/>
 				<CssBaseline/>
-				<AdminNav user={userInfo} loggedIn={isLogin}/>
+				<AdminNav userInfo={userInfo} loggedIn={isLogin}/>
 				<section>
 					{(userInfo.role !== undefined && userInfo.role.includes('publisher')) &&
 					<Tooltips label="contact form" title="contactForm"/>

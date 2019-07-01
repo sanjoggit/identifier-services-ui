@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -25,34 +26,14 @@
  * for the JavaScript code in this file.
  *
  */
+import {GET_USERS} from './types';
 
-export {
-	fetchPublishersList,
-	fetchPublisher,
-	updatePublisher,
-	searchPublisher
-} from './publisherAction';
-
-export {
-	normalLogin,
-	getUserInfo,
-	logOut
-} from './auth';
-
-export {
-	contact
-} from './contactFormActions';
-
-export {
-	setLocale
-} from './localeAction';
-
-export {
-	setLoader,
-	loadSvgCaptcha,
-	postCaptchaInput
-} from './commonAction';
-
-export {
-	handleMenuClick
-} from './navbarActions';
+export const handleMenuClick = (path, token) => async dispatch => {
+	const result = await fetch(`http://localhost:8081/${path}`, {
+		method: 'POST',
+		headers: {
+			Authorization: 'Bearer ' + token
+		}
+    });
+    console.log(await result.json());
+};
