@@ -42,7 +42,7 @@ import {PropTypes} from 'prop-types';
 import useStyles from '../styles/modalLayout';
 
 export default connect(mapStateToProps)(withRouter(props => {
-	const {label, name, children, icon, fab, variant, color, classed, isTableRow, form} = props;
+	const {label, name, children, icon, fab, variant, color, classed, isTableRow, form, title} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	useEffect(() => {
@@ -87,7 +87,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 						<CloseIcon/>
 					</IconButton>
 					<Typography variant="h5" id={`modal-${name}`}>
-						{label}
+						{title}
 					</Typography>
 					{React.cloneElement(children, {handleClose: handleClose})}
 				</div>

@@ -118,16 +118,20 @@ app.post('/captcha', (req, res) => {
 });
 
 app.post('/auth', async (req, res) => {
-	const result = await fetch(BASE_URL, {
-		method: 'POST',
-		headers: {
-			Authorization: 'Basic ' + base64.encode(req.body.username + ':' + req.body.password)
-		},
-		credentials: 'include'
-	});
-	const token = result.headers.get('Token');
-	res.cookie('login-cookie', token, {maxAge: 60000, httpOnly: false});
-	res.sendStatus(HttpStatus.OK);
+	try {
+		const result = await fetch(BASE_URL, {
+			method: 'POST',
+			headers: {
+				Authorization: 'Basic ' + base64.encode(req.body.username + ':' + req.body.password)
+			},
+			credentials: 'include'
+		});
+		const token = result.headers.get('Token');
+		res.cookie('login-cookie', token, {maxAge: 30000, httpOnly: false});
+		res.sendStatus(HttpStatus.OK);
+	} catch (e) {
+		console.log(e);
+	}
 });
 
 app.get('/logOut', (req, res) => {

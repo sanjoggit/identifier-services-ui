@@ -32,6 +32,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {TextField, InputAdornment, IconButton} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import {useCookies} from 'react-cookie';
 
 import useStyles from '../styles/searchComponent';
 import * as actions from '../store/actions';
@@ -40,6 +41,7 @@ export default connect(null, actions)(withRouter(props => {
 	const {searchPublisher, history} = props;
 	const classes = useStyles();
 	const [inputVal, setInputVal] = useState('');
+	const [token] = useCookies('login-cookie');
 
 	const handleInputChange = e => {
 		setInputVal(e.target.value);
@@ -47,7 +49,7 @@ export default connect(null, actions)(withRouter(props => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		searchPublisher(inputVal);
+		searchPublisher(inputVal, token);
 		history.push('/publishers');
 	};
 

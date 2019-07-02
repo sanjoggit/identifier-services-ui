@@ -25,7 +25,7 @@
  * for the JavaScript code in this file.
  *
  */
-import React from 'react';
+import React, {useState} from 'react';
 import {AppBar, Typography, Grid, Menu, MenuItem, Button} from '@material-ui/core';
 
 import PersonIcon from '@material-ui/icons/Person';
@@ -45,8 +45,10 @@ import ModalLayout from '../ModalLayout';
 export default connect(mapStateToProps, actions)(props => {
 	const {setLocale, userInfo} = props;
 	const classes = useStyles();
-	const [openNotification, setOpenNotification] = React.useState(true);
-	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [openNotification, setOpenNotification] = useState(true);
+	const [anchorEl, setAnchorEl] = useState(null);
+	const [forgotPwd, setPwd] = React.useState(false);
+
 	function handleClick(event) {
 		setAnchorEl(event.currentTarget);
 	}
@@ -91,15 +93,28 @@ export default connect(mapStateToProps, actions)(props => {
 					<AppBar position="static">
 						<div className={classes.navbarContainer}>
 							<Typography variant="h6" color="inherit">
-								{userInfo.role.some(item=> item === 'any') ?
+								{userInfo.role.some(item => item === 'any') ?
 									<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link> :
 									<img src={Logo} alt="" className={classes.mainLogo}/>
 								}
 							</Typography>
 							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
-								{props.loggedIn ?
-									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/>:
-									<LoginLayout name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
+								{
+									props.loggedIn ?
+										<LoginLayout
+											name="login"
+											label={`Welcome, ${(userInfo.user.toUpperCase())}`}
+											color="secondary" classed={classes.loginButton}
+											{...props}/> :
+										<LoginLayout
+											name="login"
+											title={forgotPwd ? 'Reset Password' : 'Login'}
+											label="Login" variant="outlined" color="secondary"
+											classed={classes.loginButton}
+											forgotPwd={forgotPwd}
+											setPwd={setPwd}
+											{...props}
+											onClick={() => setPwd(false)}/>
 								}
 
 								<LanguageIcon/>
