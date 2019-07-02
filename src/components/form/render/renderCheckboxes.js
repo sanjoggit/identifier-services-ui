@@ -26,15 +26,25 @@
  *
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {PropTypes} from 'prop-types';
 import {Checkbox, FormControlLabel, FormLabel, FormGroup} from '@material-ui/core';
 
 export default function (props) {
-	const {label, options, className, input, name, meta: {touched, error}} = props;
+	const {fields, label, options, className, input, name, meta: {touched, error}} = props;
+	const [state] = useState({[name]: []});
 
-	function handleOnChange(){
-
+	function handleOnChange(value) {
+		if (state[name].includes(value)) {
+			const index = state[name].indexOf(value);
+			state[name].splice(index, 1);
+			fields.removeAll();
+			fields.push(state[name]);
+		} else {
+			state[name].push(value);
+			fields.removeAll();
+			fields.push(state[name]);
+		}
 	}
 
 	const component = (
@@ -49,9 +59,11 @@ export default function (props) {
 						className={className}
 						control={
 							<Checkbox
+								{...input}
 								error={touched ? error : undefined}
 								value={item.value}
-								onChange={handleOnChange}
+								color="primary"
+								onChange={() => handleOnChange(item.value)}
 							/>
 						}
 					/>

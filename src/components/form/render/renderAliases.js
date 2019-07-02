@@ -26,7 +26,7 @@
  *
  */
 import React from 'react';
-import {Field, getFormValues, getFormMeta} from 'redux-form';
+import {Field, getFormValues} from 'redux-form';
 import {Fab, Grid, Chip} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';

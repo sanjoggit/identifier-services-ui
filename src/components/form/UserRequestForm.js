@@ -37,15 +37,14 @@ import renderTextField from './render/renderTextField';
 import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
 import {registerPublisher} from '../../store/actions/publisherRegistration';
-import renderContactDetail from './render/renderContactDetail';
 import renderCheckboxes from './render/renderCheckboxes';
 
 const roleOption = [
 	{label: 'system', value: 'system'},
 	{label: 'admin', value: 'admin'},
-	{label: 'publisher-admin', value: 'publisher-admin'},
+	{label: 'publisher-admin', value: 'publisherAdmin'},
 	{label: 'publisher', value: 'publisher'}
-]
+];
 
 const fieldArray = [
 	{
@@ -189,7 +188,7 @@ function element(array, classes, clearFields) {
 				</Grid> :
 				((list.type === 'check') ?
 					<Grid key={list.name} item xs={6}>
-						<Field
+						<FieldArray
 							className={`${classes.textField} ${list.width}`}
 							component={renderCheckboxes}
 							label={list.label}
@@ -208,16 +207,5 @@ function element(array, classes, clearFields) {
 							type={list.type}
 						/>
 					</Grid>)))
-	);
-}
-
-function fieldArrayElement(array, clearFields) {
-	return (
-		<FieldArray
-			component={renderContactDetail}
-			className="full"
-			name="contactDetails"
-			props={{clearFields, array}}
-		/>
 	);
 }
