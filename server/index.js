@@ -126,7 +126,7 @@ app.post('/auth', async (req, res) => {
 		credentials: 'include'
 	});
 	const token = result.headers.get('Token');
-	res.cookie('login-cookie', token, {maxAge: 60000, httpOnly: false});
+	res.cookie('login-cookie', token, {maxAge: 300000, httpOnly: false});
 	res.sendStatus(HttpStatus.OK);
 });
 

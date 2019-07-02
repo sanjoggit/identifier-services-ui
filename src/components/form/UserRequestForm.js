@@ -32,11 +32,12 @@ import {Field, FieldArray, reduxForm} from 'redux-form';
 import {Button, Grid} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import {validate} from '@natlibfi/identifier-services-commons';
+import {useCookies} from 'react-cookie';
 
 import renderTextField from './render/renderTextField';
 import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
-import {registerPublisher} from '../../store/actions/publisherRegistration';
+import * as actions from '../../store/actions/userActions';
 import renderCheckboxes from './render/renderCheckboxes';
 
 const roleOption = [
@@ -81,62 +82,45 @@ const fieldArray = [
 	},
 	{
 		name: 'emails',
-		subName: 'email',
+		subName: 'userEmail',
 		type: 'arrayString',
 		label: 'Emails',
 		width: 'half'
 	}
 ];
 
-export default connect(null, {registerPublisher})(reduxForm({
+export default connect(null, actions)(reduxForm({
 	form: 'userCreation',
 	validate
 })(
 	props => {
-		const {handleSubmit, clearFields, pristine, valid, registerPublisher} = props;
+		const {handleSubmit, clearFields, valid, createUser} = props;
 		const classes = useStyles();
-		const [activeStep, setActiveStep] = React.useState(0);
-		const steps = getSteps();
+		const [cookie] = useCookies('login-cookie');
+		const token = cookie['login-cookie'];
+
 		function getStepContent() {
 			return element(fieldArray, classes, clearFields);
 		}
 
-		function handleNext() {
-			setActiveStep(activeStep + 1);
-		}
-
-		function handleBack() {
-			setActiveStep(activeStep - 1);
-		}
-
-		const handlePublisherRegistration = values => {
-			const newPublisher = {
-				...values
+		function handleCreateUser(values) {
+			const newUser = {
+				...values,
+				role: values.role[0]
 			};
-			registerPublisher(newPublisher);
-		};
+			createUser(newUser, token);
+		}
 
 		const component = (
-			<form className={classes.container} onSubmit={handleSubmit(handlePublisherRegistration)}>
+			<form className={classes.container} onSubmit={handleSubmit(handleCreateUser)}>
 				<div className={classes.subContainer}>
 					<Grid container spacing={3} direction="row">
-						{(getStepContent(activeStep))}
+						{(getStepContent())}
 					</Grid>
 					<div className={classes.btnContainer}>
-						<Button disabled={activeStep === 0} onClick={handleBack}>
-							Back
+						<Button type="submit" disabled={!valid} variant="contained" color="primary">
+							Submit
 						</Button>
-						{activeStep !== steps.length - 1 ?
-							<Button type="button" disabled={(pristine || !valid) || activeStep === steps.length - 1} variant="contained" color="primary" onClick={handleNext}>
-								Next
-							</Button> : null
-						}
-						{
-							activeStep === steps.length - 1 &&
-							<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
-								Submit
-							</Button>
-						}
 					</div>
 				</div>
 			</form>
@@ -156,10 +140,6 @@ export default connect(null, {registerPublisher})(reduxForm({
 			}
 		};
 	}));
-
-function getSteps() {
-	return fieldArray.map(item => Object.keys(item));
-}
 
 function element(array, classes, clearFields) {
 	return array.map(list =>

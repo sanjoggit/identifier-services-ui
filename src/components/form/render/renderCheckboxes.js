@@ -39,7 +39,7 @@ export default function (props) {
 			const index = state[name].indexOf(value);
 			state[name].splice(index, 1);
 			fields.removeAll();
-			fields.push(state[name]);
+			state[name].forEach(item => fields.push(item));
 		} else {
 			state[name].push(value);
 			fields.removeAll();

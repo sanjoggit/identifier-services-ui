@@ -25,38 +25,19 @@
  * for the JavaScript code in this file.
  *
  */
+import fetch from 'node-fetch';
+const BASE_URL = 'http://localhost:8081';
 
-export {
-	fetchPublishersList,
-	fetchPublisher,
-	updatePublisher,
-	searchPublisher
-} from './publisherAction';
-
-export {
-	normalLogin,
-	getUserInfo,
-	logOut
-} from './auth';
-
-export {
-	contact
-} from './contactFormActions';
-
-export {
-	setLocale
-} from './localeAction';
-
-export {
-	setLoader,
-	loadSvgCaptcha,
-	postCaptchaInput
-} from './commonAction';
-
-export {
-	handleMenuClick
-} from './navbarActions';
-
-export {
-	createUser
-} from './userActions';
+export const createUser = (values, token) => async dispatch => {
+	console.log('----- from action', values);
+	const response = await fetch(`${BASE_URL}/requests/users`, {
+		method: 'POST',
+		headers: {
+			Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		},
+		credentials: 'same-origin',
+		body: JSON.stringify(values)
+	});
+	console.log(await response.json());
+};

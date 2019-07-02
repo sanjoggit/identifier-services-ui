@@ -25,7 +25,7 @@
  * for the JavaScript code in this file.
  *
  */
-import React from 'react';
+import React, {useState} from 'react';
 import {Field, getFormValues} from 'redux-form';
 import {Fab, Grid, Chip} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
@@ -38,25 +38,22 @@ export default connect(state => ({
 	values: getFormValues('userCreation')(state) || getFormValues('publisherRegistrationForm')(state)
 
 }))(props => {
-	const [errors, setErrors] = React.useState();
+	const [errors, setErrors] = useState();
 	const {fields, values, className, clearFields, name, subName, label} = props;
-	const aliases = name;
-	const alias = subName;
-
 	const handleAliasesClick = () => {
 		setErrors();
 		if (values) {
-			if (values[alias]) {
-				if (values[aliases]) {
-					if (values[aliases].includes(values[alias])) {
+			if (values[subName]) {
+				if (values[name]) {
+					if (values[name].includes(values[subName])) {
 						setErrors('Alias already exist');
 					} else {
-						fields.push(values[alias]);
-						clearFields(undefined, false, false, 'alias');
+						fields.push(values[subName]);
+						clearFields(undefined, false, false, subName);
 					}
 				} else {
-					fields.push(values[alias]);
-					clearFields(undefined, false, false, 'alias');
+					fields.push(values[subName]);
+					clearFields(undefined, false, false, subName);
 				}
 			} else {
 				setErrors('Required');
@@ -88,7 +85,7 @@ export default connect(state => ({
 					</Fab>
 				</Grid>
 			</Grid>
-			{values && values[aliases] && values[aliases].map((item, index) => (
+			{values && values[name] && values[name].map((item, index) => (
 				<Chip
 					key={item}
 					label={item}
