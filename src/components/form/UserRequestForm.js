@@ -39,6 +39,7 @@ import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
 import * as actions from '../../store/actions/userActions';
 import renderCheckboxes from './render/renderCheckboxes';
+import renderSelect from './render/renderSelect';
 
 const roleOption = [
 	{label: 'system', value: 'system'},
@@ -48,12 +49,6 @@ const roleOption = [
 ];
 
 const fieldArray = [
-	{
-		name: 'displayName',
-		type: 'text',
-		label: 'Display Name',
-		width: 'half'
-	},
 	{
 		name: 'role',
 		type: 'check',
@@ -74,17 +69,15 @@ const fieldArray = [
 		width: 'half'
 	},
 	{
-		name: 'organizations',
-		subName: 'organization',
-		type: 'arrayString',
-		label: 'Organization',
+		name: 'email',
+		type: 'email',
+		label: 'Emails',
 		width: 'half'
 	},
 	{
-		name: 'emails',
-		subName: 'userEmail',
-		type: 'arrayString',
-		label: 'Emails',
+		name: 'defaultLanguage',
+		type: 'select',
+		label: 'Default Language',
 		width: 'half'
 	}
 ];
@@ -106,8 +99,10 @@ export default connect(null, actions)(reduxForm({
 		function handleCreateUser(values) {
 			const newUser = {
 				...values,
-				role: values.role[0]
+				role: values.role[0],
+				preferences: {defaultLanguage: values.defaultLanguage}
 			};
+			delete newUser.defaultLanguage;
 			createUser(newUser, token);
 		}
 
@@ -178,14 +173,27 @@ function element(array, classes, clearFields) {
 							props={{name: list.name}}
 						/>
 					</Grid>	:
-					<Grid key={list.name} item xs={6}>
-						<Field
-							className={`${classes.textField} ${list.width}`}
-							component={renderTextField}
-							label={list.label}
-							name={list.name}
-							type={list.type}
-						/>
-					</Grid>)))
+					// ((list.type === 'select') ?
+					// 	<Grid key={list.name} item xs={6}>
+					// 		<FieldArray
+					// 			className={`${classes.textField} ${list.width}`}
+					// 			component={renderTextField}
+					// 			label={list.label}
+					// 			name={list.name}
+					// 			type={list.type}
+					// 			options={list.option}
+					// 			props={{name: list.name}}
+					// 		/>
+					// 	</Grid>	:
+
+						<Grid key={list.name} item xs={6}>
+							<Field
+								className={`${classes.textField} ${list.width}`}
+								component={renderTextField}
+								label={list.label}
+								name={list.name}
+								type={list.type}
+							/>
+						</Grid>)))
 	);
 }

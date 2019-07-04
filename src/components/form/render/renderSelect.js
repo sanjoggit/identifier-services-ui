@@ -40,7 +40,9 @@ export default function ({label, input, meta: {touched, error}}) {
 				input={<Input name="select" id="age-native-helper"/>}
 			>
 				<option value=""/>
-				<option value={10}>Ten</option>
+				<option value="eng">ENG</option>
+				<option value="fin">FIN</option>
+				<option value="sed">SWD</option>
 			</NativeSelect>
 		</>
 	);

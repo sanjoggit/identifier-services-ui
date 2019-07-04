@@ -97,7 +97,7 @@ export default connect(mapStateToProps, actions)(props => {
 							</Typography>
 							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
 								{props.loggedIn ?
-									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.displayName.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/>:
+									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.name.givenName.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/>:
 									<LoginLayout name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
 								}
 

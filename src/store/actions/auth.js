@@ -60,6 +60,6 @@ export const logOut = () => async dispatch => {
 	});
 	dispatch({
 		type: LOG_OUT,
-		payload: {isLogin: false, user: {displayName: 'user'}, role: ['any']}
+		payload: {isLogin: false, user: {givenName: 'user'}, role: ['any']}
 	});
 };
