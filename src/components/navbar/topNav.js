@@ -40,7 +40,6 @@ import Logo from '../../assets/logo/logo.png';
 import NotificationBar from '../../components/NotificationBar';
 import * as actions from '../../store/actions';
 import LoginLayout from '../login/LoginLayout';
-import ModalLayout from '../ModalLayout';
 
 export default connect(mapStateToProps, actions)(props => {
 	const {setLocale, userInfo} = props;
@@ -91,14 +90,14 @@ export default connect(mapStateToProps, actions)(props => {
 					<AppBar position="static">
 						<div className={classes.navbarContainer}>
 							<Typography variant="h6" color="inherit">
-								{userInfo.role.some(item=> item === 'any') ?
+								{userInfo.role.some(item => item === 'any') ?
 									<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link> :
 									<img src={Logo} alt="" className={classes.mainLogo}/>
 								}
 							</Typography>
 							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
 								{props.loggedIn ?
-									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/>:
+									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.name.givenName.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/>:
 									<LoginLayout name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
 								}
 

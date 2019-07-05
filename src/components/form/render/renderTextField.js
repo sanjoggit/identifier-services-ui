@@ -35,7 +35,8 @@ import useStyles from '../../../styles/error';
 export default function (props) {
 	const {input, label, className, meta, errors} = props;
 	const {touched, error} = meta;
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	console.log(error);
+
 	const classes = useStyles();
 	const component = (
 		<>
@@ -49,10 +50,10 @@ export default function (props) {
 	<InputAdornment position="end">
 		<>
 			{touched && (error &&
-			<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
+				<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{error}</Typography>
 			)}
 			{touched && (errors &&
-			<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{errors}</Typography>
+				<Typography variant="caption" color="error" className={classes.errors}><ErrorIcons fontSize="inherit"/>{errors}</Typography>
 			)}
 		</>
 	</InputAdornment>

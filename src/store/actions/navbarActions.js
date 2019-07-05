@@ -1,4 +1,4 @@
-
+/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,55 +26,14 @@
  * for the JavaScript code in this file.
  *
  */
-import {makeStyles} from '@material-ui/core/styles';
+import {GET_USERS} from './types';
 
-const useStyles = makeStyles({
-	container: {
-		maxWidth: 900,
-		margin: '40px 0px 40px 0px',
-		flexGrow: 1
-	},
-	subContainer: {
-		flexGrow: 1,
-		padding: '0 10px'
-	},
-	btnContainer: {
-		marginTop: 35,
-		'& button': {
-			margin: '0 5px'
+export const handleMenuClick = (path, token) => async dispatch => {
+	const result = await fetch(`http://localhost:8081/${path}`, {
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer ' + token
 		}
-	},
-	textField: {
-		height: '60px',
-		width: '-webkit-fill-available'
-	},
-	arrayString: {
-		height: '60px',
-		width: '95%'
-	},
-	full: {
-		flexDirection: 'column'
-	},
-	half: {
-		flexDirection: 'row'
-	},
-	textArea: {
-		height: '180px',
-		width: '-webkit-fill-available'
-	},
-	stepLabel: {
-		textTransform: 'capitalize'
-	},
-	editForm: {
-		display: 'flex'
-	},
-	editFormAliases: {
-		display: 'flex',
-		width: '90%'
-	},
-	checkbox: {
-
-	}
-});
-
-export default useStyles;
+    });
+    console.log(await result.json());
+};

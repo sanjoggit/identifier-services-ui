@@ -29,7 +29,7 @@
 import {AUTHENTICATION, LOADER, LOG_OUT} from '../actions/types';
 
 const initialState = {
-	userInfo: {user: 'User', role: ['any']},
+	userInfo: {user: {name: {givenName: 'User'}}, role: ['any']},
 	loading: false,
 	error: {},
 	isLogin: false

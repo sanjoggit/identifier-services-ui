@@ -26,11 +26,27 @@
  *
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {PropTypes} from 'prop-types';
 import {Checkbox, FormControlLabel, FormLabel, FormGroup} from '@material-ui/core';
 
-export default function ({label, options, className, input, meta: {touched, error}}) {
+export default function (props) {
+	const {fields, label, options, className, input, name, meta: {touched, error}} = props;
+	const [state] = useState({[name]: []});
+
+	function handleOnChange(value) {
+		if (state[name].includes(value)) {
+			const index = state[name].indexOf(value);
+			state[name].splice(index, 1);
+			fields.removeAll();
+			state[name].forEach(item => fields.push(item));
+		} else {
+			state[name].push(value);
+			fields.removeAll();
+			fields.push(state[name]);
+		}
+	}
+
 	const component = (
 		<>
 			<FormLabel component="legend">{label}</FormLabel>
@@ -43,9 +59,11 @@ export default function ({label, options, className, input, meta: {touched, erro
 						className={className}
 						control={
 							<Checkbox
-								error={touched && error}
+								{...input}
+								error={touched ? error : undefined}
 								value={item.value}
-								onChange={input.onChange(`${item.name}`)}
+								color="primary"
+								onChange={() => handleOnChange(item.value)}
 							/>
 						}
 					/>
@@ -70,7 +88,7 @@ export default function ({label, options, className, input, meta: {touched, erro
 			}).isRequired,
 			label: PropTypes.string.isRequired,
 			className: PropTypes.string.isRequired,
-			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
+			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.string})
 		}
 	};
 }

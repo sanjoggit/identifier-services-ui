@@ -26,18 +26,24 @@
  *
  */
 import React from 'react';
+import {connect} from 'react-redux';
 import {Button, Menu, MenuItem} from '@material-ui/core';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
+import {useCookies} from 'react-cookie';
 
 import useStyles from '../../styles/adminNav';
+import * as actions from '../../store/actions';
 
-export default function (props) {
-	const {list, role} = props;
+export default connect(null, actions)(props => {
+	const {list, role, handleMenuClick} = props;
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [cookie] = useCookies('login-cookie');
+	const token = cookie['login-cookie'];
 
 	function handleClick(event) {
 		setAnchorEl(event.currentTarget);
+		handleMenuClick(list.path, token);
 	}
 
 	function handleClose() {
@@ -79,4 +85,4 @@ export default function (props) {
 	return {
 		...component
 	};
-}
+});

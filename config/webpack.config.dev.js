@@ -44,12 +44,12 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.(jpg|gif|png)$/,
+				test: /\.(jpg|gif|png|svg)$/,
 				use: [
 					{
 						loader: 'file-loader',
 						options: {
-							name: 'images/[name]-[hash:8].[ext]',
+							name: '[name]-[hash:8].[ext]',
 							outputPath: 'images/'
 						}
 					}

@@ -52,3 +52,11 @@ export {
 	loadSvgCaptcha,
 	postCaptchaInput
 } from './commonAction';
+
+export {
+	handleMenuClick
+} from './navbarActions';
+
+export {
+	createUser
+} from './userActions';

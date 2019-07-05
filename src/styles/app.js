@@ -65,10 +65,7 @@ const theme = createMuiTheme({
 		MuiPaper: {
 			elevation1: {
 				boxShadow: 'none'
-			},
-			// elevation4: {
-			// 	boxShadow: 'none'
-			// }
+			}
 		},
 		MuiExpansionPanelDetails: {
 			root: {
