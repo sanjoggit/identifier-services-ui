@@ -41,11 +41,10 @@ import renderTextField from '../form/render/renderTextField';
 import useStyles from '../../styles/login';
 import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
-import PasswordResetForm from '../form/PasswordResetForm';
 
 export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'login', validate})(props => {
-	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose} = props;
+	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose, setPwd} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 
@@ -95,8 +94,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 				>
 					Login
 				</Button>
-				<div>
-					<PasswordResetForm/>
+				<div className={classes.pwdresetLink}>
+					<span onClick={() => setPwd(true)}>Forgot Password ?</span>
 				</div>
 			</section>
 			<div className={classes.notes}>

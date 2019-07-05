@@ -45,11 +45,15 @@ function fail(type, payload) {
 	});
 }
 
-export const fetchPublishersList = () => async dispatch => {
+export const fetchPublishersList = token => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/publishers/query`, {
-			method: 'POST'
+			method: 'POST',
+			headers: {
+				Authorization: 'Bearer ' + token,
+				'Content-Type': 'application/json'
+			}
 		});
 		const result = await response.json();
 		dispatch(success(PUBLISHERS_LIST, result.data));
@@ -90,11 +94,15 @@ export const updatePublisher = (id, values, token) => async dispatch => {
 	}
 };
 
-export const searchPublisher = data => async dispatch => {
+export const searchPublisher = (data, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/publishers/query?q=${data}`, {
-			method: 'POST'
+			method: 'POST',
+			headers: {
+				Authorization: 'Bearer ' + token['login-cookie'],
+				'Content-Type': 'application/json'
+			}
 		});
 		const result = await response.json();
 		dispatch(success(SEARCH_PUBLISHER, result.data));

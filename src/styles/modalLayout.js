@@ -54,8 +54,8 @@ const useStyles = makeStyles({
 		alignItems: 'center'
 	},
 	main: {
-		minHeight: 100,
-		minWidth: 300,
+		minHeight: 90,
+		minWidth: 230,
 		maxWidth: 'fit-content',
 		height: 'fit-content',
 		position: 'relative',
