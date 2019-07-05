@@ -49,7 +49,7 @@ export default connect(state => ({
 	const handleAliasesClick = () => {
 		setErrors();
 		(values && values !== '') ?
-			(Object.keys(values).every(key => values[key] !== undefined)) ?
+			subName.every(item => values[item.name] !== undefined) ?
 				(values[name] ?
 					(values[name].some(item => values.value === item.value) ?
 						setErrors('Already Exist') :

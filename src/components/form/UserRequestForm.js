@@ -95,7 +95,8 @@ export default connect(null, actions)(reduxForm({
 	validate
 })(
 	props => {
-		const {handleSubmit, clearFields, valid, createUser} = props;
+		const {handleSubmit, clearFields, valid, createUser, pristine} = props;
+		console.log(props);
 		const classes = useStyles();
 		const [cookie] = useCookies('login-cookie');
 		const token = cookie['login-cookie'];
@@ -121,7 +122,7 @@ export default connect(null, actions)(reduxForm({
 						{(getStepContent())}
 					</Grid>
 					<div className={classes.btnContainer}>
-						<Button type="submit" disabled={!valid} variant="contained" color="primary">
+						<Button type="submit" disabled={pristine && !valid} variant="contained" color="primary">
 							Submit
 						</Button>
 					</div>
