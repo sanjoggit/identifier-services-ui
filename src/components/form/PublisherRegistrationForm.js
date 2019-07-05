@@ -71,7 +71,8 @@ const fieldArray = [
 				name: 'aliases',
 				type: 'arrayString',
 				label: 'Aliases',
-				width: 'half'
+				width: 'half',
+				subName: 'alias'
 			}
 		]
 	},
@@ -235,7 +236,8 @@ function element(array, classes, clearFields) {
 						component={renderAliases}
 						name={list.name}
 						type={list.type}
-						props={{clearFields}}
+						label={list.label}
+						props={{clearFields, name: list.name, subName: list.subName}}
 					/>
 				</Grid> :
 				<Grid key={list.name} item xs={6}>

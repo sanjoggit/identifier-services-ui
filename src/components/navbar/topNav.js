@@ -40,7 +40,6 @@ import Logo from '../../assets/logo/logo.png';
 import NotificationBar from '../../components/NotificationBar';
 import * as actions from '../../store/actions';
 import LoginLayout from '../login/LoginLayout';
-import ModalLayout from '../ModalLayout';
 
 export default connect(mapStateToProps, actions)(props => {
 	const {setLocale, userInfo} = props;
@@ -99,22 +98,9 @@ export default connect(mapStateToProps, actions)(props => {
 								}
 							</Typography>
 							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
-								{
-									props.loggedIn ?
-										<LoginLayout
-											name="login"
-											label={`Welcome, ${(userInfo.user.toUpperCase())}`}
-											color="secondary" classed={classes.loginButton}
-											{...props}/> :
-										<LoginLayout
-											name="login"
-											title={forgotPwd ? 'Reset Password' : 'Login'}
-											label="Login" variant="outlined" color="secondary"
-											classed={classes.loginButton}
-											forgotPwd={forgotPwd}
-											setPwd={setPwd}
-											{...props}
-											onClick={() => setPwd(false)}/>
+								{props.loggedIn ?
+									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.name.givenName.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/> :
+									<LoginLayout name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
 								}
 
 								<LanguageIcon/>

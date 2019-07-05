@@ -113,7 +113,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 function mapStateToProps(state) {
 	return ({
-		user: state.login.user,
+		user: state.login.userInfo,
 		isLogin: state.login.isLogin
 	});
 }

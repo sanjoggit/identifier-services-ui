@@ -29,7 +29,7 @@ import fetch from 'node-fetch';
 import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER} from './types';
 import {setLoader} from './commonAction';
 
-const BASE_URL = 'http://localhost:8081/publishers';
+const BASE_URL = 'http://localhost:8081';
 
 function success(type, payload) {
 	return ({
@@ -48,7 +48,7 @@ function fail(type, payload) {
 export const fetchPublishersList = token => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/query`, {
+		const response = await fetch(`${BASE_URL}/publishers/query`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
@@ -65,7 +65,7 @@ export const fetchPublishersList = token => async dispatch => {
 export const fetchPublisher = id => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/${id}`, {
+		const response = await fetch(`${BASE_URL}/publishers/${id}`, {
 			method: 'GET'
 		});
 		const result = await response.json();
@@ -78,7 +78,7 @@ export const fetchPublisher = id => async dispatch => {
 export const updatePublisher = (id, values, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/${id}`, {
+		const response = await fetch(`${BASE_URL}/publishers/${id}`, {
 			method: 'PUT',
 			headers: {
 				Authorization: 'Bearer ' + token,
@@ -97,7 +97,7 @@ export const updatePublisher = (id, values, token) => async dispatch => {
 export const searchPublisher = (data, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/query?q=${data}`, {
+		const response = await fetch(`${BASE_URL}/publishers/query?q=${data}`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token['login-cookie'],

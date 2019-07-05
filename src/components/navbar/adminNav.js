@@ -27,14 +27,15 @@
  */
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {AppBar, Toolbar, Button, Grid} from '@material-ui/core';
+import {AppBar, Button, Grid} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 
 import useStyles from '../../styles/adminNav';
 import MenuTabs from './menuTabs';
 
-export default function ({user: {role}, loggedIn}) {
+export default function ({userInfo, loggedIn}) {
 	const classes = useStyles();
+	const {role, user} = userInfo;
 
 	const obj = [
 		{
@@ -63,7 +64,9 @@ export default function ({user: {role}, loggedIn}) {
 		},
 		{
 			label: 'users',
-			roleView: ['admin', 'publisher']
+			roleView: ['admin', 'publisher'],
+			// path: `users/${user.id}`
+			path: 'users/5d1de4357baf807e0cdd5a54'
 		},
 		{
 			label: 'identifier Ranges',

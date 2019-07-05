@@ -1,4 +1,3 @@
-
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,55 +25,19 @@
  * for the JavaScript code in this file.
  *
  */
-import {makeStyles} from '@material-ui/core/styles';
+import fetch from 'node-fetch';
+const BASE_URL = 'http://localhost:8081';
 
-const useStyles = makeStyles({
-	container: {
-		maxWidth: 900,
-		margin: '40px 0px 40px 0px',
-		flexGrow: 1
-	},
-	subContainer: {
-		flexGrow: 1,
-		padding: '0 10px'
-	},
-	btnContainer: {
-		marginTop: 35,
-		'& button': {
-			margin: '0 5px'
-		}
-	},
-	textField: {
-		height: '60px',
-		width: '-webkit-fill-available'
-	},
-	arrayString: {
-		height: '60px',
-		width: '95%'
-	},
-	full: {
-		flexDirection: 'column'
-	},
-	half: {
-		flexDirection: 'row'
-	},
-	textArea: {
-		height: '180px',
-		width: '-webkit-fill-available'
-	},
-	stepLabel: {
-		textTransform: 'capitalize'
-	},
-	editForm: {
-		display: 'flex'
-	},
-	editFormAliases: {
-		display: 'flex',
-		width: '90%'
-	},
-	checkbox: {
-
-	}
-});
-
-export default useStyles;
+export const createUser = (values, token) => async dispatch => {
+	console.log('----- from action', values);
+	const response = await fetch(`${BASE_URL}/users`, {
+		method: 'POST',
+		headers: {
+			Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		},
+		credentials: 'same-origin',
+		body: JSON.stringify(values)
+	});
+	console.log(await response.json());
+};

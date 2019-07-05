@@ -34,7 +34,7 @@ export default function ({option, name, label, input, meta: {touched, error}}) {
 	const component = (
 		<>
 
-			<FormLabel component="legend">Gender</FormLabel>
+			<FormLabel component="legend">{label}</FormLabel>
 			<RadioGroup
 				{...input}
 				aria-label={label}

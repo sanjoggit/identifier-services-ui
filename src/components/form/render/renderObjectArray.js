@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -35,46 +36,46 @@ import {connect} from 'react-redux';
 import renderTextField from './renderTextField';
 
 export default connect(state => ({
-	values: getFormValues('userCreation')(state) || getFormValues('publisherRegistrationForm')(state)
+	values: getFormValues('userCreation')(state)
 
 }))(props => {
 	const [errors, setErrors] = useState();
-	const {fields, values, className, clearFields, name, subName, label} = props;
+	const {fields, values, className, clearFields, list: {name, subName}} = props;
+	const email = values && {
+		value: values.value,
+		type: values.type
+	};
+
 	const handleAliasesClick = () => {
 		setErrors();
-		if (values) {
-			if (values[subName]) {
-				if (values[name]) {
-					if (values[name].includes(values[subName])) {
-						setErrors('Alias already exist');
-					} else {
-						fields.push(values[subName]);
-						clearFields(undefined, false, false, subName);
-					}
-				} else {
-					fields.push(values[subName]);
-					clearFields(undefined, false, false, subName);
-				}
-			} else {
-				setErrors('Required');
-			}
-		} else {
+		(values && values !== '') ?
+			subName.every(item => values[item.name] !== undefined) ?
+				(values[name] ?
+					(values[name].some(item => values.value === item.value) ?
+						setErrors('Already Exist') :
+						fields.push(email) && subName.forEach(item => clearFields(undefined, false, item.name))) :
+					fields.push(email) && subName.forEach(item => clearFields(undefined, false, item.name))) :
+				setErrors('Required') :
 			setErrors('Required');
-		}
 	};
 
 	const component = (
 		<>
 			<Grid>
 				<Grid item>
-					<Field
-						class={className}
-						name={subName}
-						type="text"
-						component={renderTextField}
-						label={label}
-						props={{errors}}
-					/>
+					{
+						subName.map(item => (
+							<Field
+								key={item.label}
+								class={className}
+								name={item.name}
+								type="text"
+								component={renderTextField}
+								label={item.label}
+								props={{errors}}
+							/>
+						))
+					}
 					<Fab
 						color="primary"
 						aria-label="Add"
@@ -87,8 +88,8 @@ export default connect(state => ({
 			</Grid>
 			{values && values[name] && values[name].map((item, index) => (
 				<Chip
-					key={item}
-					label={item}
+					key={item.value}
+					label={item.value}
 					onDelete={() => fields.remove(index)}
 				/>
 			))}
