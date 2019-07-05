@@ -32,10 +32,10 @@ const useStyles = makeStyles({
 	main: {
 		maxWidth: 400
 	},
-	logout: {
-		margin: '30px 10px',
-		alignItems: 'center',
-		borderRadius: 0
+	logoutContainer: {
+		display: 'flex',
+		justifyCcontent: 'center',
+		cursor: 'pointer'
 	},
 	hakaLogo: {
 		height: 300,
@@ -70,6 +70,16 @@ const useStyles = makeStyles({
 	personIcon: {
 		height: 30,
 		width: 30
+	},
+	pwdresetLink: {
+		cursor: 'pointer'
+	},
+	resetInput: {
+		width: '100%',
+		margin: '10px 0'
+	},
+	resetBtn: {
+		width: '100%'
 	}
 });
 
