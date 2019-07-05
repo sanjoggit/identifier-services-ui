@@ -71,6 +71,9 @@ const useStyles = makeStyles({
 	editFormAliases: {
 		display: 'flex',
 		width: '90%'
+	},
+	checkbox: {
+
 	}
 });
 

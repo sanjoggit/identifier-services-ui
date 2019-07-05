@@ -31,12 +31,13 @@
 import React from 'react';
 import {Typography, Link} from '@material-ui/core';
 import useStyles from '../../styles/login';
+import Logo from '../../assets/logo/Haka_login_vaaka.svg';
 
 export default function () {
 	const classes = useStyles();
 	const container = (
 		<div className={classes.hakaLogo}>
-			<img src="/src/assets/logo/Haka_login_vaaka.svg"/>
+			<img src={Logo}/>
 			<div className={classes.notes}>
 				<Typography>When you log in using Haka, the service will store your user id, name and email address. Read more about management of personal information on the
 					<Link> Data protection page.</Link>

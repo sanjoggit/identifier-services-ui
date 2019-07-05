@@ -65,7 +65,8 @@ export default function ({userInfo, loggedIn}) {
 		{
 			label: 'users',
 			roleView: ['admin', 'publisher'],
-			path: `users/${user.id}`
+			// path: `users/${user.id}`
+			path: 'users/5d1de4357baf807e0cdd5a54'
 		},
 		{
 			label: 'identifier Ranges',

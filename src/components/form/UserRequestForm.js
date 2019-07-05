@@ -35,17 +35,23 @@ import {validate} from '@natlibfi/identifier-services-commons';
 import {useCookies} from 'react-cookie';
 
 import renderTextField from './render/renderTextField';
-import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
 import * as actions from '../../store/actions/userActions';
 import renderCheckboxes from './render/renderCheckboxes';
 import renderSelect from './render/renderSelect';
+import renderObjectArray from './render/renderObjectArray';
 
 const roleOption = [
 	{label: 'system', value: 'system'},
 	{label: 'admin', value: 'admin'},
 	{label: 'publisher-admin', value: 'publisherAdmin'},
 	{label: 'publisher', value: 'publisher'}
+];
+
+const selectOption = [
+	{label: 'ENG', value: 'eng'},
+	{label: 'FIN', value: 'fin'},
+	{label: 'SwD', value: 'swd'}
 ];
 
 const fieldArray = [
@@ -55,6 +61,13 @@ const fieldArray = [
 		label: 'Role',
 		option: roleOption,
 		width: 'half'
+	},
+	{
+		name: 'emails',
+		type: 'arrayObject',
+		label: 'Emails',
+		width: 'half',
+		subName: [{name: 'value', label: 'Email'}, {name: 'type', label: 'Type'}]
 	},
 	{
 		name: 'givenName',
@@ -69,15 +82,10 @@ const fieldArray = [
 		width: 'half'
 	},
 	{
-		name: 'email',
-		type: 'email',
-		label: 'Emails',
-		width: 'half'
-	},
-	{
 		name: 'defaultLanguage',
 		type: 'select',
 		label: 'Default Language',
+		option: selectOption,
 		width: 'half'
 	}
 ];
@@ -140,60 +148,49 @@ function element(array, classes, clearFields) {
 	return array.map(list =>
 
 		// eslint-disable-next-line no-negated-condition
-		((list.width !== 'half') ?
-			<Grid key={list.name} item xs={12}>
-				<Field
-					className={`${classes.textField} ${list.width}`}
-					component={renderTextField}
-					label={list.label}
+		((list.type === 'arrayObject') ?
+			<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
+				<FieldArray
+					className={`${classes.arrayString} ${list.width}`}
+					component={renderObjectArray}
 					name={list.name}
 					type={list.type}
+					label={list.label}
+					props={{clearFields, list}}
 				/>
 			</Grid> :
-			((list.type === 'arrayString') ?
-				<Grid key={list.name} item xs={12}>
+			((list.type === 'check') ?
+				<Grid key={list.name} item xs={(list.width === 'full') ? 12 : 6}>
 					<FieldArray
-						className={`${classes.arrayString} ${list.width}`}
-						component={renderAliases}
+						className={`${classes.textField} ${list.width}`}
+						component={renderCheckboxes}
+						label={list.label}
 						name={list.name}
 						type={list.type}
-						label={list.label}
-						props={{clearFields, name: list.name, subName: list.subName}}
+						options={list.option}
+						props={{name: list.name}}
 					/>
-				</Grid> :
-				((list.type === 'check') ?
-					<Grid key={list.name} item xs={6}>
-						<FieldArray
+				</Grid>	:
+				((list.type === 'select') ?
+					<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
+						<Field
 							className={`${classes.textField} ${list.width}`}
-							component={renderCheckboxes}
+							component={renderSelect}
 							label={list.label}
 							name={list.name}
 							type={list.type}
 							options={list.option}
-							props={{name: list.name}}
 						/>
 					</Grid>	:
-					// ((list.type === 'select') ?
-					// 	<Grid key={list.name} item xs={6}>
-					// 		<FieldArray
-					// 			className={`${classes.textField} ${list.width}`}
-					// 			component={renderTextField}
-					// 			label={list.label}
-					// 			name={list.name}
-					// 			type={list.type}
-					// 			options={list.option}
-					// 			props={{name: list.name}}
-					// 		/>
-					// 	</Grid>	:
 
-						<Grid key={list.name} item xs={6}>
-							<Field
-								className={`${classes.textField} ${list.width}`}
-								component={renderTextField}
-								label={list.label}
-								name={list.name}
-								type={list.type}
-							/>
-						</Grid>)))
+					<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
+						<Field
+							className={`${classes.textField} ${list.width}`}
+							component={renderTextField}
+							label={list.label}
+							name={list.name}
+							type={list.type}
+						/>
+					</Grid>)))
 	);
 }
