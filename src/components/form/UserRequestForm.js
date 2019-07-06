@@ -122,7 +122,7 @@ export default connect(null, actions)(reduxForm({
 						{(getStepContent())}
 					</Grid>
 					<div className={classes.btnContainer}>
-						<Button type="submit" disabled={pristine && !valid} variant="contained" color="primary">
+						<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
 							Submit
 						</Button>
 					</div>
