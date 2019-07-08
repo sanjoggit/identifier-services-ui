@@ -47,15 +47,20 @@ export default connect(mapToProps, actions)(reduxForm({
 	form: 'contactForm', validate
 })(
 	props => {
-		const {handleSubmit,
+		const {
+			handleSubmit,
 			pristine,
 			valid,
-			contact,
+			sendMessage,
 			history,
 			handleClose,
 			loadSvgCaptcha,
 			postCaptchaInput,
-			captcha} = props;
+			userInfo,
+			createMessageTemplate,
+			captcha,
+			language
+		} = props;
 		const initialState = {};
 		const [state, setState] = useState(initialState);
 		const [captchaInput, setCaptchaInput] = useState('');
@@ -72,7 +77,9 @@ export default connect(mapToProps, actions)(reduxForm({
 			} else if (captchaInput.length > 0) {
 				const result = await postCaptchaInput(captchaInput, captcha.id);
 				if (result === true) {
-					contact(values); // Need to build inorder for this function to work
+					const newValues = {...values, user: userInfo.user, language: language, subject: values.email};
+					sendMessage(values);
+					createMessageTemplate(newValues);
 					handleClose();
 					history.push('/');
 				} else {
@@ -170,6 +177,8 @@ function mapToProps(state) {
 	return ({
 		responseMessage: state.contact.responseMessage,
 		loading: state.contact.loading,
-		captcha: state.common.captcha
+		captcha: state.common.captcha,
+		userInfo: state.login.userInfo,
+		language: state.locale.lang
 	});
 }

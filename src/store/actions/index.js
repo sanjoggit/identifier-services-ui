@@ -40,7 +40,8 @@ export {
 } from './auth';
 
 export {
-	contact
+	sendMessage,
+	createMessageTemplate
 } from './contactFormActions';
 
 export {
