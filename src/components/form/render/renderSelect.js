@@ -40,7 +40,6 @@ export default function ({label, input, options, meta: {touched, error}}) {
 				error={touched && Boolean(error)}
 				input={<Input name="defaultLanguage" id="language-helper"/>}
 			>
-				<option value=""/>
 				{
 					options.map(item =>
 						<option key={item.value} value={item.value}>{item.label}</option>

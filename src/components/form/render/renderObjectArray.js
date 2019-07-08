@@ -55,7 +55,7 @@ export default connect(state => ({
 						setErrors('Already Exist') :
 						fields.push(email) && subName.forEach(item => clearFields(undefined, false, item.name))) :
 					fields.push(email) && subName.forEach(item => clearFields(undefined, false, item.name))) :
-				setErrors('Required') :
+				null :
 			setErrors('Required');
 	};
 
