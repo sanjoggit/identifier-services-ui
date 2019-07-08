@@ -92,7 +92,10 @@ const fieldArray = [
 
 export default connect(null, actions)(reduxForm({
 	form: 'userCreation',
-	validate
+	validate,
+	initialValues: {
+		defaultLanguage: 'eng'
+	}
 })(
 	props => {
 		const {handleSubmit, clearFields, valid, createUser, pristine} = props;

@@ -29,7 +29,7 @@ import fetch from 'node-fetch';
 const BASE_URL = 'http://localhost:8081';
 
 export const createUser = (values, token) => async dispatch => {
-	console.log('----- from action', values);
+
 	const response = await fetch(`${BASE_URL}/users`, {
 		method: 'POST',
 		headers: {
