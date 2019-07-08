@@ -1,3 +1,7 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-undef */
+/* eslint-disable react/no-danger */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable complexity */
 /* eslint-disable no-negated-condition */
 /**
@@ -27,7 +31,7 @@
  * for the JavaScript code in this file.
  *
  */
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Field, FieldArray, reduxForm} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepLabel} from '@material-ui/core';
@@ -37,8 +41,9 @@ import {validate} from '@natlibfi/identifier-services-commons';
 import renderTextField from './render/renderTextField';
 import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
-import {registerPublisher} from '../../store/actions/publisherRegistration';
 import renderContactDetail from './render/renderContactDetail';
+import Captcha from '../../components/Captcha';
+import * as actions from '../../store/actions';
 
 const fieldArray = [
 	{
@@ -124,14 +129,20 @@ const fieldArray = [
 	}
 ];
 
-export default connect(null, {registerPublisher})(reduxForm({
+export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'publisherRegistrationForm',
 	validate
 })(
 	props => {
-		const {handleSubmit, clearFields, pristine, valid, registerPublisher} = props;
+		const {handleSubmit, clearFields, pristine, valid, registerPublisher, captcha, loadSvgCaptcha, postCaptchaInput} = props;
 		const classes = useStyles();
-		const [activeStep, setActiveStep] = React.useState(0);
+		const [activeStep, setActiveStep] = useState(0);
+		const [captchaInput, setCaptchaInput] = useState('');
+
+		useEffect(() => {
+			loadSvgCaptcha();
+		}, []);
+
 		const steps = getSteps();
 		function getStepContent(step) {
 			switch (step) {
@@ -146,6 +157,10 @@ export default connect(null, {registerPublisher})(reduxForm({
 			}
 		}
 
+		const handleCaptchaInput = e => {
+			setCaptchaInput(e.target.value);
+		};
+
 		function handleNext() {
 			setActiveStep(activeStep + 1);
 		}
@@ -154,11 +169,21 @@ export default connect(null, {registerPublisher})(reduxForm({
 			setActiveStep(activeStep - 1);
 		}
 
-		const handlePublisherRegistration = values => {
-			const newPublisher = {
-				...values
-			};
-			registerPublisher(newPublisher);
+		const handlePublisherRegistration = async values => {
+			if (captchaInput.length === 0) {
+				alert('Captcha not provided');
+			} else if (captchaInput.length > 0) {
+				const result = await postCaptchaInput(captchaInput, captcha.id);
+				if (result === true) {
+					const newPublisher = {
+						...values
+					};
+					registerPublisher(newPublisher);
+				} else {
+					alert('Please type the correct word in the image below');
+					loadSvgCaptcha();
+				}
+			}
 		};
 
 		const component = (
@@ -176,6 +201,16 @@ export default connect(null, {registerPublisher})(reduxForm({
 					<Grid container spacing={3} direction="row">
 						{(getStepContent(activeStep))}
 					</Grid>
+					{
+						activeStep === steps.length - 1 && 
+						<>
+							<Captcha
+								captchaInput={captchaInput}
+								handleCaptchaInput={handleCaptchaInput}/>
+							<span dangerouslySetInnerHTML={{__html: captcha.data}}/>
+						</>
+					}
+
 					<div className={classes.btnContainer}>
 						<Button disabled={activeStep === 0} onClick={handleBack}>
 							Back
@@ -187,9 +222,9 @@ export default connect(null, {registerPublisher})(reduxForm({
 						}
 						{
 							activeStep === steps.length - 1 &&
-							<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
-								Submit
-							</Button>
+								<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
+									Submit
+								</Button>
 						}
 					</div>
 				</div>
@@ -261,4 +296,10 @@ function fieldArrayElement(array, clearFields) {
 			props={{clearFields, array}}
 		/>
 	);
+}
+
+function mapStateToProps(state) {
+	return ({
+		captcha: state.common.captcha
+	});
 }

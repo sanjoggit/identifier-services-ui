@@ -81,7 +81,7 @@ app.post('/message', (req, res) => {
 
 		let info = await transporter.sendMail({
 			from: 'test@test.com',
-			to: 'rojakamatya@gmail.com',
+			to: 'sanjogstha7@gmail.com',
 			replyTo: 'test@test.com',
 			subject: 'New Message',
 			text: 'hello World!!',

@@ -25,18 +25,21 @@
  * for the JavaScript code in this file.
  *
  */
-import fetch from 'node-fetch';
-const BASE_URL = 'http://localhost:8081';
 
-export const createUser = (values, token) => async dispatch => {
-	const response = await fetch(`${BASE_URL}/users`, {
-		method: 'POST',
-		headers: {
-			Authorization: 'Bearer ' + token,
-			'Content-Type': 'application/json'
-		},
-		credentials: 'same-origin',
-		body: JSON.stringify(values)
-	});
-	console.log(await response.json());
-};
+import React from 'react';
+import {TextField} from '@material-ui/core';
+
+export default function (props) {
+	const {captchaInput, handleCaptchaInput} = props;
+	const component = (
+		<TextField
+			variant="outlined"
+			label="Type the word in the picture"
+			value={captchaInput}
+			onChange={handleCaptchaInput}/>
+	);
+
+	return {
+		...component
+	};
+}

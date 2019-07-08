@@ -34,7 +34,7 @@
 import React, {useState, useEffect} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {PropTypes} from 'prop-types';
-import {Grid, Button, TextField} from '@material-ui/core';
+import {Grid, Button} from '@material-ui/core';
 import {validate} from '@natlibfi/identifier-services-commons';
 import {connect} from 'react-redux';
 
@@ -42,6 +42,7 @@ import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
 import * as actions from '../../store/actions';
+import Captcha from '../../components/Captcha';
 
 export default connect(mapToProps, actions)(reduxForm({
 	form: 'contactForm', validate
@@ -59,11 +60,15 @@ export default connect(mapToProps, actions)(reduxForm({
 		const initialState = {};
 		const [state, setState] = useState(initialState);
 		const [captchaInput, setCaptchaInput] = useState('');
-		const classes = useStyles();
 
+		const classes = useStyles();
 		useEffect(() => {
 			loadSvgCaptcha();
 		}, []);
+
+		const handleCaptchaInput = e => {
+			setCaptchaInput(e.target.value);
+		};
 
 		const handleClick = async values => {
 			setState({...state, values});
@@ -80,10 +85,6 @@ export default connect(mapToProps, actions)(reduxForm({
 					loadSvgCaptcha();
 				}
 			}
-		};
-
-		const handleCaptchaInput = e => {
-			setCaptchaInput(e.target.value);
 		};
 
 		const fieldArray = [
@@ -134,11 +135,9 @@ export default connect(mapToProps, actions)(reduxForm({
 						))
 					}
 					<Grid item xs={12}>
-						<TextField
-							variant="outlined"
-							label="Type the word in the picture"
-							value={captchaInput}
-							onChange={handleCaptchaInput}/>
+						<Captcha
+							captchaInput={captchaInput}
+							handleCaptchaInput={handleCaptchaInput}/>
 						<span dangerouslySetInnerHTML={{__html: captcha.data}}/>
 					</Grid>
 					<Grid item xs={12} className={classes.btnContainer}>
