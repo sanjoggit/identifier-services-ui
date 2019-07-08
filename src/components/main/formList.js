@@ -51,7 +51,7 @@ export default withRouter(props => {
 				</Grid>
 
 				{formListsArray.map(item => (
-					<ModalLayout key={item.label} form label={item.label} name={item.name} variant="outlined" classed={classes.button} color="primary">
+					<ModalLayout key={item.label} form label={item.label} title={item.label} name={item.name} variant="outlined" classed={classes.button} color="primary">
 						{item.component}
 					</ModalLayout>
 				))}

@@ -31,7 +31,7 @@
 import React from 'react';
 
 import ModalLayout from '../ModalLayout';
-import Login from './Login';   
+import Login from './Login';
 
 export default (props => {
 	const component = (

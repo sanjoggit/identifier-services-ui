@@ -41,7 +41,7 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, getUserInfo} = props;
+	const {loading, searchedPublishers, getUserInfo, fetchPublishersList, publishersList} = props;
 	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
@@ -51,6 +51,11 @@ export default connect(mapStateToProps, actions)(props => {
 	useEffect(() => {
 		setToken(cookie['login-cookie']);
 		token !== null && getUserInfo(token);
+	}, [token]);
+
+	useEffect(() => {
+		setToken(cookie['login-cookie']);
+		token !== null && fetchPublishersList(token);
 	}, [token]);
 
 	const handleChange = name => event => {
@@ -122,6 +127,7 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.publisher.loading,
-		searchedPublishers: state.publisher.searchedPublisher.Publishers
+		searchedPublishers: state.publisher.searchedPublisher.Publishers,
+		publishersList: state.publisher.publishersList
 	});
 }
