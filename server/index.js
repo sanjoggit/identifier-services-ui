@@ -135,6 +135,10 @@ app.get('/logOut', (req, res) => {
 	res.send('cookie cleared');
 });
 
+app.post('/passwordreset', (req, res) => {
+	console.log('----', req.body);
+});
+
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../dist/public/index.html'));
 });

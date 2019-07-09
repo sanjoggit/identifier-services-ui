@@ -29,7 +29,7 @@
  */
 
 import React from 'react';
-import {Typography, Tabs, Tab, Fab, TextField, Button, IconButton} from '@material-ui/core';
+import {Typography, Tabs, Tab, TextField, Button} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
 import {connect} from 'react-redux';
@@ -38,6 +38,7 @@ import LoginForm from './LoginForm';
 import HakaLogin from './HakaLogin';
 import useStyles from '../../styles/login';
 import * as actions from '../../store/actions';
+import PasswordResetForm from '../form/PasswordResetForm';
 
 export default connect(mapStateToProps, actions)(props => {
 	const [value, setValue] = React.useState(0);
@@ -57,24 +58,7 @@ export default connect(mapStateToProps, actions)(props => {
 				</div> :
 				<>
 					{forgotPwd ?
-						<>
-							<div>
-								Enter your email address and we will send you a link to reset your password.
-							</div>
-							<form>
-								<TextField
-									variant="outlined"
-									placeholder="Enter Your email address"
-									className={classes.resetInput}
-								/>
-								<Button
-									variant="contained"
-									color="primary"
-									className={classes.resetBtn}
-								>Send password reset email
-								</Button>
-							</form>
-						</> :
+						<PasswordResetForm/> :
 						<div>
 							<Tabs
 								value={value}
