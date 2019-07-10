@@ -40,7 +40,7 @@ import AdminNav from './components/navbar/adminNav';
 import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
 import Footer from './components/footer';
-// import PrivateRoute from './PrivateRoutes';
+import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 import enMessages from './intl/translations/en.json';
@@ -48,25 +48,20 @@ import fiMessages from './intl/translations/fi.json';
 import svMessages from './intl/translations/sv.json';
 import SnackBar from './components/SnackBar';
 import {logOut} from './store/actions/auth';
+import PublishersRequestsList from './components/publishersRequests/PublishersRequestsList';
 
 export default connect(mapStateToProps, {logOut})(withRouter(props => {
 	const {lang, userInfo, isLogin, history, location, responseMessage} = props;
 	const routeField = [
-		{path: '/', component: (userInfo.role !== undefined && (userInfo.role.includes('admin') || userInfo.role.includes('publisher')) ? PublishersList : Home)},
+		{path: '/', component: Home},
 		{path: '/publishers', component: PublishersList},
 		{path: '/publishers/:id', component: PublishersList}
 
 	];
 
-	// Const privateRoutesList = [
-	// 	{path: '/templates/:id', role: ['admin'], component: ''},
-	// 	{path: '/user/requests/:id', role: ['admin'], component: ''},
-	// 	{path: '/publishers/request/:id', role: ['admin'], component: ''},
-	// 	{path: '/ranges/isbn/:id', role: ['admin'], component: ''},
-	// 	{path: '/ranges/ismn/:id', role: ['admin'], component: ''},
-	// 	{path: '/ranges/issn/:id', role: ['admin'], component: ''}
-
-	// ];
+	const privateRoutesList = [
+		{path: '/requests/publishers', component: PublishersRequestsList}
+	];
 
 	const routes = (
 		<>
@@ -78,16 +73,19 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 					component={fields.component}
 				/>
 			))}
-			{/* {privateRoutesList.map(pRoute => pRoute.role.includes(user.role) && (
-				<PrivateRoute
-					key={pRoute.path}
-					exact
-					user={user.role}
-					name={pRoute.path}
-					path={pRoute.path}
-					component={pRoute.component}
-				/>
-			))} */}
+			{
+				privateRoutesList.map(pRoute => (
+					<PrivateRoute
+						key={pRoute.path}
+						exact
+						// User={userInfo.role}
+						isLogin={isLogin}
+						name={pRoute.path}
+						path={pRoute.path}
+						component={pRoute.component}
+					/>
+				))
+			}
 		</>
 	);
 
@@ -120,7 +118,7 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 				<CssBaseline/>
 				<AdminNav userInfo={userInfo} loggedIn={isLogin}/>
 				<section>
-					{(userInfo.role !== undefined && userInfo.role.includes('publisher')) &&
+					{(userInfo.role.includes('publisher')) &&
 					<Tooltips label="contact form" title="contactForm"/>
 					}
 					<Switch>

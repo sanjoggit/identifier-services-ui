@@ -32,7 +32,7 @@ module.exports = {
 	entry: path.resolve(path.join(__dirname, '..', 'src', 'index.js')),
 	output: {
 		path: path.join(__dirname, '../dist'),
-		filename: 'index-bundle.js'
+		filename: '[name]-bundle.js'
 	},
 	module: {
 		rules: [

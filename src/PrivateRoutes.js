@@ -29,13 +29,13 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 
-export default function ({location, user, name, component: Component, ...rest}) {
+export default function ({location, isLogin, name, component: Component, ...rest}) {
 	const component = (
 		<Route
 			{...rest}
 			render={() => {
-				if (!user) {
-					return <Redirect push to={{pathname: '/login', state: {from: location}}}/>;
+				if (!isLogin) {
+					return <Redirect to="/"/>;
 				}
 
 				return <Component/>;
