@@ -92,7 +92,10 @@ const fieldArray = [
 
 export default connect(null, actions)(reduxForm({
 	form: 'userCreation',
-	validate
+	validate,
+	initialValues: {
+		defaultLanguage: 'eng'
+	}
 })(
 	props => {
 		const {handleSubmit, clearFields, valid, createUser, pristine} = props;
@@ -122,7 +125,7 @@ export default connect(null, actions)(reduxForm({
 						{(getStepContent())}
 					</Grid>
 					<div className={classes.btnContainer}>
-						<Button type="submit" disabled={pristine && !valid} variant="contained" color="primary">
+						<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
 							Submit
 						</Button>
 					</div>
