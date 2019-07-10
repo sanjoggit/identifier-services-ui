@@ -26,30 +26,24 @@
  *
  */
 
-import {makeStyles} from '@material-ui/core/styles';
+import {ERROR} from './types';
+import fetch from 'node-fetch';
 
-const useStyles = makeStyles({
-
-	formListContainer: {
-		background: '#b7bed629',
-		height: '200px',
-		display: 'flex',
-		alignSelf: 'center'
-	},
-	formContainer: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		margin: '0'
-	},
-	button: {
-		margin: '0px 5px !important',
-		fontSize: '0.87rem',
-		'&:hover': {
-			backgroundColor: '#00224f !important',
-			color: 'white'
-		}
+export const passwordReset = email => async dispatch => {
+	try {
+		const response = await fetch('http://localhost:8080/passwordreset', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({email})
+		});
+		const result = await response.json();
+		return result;
+	} catch (err) {
+		dispatch({
+			type: ERROR,
+			payload: err
+		});
 	}
-
-});
-
-export default useStyles;
+};

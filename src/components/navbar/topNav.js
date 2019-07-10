@@ -46,7 +46,7 @@ export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const [openNotification, setOpenNotification] = useState(true);
 	const [anchorEl, setAnchorEl] = useState(null);
-	const [forgotPwd, setPwd] = React.useState(false);
+	const [forgotPwd, setPwd] = useState(false);
 
 	function handleClick(event) {
 		setAnchorEl(event.currentTarget);
@@ -100,7 +100,7 @@ export default connect(mapStateToProps, actions)(props => {
 							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
 								{props.loggedIn ?
 									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.name.givenName.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/> :
-									<LoginLayout name="login" label="login" variant="outlined" color="secondary" classed={classes.loginButton} {...props}/>
+									<LoginLayout name="login" title={forgotPwd ? 'Forgot Password ?' : 'Login'} label="login" variant="outlined" color="secondary" classed={classes.loginButton} {...props} setPwd={setPwd} forgotPwd={forgotPwd}/>
 								}
 
 								<LanguageIcon/>

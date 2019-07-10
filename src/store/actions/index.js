@@ -60,3 +60,7 @@ export {
 export {
 	createUser
 } from './userActions';
+
+export {
+	passwordReset
+} from './passwordResetAction';
