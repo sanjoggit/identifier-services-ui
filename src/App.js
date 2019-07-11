@@ -27,7 +27,7 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -39,34 +39,38 @@ import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
 import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
+import UsersList from './components/users/UsersList';
 import Footer from './components/footer';
-// import PrivateRoute from './PrivateRoutes';
+import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 import enMessages from './intl/translations/en.json';
 import fiMessages from './intl/translations/fi.json';
 import svMessages from './intl/translations/sv.json';
 import SnackBar from './components/SnackBar';
-import {logOut} from './store/actions/auth';
+import * as actions from './store/actions';
+import {useCookies} from 'react-cookie';
 
-export default connect(mapStateToProps, {logOut})(withRouter(props => {
-	const {lang, userInfo, isLogin, history, location, responseMessage} = props;
+export default connect(mapStateToProps, actions)(withRouter(props => {
+	const {lang, userInfo, isLogin, history, location, responseMessage, getUserInfo} = props;
 	const routeField = [
-		{path: '/', component: (userInfo.role !== undefined && (userInfo.role.includes('admin') || userInfo.role.includes('publisher')) ? PublishersList : Home)},
+		{path: '/', component: Home},
 		{path: '/publishers', component: PublishersList},
 		{path: '/publishers/:id', component: PublishersList}
 
 	];
 
-	// Const privateRoutesList = [
-	// 	{path: '/templates/:id', role: ['admin'], component: ''},
-	// 	{path: '/user/requests/:id', role: ['admin'], component: ''},
-	// 	{path: '/publishers/request/:id', role: ['admin'], component: ''},
-	// 	{path: '/ranges/isbn/:id', role: ['admin'], component: ''},
-	// 	{path: '/ranges/ismn/:id', role: ['admin'], component: ''},
-	// 	{path: '/ranges/issn/:id', role: ['admin'], component: ''}
+	const privateRoutesList = [
+		{path: '/requests/users', role: ['admin'], component: UsersList}
 
-	// ];
+	];
+	const [token, setToken] = useState(null);
+	const [cookie] = useCookies('login-cookie');
+
+	useEffect(() => {
+		setToken(cookie['login-cookie']);
+		token !== null && getUserInfo(token);
+	}, [cookie, getUserInfo, token]);
 
 	const routes = (
 		<>
@@ -78,16 +82,15 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 					component={fields.component}
 				/>
 			))}
-			{/* {privateRoutesList.map(pRoute => pRoute.role.includes(user.role) && (
+			{privateRoutesList.map(pRoute => (
 				<PrivateRoute
 					key={pRoute.path}
 					exact
-					user={user.role}
-					name={pRoute.path}
+					user={userInfo.user.name}
 					path={pRoute.path}
-					component={pRoute.component}
+					component={isLogin ? pRoute.component :	Home}
 				/>
-			))} */}
+			))}
 		</>
 	);
 
@@ -96,13 +99,11 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 	const handleLogOut = () => {
 		logOut();
 		redirectTo('/');
+		window.location.reload();
 	};
 
-	function redirectTo(path, state) {
-		history.push({
-			pathname: path,
-			state: state
-		});
+	function redirectTo(path) {
+		history.push(path);
 		window.location.reload();
 	}
 

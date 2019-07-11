@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -25,43 +27,30 @@
  * for the JavaScript code in this file.
  *
  */
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
-	entry: path.resolve(path.join(__dirname, '..', 'src', 'index.js')),
-	output: {
-		path: path.resolve(__dirname, '../dist/public'),
-		filename: '[name]-bundle.js',
-		publicPath: '/'
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader'
-				}
-			},
-			{
-				test: /\.(jpg|gif|png|svg)$/,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: 'images/[name]-[hash:8].[ext]',
-							outputPath: 'images/'
-						}
-					}
-				]
-			}
-		]
-	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			template: path.resolve(path.join(__dirname, '../public/index.html')),
-			filename: 'index.html'
-		})
-	]
-};
+import React from 'react';
+import {connect} from 'react-redux';
+
+import * as actions from '../../store/actions';
+
+export default connect(mapStateToProps, actions)(() => {
+
+	const component = (
+		<div>
+			<div item xs={12}>
+				Hello Boirdy
+			</div>
+		</div>
+	);
+	return {
+		...component
+	};
+});
+
+function mapStateToProps(state) {
+	return ({
+		loading: state.publisher.loading,
+		searchedPublishers: state.publisher.searchedPublisher.SearchPublishers,
+		publishersList: state.publisher.publishersList
+	});
+}

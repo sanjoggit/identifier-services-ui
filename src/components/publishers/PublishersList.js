@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -47,11 +46,6 @@ export default connect(mapStateToProps, actions)(props => {
 	});
 	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
-
-	useEffect(() => {
-		setToken(cookie['login-cookie']);
-		token !== null && getUserInfo(token);
-	}, [token]);
 
 	useEffect(() => {
 		setToken(cookie['login-cookie']);
@@ -127,7 +121,7 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.publisher.loading,
-		searchedPublishers: state.publisher.searchedPublisher.Publishers,
+		searchedPublishers: state.publisher.searchedPublisher.SearchPublishers,
 		publishersList: state.publisher.publishersList
 	});
 }

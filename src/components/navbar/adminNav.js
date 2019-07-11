@@ -59,13 +59,13 @@ export default function ({userInfo, loggedIn}) {
 			listItem: [
 				{label: 'Publisher', roleView: ['admin']},
 				{label: 'Publications', roleView: ['admin', 'publisher']},
-				{label: 'Users', roleView: ['admin', 'publisher']}
+				{label: <Link to='/requests/users'>Users Requests</Link>, roleView: ['admin', 'publisher']}
 			]
 		},
 		{
-			label: 'users',
+			label: <Link to='/users'>users</Link>,
 			roleView: ['admin', 'publisher'],
-			path: user.id !== undefined && `users/${user.id}`
+			path: user.id !== undefined && `users`
 		},
 		{
 			label: 'identifier Ranges',
@@ -96,6 +96,7 @@ export default function ({userInfo, loggedIn}) {
 								<div className={classes.publicMenu}>
 									<Link to="/"><HomeIcon fontSize="default" color="primary"/></Link>
 									<Link to="/publishers"><Button className={classes.selected}>Publishers</Button></Link>
+									{/* <Link to= */}
 								</div>
 							}
 						</div>
