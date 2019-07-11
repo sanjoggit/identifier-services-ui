@@ -42,7 +42,8 @@ import * as actions from '../../store/actions';
 import LoginLayout from '../login/LoginLayout';
 
 export default connect(mapStateToProps, actions)(props => {
-	const {setLocale, userInfo} = props;
+	const {setLocale, userInfo, isAuthenticated} = props;
+	console.log('userinfo', userInfo)
 	const classes = useStyles();
 	const [openNotification, setOpenNotification] = useState(true);
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -92,14 +93,14 @@ export default connect(mapStateToProps, actions)(props => {
 					<AppBar position="static">
 						<div className={classes.navbarContainer}>
 							<Typography variant="h6" color="inherit">
-								{userInfo.role.some(item => item === 'any') ?
-									<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link> :
-									<img src={Logo} alt="" className={classes.mainLogo}/>
+								{isAuthenticated ?
+									<img src={Logo} alt="" className={classes.mainLogo}/> :
+									<Link to="/"><img src={Logo} alt="" className={classes.mainLogo}/></Link>
 								}
 							</Typography>
 							<div className={props.loggedIn ? classes.rightMenu : classes.rightMenuLogIn}>
-								{props.loggedIn ?
-									<LoginLayout name="login" label={`Welcome, ${userInfo !== undefined && (userInfo.user.name.givenName.toUpperCase())}`} color="secondary" classed={classes.loginButton} {...props}/> :
+								{isAuthenticated ?
+									<LoginLayout name="login" label={`Welcome, ${userInfo.displayName.toUpperCase()}`} color="secondary" classed={classes.loginButton} {...props}/> :
 									<LoginLayout name="login" title={forgotPwd ? 'Forgot Password ?' : 'Login'} label="login" variant="outlined" color="secondary" classed={classes.loginButton} {...props} setPwd={setPwd} forgotPwd={forgotPwd}/>
 								}
 
@@ -143,7 +144,6 @@ export default connect(mapStateToProps, actions)(props => {
 
 function mapStateToProps(state) {
 	return ({
-		lang: state.locale.lang,
-		userInfo: state.login.userInfo
+		lang: state.locale.lang
 	});
 }

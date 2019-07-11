@@ -26,13 +26,13 @@
  *
  */
 
-import {AUTHENTICATION, LOADER, LOG_OUT} from '../actions/types';
+import {AUTHENTICATION, LOADER} from '../actions/types';
 
 const initialState = {
-	userInfo: {user: {name: {givenName: 'User'}}, role: ['any']},
+	isAuthenticated: false,
+	userInfo: {},
 	loading: false,
-	error: {},
-	isLogin: false
+	error: {}
 };
 
 export default function (state = initialState, action) {
@@ -44,20 +44,9 @@ export default function (state = initialState, action) {
 			};
 		case AUTHENTICATION:
 			return {
-				userInfo: {
-					user: action.payload.user,
-					role: action.payload.role
-				},
-				isLogin: action.payload.isLogin,
-				loading: false
-			};
-		case LOG_OUT:
-			return {
-				userInfo: {
-					user: action.payload.user,
-					role: action.payload.role
-				},
-				isLogin: action.payload.isLogin,
+				...state,
+				isAuthenticated: true,
+				userInfo: action.payload,
 				loading: false
 			};
 

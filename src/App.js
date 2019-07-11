@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-undef */
 /**
  *
@@ -27,12 +29,13 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import {IntlProvider} from 'react-intl';
+import {useCookies} from 'react-cookie';
 
 import Home from './components/main';
 import TopNav from './components/navbar/topNav';
@@ -47,11 +50,17 @@ import enMessages from './intl/translations/en.json';
 import fiMessages from './intl/translations/fi.json';
 import svMessages from './intl/translations/sv.json';
 import SnackBar from './components/SnackBar';
-import {logOut} from './store/actions/auth';
+import * as actions from './store/actions';
 import PublishersRequestsList from './components/publishersRequests/PublishersRequestsList';
 
-export default connect(mapStateToProps, {logOut})(withRouter(props => {
-	const {lang, userInfo, isLogin, history, location, responseMessage} = props;
+export default connect(mapStateToProps, actions)(withRouter(props => {
+	const {lang, userInfo, isAuthenticated, history, location, responseMessage, getUserInfo} = props;
+	const [cookie] = useCookies('login-cookie');
+	console.log('from app', isAuthenticated)
+	useEffect(() => {
+		getUserInfo(cookie['login-cookie']);
+	}, []);
+
 	const routeField = [
 		{path: '/', component: Home},
 		{path: '/publishers', component: PublishersList},
@@ -79,7 +88,7 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 						key={pRoute.path}
 						exact
 						// User={userInfo.role}
-						isLogin={isLogin}
+						isAuthenticated={isAuthenticated}
 						name={pRoute.path}
 						path={pRoute.path}
 						component={pRoute.component}
@@ -91,19 +100,6 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 
 	const isModal = location.state;
 
-	const handleLogOut = () => {
-		logOut();
-		redirectTo('/');
-	};
-
-	function redirectTo(path, state) {
-		history.push({
-			pathname: path,
-			state: state
-		});
-		window.location.reload();
-	}
-
 	const translations = {
 		fi: fiMessages,
 		en: enMessages,
@@ -114,15 +110,21 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 	const component = (
 		<IntlProvider locale={lang} messages={translations[lang]}>
 			<MuiThemeProvider theme={theme}>
-				<TopNav loggedIn={isLogin} redirectTo={redirectTo} logOut={handleLogOut}/>
+				<TopNav userInfo={userInfo} isAuthenticated={isAuthenticated} history={history}/>
 				<CssBaseline/>
-				<AdminNav userInfo={userInfo} loggedIn={isLogin}/>
+				<AdminNav userInfo={userInfo} isAuthenticated={isAuthenticated}/>
 				<section>
-					{(userInfo.role.includes('publisher')) &&
-					<Tooltips label="contact form" title="contactForm"/>
+					{
+						isAuthenticated ? (userInfo.role.includes('publisher')) &&
+						<Tooltips label="contact form" title="contactForm"/> :
+							null
 					}
+					{/* {routes} */}
+					<Route exact path="/" component={Home}/>
+					<Route exact path="/publishers" component={PublishersList}/>
+					<Route exact path="/publishers/:id" component={PublishersList}/>
 					<Switch>
-						{routes}
+						<PrivateRoute exact path="/requests/publishers" component={PublishersRequestsList} pathMatch="full"/>
 					</Switch>
 					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
 					{responseMessage && <SnackBar message={responseMessage} variant="success" openSnackBar={Boolean(responseMessage)}/>}
@@ -140,7 +142,7 @@ function mapStateToProps(state) {
 	return {
 		lang: state.locale.lang,
 		responseMessage: state.contact.responseMessage,
-		isLogin: state.login.isLogin,
+		isAuthenticated: state.login.isAuthenticated,
 		userInfo: state.login.userInfo
 	};
 }

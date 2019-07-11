@@ -50,7 +50,7 @@ export const getUserInfo = token => async dispatch => {
 	const user = await result.json();
 	dispatch({
 		type: AUTHENTICATION,
-		payload: {isLogin: true, user: user, role: user.role}
+		payload: user
 	});
 };
 
@@ -58,8 +58,5 @@ export const logOut = () => async dispatch => {
 	await fetch(LOGOUT_URL, {
 		method: 'GET'
 	});
-	dispatch({
-		type: LOG_OUT,
-		payload: {isLogin: false, user: {givenName: 'user'}, role: ['any']}
-	});
+	dispatch(getUserInfo({}));
 };

@@ -28,20 +28,23 @@
 
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-export default function ({location, isLogin, name, component: Component, ...rest}) {
+export default connect(mapStateToProps)(({location, isAuthenticated, name, component: Component, ...rest}) => {
+	console.log('----', isAuthenticated)
 	const component = (
 		<Route
 			{...rest}
-			render={() => {
-				if (!isLogin) {
-					return <Redirect to="/"/>;
-				}
-
-				return <Component/>;
-			}}/>
+			render={props => isAuthenticated === true ? (<Component {...props}/>) : (<Redirect to="/"/>)}/>
 	);
 	return {
 		...component
+	};
+});
+
+function mapStateToProps(state) {
+	return {
+		isAuthenticated: state.login.isAuthenticated,
+		userInfo: state.login.userInfo
 	};
 }

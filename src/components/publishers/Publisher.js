@@ -62,10 +62,9 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {fetchPublisher, updatePublisher, match, publisher, loading, handleSubmit, clearFields, userInfo} = props;
+	const {fetchPublisher, updatePublisher, match, publisher, loading, handleSubmit, clearFields, isAuthenticated, userInfo} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
-	const {role} = userInfo;
 	const [isEdit, setIsEdit] = useState(false);
 	const [cookie] = useCookies('login-cookie');
 
@@ -281,7 +280,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 					<Grid container spacing={3} className={classes.publisherSpinner}>
 						{publisherDetail}
 					</Grid>
-					{role.some(item => item === 'publisher') &&
+					{isAuthenticated && userInfo.role.some(item => item === 'publisher') &&
 						<div className={classes.btnContainer}>
 							<Fab
 								color="primary"
@@ -306,6 +305,7 @@ function mapStateToProps(state) {
 		publisher: state.publisher.publisher.Publisher,
 		loading: state.publisher.loading,
 		initialValues: state.publisher.publisher.Publisher,
+		isAuthenticated: state.login.isAuthenticated,
 		userInfo: state.login.userInfo
 	});
 }

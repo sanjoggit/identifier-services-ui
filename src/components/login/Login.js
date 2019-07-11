@@ -44,9 +44,21 @@ export default connect(mapStateToProps, actions)(props => {
 	const [value, setValue] = React.useState(0);
 	const {forgotPwd, setPwd} = props;
 	const classes = useStyles();
+	function handleChange(event, newValue) {
+		setValue(newValue);
+	}
+
+	const handleLogOut = () => {
+		props.logOut();
+		props.history.push('/');
+		// eslint-disable-next-line no-undef
+		window.location.reload();
+		props.handleClose();
+	};
+
 	const component = (
 		<div className={classes.main}>
-			{(props.loggedIn) ?
+			{(props.isAuthenticated) ?
 				<div
 					className={classes.logoutContainer}
 					onClick={handleLogOut}
@@ -79,16 +91,6 @@ export default connect(mapStateToProps, actions)(props => {
 			}
 		</div>
 	);
-
-	function handleChange(event, newValue) {
-		setValue(newValue);
-	}
-
-	function handleLogOut() {
-		props.logOut();
-		// Removing cookies not implemented yet
-		props.handleClose();
-	}
 
 	return {
 		...component

@@ -41,22 +41,17 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, getUserInfo, fetchPublishersList, publishersList} = props;
+	const {loading, searchedPublishers, fetchPublishersList} = props;
 	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
-	const [token, setToken] = useState(null);
-	const [cookie] = useCookies('login-cookie');
+	// const [token, setToken] = useState(null);
+	// const [cookie] = useCookies('login-cookie');
 
-	useEffect(() => {
-		setToken(cookie['login-cookie']);
-		token !== null && getUserInfo(token);
-	}, [token]);
-
-	useEffect(() => {
-		setToken(cookie['login-cookie']);
-		token !== null && fetchPublishersList(token);
-	}, [token]);
+	// useEffect(() => {
+	// 	setToken(cookie['login-cookie']);
+	// 	token !== null && fetchPublishersList(token);
+	// }, [token]);
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
