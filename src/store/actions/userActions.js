@@ -49,7 +49,6 @@ export const fetchUsersList = token => async dispatch => {
 };
 
 export const createUser = (values, token) => async dispatch => {
-
 	const response = await fetch(`${BASE_URL}/users`, {
 		method: 'POST',
 		headers: {

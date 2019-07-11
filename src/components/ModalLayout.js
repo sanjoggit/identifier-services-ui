@@ -42,7 +42,7 @@ import {PropTypes} from 'prop-types';
 import useStyles from '../styles/modalLayout';
 
 export default connect(mapStateToProps)(withRouter(props => {
-	const {label, name, children, icon, fab, variant, color, classed, isTableRow, form, title} = props;
+	const {label, name, children, icon, fab, variant, color, classed, isTableRow, form, title, setPwd} = props;
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	useEffect(() => {
@@ -55,6 +55,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 
 	const handleClose = () => {
 		setOpen(false);
+		setPwd(false);
 		isTableRow && props.history.push({
 			pathname: '/publishers'
 		});

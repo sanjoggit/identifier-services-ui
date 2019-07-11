@@ -58,7 +58,7 @@ export default function (props) {
 			label: 'requests',
 			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'Publisher', roleView: ['admin']},
+				{label: <Link to="/requests/publishers">Publishers</Link>, roleView: ['admin']},
 				{label: 'Publications', roleView: ['admin', 'publisher']},
 				{label: 'Users Requests', roleView: ['admin', 'publisher']}
 			]

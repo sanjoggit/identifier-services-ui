@@ -50,6 +50,7 @@ import svMessages from './intl/translations/sv.json';
 import SnackBar from './components/SnackBar';
 import * as actions from './store/actions';
 import {useCookies} from 'react-cookie';
+import PublishersRequestsList from './components/publishersRequests/PublishersRequestsList';
 
 export default connect(mapStateToProps, actions)(withRouter(props => {
 	const {lang, userInfo, isLogin, history, location, responseMessage, getUserInfo} = props;
@@ -61,7 +62,8 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 	];
 
 	const privateRoutesList = [
-		{path: '/users', role: ['admin'], component: UsersList}
+		{path: '/users', role: ['admin'], component: UsersList},
+		{path: '/requests/publishers', component: PublishersRequestsList}
 
 	];
 	const [token, setToken] = useState(null);
@@ -121,7 +123,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 				<CssBaseline/>
 				<AdminNav userInfo={userInfo} redirectTo={redirectTo} loggedIn={isLogin}/>
 				<section>
-					{(userInfo.role !== undefined && userInfo.role.includes('publisher')) &&
+					{(userInfo.role.includes('publisher')) &&
 					<Tooltips label="contact form" title="contactForm"/>
 					}
 					<Switch>

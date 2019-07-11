@@ -26,20 +26,51 @@
  *
  */
 
-import React from 'react';
-import {Route, Redirect} from 'react-router-dom';
+import React, {useState} from 'react';
+import {TextField, Button} from '@material-ui/core';
+import useStyles from '../../styles/login';
+import * as actions from '../../store/actions';
+import {connect} from 'react-redux';
 
-export default function (props) {
-	const {location, user, component: Component, ...rest} = props;
-	 
+export default connect(null, actions)(props => {
+	const {passwordReset} = props;
+	const [email, setEmail] = useState('');
+	const classes = useStyles();
+
+	const handleEmailChange = e => {
+		setEmail(e.target.value);
+	};
+
+	const handleEmailSubmit = e => {
+		e.preventDefault();
+		passwordReset(email);
+	};
+
 	const component = (
-		<Route
-			{...rest}
-			render={() => {
-				return <Component {...props}/>;
-			}}/>
+		<>
+			<div>
+                Enter your email address and we will send you a link to reset your password.
+			</div>
+			<form onSubmit={handleEmailSubmit}>
+				<TextField
+					variant="outlined"
+					placeholder="Enter Your email address"
+					className={classes.resetInput}
+					value={email}
+					onChange={handleEmailChange}/>
+				<Button
+					variant="contained"
+					color="primary"
+					className={classes.resetBtn}
+					onClick={handleEmailSubmit}
+				>
+                Send password reset email
+				</Button>
+			</form>
+		</>
 	);
+
 	return {
 		...component
 	};
-}
+});

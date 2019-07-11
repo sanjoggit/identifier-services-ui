@@ -64,3 +64,7 @@ export {
 	createUser,
 	fetchUsersList
 } from './userActions';
+
+export {
+	passwordReset
+} from './passwordResetAction';

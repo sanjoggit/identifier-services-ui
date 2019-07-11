@@ -26,30 +26,20 @@
  *
  */
 
-import {makeStyles} from '@material-ui/core/styles';
+import React from 'react';
+import {TextField} from '@material-ui/core';
 
-const useStyles = makeStyles({
+export default function (props) {
+	const {captchaInput, handleCaptchaInput} = props;
+	const component = (
+		<TextField
+			variant="outlined"
+			label="Type the word in the picture"
+			value={captchaInput}
+			onChange={handleCaptchaInput}/>
+	);
 
-	formListContainer: {
-		background: '#b7bed629',
-		height: '200px',
-		display: 'flex',
-		alignSelf: 'center'
-	},
-	formContainer: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		margin: '0'
-	},
-	button: {
-		margin: '0px 5px !important',
-		fontSize: '0.87rem',
-		'&:hover': {
-			backgroundColor: '#00224f !important',
-			color: 'white'
-		}
-	}
-
-});
-
-export default useStyles;
+	return {
+		...component
+	};
+}
