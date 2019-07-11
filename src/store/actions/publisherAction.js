@@ -27,23 +27,9 @@
  */
 import fetch from 'node-fetch';
 import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER} from './types';
-import {setLoader} from './commonAction';
+import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
-
-function success(type, payload) {
-	return ({
-		type: type,
-		payload: payload
-	});
-}
-
-function fail(type, payload) {
-	return ({
-		type: type,
-		payload: payload
-	});
-}
 
 export const fetchPublishersList = token => async dispatch => {
 	dispatch(setLoader());

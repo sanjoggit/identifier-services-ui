@@ -28,19 +28,74 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
+import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 
+import SearchComponent from '../SearchComponent';
+import useStyles from '../../styles/publisherLists';
+import TableComponent from '../TableComponent';
 import * as actions from '../../store/actions';
+import Spinner from '../Spinner';
+import {useCookies} from 'react-cookie';
 
-export default connect(mapStateToProps, actions)(() => {
+export default connect(mapStateToProps, actions)(props => {
+	const classes = useStyles();
+	const {loading, fetchUsersList, usersList} = props;
+	
+	const [token, setToken] = useState(null);
+	const [cookie] = useCookies('login-cookie');
+
+	useEffect(() => {
+		setToken(cookie['login-cookie']);
+		token !== null && fetchUsersList(token);
+	}, [token]);
+
+	const handleUserClick = id => {
+		props.history.push({
+			pathname: `/users/${id}`,
+			state: {modal: true}
+		});
+	};
+
+	const headRows = [
+		{id: 'id', label: 'ID'},
+		{id: 'name', label: 'Name'},
+		{id: 'publisher', label: 'Publisher'},
+		{id: 'defaultLanguage', label: 'Language'}
+	];
+	let usersData;
+	if (loading) {
+		usersData = <Spinner/>;
+	} else if (usersList.Users === undefined) {
+		usersData = <p>No Users Available</p>;
+	} else {
+		console.log(usersList)
+		usersData = 
+			<TableComponent
+				data={usersList.Users.map(item => usersDataRender(item))}
+				handleUserClick={handleUserClick}
+				headRows={headRows}
+			/>
+		}
+
+		function usersDataRender(item){
+			const {_id, givenName, publisher, preferences}= item;
+		return{
+			id: _id,
+			name: givenName,
+			publisher : publisher,
+			defaultLanguage : preferences.defaultLanguage
+		};
+	}
 
 	const component = (
-		<div>
-			<div item xs={12}>
-				Hello Boirdy
-			</div>
-		</div>
+		<Grid>
+			<Grid item xs={12} className={classes.publisherListSearch}>
+				<Typography variant="h5">List of Avaiable users</Typography>
+				{usersData}
+			</Grid>
+		</Grid>
 	);
 	return {
 		...component
@@ -49,8 +104,7 @@ export default connect(mapStateToProps, actions)(() => {
 
 function mapStateToProps(state) {
 	return ({
-		loading: state.publisher.loading,
-		searchedPublishers: state.publisher.searchedPublisher.SearchPublishers,
-		publishersList: state.publisher.publishersList
+		loading: state.users.loading,
+		usersList: state.users.usersList
 	});
 }

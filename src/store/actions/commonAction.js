@@ -28,14 +28,14 @@
 import fetch from 'node-fetch';
 import {LOADER, GET_CAPTCHA, ERROR} from './types';
 
-function success(type, payload) {
+export function success(type, payload) {
 	return ({
 		type: type,
 		payload: payload
 	});
 }
 
-function fail(type, payload) {
+export function fail(type, payload) {
 	return ({
 		type: type,
 		payload: payload

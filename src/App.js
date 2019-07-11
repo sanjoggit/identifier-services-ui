@@ -61,7 +61,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 	];
 
 	const privateRoutesList = [
-		{path: '/requests/users', role: ['admin'], component: UsersList}
+		{path: '/users', role: ['admin'], component: UsersList}
 
 	];
 	const [token, setToken] = useState(null);
@@ -119,7 +119,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 			<MuiThemeProvider theme={theme}>
 				<TopNav loggedIn={isLogin} redirectTo={redirectTo} logOut={handleLogOut}/>
 				<CssBaseline/>
-				<AdminNav userInfo={userInfo} loggedIn={isLogin}/>
+				<AdminNav userInfo={userInfo} redirectTo={redirectTo} loggedIn={isLogin}/>
 				<section>
 					{(userInfo.role !== undefined && userInfo.role.includes('publisher')) &&
 					<Tooltips label="contact form" title="contactForm"/>

@@ -33,7 +33,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import useStyles from '../../styles/adminNav';
 import MenuTabs from './menuTabs';
 
-export default function ({userInfo, loggedIn}) {
+export default function (props) {
+	const {userInfo, loggedIn} = props;
 	const classes = useStyles();
 	const {role, user} = userInfo;
 
@@ -41,7 +42,7 @@ export default function ({userInfo, loggedIn}) {
 		{
 			label: 'Publishers',
 			roleView: ['admin', 'publisher'],
-			path: '/publishers',
+			path: 'publishers',
 			selected: true
 		},
 		{
@@ -59,11 +60,11 @@ export default function ({userInfo, loggedIn}) {
 			listItem: [
 				{label: 'Publisher', roleView: ['admin']},
 				{label: 'Publications', roleView: ['admin', 'publisher']},
-				{label: <Link to='/requests/users'>Users Requests</Link>, roleView: ['admin', 'publisher']}
+				{label: 'Users Requests', roleView: ['admin', 'publisher']}
 			]
 		},
 		{
-			label: <Link to='/users'>users</Link>,
+			label: 'users',
 			roleView: ['admin', 'publisher'],
 			path: user.id !== undefined && `users`
 		},
@@ -90,13 +91,12 @@ export default function ({userInfo, loggedIn}) {
 							{loggedIn ?
 								obj.map(list => role.some(item => list.roleView.includes(item)) && (
 									<div key={list.label}>
-										<MenuTabs role={role} list={list}/>
+										<MenuTabs role={role} list={list} {...props}/>
 									</div>
 								)) :
 								<div className={classes.publicMenu}>
 									<Link to="/"><HomeIcon fontSize="default" color="primary"/></Link>
 									<Link to="/publishers"><Button className={classes.selected}>Publishers</Button></Link>
-									{/* <Link to= */}
 								</div>
 							}
 						</div>

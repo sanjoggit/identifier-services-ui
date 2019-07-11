@@ -49,6 +49,8 @@ export {
 } from './localeAction';
 
 export {
+	success,
+	fail,
 	setLoader,
 	loadSvgCaptcha,
 	postCaptchaInput
@@ -59,5 +61,6 @@ export {
 } from './navbarActions';
 
 export {
-	createUser
+	createUser,
+	fetchUsersList
 } from './userActions';
