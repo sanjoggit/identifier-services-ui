@@ -99,7 +99,6 @@ export default connect(null, actions)(reduxForm({
 })(
 	props => {
 		const {handleSubmit, clearFields, valid, createUser, pristine} = props;
-		console.log(props);
 		const classes = useStyles();
 		const [cookie] = useCookies('login-cookie');
 		const token = cookie['login-cookie'];
@@ -111,6 +110,8 @@ export default connect(null, actions)(reduxForm({
 		function handleCreateUser(values) {
 			const newUser = {
 				...values,
+				givenName: values.givenName.toLowerCase(),
+				familyName: values.familyName.toLowerCase(),
 				role: values.role[0],
 				preferences: {defaultLanguage: values.defaultLanguage}
 			};

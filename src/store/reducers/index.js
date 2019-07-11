@@ -32,6 +32,7 @@ import authReducer from './authReducer';
 import localeReducer from './localeReducer';
 import contact from './contactForm';
 import common from './commonReducer';
+import userReducer from './userReducer';
 
 export default combineReducers({
 	locale: localeReducer,
@@ -39,5 +40,6 @@ export default combineReducers({
 	publisher: publisherReducer,
 	login: authReducer,
 	contact: contact,
-	common: common
+	common: common,
+	users: userReducer
 });

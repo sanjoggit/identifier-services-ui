@@ -27,7 +27,7 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -39,6 +39,7 @@ import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
 import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
+import UsersList from './components/users/UsersList';
 import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
@@ -47,11 +48,12 @@ import enMessages from './intl/translations/en.json';
 import fiMessages from './intl/translations/fi.json';
 import svMessages from './intl/translations/sv.json';
 import SnackBar from './components/SnackBar';
-import {logOut} from './store/actions/auth';
+import * as actions from './store/actions';
+import {useCookies} from 'react-cookie';
 import PublishersRequestsList from './components/publishersRequests/PublishersRequestsList';
 
-export default connect(mapStateToProps, {logOut})(withRouter(props => {
-	const {lang, userInfo, isLogin, history, location, responseMessage} = props;
+export default connect(mapStateToProps, actions)(withRouter(props => {
+	const {lang, userInfo, isLogin, history, location, responseMessage, getUserInfo} = props;
 	const routeField = [
 		{path: '/', component: Home},
 		{path: '/publishers', component: PublishersList},
@@ -60,8 +62,17 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 	];
 
 	const privateRoutesList = [
+		{path: '/users', role: ['admin'], component: UsersList},
 		{path: '/requests/publishers', component: PublishersRequestsList}
+
 	];
+	const [token, setToken] = useState(null);
+	const [cookie] = useCookies('login-cookie');
+
+	useEffect(() => {
+		setToken(cookie['login-cookie']);
+		token !== null && getUserInfo(token);
+	}, [cookie, getUserInfo, token]);
 
 	const routes = (
 		<>
@@ -73,19 +84,15 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 					component={fields.component}
 				/>
 			))}
-			{
-				privateRoutesList.map(pRoute => (
-					<PrivateRoute
-						key={pRoute.path}
-						exact
-						// User={userInfo.role}
-						isLogin={isLogin}
-						name={pRoute.path}
-						path={pRoute.path}
-						component={pRoute.component}
-					/>
-				))
-			}
+			{privateRoutesList.map(pRoute => (
+				<PrivateRoute
+					key={pRoute.path}
+					exact
+					user={userInfo.user.name}
+					path={pRoute.path}
+					component={isLogin ? pRoute.component :	Home}
+				/>
+			))}
 		</>
 	);
 
@@ -94,13 +101,11 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 	const handleLogOut = () => {
 		logOut();
 		redirectTo('/');
+		window.location.reload();
 	};
 
-	function redirectTo(path, state) {
-		history.push({
-			pathname: path,
-			state: state
-		});
+	function redirectTo(path) {
+		history.push(path);
 		window.location.reload();
 	}
 
@@ -116,7 +121,7 @@ export default connect(mapStateToProps, {logOut})(withRouter(props => {
 			<MuiThemeProvider theme={theme}>
 				<TopNav loggedIn={isLogin} redirectTo={redirectTo} logOut={handleLogOut}/>
 				<CssBaseline/>
-				<AdminNav userInfo={userInfo} loggedIn={isLogin}/>
+				<AdminNav userInfo={userInfo} redirectTo={redirectTo} loggedIn={isLogin}/>
 				<section>
 					{(userInfo.role.includes('publisher')) &&
 					<Tooltips label="contact form" title="contactForm"/>

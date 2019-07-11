@@ -26,21 +26,35 @@
  *
  */
 
-export const PUBLISHER_REGISTRATION = 'PUBLISHER_REGISTRATION';
-export const PUBLISHERS_LIST = 'PUBLISHERS_LIST';
-export const PUBLISHER = 'PUBLISHER';
-export const UPDATE_PUBLISHER = 'UPDATE_PUBLISHER';
+import {USERS_LIST, LOADER, ERROR} from '../actions/types';
 
-export const LOADER = 'LOADER';
-export const SEARCH_PUBLISHER = 'SEARCH_PUBLISHER';
-export const ERROR = 'ERROR';
-export const LOCALE_SET = 'LOCALE_SET';
-export const GET_CAPTCHA = 'GET_CAPTCHA';
-export const POST_CAPTCHA = 'POST_CAPTCHA';
+const initialState = {
+	usersList: [],
+	user: {},
+	loading: false,
+	error: {}
+};
 
-export const CONTACT = 'CONTACT';
-
-export const AUTHENTICATION = 'AUTHENTICATION';
-export const LOG_OUT = 'LOG_OUT';
-
-export const USERS_LIST = 'USERS_LIST';
+export default function (state = initialState, action) {
+	switch (action.type) {
+		case LOADER:
+			return {
+				...state,
+				loading: true
+			};
+		case USERS_LIST:
+			return {
+				...state,
+				usersList: action.payload,
+				loading: false
+			};
+		case ERROR:
+			return {
+				...state,
+				error: action.payload,
+				loading: false
+			};
+		default:
+			return state;
+	}
+}
