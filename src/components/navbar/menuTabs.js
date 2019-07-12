@@ -27,23 +27,21 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import {Button, Menu, MenuItem} from '@material-ui/core';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
-import {useCookies} from 'react-cookie';
 
 import useStyles from '../../styles/adminNav';
 import * as actions from '../../store/actions';
 
 export default connect(null, actions)(props => {
-	const {list, role, handleMenuClick} = props;
+	const {list, redirectTo, role} = props;
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [cookie] = useCookies('login-cookie');
-	const token = cookie['login-cookie'];
 
 	function handleClick(event) {
 		setAnchorEl(event.currentTarget);
-		handleMenuClick(list.path, token);
+		redirectTo(list.path);
 	}
 
 	function handleClose() {
@@ -76,7 +74,9 @@ export default connect(null, actions)(props => {
 				onClose={handleClose}
 			>
 				{list.listItem.map(item => item.roleView && role.some(item => list.roleView.includes(item)) &&
-				<MenuItem key={item.label}>{item.label}</MenuItem>
+				<Link to={item.label}>
+					<MenuItem key={item.label}>{item.label}</MenuItem>
+				</Link>
 				)}
 			</Menu>
 			}

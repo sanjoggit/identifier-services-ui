@@ -1,4 +1,5 @@
-
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -40,76 +41,58 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, fetchPublishersList} = props;
-	const [activeCheck, setActiveCheck] = useState({
-		checked: false
-	});
-	// const [token, setToken] = useState(null);
-	// const [cookie] = useCookies('login-cookie');
+	const {loading, fetchUsersList, usersList} = props;
+	console.log('userlist', usersList);
+	const [token, setToken] = useState(null);
+	const [cookie] = useCookies('login-cookie');
 
-	// useEffect(() => {
-	// 	setToken(cookie['login-cookie']);
-	// 	token !== null && fetchPublishersList(token);
-	// }, [token]);
+	useEffect(() => {
+		setToken(cookie['login-cookie']);
+		token !== null && fetchUsersList(token);
+	}, [token]);
 
-	const handleChange = name => event => {
-		setActiveCheck({...activeCheck, [name]: event.target.checked});
-	};
-
-	const handlePublisherClick = id => {
+	const handleUserClick = id => {
 		props.history.push({
-			pathname: `/publishers/${id}`,
+			pathname: `/users/${id}`,
 			state: {modal: true}
 		});
 	};
 
 	const headRows = [
 		{id: 'name', label: 'Name'},
-		{id: 'phone', label: 'Phone'}
+		{id: 'publisher', label: 'Publisher'},
+		{id: 'defaultLanguage', label: 'Language'}
 	];
-	let publishersData;
-	if ((searchedPublishers === undefined) || (loading)) {
-		publishersData = <Spinner/>;
-	} else if (searchedPublishers.length === 0) {
-		publishersData = <p>No Search Result</p>;
+	let usersData;
+	if (loading) {
+		usersData = <Spinner/>;
+	} else if (usersList.Users === undefined) {
+		usersData = <p>No Users Available</p>;
 	} else {
-		publishersData = (
+		console.log(usersList)
+		usersData = 
 			<TableComponent
-				data={activeCheck.checked ? searchedPublishers
-					.filter(item => item.activity.active === true)
-					.map(item => searchResultRender(item._id, item.name, item.phone)) :
-					searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
-				handlePublisherClick={handlePublisherClick}
+				data={usersList.Users.map(item => usersDataRender(item))}
+				handleUserClick={handleUserClick}
 				headRows={headRows}
 			/>
-		);
-	}
+		}
 
-	function searchResultRender(id, name, phone) {
-		return {
-			id: id,
-			name: name,
-			phone: phone
+		function usersDataRender(item){
+			const {_id, givenName, publisher, preferences}= item;
+		return{
+			id: _id,
+			name: givenName,
+			publisher : publisher,
+			defaultLanguage : preferences.defaultLanguage
 		};
 	}
 
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
-				<Typography variant="h5">Search Publisher By Name or Aliases</Typography>
-				<SearchComponent/>
-				<FormControlLabel
-					control={
-						<Checkbox
-							checked={activeCheck.checked}
-							value="checked"
-							color="primary"
-							onChange={handleChange('checked')}
-						/>
-					}
-					label="Show only active publishers"
-				/>
-				{publishersData}
+				<Typography variant="h5">List of Avaiable users</Typography>
+				{usersData}
 			</Grid>
 		</Grid>
 	);
@@ -120,8 +103,7 @@ export default connect(mapStateToProps, actions)(props => {
 
 function mapStateToProps(state) {
 	return ({
-		loading: state.publisher.loading,
-		searchedPublishers: state.publisher.searchedPublisher.SearchPublishers,
-		publishersList: state.publisher.publishersList
+		loading: state.users.loading,
+		usersList: state.users.usersList
 	});
 }

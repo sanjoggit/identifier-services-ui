@@ -40,7 +40,7 @@ export default function ({userInfo, isAuthenticated}) {
 		{
 			label: 'Publishers',
 			roleView: ['admin', 'publisher'],
-			path: '/publishers',
+			path: 'publishers',
 			selected: true
 		},
 		{
@@ -58,14 +58,13 @@ export default function ({userInfo, isAuthenticated}) {
 			listItem: [
 				{label: <Link to="/requests/publishers">Publishers</Link>, roleView: ['admin']},
 				{label: 'Publications', roleView: ['admin', 'publisher']},
-				{label: 'Users', roleView: ['admin', 'publisher']}
+				{label: 'Users Requests', roleView: ['admin', 'publisher']}
 			]
 		},
 		{
 			label: 'users',
 			roleView: ['admin', 'publisher'],
-			// path: `users/${user.id}`
-			path: 'users/5d1de4357baf807e0cdd5a54'
+			path: userInfo.user !== undefined && `users`
 		},
 		{
 			label: 'identifier Ranges',

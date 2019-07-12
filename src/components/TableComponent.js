@@ -180,13 +180,15 @@ export default function (props) {
 						.map(row => {
 							return (
 								<TableRow key={row.name} className={classes.tableRow} onClick={() => handlePublisherClick(row.id)}>
-									<TableCell component="th" scope="row">
-										{row.name}
-									</TableCell>
-									<TableCell align="left">{row.phone}</TableCell>
+									{Object.keys(row).map(key => (key !== 'id') && (
+										<TableCell key={key._id} component="th" scope="row">
+											{row[key]}
+										</TableCell>
+									))}
 								</TableRow>
 							);
-						})}
+						})
+					}
 					{emptyRows > 0 && (
 						<TableRow style={{height: 49 * emptyRows}}>
 							<TableCell colSpan={6}/>

@@ -110,6 +110,8 @@ export default connect(null, actions)(reduxForm({
 		function handleCreateUser(values) {
 			const newUser = {
 				...values,
+				givenName: values.givenName.toLowerCase(),
+				familyName: values.familyName.toLowerCase(),
 				role: values.role[0],
 				preferences: {defaultLanguage: values.defaultLanguage}
 			};

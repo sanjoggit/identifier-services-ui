@@ -42,6 +42,7 @@ import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
 import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
+import UsersList from './components/users/UsersList';
 import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
@@ -69,8 +70,15 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 	];
 
 	const privateRoutesList = [
+		{path: '/users', role: ['admin'], component: UsersList},
 		{path: '/requests/publishers', component: PublishersRequestsList}
+
 	];
+
+	// useEffect(() => {
+	// 	setToken(cookie['login-cookie']);
+	// 	token !== null && getUserInfo(token);
+	// }, [cookie, getUserInfo, token]);
 
 	const routes = (
 		<>
@@ -82,18 +90,15 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 					component={fields.component}
 				/>
 			))}
-			{
-				privateRoutesList.map(pRoute => (
-					<PrivateRoute
-						key={pRoute.path}
-						exact
-						// User={userInfo.role}
-						isAuthenticated={isAuthenticated}
-						path={pRoute.path}
-						component={pRoute.component}
-					/>
-				))
-			}
+			{privateRoutesList.map(pRoute => (
+				<PrivateRoute
+					key={pRoute.path}
+					exact
+					//user={userInfo.user.givenName}
+					path={pRoute.path}
+					component={isAuthenticated ? pRoute.component :	Home}
+				/>
+			))}
 		</>
 	);
 

@@ -40,7 +40,8 @@ export {
 } from './auth';
 
 export {
-	contact
+	sendMessage,
+	createMessageTemplate
 } from './contactFormActions';
 
 export {
@@ -48,6 +49,8 @@ export {
 } from './localeAction';
 
 export {
+	success,
+	fail,
 	setLoader,
 	loadSvgCaptcha,
 	postCaptchaInput
@@ -58,7 +61,9 @@ export {
 } from './navbarActions';
 
 export {
-	createUser
+	createUser,
+	fetchUser,
+	fetchUsersList
 } from './userActions';
 
 export {

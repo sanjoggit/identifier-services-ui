@@ -31,7 +31,7 @@ import {CONTACT} from './types';
 import fetch from 'node-fetch';
 import {setLoader} from './commonAction';
 
-export const contact = values => async dispatch => {
+export const sendMessage = values => async dispatch => {
 	dispatch(setLoader());
 	const response = await fetch('http://localhost:8080/message', {
 		method: 'POST',
@@ -47,3 +47,15 @@ export const contact = values => async dispatch => {
 		});
 	}
 };
+
+export const createMessageTemplate = values => async dispatch => {
+	dispatch(setLoader());
+	const response = await fetch('http://localhost:8081/templates', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(values)
+	});
+	console.log(await response.json());
+}
