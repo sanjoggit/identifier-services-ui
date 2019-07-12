@@ -31,7 +31,6 @@ import {Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 export default connect(mapStateToProps)(({isAuthenticated, component: Component, ...rest}) => {
-	console.log('----', isAuthenticated)
 	const component = (
 		<Route
 			{...rest}

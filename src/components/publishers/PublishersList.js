@@ -56,7 +56,7 @@ export default connect(mapStateToProps, actions)(props => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
 
-	const handlePublisherClick = id => {
+	const handleTableRowClick = id => {
 		props.history.push({
 			pathname: `/publishers/${id}`,
 			state: {modal: true}
@@ -79,7 +79,7 @@ export default connect(mapStateToProps, actions)(props => {
 					.filter(item => item.activity.active === true)
 					.map(item => searchResultRender(item._id, item.name, item.phone)) :
 					searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
-				handlePublisherClick={handlePublisherClick}
+				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 			/>
 		);

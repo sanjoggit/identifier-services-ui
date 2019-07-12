@@ -42,7 +42,6 @@ import {useCookies} from 'react-cookie';
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, fetchUsersList, usersList} = props;
-	console.log('userlist', usersList);
 	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 
@@ -51,7 +50,8 @@ export default connect(mapStateToProps, actions)(props => {
 		token !== null && fetchUsersList(token);
 	}, [token]);
 
-	const handleUserClick = id => {
+	const handleTableRowClick = id => {
+		console.log('545623232',id)
 		props.history.push({
 			pathname: `/users/${id}`,
 			state: {modal: true}
@@ -69,11 +69,10 @@ export default connect(mapStateToProps, actions)(props => {
 	} else if (usersList.Users === undefined) {
 		usersData = <p>No Users Available</p>;
 	} else {
-		console.log(usersList)
 		usersData = 
 			<TableComponent
 				data={usersList.Users.map(item => usersDataRender(item))}
-				handleUserClick={handleUserClick}
+				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 			/>
 		}

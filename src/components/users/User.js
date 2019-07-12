@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,7 +28,7 @@
  *
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
 	Typography,
 	Button,
@@ -61,16 +63,18 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {handleSubmit, clearFields, user, userInfo, loading, fetchUser} = props;
+	const {handleSubmit, clearFields, match, user, userInfo, loading, fetchUser} = props;
+	console.log(user)
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 	const {role} = userInfo;
 	const [isEdit, setIsEdit] = useState(false);
-    const [cookie] = useCookies('login-cookie');
-    
-    useEffect(() => {
+	const [cookie] = useCookies('login-cookie');
+
+	useEffect(() => {
+		console.log(props);
 		fetchUser(match.params.id);
-	}, [user === undefined]);
+	}, [fetchUser=== undefined]);
 
 	const handleEditClick = () => {
 		setIsEdit(true);
@@ -78,18 +82,17 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 	const handleCancel = () => {
 		setIsEdit(false);
-    };
+	};
 
-    let userDetail;
-    if(user === undefined || loading){
+	let userDetail;
+	if (user === undefined || loading) {
 		userDetail = <Spinner/>;
 	} else {
 		userDetail = (
 			<>
-            {console.log(user)}
 				<Grid item xs={12} md={6}>
 					<Typography variant="h6">
-						Publisher Detail
+						User's Detail
 					</Typography>
 					<List>
 						<ListItem>
@@ -103,13 +106,13 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								</Grid>
 							</ListItemText>
 						</ListItem>
-						{/* <ListItem>
+						<ListItem>
 							<ListItemText>
 								{isEdit ?
 									null :
 									<Grid container>
 										<Grid item xs={4}>Notes:</Grid>
-										<Grid item xs={8}>{user.notes.map((item, i) => {
+										{/* <Grid item xs={8}>{publisher.notes.map((item, i) => {
 											return (
 												<ExpansionPanel key={i}>
 													<ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
@@ -123,25 +126,18 @@ export default connect(mapStateToProps, actions)(reduxForm({
 												</ExpansionPanel>
 											);
 										})}
-										</Grid>
+										</Grid> */}
 									</Grid>}
 							</ListItemText>
-						</ListItem> */}
+						</ListItem>
 					</List>
 				</Grid>
 			</>
 		);
 	}
 
-	const handleUserUpdate = values => {
-		const {_id, ...updateValues} = values;
-		const token = cookie['login-cookie'];
-		// updatePublisher(match.params.id, updateValues, token);
-		setIsEdit(false);
-	};
-
 	const component = (
-		<ModalLayout isTableRow color="primary" label="Publisher Detail">
+		<ModalLayout isTableRow color="primary" label="User Detail">
 			{isEdit ?
 				<div className={classes.publisher}>
 					<form>
@@ -150,8 +146,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 						</Grid>
 						<div className={classes.btnContainer}>
 							<Button onClick={handleCancel}>Cancel</Button>
-							<Button variant="contained" color="primary" onClick={handleSubmit(handleUserUpdate)}>
-                            UPDATE
+							<Button variant="contained" color="primary">
+								UPDATE
 							</Button>
 						</div>
 					</form>
@@ -165,7 +161,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 							<Fab
 								color="primary"
 								size="small"
-								title="Edit Publisher Detail"
+								title="Edit User Detail"
 								onClick={handleEditClick}
 							>
 								<EditIcon/>
@@ -182,9 +178,9 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 function mapStateToProps(state) {
 	return ({
-		user: state.user.user,
+		user: state.users.user,
 		loading: state.publisher.loading,
-		initialValues: state.user.user,
+		initialValues: state.users.user,
 		userInfo: state.login.userInfo
 	});
 }

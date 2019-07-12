@@ -68,6 +68,7 @@ export const fetchUser = id => async dispatch => {
 			method: 'GET'
 		});
 		const result = await response.json();
+		console.log('************', result)
 		dispatch(success(FETCH_USER, result.data));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
