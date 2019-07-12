@@ -40,7 +40,7 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, getUserInfo, fetchPublishersList, publishersList} = props;
+	const {loading, searchedPublishers, fetchPublishersList} = props;
 	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
@@ -77,16 +77,17 @@ export default connect(mapStateToProps, actions)(props => {
 			<TableComponent
 				data={activeCheck.checked ? searchedPublishers
 					.filter(item => item.activity.active === true)
-					.map(item => searchResultRender(item.name, item.phone)) :
-					searchedPublishers.map(item => searchResultRender(item.name, item.phone))}
+					.map(item => searchResultRender(item._id, item.name, item.phone)) :
+					searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
 				handlePublisherClick={handlePublisherClick}
 				headRows={headRows}
 			/>
 		);
 	}
 
-	function searchResultRender(name, phone) {
+	function searchResultRender(id, name, phone) {
 		return {
+			id: id,
 			name: name,
 			phone: phone
 		};

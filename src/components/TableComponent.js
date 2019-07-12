@@ -180,7 +180,7 @@ export default function (props) {
 						.map(row => {
 							return (
 								<TableRow key={row.name} className={classes.tableRow} onClick={() => handlePublisherClick(row.id)}>
-									{Object.keys(row).map(key => (
+									{Object.keys(row).map(key => (key !== 'id') && (
 										<TableCell key={key._id} component="th" scope="row">
 											{row[key]}
 										</TableCell>
