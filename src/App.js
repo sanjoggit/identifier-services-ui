@@ -29,13 +29,12 @@
  *
  */
 
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import {IntlProvider} from 'react-intl';
-import {useCookies} from 'react-cookie';
 
 import Home from './components/main';
 import TopNav from './components/navbar/topNav';
@@ -56,11 +55,6 @@ import PublishersRequestsList from './components/publishersRequests/PublishersRe
 
 export default connect(mapStateToProps, actions)(withRouter(props => {
 	const {lang, userInfo, isAuthenticated, history, location, responseMessage} = props;
-	const [cookie] = useCookies('login-cookie');
-	console.log('userinfo', userInfo)
-	useEffect(() => {
-		//getUserInfo(cookie['login-cookie']);
-	}, []);
 
 	const routeField = [
 		{path: '/', component: Home},
@@ -71,14 +65,9 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 
 	const privateRoutesList = [
 		{path: '/users', role: ['admin'], component: UsersList},
-		{path: '/requests/publishers', component: PublishersRequestsList}
+		{path: '/requests/publishers', role: ['publisher'], component: PublishersRequestsList}
 
 	];
-
-	// useEffect(() => {
-	// 	setToken(cookie['login-cookie']);
-	// 	token !== null && getUserInfo(token);
-	// }, [cookie, getUserInfo, token]);
 
 	const routes = (
 		<>
@@ -94,9 +83,9 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 				<PrivateRoute
 					key={pRoute.path}
 					exact
-					//user={userInfo.user.givenName}
+					role={pRoute.role}
 					path={pRoute.path}
-					component={isAuthenticated ? pRoute.component :	Home}
+					component={pRoute.component}
 				/>
 			))}
 		</>
