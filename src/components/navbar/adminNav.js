@@ -56,7 +56,7 @@ export default function ({userInfo, isAuthenticated}) {
 			label: 'requests',
 			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: <Link to="/requests/publishers">Publishers</Link>, roleView: ['admin']},
+				{label: 'Publishers', roleView: ['admin']},
 				{label: 'Publications', roleView: ['admin', 'publisher']},
 				{label: 'Users Requests', roleView: ['admin', 'publisher']}
 			]

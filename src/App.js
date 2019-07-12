@@ -57,9 +57,8 @@ import PublishersRequestsList from './components/publishersRequests/PublishersRe
 export default connect(mapStateToProps, actions)(withRouter(props => {
 	const {lang, userInfo, isAuthenticated, history, location, responseMessage} = props;
 	const [cookie] = useCookies('login-cookie');
-	console.log('userinfo', userInfo)
 	useEffect(() => {
-		//getUserInfo(cookie['login-cookie']);
+		// getUserInfo(cookie['login-cookie']);
 	}, []);
 
 	const routeField = [
