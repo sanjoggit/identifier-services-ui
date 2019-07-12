@@ -55,7 +55,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 
 	const handleClose = () => {
 		setOpen(false);
-		setPwd(false);
+		title === 'Forgot Password ?' && setPwd(false);
 		isTableRow && props.history.push({
 			pathname: '/publishers'
 		});
