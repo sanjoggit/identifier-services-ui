@@ -44,3 +44,5 @@ export const AUTHENTICATION = 'AUTHENTICATION';
 export const LOG_OUT = 'LOG_OUT';
 
 export const USERS_LIST = 'USERS_LIST';
+export const FETCH_USER = 'FETCH_USER';
+

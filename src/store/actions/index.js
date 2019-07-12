@@ -62,6 +62,7 @@ export {
 
 export {
 	createUser,
+	fetchUser,
 	fetchUsersList
 } from './userActions';
 
