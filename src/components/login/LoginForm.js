@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable complexity */
-/* eslint-disable no-negated-condition */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -44,15 +41,15 @@ import * as actions from '../../store/actions';
 
 export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'login', validate})(props => {
-	const {pristine, valid, normalLogin, redirectTo, handleSubmit, handleClose, setPwd} = props;
+	const {pristine, valid, normalLogin, handleSubmit, handleClose, history, setPwd} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 
-	function handleLogin(values) {
+	const handleLogin = values => {
 		normalLogin(values);
-		redirectTo('/publishers');
+		history.push('/publishers');
 		handleClose();
-	}
+	};
 
 	const component = (
 		<form className={classes.loginForm} onSubmit={handleSubmit(handleLogin)}>

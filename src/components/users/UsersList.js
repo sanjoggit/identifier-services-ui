@@ -42,7 +42,7 @@ import {useCookies} from 'react-cookie';
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, fetchUsersList, usersList} = props;
-	
+	console.log('userlist', usersList);
 	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 

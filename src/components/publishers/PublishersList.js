@@ -44,13 +44,13 @@ export default connect(mapStateToProps, actions)(props => {
 	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
-	const [token, setToken] = useState(null);
-	const [cookie] = useCookies('login-cookie');
+	// const [token, setToken] = useState(null);
+	// const [cookie] = useCookies('login-cookie');
 
-	useEffect(() => {
-		setToken(cookie['login-cookie']);
-		token !== null && fetchPublishersList(token);
-	}, [token]);
+	// useEffect(() => {
+	// 	setToken(cookie['login-cookie']);
+	// 	token !== null && fetchPublishersList(token);
+	// }, [token]);
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});

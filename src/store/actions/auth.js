@@ -25,18 +25,21 @@
  * for the JavaScript code in this file.
  *
  */
-import {AUTHENTICATION, LOG_OUT} from './types';
+import {AUTHENTICATION} from './types';
 import fetch from 'node-fetch';
 
 const AUTHENTICATION_URL = 'http://localhost:8080/auth';
 const LOGOUT_URL = 'http://localhost:8080/logout';
 
-export const normalLogin = values => async () => {
+export const normalLogin = values => async dispatch => {
 	const response = await fetch(AUTHENTICATION_URL, {
 		method: 'POST',
 		body: JSON.stringify(values),
 		headers: {'Content-Type': 'application/json'}
 	});
+	const result = await response.json();
+
+	dispatch(getUserInfo(result));
 	return response.status;
 };
 
@@ -48,11 +51,10 @@ export const getUserInfo = token => async dispatch => {
 		}
 	});
 	const user = await result.json();
-	const updatedUser = {...user, role: user.groups};
 	delete user.groups;
 	dispatch({
 		type: AUTHENTICATION,
-		payload: {isLogin: true, user: updatedUser, role: updatedUser.role}
+		payload: user
 	});
 };
 
@@ -60,8 +62,5 @@ export const logOut = () => async dispatch => {
 	await fetch(LOGOUT_URL, {
 		method: 'GET'
 	});
-	dispatch({
-		type: LOG_OUT,
-		payload: {isLogin: false, user: {givenName: 'user'}, role: ['any']}
-	});
+	dispatch(getUserInfo({}));
 };

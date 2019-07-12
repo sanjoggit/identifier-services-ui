@@ -41,6 +41,7 @@ import en from 'react-intl/locale-data/en';
 import fi from 'react-intl/locale-data/fi';
 import sv from 'react-intl/locale-data/sv';
 import {CookiesProvider} from 'react-cookie';
+import {getUserInfo} from './store/actions/auth';
 
 addLocaleData([...en, ...fi, ...sv]);
 
@@ -55,11 +56,33 @@ if (localStorage.allLang) {
 	store.dispatch(setLocale(localStorage.allLang));
 }
 
+function readCookie(name) {
+	var nameEQ = name + '=';
+	var ca = document.cookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) === ' ') {
+			c = c.substring(1, c.length);
+		}
+
+		if (c.indexOf(nameEQ) === 0) {
+			return c.substring(nameEQ.length, c.length);
+		}
+	}
+
+	return null;
+}
+
+const cookie = readCookie('login-cookie');
+if (cookie) {
+	store.dispatch(getUserInfo(cookie));
+}
+
 ReactDOM.render(
 	<Provider store={store}>
-			<CookiesProvider>
-		<Router>
+		<CookiesProvider>
+			<Router>
 				<App/>
-				</Router>
-				</CookiesProvider>
+			</Router>
+		</CookiesProvider>
 	</Provider>, document.getElementById('app'));
