@@ -54,11 +54,11 @@ import * as actions from './store/actions';
 import PublishersRequestsList from './components/publishersRequests/PublishersRequestsList';
 
 export default connect(mapStateToProps, actions)(withRouter(props => {
-	const {lang, userInfo, isAuthenticated, history, location, responseMessage, getUserInfo} = props;
+	const {lang, userInfo, isAuthenticated, history, location, responseMessage} = props;
 	const [cookie] = useCookies('login-cookie');
-	console.log('from app', isAuthenticated)
+	console.log('userinfo', userInfo)
 	useEffect(() => {
-		getUserInfo(cookie['login-cookie']);
+		//getUserInfo(cookie['login-cookie']);
 	}, []);
 
 	const routeField = [
@@ -89,7 +89,6 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 						exact
 						// User={userInfo.role}
 						isAuthenticated={isAuthenticated}
-						name={pRoute.path}
 						path={pRoute.path}
 						component={pRoute.component}
 					/>
@@ -119,12 +118,8 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 						<Tooltips label="contact form" title="contactForm"/> :
 							null
 					}
-					{/* {routes} */}
-					<Route exact path="/" component={Home}/>
-					<Route exact path="/publishers" component={PublishersList}/>
-					<Route exact path="/publishers/:id" component={PublishersList}/>
 					<Switch>
-						<PrivateRoute exact path="/requests/publishers" component={PublishersRequestsList} pathMatch="full"/>
+						{routes}
 					</Switch>
 					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
 					{responseMessage && <SnackBar message={responseMessage} variant="success" openSnackBar={Boolean(responseMessage)}/>}

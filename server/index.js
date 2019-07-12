@@ -122,12 +122,11 @@ app.post('/auth', async (req, res) => {
 		method: 'POST',
 		headers: {
 			Authorization: 'Basic ' + base64.encode(req.body.username + ':' + req.body.password)
-		},
-		credentials: 'include'
+		}
 	});
 	const token = result.headers.get('Token');
 	res.cookie('login-cookie', token, {maxAge: 300000, httpOnly: false});
-	res.sendStatus(HttpStatus.OK);
+	res.status(200).json(token);
 });
 
 app.get('/logOut', (req, res) => {
