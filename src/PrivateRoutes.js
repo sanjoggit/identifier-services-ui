@@ -30,11 +30,15 @@ import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-export default connect(mapStateToProps)(({isAuthenticated, component: Component, ...rest}) => {
+export default connect(mapStateToProps)(({isAuthenticated, userInfo, role, component: Component, ...rest}) => {
+	console.log('role', role)
 	const component = (
 		<Route
 			{...rest}
-			render={props => isAuthenticated === true ? (<Component {...props}/>) : (<Redirect to="/"/>)}/>
+			render={props => isAuthenticated === true ? (
+				role.some(item => userInfo.role.includes(item)) ?
+					<Component {...props}/> : 'Denied'
+			) : <div>Login</div>}/>
 	);
 	return {
 		...component
