@@ -35,13 +35,12 @@ import useStyles from '../../styles/adminNav';
 import * as actions from '../../store/actions';
 
 export default connect(null, actions)(props => {
-	const {list, redirectTo, role} = props;
+	const {list, role} = props;
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 
 	function handleClick(event) {
 		setAnchorEl(event.currentTarget);
-		redirectTo(list.path);
 	}
 
 	function handleClose() {
@@ -51,7 +50,7 @@ export default connect(null, actions)(props => {
 	const component = (
 		<div>
 			<Button className={list.selected && classes.selected} onClick={handleClick}>
-				{list.label}
+				<Link to={list.listItem ? null : `/${list.label}`}>{list.label}</Link>
 				{list.listItem && <ArrowDropDown/>}
 			</Button>
 
@@ -74,7 +73,7 @@ export default connect(null, actions)(props => {
 				onClose={handleClose}
 			>
 				{list.listItem.map(item => item.roleView && role.some(item => list.roleView.includes(item)) &&
-				<Link to={item.label}>
+				<Link to={`/${list.label}/${item.label}`}>
 					<MenuItem key={item.label}>{item.label}</MenuItem>
 				</Link>
 				)}

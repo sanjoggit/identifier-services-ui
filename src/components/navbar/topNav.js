@@ -43,7 +43,6 @@ import LoginLayout from '../login/LoginLayout';
 
 export default connect(mapStateToProps, actions)(props => {
 	const {setLocale, userInfo, isAuthenticated} = props;
-	console.log('userinfo', userInfo)
 	const classes = useStyles();
 	const [openNotification, setOpenNotification] = useState(true);
 	const [anchorEl, setAnchorEl] = useState(null);

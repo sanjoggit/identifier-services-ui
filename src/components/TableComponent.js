@@ -160,7 +160,7 @@ export default function (props) {
 	}
 
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.data.length - page * rowsPerPage);
-	const {data, headRows, handlePublisherClick} = props;
+	const {data, headRows, handleTableRowClick} = props;
 	const component = (
 		<Paper className={classes.paper}>
 			<Table
@@ -179,9 +179,9 @@ export default function (props) {
 						.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						.map(row => {
 							return (
-								<TableRow key={row.name} className={classes.tableRow} onClick={() => handlePublisherClick(row.id)}>
+								<TableRow key={row.name} className={classes.tableRow} onClick={() => handleTableRowClick(row.id)}>
 									{Object.keys(row).map(key => (key !== 'id') && (
-										<TableCell key={key._id} component="th" scope="row">
+										<TableCell key={row[key]} component="th" scope="row">
 											{row[key]}
 										</TableCell>
 									))}

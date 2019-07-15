@@ -41,6 +41,7 @@ import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
 import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
+import User from './components/users/User';
 import UsersList from './components/users/UsersList';
 import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
@@ -116,6 +117,8 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 						{routes}
 					</Switch>
 					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
+					{isModal ? <Route path="/users/:id" component={User}/> : null}
+
 					{responseMessage && <SnackBar message={responseMessage} variant="success" openSnackBar={Boolean(responseMessage)}/>}
 				</section>
 				<Footer/>
