@@ -64,7 +64,6 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	enableReinitialize: true
 })(props => {
 	const {handleSubmit, clearFields, match, user, userInfo, loading, fetchUser} = props;
-	console.log(user)
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 	const {role} = userInfo;
@@ -72,9 +71,9 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
-		console.log(props);
-		fetchUser(match.params.id);
-	}, [fetchUser=== undefined]);
+		const token = cookie['login-cookie'];
+		fetchUser(match.params.id, token);
+	}, [user === undefined]);
 
 	const handleEditClick = () => {
 		setIsEdit(true);
@@ -85,59 +84,33 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	};
 
 	let userDetail;
-	if (user === undefined || loading) {
-		userDetail = <Spinner/>;
-	} else {
-		userDetail = (
-			<>
-				<Grid item xs={12} md={6}>
+	userDetail = (
+		<Grid item xs={12} md={6}>
 					<Typography variant="h6">
-						User's Detail
+						Publisher Detail
 					</Typography>
 					<List>
 						<ListItem>
 							<ListItemText>
 								<Grid container>
-									<Grid item xs={4}>Name:</Grid>
-									{isEdit ?
-										<Grid item xs={8}><Field name="name" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{user.name}</Grid>
-									}
+										<>
+											<Grid item xs={4}>ID:</Grid>
+											{isEdit ?
+												<Grid item xs={8}>
+													<Field name="id" className={formClasses.editForm} component={renderTextField}/>
+												</Grid> :
+												<Grid item xs={8}>{user.id}</Grid>
+											}
+										</>
 								</Grid>
 							</ListItemText>
 						</ListItem>
-						<ListItem>
-							<ListItemText>
-								{isEdit ?
-									null :
-									<Grid container>
-										<Grid item xs={4}>Notes:</Grid>
-										{/* <Grid item xs={8}>{publisher.notes.map((item, i) => {
-											return (
-												<ExpansionPanel key={i}>
-													<ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-														<Typography className={classes.heading}>Expansion Panel 1</Typography>
-													</ExpansionPanelSummary>
-													<ExpansionPanelDetails>
-														<Paper className={classes.notesContainer}>
-															{item}
-														</Paper>
-													</ExpansionPanelDetails>
-												</ExpansionPanel>
-											);
-										})}
-										</Grid> */}
-									</Grid>}
-							</ListItemText>
-						</ListItem>
 					</List>
-				</Grid>
-			</>
+			</Grid>
 		);
-	}
 
 	const component = (
-		<ModalLayout isTableRow color="primary" label="User Detail">
+		<ModalLayout isTableRow color="primary">
 			{isEdit ?
 				<div className={classes.publisher}>
 					<form>

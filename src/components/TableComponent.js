@@ -181,7 +181,7 @@ export default function (props) {
 							return (
 								<TableRow key={row.name} className={classes.tableRow} onClick={() => handleTableRowClick(row.id)}>
 									{Object.keys(row).map(key => (key !== 'id') && (
-										<TableCell key={key._id} component="th" scope="row">
+										<TableCell key={row[key]} component="th" scope="row">
 											{row[key]}
 										</TableCell>
 									))}

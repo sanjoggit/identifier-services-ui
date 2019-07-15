@@ -61,15 +61,17 @@ export const createUser = (values, token) => async dispatch => {
 	console.log(await response.json());
 };
 
-export const fetchUser = id => async dispatch => {
+export const fetchUser = (id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/users/${id}`, {
-			method: 'GET'
+			method: 'GET',
+			headers: {
+				Authorization: 'Bearer ' + token
+			}
 		});
 		const result = await response.json();
-		console.log('************', result)
-		dispatch(success(FETCH_USER, result.data));
+		dispatch(success(FETCH_USER, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
