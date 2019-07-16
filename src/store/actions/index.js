@@ -42,7 +42,7 @@ export {
 export {
 	sendMessage,
 	createMessageTemplate
-} from './contactFormActions';
+} from './messageActions';
 
 export {
 	setLocale

@@ -43,6 +43,7 @@ import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
 import User from './components/users/User';
 import UsersList from './components/users/UsersList';
+import MessagesList from './components/messageTemplates/MessagesList';
 import Footer from './components/footer';
 import PrivateRoute from './PrivateRoutes';
 import theme from './styles/app';
@@ -66,7 +67,9 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 
 	const privateRoutesList = [
 		{path: '/users', role: ['admin'], component: UsersList},
+		{path: '/messages', role: ['admin'], component: MessagesList},
 		{path: '/requests/publishers', role: ['publisher'], component: PublishersRequestsList}
+
 
 	];
 

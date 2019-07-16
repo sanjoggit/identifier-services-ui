@@ -30,7 +30,7 @@ import {Tooltip, Fab} from '@material-ui/core';
 
 import useStyles from '../styles/tooltips';
 import ModalLayout from './ModalLayout';
-import ContactForm from './form/ContactForm';
+import ContactForm from './form/MessageForm';
 
 export default function ({title, label}) {
 	const classes = useStyles();
