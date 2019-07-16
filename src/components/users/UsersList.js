@@ -51,7 +51,6 @@ export default connect(mapStateToProps, actions)(props => {
 	}, [token]);
 
 	const handleTableRowClick = id => {
-		console.log('545623232',id)
 		props.history.push({
 			pathname: `/users/${id}`,
 			state: {modal: true}
