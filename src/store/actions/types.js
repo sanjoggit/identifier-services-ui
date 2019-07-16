@@ -39,6 +39,8 @@ export const GET_CAPTCHA = 'GET_CAPTCHA';
 export const POST_CAPTCHA = 'POST_CAPTCHA';
 
 export const CONTACT = 'CONTACT';
+export const FETCH_MESSAGE = 'FETCH_MESSAGE';
+export const FETCH_MESSAGES_LIST = 'FETCH_MESSAGES_LIST';
 
 export const AUTHENTICATION = 'AUTHENTICATION';
 export const LOG_OUT = 'LOG_OUT';

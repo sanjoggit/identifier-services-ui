@@ -199,7 +199,7 @@ export default function (props) {
 					<TableRow>
 						<TablePagination
 							rowsPerPageOptions={[5, 10, 25]}
-							colSpan={3}
+							colSpan={headRows.length}
 							count={data.length}
 							rowsPerPage={rowsPerPage}
 							page={page}

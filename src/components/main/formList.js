@@ -34,7 +34,7 @@ import useStyles from '../../styles/formList';
 import ModalLayout from '../ModalLayout';
 import UserRequestForm from '../form/UserRequestForm';
 import PublisherRegistrationForm from '../form/PublisherRegistrationForm';
-import ContactForm from '../form/MessageForm';
+import ContactForm from '../form/ContactForm';
 
 export default withRouter(props => {
 	const formListsArray = [

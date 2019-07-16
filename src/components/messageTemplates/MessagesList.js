@@ -40,56 +40,61 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersList, usersList} = props;
+	const {loading, fetchMessagesList, messagesList} = props;
 	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
 		setToken(cookie['login-cookie']);
-		token !== null && fetchUsersList(token);
+		token !== null && fetchMessagesList(token);
 	}, [token]);
 
 	const handleTableRowClick = id => {
 		props.history.push({
-			pathname: `/users/${id}`,
+			pathname: `/templates/${id}`,
 			state: {modal: true}
 		});
 	};
 
 	const headRows = [
 		{id: 'name', label: 'Name'},
-		{id: 'publisher', label: 'Publisher'},
-		{id: 'defaultLanguage', label: 'Language'}
+		{id: 'subject', label: 'Subject'},
+		{id: 'body', label: 'body'},
+		{id: 'notes', label: 'notes'},
+		{id: 'language', label: 'Language'}
+
 	];
-	let usersData;
+	let messageData;
 	if (loading) {
-		usersData = <Spinner/>;
-	} else if (usersList.Users === undefined) {
-		usersData = <p>No Users Available</p>;
+		messageData = <Spinner/>;
+	} else if (messagesList.MessageTemplates === undefined) {
+		messageData = <p>No Users Available</p>;
 	} else {
-		usersData = 
+		messageData = 
 			<TableComponent
-				data={usersList.Users.map(item => usersDataRender(item))}
+				data={messagesList.MessageTemplates.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 			/>
 		}
 
 		function usersDataRender(item){
-			const {_id, givenName, publisher, preferences}= item;
+			const {_id, name, language, subject, body, notes}= item;
 		return{
 			id: _id,
-			name: givenName,
-			publisher : publisher,
-			defaultLanguage : preferences.defaultLanguage
+			name: name,
+			subject : subject,
+			body: body,
+			notes: notes,
+			language : language,
 		};
 	}
 
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
-				<Typography variant="h5">List of Avaiable users</Typography>
-				{usersData}
+				<Typography variant="h5">List of Avaiable messages</Typography>
+				{messageData}
 			</Grid>
 		</Grid>
 	);
@@ -100,7 +105,7 @@ export default connect(mapStateToProps, actions)(props => {
 
 function mapStateToProps(state) {
 	return ({
-		loading: state.users.loading,
-		usersList: state.users.usersList
+		loading: state.contact.loading,
+		messagesList: state.contact.messagesList
 	});
 }

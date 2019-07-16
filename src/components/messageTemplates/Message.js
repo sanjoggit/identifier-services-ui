@@ -58,36 +58,21 @@ import renderTextField from '../form/render/renderTextField';
 import renderAliases from '../form/render/renderAliases';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-export default connect(mapStateToProps, actions)(reduxForm({
-	form: 'userCreation',
-	validate,
-	enableReinitialize: true
-})(props => {
-	const {handleSubmit, clearFields, match, user, userInfo, loading, fetchUser} = props;
+export default connect(mapStateToProps, actions)(props => {
+	const {match, loading, fetchMessage, messageInfo} = props;
 	const classes = useStyles();
-	const formClasses = useFormStyles();
-	const {role} = userInfo;
-	const [isEdit, setIsEdit] = useState(false);
 	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
 		const token = cookie['login-cookie'];
-		fetchUser(match.params.id, token);
-	}, [user === undefined]);
+		fetchMessage(match.params.id, token);
+	}, [messageInfo === undefined]);
 
-	const handleEditClick = () => {
-		setIsEdit(true);
-	};
-
-	const handleCancel = () => {
-		setIsEdit(false);
-	};
-
-	let userDetail;
-	userDetail = (
+	let messageDetail;
+	messageDetail = (messageInfo !== null && 
 		<Grid item xs={12} md={6}>
 					<Typography variant="h6">
-						Publisher Detail
+						Message Detail
 					</Typography>
 					<List>
 						<ListItem>
@@ -95,12 +80,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 										<>
 											<Grid item xs={4}>ID:</Grid>
-											{isEdit ?
-												<Grid item xs={8}>
-													<Field name="id" className={formClasses.editForm} component={renderTextField}/>
-												</Grid> :
-												<Grid item xs={8}>{user.id}</Grid>
-											}
+                                            <Grid item xs={8}>{messageInfo.messageTemplate._id}</Grid>
 										</>
 								</Grid>
 							</ListItemText>
@@ -111,49 +91,21 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 	const component = (
 		<ModalLayout isTableRow color="primary">
-			{isEdit ?
-				<div className={classes.publisher}>
-					<form>
-						<Grid container spacing={3} className={classes.publisherSpinner}>
-							{userDetail}
-						</Grid>
-						<div className={classes.btnContainer}>
-							<Button onClick={handleCancel}>Cancel</Button>
-							<Button variant="contained" color="primary">
-								UPDATE
-							</Button>
-						</div>
-					</form>
-				</div> :
 				<div className={classes.publisher}>
 					<Grid container spacing={3} className={classes.publisherSpinner}>
-						{userDetail}
+						{messageDetail}
 					</Grid>
-					{role!== undefined && role.some(item => item === 'admin') &&
-						<div className={classes.btnContainer}>
-							<Fab
-								color="primary"
-								size="small"
-								title="Edit User Detail"
-								onClick={handleEditClick}
-							>
-								<EditIcon/>
-							</Fab>
-						</div>}
 				</div>
-			}
 		</ModalLayout>
 	);
 	return {
 		...component
 	};
-}));
+});
 
 function mapStateToProps(state) {
 	return ({
-		user: state.users.user,
-		loading: state.publisher.loading,
-		initialValues: state.users.user,
-		userInfo: state.login.userInfo
+		loading: state.contact.loading,
+		messageInfo: state.contact.messageInfo
 	});
 }

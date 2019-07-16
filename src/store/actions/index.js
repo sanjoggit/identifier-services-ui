@@ -41,7 +41,9 @@ export {
 
 export {
 	sendMessage,
-	createMessageTemplate
+	createMessageTemplate,
+	fetchMessagesList,
+	fetchMessage
 } from './messageActions';
 
 export {

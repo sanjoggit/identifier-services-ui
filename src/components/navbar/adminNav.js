@@ -76,7 +76,7 @@ export default function ({userInfo, isAuthenticated}) {
 			]
 		},
 		{
-			label: 'messages',
+			label: 'templates',
 			roleView: ['admin']
 		}
 	];
