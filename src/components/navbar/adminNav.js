@@ -26,7 +26,7 @@
  *
  */
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {NavLink as Link} from 'react-router-dom';
 import {AppBar, Button, Grid} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 
@@ -40,44 +40,44 @@ export default function ({userInfo, isAuthenticated}) {
 		{
 			label: 'Publishers',
 			roleView: ['admin', 'publisher'],
-			path: 'publishers',
-			selected: true
+			path: 'publishers'
 		},
 		{
 			label: 'Publications',
 			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'ISBN', roleView: ['admin', 'publisher']},
-				{label: 'ISMN', roleView: ['admin', 'publisher']},
-				{label: 'ISSN', roleView: ['admin', 'publisher']}
+				{label: 'ISBN', path: 'publications/isbn-ismn', roleView: ['admin', 'publisher']},
+				{label: 'ISMN', path: 'publications/isbn-ismn', roleView: ['admin', 'publisher']},
+				{label: 'ISSN', path: 'publications/issn', roleView: ['admin', 'publisher']}
 			]
 		},
 		{
-			label: 'requests',
+			label: 'Requests',
 			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'Publishers', roleView: ['admin']},
-				{label: 'Publications', roleView: ['admin', 'publisher']},
-				{label: 'Users Requests', roleView: ['admin', 'publisher']}
+				{label: 'Publishers', path: 'requests/publishers', roleView: ['admin']},
+				{label: 'Publications', path: 'requests/publishers', roleView: ['admin', 'publisher']},
+				{label: 'Users Requests', path: 'requests/users', roleView: ['admin', 'publisher']}
 			]
 		},
 		{
 			label: 'users',
 			roleView: ['admin', 'publisher'],
-			path: userInfo.user !== undefined && `users`
+			path: 'users'
 		},
 		{
 			label: 'identifier Ranges',
 			roleView: ['admin'],
 			listItem: [
-				{label: 'ISBN', roleView: ['admin']},
-				{label: 'ISMN', roleView: ['admin']},
-				{label: 'ISSN', roleView: ['admin']}
+				{label: 'ISBN', path: 'ranges/isbn', roleView: ['admin']},
+				{label: 'ISMN', path: 'ranges/ismn', roleView: ['admin']},
+				{label: 'ISSN', path: 'ranges/issn', roleView: ['admin']}
 			]
 		},
 		{
 			label: 'message templates',
-			roleView: ['admin']
+			roleView: ['admin'],
+			path: 'templates'
 		}
 	];
 	const nav = (
@@ -93,8 +93,8 @@ export default function ({userInfo, isAuthenticated}) {
 									</div>
 								)) :
 								<div className={classes.publicMenu}>
-									<Link to="/"><HomeIcon fontSize="default" color="primary"/></Link>
-									<Link to="/publishers"><Button className={classes.selected}>Publishers</Button></Link>
+									<Link exact to="/" activeClassName={classes.active}><HomeIcon fontSize="default" color="primary"/></Link>
+									<Link exact to="/publishers" activeClassName={classes.active}><Button>Publishers</Button></Link>
 								</div>
 							}
 						</div>
