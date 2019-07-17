@@ -88,12 +88,10 @@ export default function ({userInfo, isAuthenticated}) {
 						<div className={classes.adminMenu}>
 							{isAuthenticated ?
 								obj.map(list => userInfo.role.some(item => list.roleView.includes(item)) && (
-									<div key={list.label}>
-										<MenuTabs role={userInfo.role} list={list}/>
-									</div>
+									<MenuTabs key={list.label} role={userInfo.role} list={list}/>
 								)) :
 								<div className={classes.publicMenu}>
-									<Link exact to="/" activeClassName={classes.active}><HomeIcon fontSize="default" color="primary"/></Link>
+									<Link exact to="/" activeClassName={classes.active}><Button><HomeIcon fontSize="default" color="primary"/></Button></Link>
 									<Link exact to="/publishers" activeClassName={classes.active}><Button>Publishers</Button></Link>
 								</div>
 							}

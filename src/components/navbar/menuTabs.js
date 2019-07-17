@@ -48,11 +48,11 @@ export default connect(null, actions)(props => {
 	}
 
 	const component = (
-		<div>
-			<Button onMouseOver={handleClick}>
-				<Link exact to={`/${list.path}`} activeClassName={classes.active}>{list.label}</Link>
+		<>
+			<div className={classes.publicMenu} onMouseOver={handleClick}>
+				<Link exact to={`/${list.path}`} activeClassName={classes.active}><Button>{list.label}</Button></Link>
 				{list.listItem && <ArrowDropDown/>}
-			</Button>
+			</div>
 
 			{list.listItem &&
 			<Menu
@@ -79,7 +79,7 @@ export default connect(null, actions)(props => {
 				)}
 			</Menu>
 			}
-		</div>
+		</>
 	);
 	return {
 		...component
