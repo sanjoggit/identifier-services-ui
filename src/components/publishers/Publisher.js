@@ -161,7 +161,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 								<Grid container>
 									<Grid item xs={4}>Aliases:</Grid>
 									{isEdit ?
-										<Grid item xs={8}><FieldArray name="aliases" className={formClasses.editForm} component={renderAliases} props={{clearFields, name:'aliases', subName:'alias'}}/></Grid> :
+										<Grid item xs={8}><FieldArray name="aliases" className={formClasses.editForm} component={renderAliases} props={{clearFields, name: 'aliases', subName: 'alias'}}/></Grid> :
 										<Grid item xs={8}>{publisher.aliases.map((item, i) => {
 											return (
 												<Chip key={i} label={item}/>

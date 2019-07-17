@@ -27,7 +27,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {NavLink as Link} from 'react-router-dom';
 import {Button, Menu, MenuItem} from '@material-ui/core';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
@@ -48,11 +48,11 @@ export default connect(null, actions)(props => {
 	}
 
 	const component = (
-		<div>
-			<Button className={list.selected && classes.selected} onClick={handleClick}>
-				<Link to={list.listItem ? null : `/${list.path}`}>{list.label}</Link>
+		<>
+			<div className={classes.publicMenu} onMouseOver={handleClick}>
+				<Link exact to={`/${list.path}`} activeClassName={classes.active}><Button>{list.label}</Button></Link>
 				{list.listItem && <ArrowDropDown/>}
-			</Button>
+			</div>
 
 			{list.listItem &&
 			<Menu
@@ -73,13 +73,13 @@ export default connect(null, actions)(props => {
 				onClose={handleClose}
 			>
 				{list.listItem.map(item => item.roleView && role.some(item => list.roleView.includes(item)) &&
-				<Link to={`/${item.path}`}>
+				<Link exact to={`/${item.path}`} activeClassName={classes.active}>
 					<MenuItem key={item.label}>{item.label}</MenuItem>
 				</Link>
 				)}
 			</Menu>
 			}
-		</div>
+		</>
 	);
 	return {
 		...component

@@ -30,10 +30,7 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles({
 	publicMenu: {
 		display: 'flex',
-		alignItems: 'center',
-		'& a': {
-			textDecoration: 'none'
-		}
+		alignItems: 'center'
 	},
 	adminMenu: {
 		display: 'flex',
@@ -41,7 +38,7 @@ const useStyles = makeStyles({
 		justifyContent: 'space-between',
 		margin: '0 auto'
 	},
-	selected: {
+	active: {
 		borderBottom: '2px solid #00224F',
 		borderRadius: 0
 	}

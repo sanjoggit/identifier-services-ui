@@ -26,7 +26,7 @@
  *
  */
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {NavLink as Link} from 'react-router-dom';
 import {AppBar, Button, Grid} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 
@@ -40,16 +40,15 @@ export default function ({userInfo, isAuthenticated}) {
 		{
 			label: 'Publishers',
 			roleView: ['admin', 'publisher'],
-			path: 'publishers',
-			selected: true
+			path: 'publishers'
 		},
 		{
 			label: 'Publications',
 			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'ISBN', roleView: ['admin', 'publisher']},
-				{label: 'ISMN', roleView: ['admin', 'publisher']},
-				{label: 'ISSN', roleView: ['admin', 'publisher']}
+				{label: 'ISBN', path: 'publications/isbn-ismn', roleView: ['admin', 'publisher']},
+				{label: 'ISMN', path: 'publications/isbn-ismn', roleView: ['admin', 'publisher']},
+				{label: 'ISSN', path: 'publications/issn', roleView: ['admin', 'publisher']}
 			]
 		},
 		{
@@ -64,15 +63,15 @@ export default function ({userInfo, isAuthenticated}) {
 		{
 			label: 'Users',
 			roleView: ['admin', 'publisher'],
-			path: userInfo.user !== undefined && `users`
+			path: 'users'
 		},
 		{
 			label: 'Identifier Ranges',
 			roleView: ['admin'],
 			listItem: [
-				{label: 'ISBN', roleView: ['admin']},
-				{label: 'ISMN', roleView: ['admin']},
-				{label: 'ISSN', roleView: ['admin']}
+				{label: 'ISBN', path: 'ranges/isbn', roleView: ['admin']},
+				{label: 'ISMN', path: 'ranges/ismn', roleView: ['admin']},
+				{label: 'ISSN', path: 'ranges/issn', roleView: ['admin']}
 			]
 		},
 		{
@@ -89,13 +88,11 @@ export default function ({userInfo, isAuthenticated}) {
 						<div className={classes.adminMenu}>
 							{isAuthenticated ?
 								obj.map(list => userInfo.role.some(item => list.roleView.includes(item)) && (
-									<div key={list.label}>
-										<MenuTabs role={userInfo.role} list={list}/>
-									</div>
+									<MenuTabs key={list.label} role={userInfo.role} list={list}/>
 								)) :
 								<div className={classes.publicMenu}>
-									<Link to="/"><HomeIcon fontSize="default" color="primary"/></Link>
-									<Link to="/publishers"><Button className={classes.selected}>Publishers</Button></Link>
+									<Link exact to="/" activeClassName={classes.active}><Button><HomeIcon fontSize="default" color="primary"/></Button></Link>
+									<Link exact to="/publishers" activeClassName={classes.active}><Button>Publishers</Button></Link>
 								</div>
 							}
 						</div>

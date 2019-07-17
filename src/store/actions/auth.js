@@ -52,7 +52,7 @@ export const getUserInfo = token => async dispatch => {
 	});
 	const user = await result.json();
 	const updatedUser = {...user, role: user.groups};
-	delete user.groups;
+	delete updatedUser.groups;
 	dispatch({
 		type: AUTHENTICATION,
 		payload: updatedUser

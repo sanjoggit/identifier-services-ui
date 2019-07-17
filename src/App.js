@@ -49,7 +49,7 @@ import Message from './components/messageTemplates/Message';
 import MessagesList from './components/messageTemplates/MessagesList';
 import PublishersRequestsList from './components/publishersRequests/PublishersRequestsList';
 import Footer from './components/footer';
-import PrivateRoute from './PrivateRoutes';
+import PrivateRoute from './components/PrivateRoutes';
 import theme from './styles/app';
 import Tooltips from './components/Tooltips';
 import enMessages from './intl/translations/en.json';

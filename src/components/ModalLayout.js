@@ -46,6 +46,7 @@ export default connect(mapStateToProps)(withRouter(props => {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	useEffect(() => {
+		console.log(isTableRow);
 		isTableRow && setOpen(isTableRow);
 	}, [isTableRow]);
 
