@@ -50,7 +50,7 @@ export default connect(null, actions)(props => {
 	const component = (
 		<div>
 			<Button className={list.selected && classes.selected} onClick={handleClick}>
-				<Link to={list.listItem ? null : `/${list.label}`}>{list.label}</Link>
+				<Link to={list.listItem ? null : `/${list.path}`}>{list.label}</Link>
 				{list.listItem && <ArrowDropDown/>}
 			</Button>
 
@@ -73,7 +73,7 @@ export default connect(null, actions)(props => {
 				onClose={handleClose}
 			>
 				{list.listItem.map(item => item.roleView && role.some(item => list.roleView.includes(item)) &&
-				<Link to={`/${list.label}/${item.label}`}>
+				<Link to={`/${item.path}`}>
 					<MenuItem key={item.label}>{item.label}</MenuItem>
 				</Link>
 				)}

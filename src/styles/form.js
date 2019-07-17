@@ -50,7 +50,7 @@ const useStyles = makeStyles({
 	},
 	arrayString: {
 		height: '60px',
-		width: '95%'
+		width: '95%',
 	},
 	full: {
 		flexDirection: 'column'
@@ -72,8 +72,9 @@ const useStyles = makeStyles({
 		display: 'flex',
 		width: '90%'
 	},
-	checkbox: {
-
+	children: {
+		margin: '0 20px 0 0',
+		width: '80%'
 	}
 });
 

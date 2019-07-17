@@ -53,21 +53,21 @@ export default function ({userInfo, isAuthenticated}) {
 			]
 		},
 		{
-			label: 'requests',
+			label: 'Requests',
 			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'Publishers', roleView: ['admin']},
-				{label: 'Publications', roleView: ['admin', 'publisher']},
-				{label: 'Users Requests', roleView: ['admin', 'publisher']}
+				{label: 'Publishers', path: "requests/publishers", roleView: ['admin']},
+				{label: 'Publications', path: "requests/publications", roleView: ['admin', 'publisher']},
+				{label: 'Users', path: "requests/users", roleView: ['admin', 'publisher']}
 			]
 		},
 		{
-			label: 'users',
+			label: 'Users',
 			roleView: ['admin', 'publisher'],
 			path: userInfo.user !== undefined && `users`
 		},
 		{
-			label: 'identifier Ranges',
+			label: 'Identifier Ranges',
 			roleView: ['admin'],
 			listItem: [
 				{label: 'ISBN', roleView: ['admin']},
@@ -76,7 +76,8 @@ export default function ({userInfo, isAuthenticated}) {
 			]
 		},
 		{
-			label: 'templates',
+			label: 'Message Templates',
+			path: 'templates',
 			roleView: ['admin']
 		}
 	];

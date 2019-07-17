@@ -32,15 +32,18 @@ import {Fab, Grid, Chip} from '@material-ui/core';
 import {PropTypes} from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import {connect} from 'react-redux';
+import useStyles from '../../../styles/form';
 
 import renderTextField from './renderTextField';
+import renderSelect from './renderSelect';
 
 export default connect(state => ({
 	values: getFormValues('userCreation')(state)
 
 }))(props => {
+	const classes = useStyles();
 	const [errors, setErrors] = useState();
-	const {fields, values, className, clearFields, list: {name, subName}} = props;
+	const {fields, values, clearFields, list: {name, subName}} = props;
 	const email = values && {
 		value: values.value,
 		type: values.type
@@ -62,12 +65,22 @@ export default connect(state => ({
 	const component = (
 		<>
 			<Grid>
-				<Grid item>
+				<Grid item style={{display: 'flex'}}>
 					{
 						subName.map(item => (
+							(item.type === 'select') ?
 							<Field
 								key={item.label}
-								class={className}
+								className={`${classes.textField} ${classes[`${item.className}`]}`}
+								component={renderSelect}
+								label={item.label}
+								name={item.name}
+								type={item.type}
+								options={item.option}
+							/>	:
+							<Field
+								key={item.label}
+								className={classes[`${item.className}`]}
 								name={item.name}
 								type="text"
 								component={renderTextField}
