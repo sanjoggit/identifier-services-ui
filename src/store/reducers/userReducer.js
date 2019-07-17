@@ -30,7 +30,7 @@ import {USERS_LIST, LOADER, ERROR, USERS_REQUESTS_LIST, FETCH_USER} from '../act
 
 const initialState = {
 	usersList: [],
-	usersrequestsList: [],
+	usersRequestsList: [],
 	user: {},
 	loading: false,
 	error: {}
@@ -58,7 +58,7 @@ export default function (state = initialState, action) {
 		case USERS_REQUESTS_LIST:
 			return {
 				...state,
-				usersrequestsList: action.payload,
+				usersRequestsList: action.payload,
 				loading: false
 			};
 		case ERROR:

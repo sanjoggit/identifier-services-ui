@@ -71,7 +71,6 @@ export const createUserRequest = (values, token) => async dispatch => {
 		credentials: 'same-origin',
 		body: JSON.stringify(values)
 	});
-	console.log(await response.json());
 };
 
 export const fetchUser = (id, token) => async dispatch => {
