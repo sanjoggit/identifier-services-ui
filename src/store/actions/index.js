@@ -41,8 +41,10 @@ export {
 
 export {
 	sendMessage,
-	createMessageTemplate
-} from './contactFormActions';
+	createMessageTemplate,
+	fetchMessagesList,
+	fetchMessage
+} from './messageActions';
 
 export {
 	setLocale
@@ -62,8 +64,10 @@ export {
 
 export {
 	createUser,
+	createUserRequest,
 	fetchUser,
-	fetchUsersList
+	fetchUsersList,
+	fetchUsersRequestsList
 } from './userActions';
 
 export {

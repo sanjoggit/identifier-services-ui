@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {USERS_LIST, ERROR, FETCH_USER} from './types';
+import {USERS_LIST, ERROR, USERS_REQUESTS_LIST, FETCH_USER} from './types';
 import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
@@ -61,6 +61,19 @@ export const createUser = (values, token) => async dispatch => {
 	console.log(await response.json());
 };
 
+export const createUserRequest = (values, token) => async dispatch => {
+	const response = await fetch(`${BASE_URL}/requests/users`, {
+		method: 'POST',
+		headers: {
+			Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		},
+		credentials: 'same-origin',
+		body: JSON.stringify(values)
+	});
+	console.log(await response.json());
+};
+
 export const fetchUser = (id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
@@ -72,6 +85,23 @@ export const fetchUser = (id, token) => async dispatch => {
 		});
 		const result = await response.json();
 		dispatch(success(FETCH_USER, result));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+}
+
+export const fetchUsersRequestsList = token => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch(`${BASE_URL}/requests/users/query`, {
+			method: 'POST',
+			headers: {
+				Authorization: 'Bearer ' + token,
+				'Content-Type': 'application/json'
+			}
+		});
+		const result = await response.json();
+		dispatch(success(USERS_REQUESTS_LIST, result.data));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}

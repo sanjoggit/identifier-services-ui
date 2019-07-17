@@ -30,7 +30,7 @@ import {reducer as forms} from 'redux-form';
 import publisherReducer from './publisher';
 import authReducer from './authReducer';
 import localeReducer from './localeReducer';
-import contact from './contactForm';
+import contact from './messageReducer';
 import common from './commonReducer';
 import userReducer from './userReducer';
 

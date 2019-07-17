@@ -26,9 +26,11 @@
  *
  */
 
-import {CONTACT, LOADER} from '../actions/types';
+import {CONTACT, LOADER, FETCH_MESSAGE, FETCH_MESSAGES_LIST} from '../actions/types';
 
 const initialState = {
+	messagesList: [],
+	messageInfo: null,
 	responseMessage: null,
 	loading: false
 };
@@ -46,6 +48,18 @@ export default function (state = initialState, action) {
 				responseMessage: action.payload,
 				loading: false
 			};
+		case FETCH_MESSAGE:
+			return{
+				...state,
+				messageInfo: action.payload,
+				loading: false
+			};
+		case FETCH_MESSAGES_LIST:
+			return{
+				...state,
+				messagesList: action.payload,
+				loading: false
+			}
 		default:
 			return state;
 	}

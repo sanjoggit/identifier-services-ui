@@ -49,21 +49,25 @@ const roleOption = [
 ];
 
 const selectOption = [
-	{label: '', value: ""},
-	{label: 'Work', value: 'work'},
-	{label: 'Home', value: 'home'},
-	{label: 'Other', value: 'other'}
+	{label: 'ENG', value: 'eng'},
+	{label: 'FIN', value: 'fin'},
+	{label: 'SwD', value: 'swd'}
 ];
 
 const fieldArray = [
 	{
+		name: 'role',
+		type: 'check',
+		label: 'Role',
+		option: roleOption,
+		width: 'half'
+	},
+	{
 		name: 'emails',
 		type: 'arrayObject',
 		label: 'Emails',
-		width: 'full',
-		subName: [
-			{name: 'value', label: 'Email', className: 'children'}, 
-			{name: 'type', label: 'Type', type:'select', option: selectOption, className: 'children'}]
+		width: 'half',
+		subName: [{name: 'value', label: 'Email'}, {name: 'type', label: 'Type'}]
 	},
 	{
 		name: 'givenName',
@@ -76,15 +80,25 @@ const fieldArray = [
 		type: 'text',
 		label: 'Family Name',
 		width: 'half'
+	},
+	{
+		name: 'defaultLanguage',
+		type: 'select',
+		label: 'Default Language',
+		option: selectOption,
+		width: 'half'
 	}
 ];
 
 export default connect(null, actions)(reduxForm({
 	form: 'userCreation',
 	validate,
+	initialValues: {
+		defaultLanguage: 'eng'
+	}
 })(
 	props => {
-		const {handleSubmit, clearFields, valid, createUserRequest, pristine} = props;
+		const {handleSubmit, clearFields, valid, createUser, pristine} = props;
 		const classes = useStyles();
 		const [cookie] = useCookies('login-cookie');
 		const token = cookie['login-cookie'];
@@ -98,8 +112,11 @@ export default connect(null, actions)(reduxForm({
 				...values,
 				givenName: values.givenName.toLowerCase(),
 				familyName: values.familyName.toLowerCase(),
+				role: values.role[0],
+				preferences: {defaultLanguage: values.defaultLanguage}
 			};
-			createUserRequest(newUser, token);
+			delete newUser.defaultLanguage;
+			createUser(newUser, token);
 		}
 
 		const component = (
@@ -135,6 +152,7 @@ export default connect(null, actions)(reduxForm({
 function element(array, classes, clearFields) {
 	return array.map(list =>
 
+		// eslint-disable-next-line no-negated-condition
 		((list.type === 'arrayObject') ?
 			<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
 				<FieldArray
@@ -146,15 +164,38 @@ function element(array, classes, clearFields) {
 					props={{clearFields, list}}
 				/>
 			</Grid> :
+			((list.type === 'check') ?
+				<Grid key={list.name} item xs={(list.width === 'full') ? 12 : 6}>
+					<FieldArray
+						className={`${classes.textField} ${list.width}`}
+						component={renderCheckboxes}
+						label={list.label}
+						name={list.name}
+						type={list.type}
+						options={list.option}
+						props={{name: list.name}}
+					/>
+				</Grid>	:
+				((list.type === 'select') ?
+					<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
+						<Field
+							className={`${classes.textField} ${list.width}`}
+							component={renderSelect}
+							label={list.label}
+							name={list.name}
+							type={list.type}
+							options={list.option}
+						/>
+					</Grid>	:
 
-			<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
-				<Field
-					className={`${classes.textField} ${list.width}`}
-					component={renderTextField}
-					label={list.label}
-					name={list.name}
-					type={list.type}
-				/>
-			</Grid>)
+					<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
+						<Field
+							className={`${classes.textField} ${list.width}`}
+							component={renderTextField}
+							label={list.label}
+							name={list.name}
+							type={list.type}
+						/>
+					</Grid>)))
 	);
 }

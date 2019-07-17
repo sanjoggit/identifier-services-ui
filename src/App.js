@@ -43,6 +43,11 @@ import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
 import User from './components/users/User';
 import UsersList from './components/users/UsersList';
+import UsersRequest from './components/usersRequests/UsersRequest';
+import UsersRequestsList from './components/usersRequests/UsersRequestsList';
+import Message from './components/messageTemplates/Message';
+import MessagesList from './components/messageTemplates/MessagesList';
+import PublishersRequestsList from './components/publishersRequests/PublishersRequestsList';
 import Footer from './components/footer';
 import PrivateRoute from './components/PrivateRoutes';
 import theme from './styles/app';
@@ -52,7 +57,6 @@ import fiMessages from './intl/translations/fi.json';
 import svMessages from './intl/translations/sv.json';
 import SnackBar from './components/SnackBar';
 import * as actions from './store/actions';
-import PublishersRequestsList from './components/publishersRequests/PublishersRequestsList';
 
 export default connect(mapStateToProps, actions)(withRouter(props => {
 	const {lang, userInfo, isAuthenticated, history, location, responseMessage} = props;
@@ -66,7 +70,10 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 
 	const privateRoutesList = [
 		{path: '/users', role: ['admin'], component: UsersList},
+		{path: '/requests/users', role: ['admin'], component: UsersRequestsList},
+		{path: '/templates', role: ['admin'], component: MessagesList},
 		{path: '/requests/publishers', role: ['publisher'], component: PublishersRequestsList}
+
 
 	];
 
@@ -118,6 +125,8 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 					</Switch>
 					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
 					{isModal ? <Route path="/users/:id" component={User}/> : null}
+					{isModal ? <Route path="/requests/users/:id" component={UsersRequest}/> : null}
+					{isModal ? <Route path="/templates/:id" component={Message}/> : null}
 
 					{responseMessage && <SnackBar message={responseMessage} variant="success" openSnackBar={Boolean(responseMessage)}/>}
 				</section>

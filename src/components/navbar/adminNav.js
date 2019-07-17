@@ -55,18 +55,18 @@ export default function ({userInfo, isAuthenticated}) {
 			label: 'Requests',
 			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'Publishers', path: 'requests/publishers', roleView: ['admin']},
-				{label: 'Publications', path: 'requests/publishers', roleView: ['admin', 'publisher']},
-				{label: 'Users Requests', path: 'requests/users', roleView: ['admin', 'publisher']}
+				{label: 'Publishers', path: "requests/publishers", roleView: ['admin']},
+				{label: 'Publications', path: "requests/publications", roleView: ['admin', 'publisher']},
+				{label: 'Users', path: "requests/users", roleView: ['admin', 'publisher']}
 			]
 		},
 		{
-			label: 'users',
+			label: 'Users',
 			roleView: ['admin', 'publisher'],
 			path: 'users'
 		},
 		{
-			label: 'identifier Ranges',
+			label: 'Identifier Ranges',
 			roleView: ['admin'],
 			listItem: [
 				{label: 'ISBN', path: 'ranges/isbn', roleView: ['admin']},
@@ -75,9 +75,9 @@ export default function ({userInfo, isAuthenticated}) {
 			]
 		},
 		{
-			label: 'message templates',
-			roleView: ['admin'],
-			path: 'templates'
+			label: 'Message Templates',
+			path: 'templates',
+			roleView: ['admin']
 		}
 	];
 	const nav = (

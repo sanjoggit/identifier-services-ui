@@ -31,14 +31,14 @@ import {PropTypes} from 'prop-types';
 import {Input, InputLabel, NativeSelect} from '@material-ui/core';
 
 
-export default function ({label, input, options, meta: {touched, error}}) {
+export default function ({label, input, name, options, meta: {touched, error}}) {
 	const component = (
 		<>
 			<InputLabel htmlFor="language-helper">{label}</InputLabel>
 			<NativeSelect
 				{...input}
 				error={touched && Boolean(error)}
-				input={<Input name="defaultLanguage" id="language-helper"/>}
+				input={<Input name={name} id="language-helper"/>}
 			>
 				{
 					options.map(item =>

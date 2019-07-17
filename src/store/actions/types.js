@@ -39,10 +39,14 @@ export const GET_CAPTCHA = 'GET_CAPTCHA';
 export const POST_CAPTCHA = 'POST_CAPTCHA';
 
 export const CONTACT = 'CONTACT';
+export const FETCH_MESSAGE = 'FETCH_MESSAGE';
+export const FETCH_MESSAGES_LIST = 'FETCH_MESSAGES_LIST';
 
 export const AUTHENTICATION = 'AUTHENTICATION';
 export const LOG_OUT = 'LOG_OUT';
 
 export const USERS_LIST = 'USERS_LIST';
 export const FETCH_USER = 'FETCH_USER';
+
+export const USERS_REQUESTS_LIST = 'USERS_REQUESTS_LIST';
 
