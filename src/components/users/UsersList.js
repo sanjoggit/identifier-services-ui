@@ -41,11 +41,12 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersList, usersList} = props;
+	const {loading, fetchUsersList, usersList, userInfo} = props;
 	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
+		const id = userInfo.id;
 		setToken(cookie['login-cookie']);
 		token !== null && fetchUsersList(token);
 	}, [token]);
@@ -65,8 +66,8 @@ export default connect(mapStateToProps, actions)(props => {
 	let usersData;
 	if (loading) {
 		usersData = <Spinner/>;
-	} else if (usersList.Users === undefined) {
-		usersData = <p>No Users Available</p>;
+	} else if (usersList.Users === undefined || usersList.Users === null) {
+		usersData = <p>No Users Available</p>
 	} else {
 		usersData = 
 			<TableComponent
@@ -102,6 +103,7 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.users.loading,
-		usersList: state.users.usersList
+		usersList: state.users.usersList,
+		userInfo: state.login.userInfo
 	});
 }

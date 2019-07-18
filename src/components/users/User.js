@@ -36,15 +36,10 @@ import {
 	List,
 	ListItem,
 	ListItemText,
-	Fab,
-	Chip,
-	Paper,
-	ExpansionPanel,
-	ExpansionPanelDetails,
-	ExpansionPanelSummary
+	Fab
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import {reduxForm, Field, FieldArray} from 'redux-form';
+import {reduxForm, Field} from 'redux-form';
 import {useCookies} from 'react-cookie';
 
 import useStyles from '../../styles/publisher';
@@ -55,15 +50,13 @@ import {validate} from '@natlibfi/identifier-services-commons';
 import ModalLayout from '../ModalLayout';
 import Spinner from '../Spinner';
 import renderTextField from '../form/render/renderTextField';
-import renderAliases from '../form/render/renderAliases';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'userCreation',
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {handleSubmit, clearFields, match, user, userInfo, loading, fetchUser} = props;
+	const {match, user, userInfo, loading, fetchUser} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 	const {role} = userInfo;
@@ -84,30 +77,34 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	};
 
 	let userDetail;
-	userDetail = (
-		<Grid item xs={12} md={6}>
-					<Typography variant="h6">
+	if (user === undefined || loading) {
+		userDetail = <Spinner/>;
+	} else {
+		userDetail = (
+			<Grid item xs={12} md={6}>
+				<Typography variant="h6">
 						Publisher Detail
-					</Typography>
-					<List>
-						<ListItem>
-							<ListItemText>
-								<Grid container>
-										<>
-											<Grid item xs={4}>ID:</Grid>
-											{isEdit ?
-												<Grid item xs={8}>
-													<Field name="id" className={formClasses.editForm} component={renderTextField}/>
-												</Grid> :
-												<Grid item xs={8}>{user.id}</Grid>
-											}
-										</>
-								</Grid>
-							</ListItemText>
-						</ListItem>
-					</List>
+				</Typography>
+				<List>
+					<ListItem>
+						<ListItemText>
+							<Grid container>
+								<>
+									<Grid item xs={4}>ID:</Grid>
+									{isEdit ?
+										<Grid item xs={8}>
+											<Field name="id" className={formClasses.editForm} component={renderTextField}/>
+										</Grid> :
+										<Grid item xs={8}>{user.id}</Grid>
+									}
+								</>
+							</Grid>
+						</ListItemText>
+					</ListItem>
+				</List>
 			</Grid>
 		);
+	}
 
 	const component = (
 		<ModalLayout isTableRow color="primary">
@@ -129,7 +126,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 					<Grid container spacing={3} className={classes.publisherSpinner}>
 						{userDetail}
 					</Grid>
-					{role!== undefined && role.some(item => item === 'admin') &&
+					{role !== undefined && role.some(item => item === 'admin') &&
 						<div className={classes.btnContainer}>
 							<Fab
 								color="primary"
@@ -152,7 +149,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 function mapStateToProps(state) {
 	return ({
 		user: state.users.user,
-		loading: state.publisher.loading,
+		loading: state.users.loading,
 		initialValues: state.users.user,
 		userInfo: state.login.userInfo
 	});

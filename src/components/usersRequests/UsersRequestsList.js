@@ -41,7 +41,7 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersRequestsList, usersrequestsList} = props;
+	const {loading, fetchUsersRequestsList, usersRequestsList} = props;
 	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 
@@ -58,39 +58,36 @@ export default connect(mapStateToProps, actions)(props => {
 	};
 
 	const headRows = [
-		{id: 'name', label: 'Name'},
-		{id: 'publisher', label: 'Publisher'},
-		{id: 'defaultLanguage', label: 'Language'}
+		{id: 'givenName', label: 'Given Name'},
+		{id: 'familyName', label: 'Family Name'}
 	];
 	let usersData;
 	if (loading) {
 		usersData = <Spinner/>;
-	} else if (usersrequestsList.Users === undefined) {
-		usersData = <p>No Users Available</p>;
+	} else if (usersRequestsList.UsersRequestContents === undefined) {
+		usersData = <p>No Requests Available</p>;
 	} else {
-		console.log(usersrequestsList);
-		// usersData = 
-		// 	<TableComponent
-		// 		data={usersrequestsList.Users.map(item => usersDataRender(item))}
-		// 		handleTableRowClick={handleTableRowClick}
-		// 		headRows={headRows}
-		// 	/>
+		usersData = 
+			<TableComponent
+				data={usersRequestsList.UsersRequestContents.map(item => usersDataRender(item))}
+				handleTableRowClick={handleTableRowClick}
+				headRows={headRows}
+			/>
 		}
 
 		function usersDataRender(item){
-			const {_id, givenName, publisher, preferences}= item;
+			const {_id, givenName, familyName}= item;
 		return{
 			id: _id,
-			name: givenName,
-			publisher : publisher,
-			defaultLanguage : preferences.defaultLanguage
+			givenName: givenName,
+			familyName: familyName
 		};
 	}
 
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
-				<Typography variant="h5">List of Avaiable users</Typography>
+				<Typography variant="h5">List of Users Creation Requests</Typography>
 				{usersData}
 			</Grid>
 		</Grid>
@@ -103,6 +100,6 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.users.loading,
-		usersrequestsList: state.users.usersrequestsList
+		usersRequestsList: state.users.usersRequestsList
 	});
 }
