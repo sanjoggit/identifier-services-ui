@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER} from './types';
+import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER, PUBLISHERS_REQUESTS_LIST} from './types';
 import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
@@ -86,12 +86,29 @@ export const searchPublisher = (data, token) => async dispatch => {
 		const response = await fetch(`${BASE_URL}/publishers/query?q=${data}`, {
 			method: 'POST',
 			headers: {
-				Authorization: 'Bearer ' + token['login-cookie'],
+				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
 			}
 		});
 		const result = await response.json();
 		dispatch(success(SEARCH_PUBLISHER, result.data));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+};
+
+export const fetchPublishersRequestsList = token => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch(`${BASE_URL}/requests/publishers/query`, {
+			method: 'POST',
+			headers: {
+				Authorization: 'Bearer ' + token,
+				'Content-Type': 'application/json'
+			}
+		});
+		const result = await response.json();
+		dispatch(success(PUBLISHERS_REQUESTS_LIST, result.data));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}

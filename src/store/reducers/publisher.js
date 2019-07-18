@@ -26,12 +26,13 @@
  *
  */
 
-import {PUBLISHERS_LIST, PUBLISHER, LOADER, ERROR, SEARCH_PUBLISHER} from '../actions/types';
+import {PUBLISHERS_LIST, PUBLISHER, LOADER, ERROR, SEARCH_PUBLISHER, PUBLISHERS_REQUESTS_LIST} from '../actions/types';
 
 const initialState = {
 	publishersList: [],
 	publisher: {},
 	searchedPublisher: [],
+	publishersRequestsList: [],
 	loading: false,
 	error: {}
 };
@@ -53,6 +54,12 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				publisher: action.payload,
+				loading: false
+			};
+		case PUBLISHERS_REQUESTS_LIST:
+			return {
+				...state,
+				publishersRequestsList: action.payload,
 				loading: false
 			};
 		case ERROR:
