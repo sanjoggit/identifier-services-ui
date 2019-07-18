@@ -30,9 +30,8 @@
 
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
+import {Grid, Typography} from '@material-ui/core';
 
-import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
 import * as actions from '../../store/actions';
@@ -42,13 +41,11 @@ import {useCookies} from 'react-cookie';
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, fetchUsersRequestsList, usersRequestsList} = props;
-	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
-		setToken(cookie['login-cookie']);
-		token !== null && fetchUsersRequestsList(token);
-	}, [token]);
+		fetchUsersRequestsList(cookie['login-cookie']);
+	}, []);
 
 	const handleTableRowClick = id => {
 		props.history.push({
@@ -62,22 +59,23 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'familyName', label: 'Family Name'}
 	];
 	let usersData;
-	if (loading) {
+	if ((usersRequestsList.UsersRequestContents === undefined) || (loading)) {
 		usersData = <Spinner/>;
-	} else if (usersRequestsList.UsersRequestContents === undefined) {
+	} else if (usersRequestsList.UsersRequestContents.length === 0) {
 		usersData = <p>No Requests Available</p>;
 	} else {
-		usersData = 
+		usersData = (
 			<TableComponent
 				data={usersRequestsList.UsersRequestContents.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 			/>
-		}
+		);
+	}
 
-		function usersDataRender(item){
-			const {_id, givenName, familyName}= item;
-		return{
+	function usersDataRender(item) {
+		const {_id, givenName, familyName} = item;
+		return {
 			id: _id,
 			givenName: givenName,
 			familyName: familyName

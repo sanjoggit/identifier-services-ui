@@ -41,6 +41,7 @@ import TopNav from './components/navbar/topNav';
 import AdminNav from './components/navbar/adminNav';
 import Publisher from './components/publishers/Publisher';
 import PublishersList from './components/publishers/PublishersList';
+import PublisherRequest from './components/publishersRequests/publisherRequest';
 import User from './components/users/User';
 import UsersList from './components/users/UsersList';
 import UsersRequest from './components/usersRequests/UsersRequest';
@@ -70,10 +71,12 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 
 	const privateRoutesList = [
 		{path: '/users', role: ['admin', 'publisherAdmin', 'publisher', 'system'], component: UsersList},
+		{path: '/users/:id', role: ['admin', 'publisherAdmin', 'publisher', 'system'], component: UsersList},
 		{path: '/requests/users', role: ['admin'], component: UsersRequestsList},
+		{path: '/requests/users/:id', role: ['admin'], component: UsersRequestsList},
 		{path: '/templates', role: ['admin'], component: MessagesList},
-		{path: '/requests/publishers', role: ['publisher', 'admin'], component: PublishersRequestsList}
-
+		{path: '/requests/publishers', role: ['publisher', 'admin'], component: PublishersRequestsList},
+		{path: '/requests/publishers/:id', role: ['publisher', 'admin'], component: PublishersRequestsList}
 
 	];
 
@@ -124,6 +127,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 						{routes}
 					</Switch>
 					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
+					{isModal ? <Route path="/requests/publishers/:id" component={PublisherRequest}/> : null}
 					{isModal ? <Route path="/users/:id" component={User}/> : null}
 					{isModal ? <Route path="/requests/users/:id" component={UsersRequest}/> : null}
 					{isModal ? <Route path="/templates/:id" component={Message}/> : null}
