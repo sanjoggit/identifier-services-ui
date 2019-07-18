@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {USERS_LIST, ERROR, USERS_REQUESTS_LIST, FETCH_USER} from './types';
+import {USERS_LIST, ERROR, USERS_REQUESTS_LIST, FETCH_USER, FETCH_USERS_REQUEST} from './types';
 import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
@@ -88,7 +88,23 @@ export const fetchUser = (id, token) => async dispatch => {
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
-}
+};
+
+export const fetchUserRequest = (id, token) => async dispatch => {
+	dispatch(setLoader());
+	try {
+		const response = await fetch(`${BASE_URL}/requests/users/${id}`, {
+			method: 'GET',
+			headers: {
+				Authorization: 'Bearer ' + token
+			}
+		});
+		const result = await response.json();
+		dispatch(success(FETCH_USERS_REQUEST, result.data.usersRequestContent));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+};
 
 export const fetchUsersRequestsList = token => async dispatch => {
 	dispatch(setLoader());
@@ -105,4 +121,4 @@ export const fetchUsersRequestsList = token => async dispatch => {
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
-}
+};

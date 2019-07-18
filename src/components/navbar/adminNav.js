@@ -55,9 +55,9 @@ export default function ({userInfo, isAuthenticated}) {
 			label: 'Requests',
 			roleView: ['admin', 'publisher'],
 			listItem: [
-				{label: 'Publishers', path: "requests/publishers", roleView: ['admin']},
-				{label: 'Publications', path: "requests/publications", roleView: ['admin', 'publisher']},
-				{label: 'Users', path: "requests/users", roleView: ['admin', 'publisher']}
+				{label: 'Publishers', path: 'requests/publishers', roleView: ['admin']},
+				{label: 'Publications', path: 'requests/publications', roleView: ['admin', 'publisher']},
+				{label: 'Users', path: 'requests/users', roleView: ['admin', 'publisher']}
 			]
 		},
 		{

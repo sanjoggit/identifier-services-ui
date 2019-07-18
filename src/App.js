@@ -69,7 +69,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 	];
 
 	const privateRoutesList = [
-		{path: '/users', role: ['admin'], component: UsersList},
+		{path: '/users', role: ['admin', 'publisherAdmin', 'publisher', 'system'], component: UsersList},
 		{path: '/requests/users', role: ['admin'], component: UsersRequestsList},
 		{path: '/templates', role: ['admin'], component: MessagesList},
 		{path: '/requests/publishers', role: ['publisher', 'admin'], component: PublishersRequestsList}
