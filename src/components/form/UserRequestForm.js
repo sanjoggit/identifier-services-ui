@@ -37,19 +37,10 @@ import {useCookies} from 'react-cookie';
 import renderTextField from './render/renderTextField';
 import useStyles from '../../styles/form';
 import * as actions from '../../store/actions/userActions';
-import renderCheckboxes from './render/renderCheckboxes';
-import renderSelect from './render/renderSelect';
 import renderObjectArray from './render/renderObjectArray';
 
-const roleOption = [
-	{label: 'system', value: 'system'},
-	{label: 'admin', value: 'admin'},
-	{label: 'publisher-admin', value: 'publisherAdmin'},
-	{label: 'publisher', value: 'publisher'}
-];
-
 const selectOption = [
-	{label: '', value: ""},
+	{label: '', value: ''},
 	{label: 'Work', value: 'work'},
 	{label: 'Home', value: 'home'},
 	{label: 'Other', value: 'other'}
@@ -62,8 +53,9 @@ const fieldArray = [
 		label: 'Emails',
 		width: 'full',
 		subName: [
-			{name: 'value', label: 'Email', className: 'children'}, 
-			{name: 'type', label: 'Type', type:'select', option: selectOption, className: 'children'}]
+			{name: 'value', label: 'Email', className: 'children'},
+			{name: 'type', label: 'Type', type: 'select', option: selectOption, className: 'children'}
+		]
 	},
 	{
 		name: 'givenName',
@@ -81,7 +73,7 @@ const fieldArray = [
 
 export default connect(null, actions)(reduxForm({
 	form: 'userCreation',
-	validate,
+	validate
 })(
 	props => {
 		const {handleSubmit, clearFields, valid, createUserRequest, pristine} = props;
@@ -97,7 +89,7 @@ export default connect(null, actions)(reduxForm({
 			const newUser = {
 				...values,
 				givenName: values.givenName.toLowerCase(),
-				familyName: values.familyName.toLowerCase(),
+				familyName: values.familyName.toLowerCase()
 			};
 			createUserRequest(newUser, token);
 		}

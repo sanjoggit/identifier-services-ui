@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 /**
@@ -36,44 +37,37 @@ import {
 	List,
 	ListItem,
 	ListItemText,
-	Fab,
-	Chip,
-	Paper,
-	ExpansionPanel,
-	ExpansionPanelDetails,
-	ExpansionPanelSummary
+	Fab
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import {reduxForm, Field, FieldArray} from 'redux-form';
+import CloseIcon from '@material-ui/icons/Close';
+import DoneIcon from '@material-ui/icons/Done';
+import {reduxForm} from 'redux-form';
 import {useCookies} from 'react-cookie';
 
 import useStyles from '../../styles/publisher';
-import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
 import {connect} from 'react-redux';
 import {validate} from '@natlibfi/identifier-services-commons';
 import ModalLayout from '../ModalLayout';
 import Spinner from '../Spinner';
-import renderTextField from '../form/render/renderTextField';
-import renderAliases from '../form/render/renderAliases';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import UserRequestForm from '../form/UserCreationForm';
 
 export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'userCreation',
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {handleSubmit, clearFields, match, user, userInfo, loading, fetchUser} = props;
+	const {match, usersRequest, userInfo, loading, fetchUserRequest} = props;
 	const classes = useStyles();
-	const formClasses = useFormStyles();
 	const {role} = userInfo;
 	const [isEdit, setIsEdit] = useState(false);
 	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
 		const token = cookie['login-cookie'];
-		fetchUser(match.params.id, token);
-	}, [user === undefined]);
+		fetchUserRequest(match.params.id, token);
+	}, [usersRequest === undefined]);
 
 	const handleEditClick = () => {
 		setIsEdit(true);
@@ -83,31 +77,44 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		setIsEdit(false);
 	};
 
-	let userDetail;
-	userDetail = (
-		<Grid item xs={12} md={6}>
-					<Typography variant="h6">
-						Publisher Detail
-					</Typography>
-					<List>
-						<ListItem>
-							<ListItemText>
+	let userRequestDetail;
+	if (usersRequest === undefined || loading) {
+		userRequestDetail = <Spinner/>;
+	} else {
+		userRequestDetail = (
+			<Grid item xs={12} md={6}>
+				<Typography variant="h6">
+					Publisher Detail
+				</Typography>
+				<List>
+					<ListItem>
+						<ListItemText>
+							{isEdit ?
+								<UserRequestForm/> :
 								<Grid container>
-										<>
-											<Grid item xs={4}>ID:</Grid>
-											{isEdit ?
-												<Grid item xs={8}>
-													<Field name="id" className={formClasses.editForm} component={renderTextField}/>
-												</Grid> :
-												<Grid item xs={8}>{user.id}</Grid>
-											}
-										</>
+									{Object.keys(usersRequest).map(key => (key !== 'emails') ?
+										<div key={key}>
+											<Grid item xs={4}>{key}: </Grid>
+											<Grid item xs={8}>{usersRequest[key]}</Grid>
+										</div> :
+										usersRequest[key].map(field => (
+											<div key={key}>
+												<Grid item xs={4}>{key}: </Grid>
+												<>
+													<Grid item xs={8}>{field.value}</Grid>
+													<Grid item xs={8}>{field.type}</Grid>
+												</>
+											</div>
+										))
+									)}
 								</Grid>
-							</ListItemText>
-						</ListItem>
-					</List>
+							}
+						</ListItemText>
+					</ListItem>
+				</List>
 			</Grid>
 		);
+	}
 
 	const component = (
 		<ModalLayout isTableRow color="primary">
@@ -115,21 +122,34 @@ export default connect(mapStateToProps, actions)(reduxForm({
 				<div className={classes.publisher}>
 					<form>
 						<Grid container spacing={3} className={classes.publisherSpinner}>
-							{userDetail}
+							{userRequestDetail}
 						</Grid>
 						<div className={classes.btnContainer}>
 							<Button onClick={handleCancel}>Cancel</Button>
-							<Button variant="contained" color="primary">
-								UPDATE
-							</Button>
+							<Fab
+								color="primary"
+								size="small"
+								title="Reject"
+							// OnClick={handleEditClick}
+							>
+								<CloseIcon/>
+							</Fab>
+							<Fab
+								color="primary"
+								size="small"
+								title="Accept"
+							// OnClick={handleEditClick}
+							>
+								<DoneIcon/>
+							</Fab>
 						</div>
 					</form>
 				</div> :
 				<div className={classes.publisher}>
 					<Grid container spacing={3} className={classes.publisherSpinner}>
-						{userDetail}
+						{userRequestDetail}
 					</Grid>
-					{role!== undefined && role.some(item => item === 'admin') &&
+					{role !== undefined && role.some(item => item === 'admin') &&
 						<div className={classes.btnContainer}>
 							<Fab
 								color="primary"
@@ -151,9 +171,9 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 function mapStateToProps(state) {
 	return ({
-		user: state.users.user,
-		loading: state.publisher.loading,
-		initialValues: state.users.user,
+		usersRequest: state.users.usersRequest,
+		loading: state.users.loading,
+		initialValues: state.users.usersRequest,
 		userInfo: state.login.userInfo
 	});
 }

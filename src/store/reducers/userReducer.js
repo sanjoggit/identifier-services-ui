@@ -26,10 +26,11 @@
  *
  */
 
-import {USERS_LIST, LOADER, ERROR, USERS_REQUESTS_LIST, FETCH_USER} from '../actions/types';
+import {USERS_LIST, LOADER, ERROR, USERS_REQUESTS_LIST, FETCH_USER, FETCH_USERS_REQUEST} from '../actions/types';
 
 const initialState = {
 	usersList: [],
+	usersRequest: [],
 	usersRequestsList: [],
 	user: {},
 	loading: false,
@@ -59,6 +60,12 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				usersRequestsList: action.payload,
+				loading: false
+			};
+		case FETCH_USERS_REQUEST:
+			return {
+				...state,
+				usersRequest: action.payload,
 				loading: false
 			};
 		case ERROR:

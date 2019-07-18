@@ -48,7 +48,6 @@ export default connect(mapStateToProps, actions)(props => {
 	useEffect(() => {
 		setToken(cookie['login-cookie']);
 		token !== null && fetchUsersRequestsList(token);
-		console.log(usersRequestsList);
 	}, [token]);
 
 	const handleTableRowClick = id => {
