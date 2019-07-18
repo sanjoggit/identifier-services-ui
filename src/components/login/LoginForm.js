@@ -49,6 +49,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		normalLogin(values);
 		history.push('/publishers');
 		handleClose();
+		// eslint-disable-next-line no-undef
+		window.location.reload();
 	};
 
 	const component = (

@@ -41,7 +41,7 @@ export default connect(null, actions)(withRouter(props => {
 	const {searchPublisher, history} = props;
 	const classes = useStyles();
 	const [inputVal, setInputVal] = useState('');
-	const [token] = useCookies('login-cookie');
+	const [cookie] = useCookies('login-cookie');
 
 	const handleInputChange = e => {
 		setInputVal(e.target.value);
@@ -49,7 +49,7 @@ export default connect(null, actions)(withRouter(props => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		searchPublisher(inputVal, token);
+		searchPublisher(inputVal, cookie['login-cookie']);
 		history.push('/publishers');
 	};
 

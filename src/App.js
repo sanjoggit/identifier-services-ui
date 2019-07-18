@@ -72,7 +72,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 		{path: '/users', role: ['admin'], component: UsersList},
 		{path: '/requests/users', role: ['admin'], component: UsersRequestsList},
 		{path: '/templates', role: ['admin'], component: MessagesList},
-		{path: '/requests/publishers', role: ['publisher'], component: PublishersRequestsList}
+		{path: '/requests/publishers', role: ['publisher', 'admin'], component: PublishersRequestsList}
 
 
 	];
