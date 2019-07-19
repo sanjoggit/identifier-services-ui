@@ -31,7 +31,7 @@ import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
 
-export const fetchUsersList = token => async dispatch => {
+export const fetchUsersList = (token, {first, offset}) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/users/query`, {
@@ -39,10 +39,11 @@ export const fetchUsersList = token => async dispatch => {
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			}
+			},
+			body: JSON.stringify({first: first, offset: offset})
 		});
 		const result = await response.json();
-		dispatch(success(USERS_LIST, result.data));
+		dispatch(success(USERS_LIST, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}

@@ -59,7 +59,6 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const classes = useStyles();
 	const [isEdit, setIsEdit] = useState(false);
 	const [cookie] = useCookies('login-cookie');
-    console.log('publisherRequest', publisherRequest);
 	useEffect(() => {
 		fetchPublisherRequest(match.params.id, cookie['login-cookie']);
 	}, [fetchPublisherRequest === undefined]);
