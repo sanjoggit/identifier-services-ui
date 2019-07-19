@@ -30,7 +30,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
-import {Table, TableBody, TableCell, TableHead, TableFooter, TablePagination, TableRow, TableSortLabel, Paper, IconButton} from '@material-ui/core';
+import {Table, TableBody, TableCell, TableHead, TableFooter, TableRow, TableSortLabel, Paper, IconButton} from '@material-ui/core';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
@@ -143,7 +143,7 @@ export default function (props) {
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('calories');
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
+	const [rowsPerPage] = React.useState(5);
 
 	function handleRequestSort(event, property) {
 		const isDesc = orderBy === property && order === 'desc';
@@ -155,12 +155,8 @@ export default function (props) {
 		setPage(newPage);
 	}
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(Number(event.target.value));
-	}
-
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.data.length - page * rowsPerPage);
-	const {data, headRows, handleTableRowClick} = props;
+	const {data, headRows, handleTableRowClick, totalDataCount, first, setFirst} = props;
 	const component = (
 		<Paper className={classes.paper}>
 			<Table
@@ -197,19 +193,14 @@ export default function (props) {
 				</TableBody>
 				<TableFooter>
 					<TableRow>
-						<TablePagination
-							rowsPerPageOptions={[5, 10, 25]}
+						<TablePaginationActions
 							colSpan={headRows.length}
-							count={data.length}
+							count={totalDataCount}
 							rowsPerPage={rowsPerPage}
 							page={page}
-							SelectProps={{
-								inputProps: {'aria-label': 'Rows per page'},
-								native: true
-							}}
-							ActionsComponent={TablePaginationActions}
+							setFirst={setFirst}
+							first={first}
 							onChangePage={handleChangePage}
-							onChangeRowsPerPage={handleChangeRowsPerPage}
 						/>
 					</TableRow>
 				</TableFooter>
@@ -229,45 +220,50 @@ export default function (props) {
 function TablePaginationActions(props) {
 	const classes = useStyles1();
 	const theme = useTheme();
-	const {count, page, rowsPerPage, onChangePage} = props;
+	const {count, page, rowsPerPage, onChangePage, setFirst, first} = props;
 
 	function handleFirstPageButtonClick(event) {
 		onChangePage(event, 0);
+		setFirst(0);
 	}
 
 	function handleBackButtonClick(event) {
 		onChangePage(event, page - 1);
+		setFirst(first - 5);
 	}
 
 	function handleNextButtonClick(event) {
 		onChangePage(event, page + 1);
+		setFirst(first + 5);
 	}
 
 	function handleLastPageButtonClick(event) {
 		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+		setFirst(count - (count % rowsPerPage));
 	}
 
 	return (
 		<div className={classes.root}>
+			<span>{first + 1}-{(first + 5 > count) ? count : first + 5}/{count}</span>
 			<IconButton
-				disabled={page === 0}
+				disabled={first === 0}
 				aria-label="First Page"
 				onClick={handleFirstPageButtonClick}
 			>
 				{theme.direction === 'rtl' ? <LastPageIcon/> : <FirstPageIcon/>}
 			</IconButton>
-			<IconButton disabled={page === 0} aria-label="Previous Page" onClick={handleBackButtonClick}>
+			<IconButton disabled={first === 0} aria-label="Previous Page" onClick={handleBackButtonClick}>
 				{theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
 			</IconButton>
 			<IconButton
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+				disabled={(count / (first + 5)) < 1}
 				aria-label="Next Page"
 				onClick={handleNextButtonClick}
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
 			</IconButton>
 			<IconButton
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+				disabled={(count / (first + 5)) < 1}
 				aria-label="Last Page"
 				onClick={handleLastPageButtonClick}
 			>
@@ -281,5 +277,7 @@ TablePaginationActions.propTypes = {
 	count: PropTypes.number.isRequired,
 	onChangePage: PropTypes.func.isRequired,
 	page: PropTypes.number.isRequired,
-	rowsPerPage: PropTypes.number.isRequired
+	rowsPerPage: PropTypes.number.isRequired,
+	setFirst: PropTypes.func.isRequired,
+	first: PropTypes.string.isRequired
 };

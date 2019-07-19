@@ -31,7 +31,6 @@ import {CONTACT, FETCH_MESSAGE, FETCH_MESSAGES_LIST, ERROR} from './types';
 import fetch from 'node-fetch';
 import {setLoader, success, fail} from './commonAction';
 
-
 export const sendMessage = values => async dispatch => {
 	dispatch(setLoader());
 	const response = await fetch('http://localhost:8080/message', {
@@ -59,11 +58,11 @@ export const createMessageTemplate = values => async dispatch => {
 		body: JSON.stringify(values)
 	});
 	console.log(await response.json());
-}
+};
 
 export const fetchMessagesList = token => async dispatch => {
 	dispatch(setLoader());
-	try{
+	try {
 		const response = await fetch('http://localhost:8081/templates/query', {
 			method: 'POST',
 			headers: {
@@ -72,25 +71,24 @@ export const fetchMessagesList = token => async dispatch => {
 			}
 		});
 		const result = await response.json();
-		dispatch(success(FETCH_MESSAGES_LIST, result.data))
-	}catch(err){
-		dispatch(fail(ERROR, err))
+		dispatch(success(FETCH_MESSAGES_LIST, result.data));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
 	}
+};
 
-}
 export const fetchMessage = (id, token) => async dispatch => {
 	dispatch(setLoader());
-	try{
+	try {
 		const response = await fetch(`http://localhost:8081/templates/${id}`, {
 			method: 'GET',
 			headers: {
-				Authorization: 'Bearer ' + token,
+				Authorization: 'Bearer ' + token
 			}
 		});
 		const result = await response.json();
-		dispatch(success(FETCH_MESSAGE, result.data))
-	}catch(err){
-		dispatch(fail(ERROR, err))
+		dispatch(success(FETCH_MESSAGE, result.data));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
 	}
-
-}
+};
