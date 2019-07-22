@@ -33,6 +33,7 @@ const initialState = {
 	total: null,
 	usersRequest: [],
 	usersRequestsList: [],
+	totalUsersRequests: null,
 	user: {},
 	loading: false,
 	error: {}
@@ -54,14 +55,15 @@ export default function (state = initialState, action) {
 		case USERS_LIST:
 			return {
 				...state,
-				usersList: action.payload.result.data,
+				usersList: action.payload.result,
 				total: action.payload.total,
 				loading: false
 			};
 		case USERS_REQUESTS_LIST:
 			return {
 				...state,
-				usersRequestsList: action.payload,
+				usersRequestsList: action.payload.result,
+				totalUsersRequests: action.payload.total,
 				loading: false
 			};
 		case FETCH_USERS_REQUEST:
