@@ -107,7 +107,7 @@ export const fetchUserRequest = (id, token) => async dispatch => {
 	}
 };
 
-export const fetchUsersRequestsList = token => async dispatch => {
+export const fetchUsersRequestsList = (token, {first, offset}) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/requests/users/query`, {
@@ -115,10 +115,11 @@ export const fetchUsersRequestsList = token => async dispatch => {
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			}
+			},
+			body: JSON.stringify({first: first, offset: offset})
 		});
 		const result = await response.json();
-		dispatch(success(USERS_REQUESTS_LIST, result.data));
+		dispatch(success(USERS_REQUESTS_LIST, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}

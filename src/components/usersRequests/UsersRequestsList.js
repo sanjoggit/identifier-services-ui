@@ -40,12 +40,13 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersRequestsList, usersRequestsList} = props;
+	const {loading, fetchUsersRequestsList, usersRequestsList, totalUsersRequests} = props;
 	const [cookie] = useCookies('login-cookie');
+	const [first, setFirst]= useState(0);
 
 	useEffect(() => {
-		fetchUsersRequestsList(cookie['login-cookie']);
-	}, []);
+		cookie['login-cookie'] !== null && fetchUsersRequestsList(cookie['login-cookie'], {first: first, offset: 5});
+	}, [cookie['login-cookie'], first]);
 
 	const handleTableRowClick = id => {
 		props.history.push({
@@ -59,16 +60,19 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'familyName', label: 'Family Name'}
 	];
 	let usersData;
-	if ((usersRequestsList.UsersRequestContents === undefined) || (loading)) {
+	if ((usersRequestsList === undefined) || (loading)) {
 		usersData = <Spinner/>;
-	} else if (usersRequestsList.UsersRequestContents.length === 0) {
+	} else if (usersRequestsList.length === 0) {
 		usersData = <p>No Requests Available</p>;
 	} else {
 		usersData = (
 			<TableComponent
-				data={usersRequestsList.UsersRequestContents.map(item => usersDataRender(item))}
+				data={usersRequestsList.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
+				totalDataCount={totalUsersRequests}
+				setFirst={setFirst}
+				first={first}
 			/>
 		);
 	}
@@ -98,6 +102,7 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.users.loading,
-		usersRequestsList: state.users.usersRequestsList
+		usersRequestsList: state.users.usersRequestsList,
+		totalUsersRequests: state.users.totalUsersRequests
 	});
 }

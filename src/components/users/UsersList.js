@@ -42,15 +42,13 @@ import {useCookies} from 'react-cookie';
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, fetchUsersList, usersList, totalUsers, userInfo} = props;
-	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 	const [first, setFirst]= useState(0);
 
 	useEffect(() => {
-		const id = userInfo.id;
-		setToken(cookie['login-cookie']);
-		token !== null && fetchUsersList(token, {first: first, offset: 5});
-	}, [token, first]);
+	cookie['login-cookie'] !== null && fetchUsersList(cookie['login-cookie'], {first: first, offset: 5});
+	}, [cookie['login-cookie'], first]);
+
 	const handleTableRowClick = id => {
 		props.history.push({
 			pathname: `/users/${id}`,
@@ -66,12 +64,12 @@ export default connect(mapStateToProps, actions)(props => {
 	let usersData;
 	if (loading) {
 		usersData = <Spinner/>;
-	} else if (usersList.Users === undefined || usersList.Users === null) {
+	} else if (usersList === undefined || usersList === null) {
 		usersData = <p>No Users Available</p>
 	} else {
 		usersData = 
 			<TableComponent
-				data={usersList.Users.map(item => usersDataRender(item))}
+				data={usersList.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 				totalDataCount={totalUsers}
