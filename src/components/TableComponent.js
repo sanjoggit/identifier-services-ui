@@ -157,7 +157,6 @@ export default function (props) {
 
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.data.length - page * rowsPerPage);
 	const {data, headRows, handleTableRowClick, totalDataCount, first, setFirst} = props;
-	console.log(data);
 	const component = (
 		<Paper className={classes.paper}>
 			<Table
