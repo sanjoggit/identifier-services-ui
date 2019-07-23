@@ -31,16 +31,15 @@ import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
 
-export const fetchUsersList = (token, {first, offset}) => async dispatch => {
+export const fetchUsersList = (token, {count, page}) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/users/query`, {
+		const response = await fetch(`${BASE_URL}/users/query?count=${count}&page=${page}`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({first: first, offset: offset})
+			}
 		});
 		const result = await response.json();
 		dispatch(success(USERS_LIST, result));
@@ -49,7 +48,7 @@ export const fetchUsersList = (token, {first, offset}) => async dispatch => {
 	}
 };
 
-export const createUser = (values, token) => async dispatch => {
+export const createUser = (values, token) => async () => {
 	const response = await fetch(`${BASE_URL}/users`, {
 		method: 'POST',
 		headers: {
@@ -62,7 +61,7 @@ export const createUser = (values, token) => async dispatch => {
 	console.log(await response.json());
 };
 
-export const createUserRequest = (values, token) => async dispatch => {
+export const createUserRequest = (values, token) => async () => {
 	const response = await fetch(`${BASE_URL}/requests/users`, {
 		method: 'POST',
 		headers: {

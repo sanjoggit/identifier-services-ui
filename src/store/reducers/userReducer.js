@@ -30,7 +30,7 @@ import {USERS_LIST, LOADER, ERROR, USERS_REQUESTS_LIST, FETCH_USER, FETCH_USERS_
 
 const initialState = {
 	usersList: [],
-	total: null,
+	totalUsers: null,
 	usersRequest: [],
 	usersRequestsList: [],
 	totalUsersRequests: null,
@@ -55,8 +55,8 @@ export default function (state = initialState, action) {
 		case USERS_LIST:
 			return {
 				...state,
-				usersList: action.payload.result,
-				total: action.payload.total,
+				usersList: action.payload.data.Users,
+				totalUsers: action.payload.total,
 				loading: false
 			};
 		case USERS_REQUESTS_LIST:

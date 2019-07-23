@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-expressions */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -41,13 +41,21 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersList, usersList, totalUsers, userInfo} = props;
+	const {loading, fetchUsersList, usersList, totalUsers, location} = props;
 	const [cookie] = useCookies('login-cookie');
-	const [first, setFirst]= useState(0);
+	const [count, setCount] = useState(5);
+	const [xPage, setXpage] = useState(1);
 
 	useEffect(() => {
-	cookie['login-cookie'] !== null && fetchUsersList(cookie['login-cookie'], {first: first, offset: 5});
-	}, [cookie['login-cookie'], first]);
+		props.history.push(`/users/query?count=${count}&page=${xPage}`);
+		fetchUsersList(cookie['login-cookie'], {count: count, page: xPage});
+	}, [count, xPage]);
+
+	useEffect(() => {
+		const urlParams = new URLSearchParams(location.search);
+		setCount(urlParams.get('count'));
+		setXpage(urlParams.get('page'));
+	}, []);
 
 	const handleTableRowClick = id => {
 		props.history.push({
@@ -65,26 +73,29 @@ export default connect(mapStateToProps, actions)(props => {
 	if (loading) {
 		usersData = <Spinner/>;
 	} else if (usersList === undefined || usersList === null) {
-		usersData = <p>No Users Available</p>
+		usersData = <p>No Users Available</p>;
 	} else {
-		usersData = 
+		usersData = (
 			<TableComponent
 				data={usersList.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 				totalDataCount={totalUsers}
-				setFirst={setFirst}
-				first={first}
+				setCount={setCount}
+				setXpage={setXpage}
+				xPage={xPage}
+				count={count}
 			/>
-		}
+		);
+	}
 
-		function usersDataRender(item){
-			const {_id, givenName, publisher, preferences}= item;
-		return{
+	function usersDataRender(item) {
+		const {_id, givenName, publisher, preferences} = item;
+		return {
 			id: _id,
 			name: givenName,
-			publisher : publisher,
-			defaultLanguage : preferences.defaultLanguage
+			publisher: publisher,
+			defaultLanguage: preferences.defaultLanguage
 		};
 	}
 
@@ -106,6 +117,6 @@ function mapStateToProps(state) {
 		loading: state.users.loading,
 		usersList: state.users.usersList,
 		userInfo: state.login.userInfo,
-		totalUsers: state.users.total
+		totalUsers: state.users.totalUsers
 	});
 }
