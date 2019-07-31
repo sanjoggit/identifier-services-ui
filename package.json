@@ -31,6 +31,7 @@
   "dependencies": {
     "@material-ui/core": "^4.2.0",
     "@material-ui/icons": "^4.2.1",
+    "@material-ui/lab": "^4.0.0-alpha.20",
     "@material-ui/pickers": "^3.1.2",
     "@material-ui/styles": "^4.2.0",
     "@natlibfi/express-validate-content-type": "^1.0.1",

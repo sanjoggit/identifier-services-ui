@@ -112,7 +112,7 @@ EnhancedTableHead.propTypes = {
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		width: '100%',
+		width: '100% !important',
 		marginTop: theme.spacing(3)
 	},
 	paper: {
@@ -139,7 +139,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function (props) {
-	const {data, headRows, handleTableRowClick, totalDataCount, count, xPage, setCount, setXpage} = props;
+	const {
+		data,
+		headRows,
+		handleTableRowClick,
+		totalDataCount,
+		count,
+		xPage,
+		setCount,
+		setXpage,
+		endCursor,
+		setEndCursor,
+		startCursor,
+		setBeginCursor,
+		hasNextPage
+	} = props;
 	const classes = useStyles();
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('calories');
@@ -181,15 +195,17 @@ export default function (props) {
 				</TableBody>
 				<TableFooter>
 					<TableRow>
-						<TablePaginationActions
-							colSpan={headRows.length}
-							total={totalDataCount}
-							rowsPerPage={rowsPerPage}
-							page={xPage}
-							count={count}
-							setPage={setXpage}
-							setCount={setCount}
-						/>
+						<TableCell colSpan={headRows.length}>
+							<TablePaginationActions
+								total={totalDataCount}
+								rowsPerPage={rowsPerPage}
+								page={xPage}
+								count={count}
+								setPage={setXpage}
+								setCount={setCount}
+								{...props}
+							/>
+						</TableCell>
 					</TableRow>
 				</TableFooter>
 			</Table>
@@ -208,7 +224,17 @@ export default function (props) {
 function TablePaginationActions(props) {
 	const classes = useStyles1();
 	const theme = useTheme();
-	const {page, rowsPerPage, setPage, total, count} = props;
+	const {
+		page,
+		rowsPerPage,
+		setPage, total,
+		count,
+		setEndCursor,
+		endCursor,
+		startCursor,
+		setBeginCursor,
+		hasNextPage
+	} = props;
 
 	function handleFirstPageButtonClick() {
 		setPage(1);
@@ -217,11 +243,13 @@ function TablePaginationActions(props) {
 	function handleBackButtonClick() {
 		// eslint-disable-next-line radix
 		setPage(parseInt(page) - 1);
+		setBeginCursor(startCursor);
 	}
 
 	function handleNextButtonClick() {
 		// eslint-disable-next-line radix
 		setPage(parseInt(page) + 1);
+		setEndCursor(endCursor);
 	}
 
 	function handleLastPageButtonClick() {
@@ -245,7 +273,7 @@ function TablePaginationActions(props) {
 				{theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
 			</IconButton>
 			<IconButton
-				disabled={(count * page) >= total}
+				disabled={!hasNextPage}
 				aria-label="Next Page"
 				onClick={handleNextButtonClick}
 			>

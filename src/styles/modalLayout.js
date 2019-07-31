@@ -50,7 +50,7 @@ const useStyles = makeStyles({
 		a: {
 			textDecoration: 'none',
 			color: '#00224f'
-		}
+		}		
 	},
 
 	container: {
@@ -89,7 +89,7 @@ const useStyles = makeStyles({
 		display: 'inherit',
 		alignItems: 'center',
 		justifyItems: 'flex-end'
-	},
+	}
 });
 
 export default useStyles;

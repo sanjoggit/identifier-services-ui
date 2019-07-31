@@ -56,6 +56,7 @@ export default connect(mapStateToProps, actions)(props => {
 	};
 
 	const headRows = [
+		{id: 'state', label: 'State'},
 		{id: 'givenName', label: 'Given Name'},
 		{id: 'familyName', label: 'Family Name'}
 	];
@@ -78,11 +79,12 @@ export default connect(mapStateToProps, actions)(props => {
 	}
 
 	function usersDataRender(item) {
-		const {_id, givenName, familyName} = item;
+		const {_id, state, givenName, familyName} = item;
 		return {
 			id: _id,
+			state: state,
 			givenName: givenName,
-			familyName: familyName
+			familyName: familyName 
 		};
 	}
 

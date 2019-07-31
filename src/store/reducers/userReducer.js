@@ -30,8 +30,14 @@ import {USERS_LIST, LOADER, ERROR, USERS_REQUESTS_LIST, FETCH_USER, FETCH_USERS_
 
 const initialState = {
 	usersList: [],
+	pageInfo: {
+		endCursor: null,
+		startCursor: null,
+		hasNextPage: false,
+		hasPreviousPage: false
+	},
 	totalUsers: null,
-	usersRequest: [],
+	usersRequest: {},
 	usersRequestsList: [],
 	totalUsersRequests: null,
 	user: {},
@@ -53,10 +59,12 @@ export default function (state = initialState, action) {
 				loading: false
 			};
 		case USERS_LIST:
+			console.log('user_list', action.payload)
 			return {
 				...state,
-				usersList: action.payload.data.Users,
-				totalUsers: action.payload.total,
+				usersList: action.payload.data.Users.edges.node,
+				pageInfo: action.payload.data.Users.pageInfo,
+				totalUsers: action.payload.data.Users.totalCount,
 				loading: false
 			};
 		case USERS_REQUESTS_LIST:

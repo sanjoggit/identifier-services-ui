@@ -51,14 +51,14 @@ import {connect} from 'react-redux';
 import {validate} from '@natlibfi/identifier-services-commons';
 import ModalLayout from '../ModalLayout';
 import Spinner from '../Spinner';
-import UserRequestForm from '../form/UserCreationForm';
+import UserCreationForm from '../form/UserCreationForm';
 
 export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'userCreation',
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {match, usersRequest, userInfo, loading, fetchUserRequest} = props;
+	const {match, usersRequest, userInfo, loading, fetchUserRequest, updateUserRequest} = props;
 	const classes = useStyles();
 	const {role} = userInfo;
 	const [isEdit, setIsEdit] = useState(false);
@@ -67,7 +67,14 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	useEffect(() => {
 		const token = cookie['login-cookie'];
 		fetchUserRequest(match.params.id, token);
-	}, [usersRequest === undefined]);
+		const requestToUpdate = {
+			...usersRequest,
+			state: 'inProgress',
+			backgroundProcessingState: 'inProgress'
+		};
+		console.log(usersRequest)
+		usersRequest._id && updateUserRequest(match.params.id, requestToUpdate, token);
+	}, [usersRequest._id === undefined]);
 
 	const handleEditClick = () => {
 		setIsEdit(true);
@@ -90,7 +97,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 					<ListItem>
 						<ListItemText>
 							{isEdit ?
-								<UserRequestForm/> :
+								<UserCreationForm/> :
 								<Grid container>
 									{Object.keys(usersRequest).map(key => (key !== 'emails') ?
 										<div key={key}>
@@ -129,15 +136,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 							<Fab
 								color="primary"
 								size="small"
-								title="Reject"
-							// OnClick={handleEditClick}
-							>
-								<CloseIcon/>
-							</Fab>
-							<Fab
-								color="primary"
-								size="small"
-								title="Accept"
+								title="Done"
 							// OnClick={handleEditClick}
 							>
 								<DoneIcon/>

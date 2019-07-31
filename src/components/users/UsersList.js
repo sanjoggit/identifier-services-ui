@@ -41,21 +41,28 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersList, usersList, totalUsers, location} = props;
+	const {loading, fetchUsersList, usersList, pageInfo, totalUsers, endCursor, startCursor, hasNextPage, location} = props;
 	const [cookie] = useCookies('login-cookie');
 	const [count, setCount] = useState(5);
 	const [xPage, setXpage] = useState(1);
-
+	const [searchData, setSearchData] = useState(null);
+	const [lastCursor, setLastCursor] = useState(endCursor);
+	const [beginCursor, setBeginCursor] = useState(startCursor);
+	
 	useEffect(() => {
-		props.history.push(`/users/query?count=${count}&page=${xPage}`);
-		fetchUsersList(cookie['login-cookie'], {count: count, page: xPage});
-	}, [count, xPage]);
+		props.history.push(`/users/query?endCursor=${lastCursor}&startCursor=${beginCursor}&count=${count}&page=${xPage}`);
+		fetchUsersList(cookie['login-cookie'], {searchData: searchData !== null ? searchData : {}, endCursor: lastCursor, startCursor: beginCursor, count: count, page: xPage});
+	}, [searchData, count, xPage, lastCursor, beginCursor]);
 
 	useEffect(() => {
 		const urlParams = new URLSearchParams(location.search);
 		setCount(urlParams.get('count'));
 		setXpage(urlParams.get('page'));
+		setLastCursor(urlParams.get('endCursor'));
+		setBeginCursor(urlParams.get('startCursor'));
 	}, []);
+	
+	console.log('-------------------------------', startCursor);
 
 	const handleTableRowClick = id => {
 		props.history.push({
@@ -70,6 +77,7 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'defaultLanguage', label: 'Language'}
 	];
 	let usersData;
+	console.log('k rakhne ', usersList);
 	if (loading) {
 		usersData = <Spinner/>;
 	} else if (usersList === undefined || usersList === null) {
@@ -83,6 +91,11 @@ export default connect(mapStateToProps, actions)(props => {
 				totalDataCount={totalUsers}
 				setCount={setCount}
 				setXpage={setXpage}
+				setEndCursor={setLastCursor}
+				endCursor={endCursor}
+				setBeginCursor={setBeginCursor}
+				startCursor={startCursor}
+				hasNextPage={hasNextPage}
 				xPage={xPage}
 				count={count}
 			/>
@@ -117,6 +130,10 @@ function mapStateToProps(state) {
 		loading: state.users.loading,
 		usersList: state.users.usersList,
 		userInfo: state.login.userInfo,
-		totalUsers: state.users.totalUsers
+		totalUsers: state.users.totalUsers,
+		pageInfo: state.users.pageInfo,
+		endCursor: state.users.pageInfo.endCursor,
+		startCursor: state.users.pageInfo.startCursor,
+		hasNextPage: state.users.pageInfo.hasNextPage
 	});
 }

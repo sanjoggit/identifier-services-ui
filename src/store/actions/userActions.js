@@ -31,10 +31,11 @@ import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
 
-export const fetchUsersList = (token, {count, page}) => async dispatch => {
+export const fetchUsersList = (token, {searchData, startCursor, endCursor, count, page}) => async dispatch => {
+	console.log('action', startCursor);
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/users/query?count=${count}&page=${page}`, {
+		const response = await fetch(`${BASE_URL}/users/query?search=${searchData}&startCursor=${startCursor}&endCursor=${endCursor}&count=${count}&page=${page}`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
@@ -122,4 +123,17 @@ export const fetchUsersRequestsList = (token, {first, offset}) => async dispatch
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
+};
+
+export const updateUserRequest = (id, values, token) => async () => {
+	const response = await fetch(`${BASE_URL}/requests/users/${id}`, {
+		method: 'PUT',
+		headers: {
+			Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		},
+		credentials: 'same-origin',
+		body: JSON.stringify(values)
+	});
+	console.log(await response.json());
 };
