@@ -143,21 +143,14 @@ export default function (props) {
 		data,
 		headRows,
 		handleTableRowClick,
-		totalDataCount,
-		count,
-		xPage,
-		setCount,
-		setXpage,
 		endCursor,
 		setEndCursor,
 		startCursor,
-		setBeginCursor,
-		hasNextPage
+		setBeginCursor
 	} = props;
 	const classes = useStyles();
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('calories');
-	const [rowsPerPage] = React.useState(count);
 
 	function handleRequestSort(event, property) {
 		const isDesc = orderBy === property && order === 'desc';
@@ -197,12 +190,6 @@ export default function (props) {
 					<TableRow>
 						<TableCell colSpan={headRows.length}>
 							<TablePaginationActions
-								total={totalDataCount}
-								rowsPerPage={rowsPerPage}
-								page={xPage}
-								count={count}
-								setPage={setXpage}
-								setCount={setCount}
 								{...props}
 							/>
 						</TableCell>
@@ -225,62 +212,62 @@ function TablePaginationActions(props) {
 	const classes = useStyles1();
 	const theme = useTheme();
 	const {
-		page,
-		rowsPerPage,
-		setPage, total,
-		count,
 		setEndCursor,
 		endCursor,
 		startCursor,
 		setBeginCursor,
-		hasNextPage
+		setIsClicked
 	} = props;
 
 	function handleFirstPageButtonClick() {
-		setPage(1);
+		//setPage(1);
 	}
 
 	function handleBackButtonClick() {
 		// eslint-disable-next-line radix
-		setPage(parseInt(page) - 1);
+		//setPage(parseInt(page) - 1);
+		console.log('backbutton', startCursor);
+		setIsClicked('back');
 		setBeginCursor(startCursor);
 	}
 
 	function handleNextButtonClick() {
 		// eslint-disable-next-line radix
-		setPage(parseInt(page) + 1);
+		//setPage(parseInt(page) + 1);
+		setIsClicked('next');
 		setEndCursor(endCursor);
+		
 	}
 
 	function handleLastPageButtonClick() {
-		setPage(Math.ceil(total / rowsPerPage));
+		//setPage(Math.ceil(total / rowsPerPage));
 	}
 
 	return (
 		<div className={classes.root}>
-			<span>{count * (page - 1) + 1}-{(count * page) > total ? total : count * page}/{total}</span>
+			{/* <span>{count * (page - 1) + 1}-{(count * page) > total ? total : count * page}/{total}</span> */}
 			<IconButton
-				disabled={count * (page - 1) === 0}
+				//disabled={count * (page - 1) === 0}
 				aria-label="First Page"
 				onClick={handleFirstPageButtonClick}
 			>
 				{theme.direction === 'rtl' ? <LastPageIcon/> : <FirstPageIcon/>}
 			</IconButton>
 			<IconButton
-				disabled={count * (page - 1) === 0}
+				//disabled={count * (page - 1) === 0}
 				aria-label="Previous Page" onClick={handleBackButtonClick}
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
 			</IconButton>
 			<IconButton
-				disabled={!hasNextPage}
+				//disabled={!hasNextPage}
 				aria-label="Next Page"
 				onClick={handleNextButtonClick}
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
 			</IconButton>
 			<IconButton
-				disabled={(count * page) >= total}
+				//disabled={(count * page) >= total}
 				aria-label="Last Page"
 				onClick={handleLastPageButtonClick}
 			>
@@ -291,9 +278,9 @@ function TablePaginationActions(props) {
 }
 
 TablePaginationActions.propTypes = {
-	count: PropTypes.number.isRequired,
-	total: PropTypes.number.isRequired,
-	page: PropTypes.number.isRequired,
-	rowsPerPage: PropTypes.number.isRequired,
-	setPage: PropTypes.func.isRequired
+	// count: PropTypes.number.isRequired,
+	// total: PropTypes.number.isRequired,
+	// page: PropTypes.number.isRequired,
+	// rowsPerPage: PropTypes.number.isRequired,
+	// setPage: PropTypes.func.isRequired
 };

@@ -31,11 +31,12 @@ import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
 
-export const fetchUsersList = (token, {searchData, startCursor, endCursor, count, page}) => async dispatch => {
-	console.log('action', startCursor);
+export const fetchUsersList = (token, lastCursor, beginCursor, isClicked) => async dispatch => {
+	console.log('----------------action---------------', beginCursor);
+	console.log('+++++++++++++action++++++++++', lastCursor);
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/users/query?search=${searchData}&startCursor=${startCursor}&endCursor=${endCursor}&count=${count}&page=${page}`, {
+		const response = await fetch(`${BASE_URL}/users/query?startCursor=${beginCursor}&endCursor=${lastCursor}&isClicked=${isClicked}`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
