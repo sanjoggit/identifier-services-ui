@@ -41,15 +41,16 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersList, usersList, pageInfo, totalUsers, endCursor, startCursor, hasNextPage, location} = props;
+	const {loading, fetchUsersList, usersList, pageInfo, totalUsers, endCursor, startCursor, hasNextPage, hasPreviousPage} = props;
 	const [cookie] = useCookies('login-cookie');
 	const [lastCursor, setLastCursor] = useState(endCursor);
 	const [beginCursor, setBeginCursor] = useState(startCursor);
 	const [isClicked,setIsClicked] = useState(null);
-	
+	const [page, setPage] = useState(1);
+	console.log('^^^^^^^^^^',hasPreviousPage);
 	useEffect(() => {
 		// props.history.push(`/users/query?endCursor=${endCursor}&startCursor=${startCursor}`);
-		fetchUsersList(cookie['login-cookie'], lastCursor, beginCursor, isClicked);
+		fetchUsersList(cookie['login-cookie'], lastCursor, beginCursor, isClicked, page);
 	}, [lastCursor, beginCursor]);
 
 	const handleTableRowClick = id => {
@@ -81,6 +82,9 @@ export default connect(mapStateToProps, actions)(props => {
 				setBeginCursor={setBeginCursor}
 				startCursor={startCursor}
 				setIsClicked={setIsClicked}
+				page={page}
+				setPage={setPage}
+				hasNextPage={hasNextPage}
 			/>
 		);
 	}
@@ -117,6 +121,7 @@ function mapStateToProps(state) {
 		pageInfo: state.users.pageInfo,
 		endCursor: state.users.pageInfo.endCursor,
 		startCursor: state.users.pageInfo.startCursor,
-		hasNextPage: state.users.pageInfo.hasNextPage
+		hasNextPage: state.users.pageInfo.hasNextPage,
+		hasPreviousPage: state.users.pageInfo.hasPreviousPage
 	});
 }

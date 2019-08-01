@@ -216,7 +216,11 @@ function TablePaginationActions(props) {
 		endCursor,
 		startCursor,
 		setBeginCursor,
-		setIsClicked
+		setIsClicked,
+		page,
+		setPage,
+		hasNextPage,
+		hasPreviousPage
 	} = props;
 
 	function handleFirstPageButtonClick() {
@@ -225,18 +229,19 @@ function TablePaginationActions(props) {
 
 	function handleBackButtonClick() {
 		// eslint-disable-next-line radix
-		//setPage(parseInt(page) - 1);
+		setPage(parseInt(page) - 1);
 		console.log('backbutton', startCursor);
 		setIsClicked('back');
 		setBeginCursor(startCursor);
+		setEndCursor(endCursor);
 	}
 
 	function handleNextButtonClick() {
 		// eslint-disable-next-line radix
-		//setPage(parseInt(page) + 1);
+		setPage(parseInt(page) + 1);
 		setIsClicked('next');
-		setEndCursor(endCursor);
-		
+		setBeginCursor(startCursor);
+		setEndCursor(endCursor);	
 	}
 
 	function handleLastPageButtonClick() {
@@ -254,13 +259,13 @@ function TablePaginationActions(props) {
 				{theme.direction === 'rtl' ? <LastPageIcon/> : <FirstPageIcon/>}
 			</IconButton>
 			<IconButton
-				//disabled={count * (page - 1) === 0}
+				disabled={hasPreviousPage}
 				aria-label="Previous Page" onClick={handleBackButtonClick}
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
 			</IconButton>
 			<IconButton
-				//disabled={!hasNextPage}
+				disabled={!hasNextPage}
 				aria-label="Next Page"
 				onClick={handleNextButtonClick}
 			>

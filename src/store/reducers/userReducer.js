@@ -33,7 +33,7 @@ const initialState = {
 	pageInfo: {
 		endCursor: null,
 		startCursor: null,
-		hasNextPage: false,
+		hasNextPage: Boolean,
 		hasPreviousPage: false
 	},
 	totalUsers: null,
