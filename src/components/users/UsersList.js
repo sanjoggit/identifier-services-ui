@@ -41,17 +41,14 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersList, usersList, pageInfo, totalUsers, endCursor, startCursor, hasNextPage, hasPreviousPage} = props;
+	const {loading, fetchUsersList, usersList, pageInfo, totalUsers, endCursor, hasNextPage} = props;
 	const [cookie] = useCookies('login-cookie');
-	const [lastCursor, setLastCursor] = useState(endCursor);
-	const [beginCursor, setBeginCursor] = useState(startCursor);
-	const [isClicked,setIsClicked] = useState(null);
 	const [page, setPage] = useState(1);
-	console.log('^^^^^^^^^^',hasPreviousPage);
+	const [cursors, setCursors] = useState([]);
+	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length-1]);
 	useEffect(() => {
-		// props.history.push(`/users/query?endCursor=${endCursor}&startCursor=${startCursor}`);
-		fetchUsersList(cookie['login-cookie'], lastCursor, beginCursor, isClicked, page);
-	}, [lastCursor, beginCursor]);
+			fetchUsersList(cookie['login-cookie'], lastCursor, page);
+	}, [lastCursor, cursors]);
 
 	const handleTableRowClick = id => {
 		props.history.push({
@@ -66,7 +63,6 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'defaultLanguage', label: 'Language'}
 	];
 	let usersData;
-	console.log('k rakhne ', usersList);
 	if (loading) {
 		usersData = <Spinner/>;
 	} else if (usersList === undefined || usersList === null) {
@@ -79,20 +75,20 @@ export default connect(mapStateToProps, actions)(props => {
 				headRows={headRows}
 				setEndCursor={setLastCursor}
 				endCursor={endCursor}
-				setBeginCursor={setBeginCursor}
-				startCursor={startCursor}
-				setIsClicked={setIsClicked}
 				page={page}
 				setPage={setPage}
 				hasNextPage={hasNextPage}
+				cursors={cursors}
+				setCursors={setCursors}
+				totalCount={totalUsers}
 			/>
 		);
 	}
 
 	function usersDataRender(item) {
-		const {_id, givenName, publisher, preferences} = item;
+		const {id, givenName, publisher, preferences} = item;
 		return {
-			id: _id,
+			id: id,
 			name: givenName,
 			publisher: publisher,
 			defaultLanguage: preferences.defaultLanguage
@@ -120,8 +116,6 @@ function mapStateToProps(state) {
 		totalUsers: state.users.totalUsers,
 		pageInfo: state.users.pageInfo,
 		endCursor: state.users.pageInfo.endCursor,
-		startCursor: state.users.pageInfo.startCursor,
 		hasNextPage: state.users.pageInfo.hasNextPage,
-		hasPreviousPage: state.users.pageInfo.hasPreviousPage
 	});
 }

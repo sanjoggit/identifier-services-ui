@@ -60,7 +60,7 @@ export const createMessageTemplate = values => async dispatch => {
 	console.log(await response.json());
 };
 
-export const fetchMessagesList = token => async dispatch => {
+export const fetchMessagesList = (token, offset) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch('http://localhost:8081/templates/query', {
@@ -68,10 +68,11 @@ export const fetchMessagesList = token => async dispatch => {
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			}
+			},
+			body: JSON.stringify({query: {}, offset: offset})
 		});
 		const result = await response.json();
-		dispatch(success(FETCH_MESSAGES_LIST, result.data));
+		dispatch(success(FETCH_MESSAGES_LIST, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
@@ -87,7 +88,7 @@ export const fetchMessage = (id, token) => async dispatch => {
 			}
 		});
 		const result = await response.json();
-		dispatch(success(FETCH_MESSAGE, result.data));
+		dispatch(success(FETCH_MESSAGE, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}

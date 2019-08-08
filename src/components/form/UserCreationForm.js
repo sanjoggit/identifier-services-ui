@@ -54,23 +54,16 @@ const roleOption = [
 const selectOption = [
 	{label: 'ENG', value: 'eng'},
 	{label: 'FIN', value: 'fin'},
-	{label: 'SwD', value: 'swd'}
+	{label: 'SWE', value: 'swe'}
 ];
 
 const fieldArray = [
 	{
 		name: 'role',
-		type: 'check',
+		type: 'select',
 		label: 'Role',
 		option: roleOption,
 		width: 'half'
-	},
-	{
-		name: 'emails',
-		type: 'arrayObject',
-		label: 'Emails',
-		width: 'half',
-		subName: [{name: 'value', label: 'Email'}, {name: 'type', label: 'Type'}]
 	},
 	{
 		name: 'givenName',
@@ -125,7 +118,6 @@ export default connect(null, actions)(reduxForm({
 		}
 
 		function handleChange(event, values) {
-			console.log(values);
 			values !== null && setStatus(values);
 		}
 
@@ -196,7 +188,6 @@ export default connect(null, actions)(reduxForm({
 
 function element(array, classes, clearFields) {
 	return array.map(list =>
-
 		// eslint-disable-next-line no-negated-condition
 		((list.type === 'arrayObject') ?
 			<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
@@ -211,7 +202,7 @@ function element(array, classes, clearFields) {
 			</Grid> :
 			((list.type === 'check') ?
 				<Grid key={list.name} item xs={(list.width === 'full') ? 12 : 6}>
-					<FieldArray
+					<Field
 						className={`${classes.textField} ${list.width}`}
 						component={renderCheckboxes}
 						label={list.label}

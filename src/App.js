@@ -75,6 +75,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 		{path: '/requests/users', role: ['admin', 'publisherAdmin'], component: UsersRequestsList},
 		{path: '/requests/users/:id', role: ['admin', 'publisherAdmin'], component: UsersRequestsList},
 		{path: '/templates', role: ['admin'], component: MessagesList},
+		{path: '/templates/:id', role: ['admin'], component: MessagesList},
 		{path: '/requests/publishers', role: ['publisher', 'admin'], component: PublishersRequestsList},
 		{path: '/requests/publishers/:id', role: ['publisher', 'admin'], component: PublishersRequestsList}
 

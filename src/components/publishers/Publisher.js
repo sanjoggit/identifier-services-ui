@@ -86,10 +86,10 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	} else {
 		publisherDetail = (
 			<>
+				<Typography variant="h6">
+					Publisher Detail
+				</Typography>
 				<Grid item xs={12} md={6}>
-					<Typography variant="h6">
-						Publisher Detail
-					</Typography>
 					<List>
 						<ListItem>
 							<ListItemText>

@@ -142,11 +142,7 @@ export default function (props) {
 	const {
 		data,
 		headRows,
-		handleTableRowClick,
-		endCursor,
-		setEndCursor,
-		startCursor,
-		setBeginCursor
+		handleTableRowClick
 	} = props;
 	const classes = useStyles();
 	const [order, setOrder] = React.useState('asc');
@@ -214,52 +210,32 @@ function TablePaginationActions(props) {
 	const {
 		setEndCursor,
 		endCursor,
-		startCursor,
-		setBeginCursor,
-		setIsClicked,
 		page,
 		setPage,
 		hasNextPage,
-		hasPreviousPage
+		cursors,
+		totalCount
 	} = props;
-
-	function handleFirstPageButtonClick() {
-		//setPage(1);
-	}
 
 	function handleBackButtonClick() {
 		// eslint-disable-next-line radix
 		setPage(parseInt(page) - 1);
-		console.log('backbutton', startCursor);
-		setIsClicked('back');
-		setBeginCursor(startCursor);
-		setEndCursor(endCursor);
+		cursors.pop();
+		setEndCursor(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 	}
 
 	function handleNextButtonClick() {
 		// eslint-disable-next-line radix
 		setPage(parseInt(page) + 1);
-		setIsClicked('next');
-		setBeginCursor(startCursor);
-		setEndCursor(endCursor);	
-	}
-
-	function handleLastPageButtonClick() {
-		//setPage(Math.ceil(total / rowsPerPage));
+		cursors.push(endCursor);
+		setEndCursor(endCursor);
 	}
 
 	return (
 		<div className={classes.root}>
-			{/* <span>{count * (page - 1) + 1}-{(count * page) > total ? total : count * page}/{total}</span> */}
+			<span>{hasNextPage ? (page * 5) : totalCount }/{totalCount}</span>
 			<IconButton
-				//disabled={count * (page - 1) === 0}
-				aria-label="First Page"
-				onClick={handleFirstPageButtonClick}
-			>
-				{theme.direction === 'rtl' ? <LastPageIcon/> : <FirstPageIcon/>}
-			</IconButton>
-			<IconButton
-				disabled={hasPreviousPage}
+				disabled={page <= 1}
 				aria-label="Previous Page" onClick={handleBackButtonClick}
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
@@ -271,21 +247,16 @@ function TablePaginationActions(props) {
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
 			</IconButton>
-			<IconButton
-				//disabled={(count * page) >= total}
-				aria-label="Last Page"
-				onClick={handleLastPageButtonClick}
-			>
-				{theme.direction === 'rtl' ? <FirstPageIcon/> : <LastPageIcon/>}
-			</IconButton>
 		</div>
 	);
 }
 
 TablePaginationActions.propTypes = {
-	// count: PropTypes.number.isRequired,
-	// total: PropTypes.number.isRequired,
-	// page: PropTypes.number.isRequired,
-	// rowsPerPage: PropTypes.number.isRequired,
-	// setPage: PropTypes.func.isRequired
+	setEndCursor: PropTypes.string.isRequired,
+	endCursor: PropTypes.string.isRequired,
+	page: PropTypes.number.isRequired,
+	setPage: PropTypes.func.isRequired,
+	hasNextPage: PropTypes.bool.isRequired,
+	cursors: PropTypes.array.isRequired,
+	totalCount: PropTypes.string.isRequired
 };
