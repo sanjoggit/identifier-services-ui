@@ -33,11 +33,13 @@ const useStyles = makeStyles({
 		'*::-webkit-scrollbar': {
 			width: '10px'
 		},
-
-		/* Track */
-		'*::-webkit-scrollbar-track': {
-			background: '#f1f1f1'
+		'*::-webkit-scrollbar *': {
+			background: 'transparent'
 		},
+		/* Track */
+		// '*::-webkit-scrollbar-track': {
+		// 	background: 'transparent'
+		// },
 
 		/* Handle */
 		'*::-webkit-scrollbar-thumb': {
@@ -50,7 +52,7 @@ const useStyles = makeStyles({
 		a: {
 			textDecoration: 'none',
 			color: '#00224f'
-		}
+		}		
 	},
 
 	container: {
@@ -89,7 +91,7 @@ const useStyles = makeStyles({
 		display: 'inherit',
 		alignItems: 'center',
 		justifyItems: 'flex-end'
-	},
+	}
 });
 
 export default useStyles;

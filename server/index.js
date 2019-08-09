@@ -125,7 +125,7 @@ app.post('/auth', async (req, res) => {
 		}
 	});
 	const token = result.headers.get('Token');
-	res.cookie('login-cookie', token, {maxAge: 300000, httpOnly: false});
+	res.cookie('login-cookie', token, {maxAge: 300000, secure: false});
 	res.status(200).json(token);
 });
 

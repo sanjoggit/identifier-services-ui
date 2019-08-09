@@ -30,6 +30,7 @@ import {CONTACT, LOADER, FETCH_MESSAGE, FETCH_MESSAGES_LIST} from '../actions/ty
 
 const initialState = {
 	messagesList: [],
+	messageOffset: null,
 	messageInfo: null,
 	responseMessage: null,
 	loading: false
@@ -49,17 +50,18 @@ export default function (state = initialState, action) {
 				loading: false
 			};
 		case FETCH_MESSAGE:
-			return{
+			return {
 				...state,
 				messageInfo: action.payload,
 				loading: false
 			};
 		case FETCH_MESSAGES_LIST:
-			return{
+			return {
 				...state,
-				messagesList: action.payload,
+				messagesList: action.payload.results,
+				messageOffset: action.payload.offset,
 				loading: false
-			}
+			};
 		default:
 			return state;
 	}

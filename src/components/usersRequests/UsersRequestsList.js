@@ -45,8 +45,8 @@ export default connect(mapStateToProps, actions)(props => {
 	const [first, setFirst]= useState(0);
 
 	useEffect(() => {
-		cookie['login-cookie'] !== null && fetchUsersRequestsList(cookie['login-cookie'], {first: first, offset: 5});
-	}, [cookie['login-cookie'], first]);
+		cookie['login-cookie'] !== null && fetchUsersRequestsList(cookie['login-cookie'], {first: first});
+	}, [cookie['login-cookie']]);
 
 	const handleTableRowClick = id => {
 		props.history.push({
@@ -56,6 +56,7 @@ export default connect(mapStateToProps, actions)(props => {
 	};
 
 	const headRows = [
+		{id: 'state', label: 'State'},
 		{id: 'givenName', label: 'Given Name'},
 		{id: 'familyName', label: 'Family Name'}
 	];
@@ -78,11 +79,12 @@ export default connect(mapStateToProps, actions)(props => {
 	}
 
 	function usersDataRender(item) {
-		const {_id, givenName, familyName} = item;
+		const {id, state, givenName, familyName} = item;
 		return {
-			id: _id,
+			id: id,
+			state: state,
 			givenName: givenName,
-			familyName: familyName
+			familyName: familyName 
 		};
 	}
 
@@ -103,6 +105,7 @@ function mapStateToProps(state) {
 	return ({
 		loading: state.users.loading,
 		usersRequestsList: state.users.usersRequestsList,
+		offset: state.users.offset,
 		totalUsersRequests: state.users.totalUsersRequests
 	});
 }

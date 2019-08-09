@@ -41,21 +41,14 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersList, usersList, totalUsers, location} = props;
+	const {loading, fetchUsersList, usersList, pageInfo, totalUsers, endCursor, hasNextPage} = props;
 	const [cookie] = useCookies('login-cookie');
-	const [count, setCount] = useState(5);
-	const [xPage, setXpage] = useState(1);
-
+	const [page, setPage] = useState(1);
+	const [cursors, setCursors] = useState([]);
+	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length-1]);
 	useEffect(() => {
-		props.history.push(`/users/query?count=${count}&page=${xPage}`);
-		fetchUsersList(cookie['login-cookie'], {count: count, page: xPage});
-	}, [count, xPage]);
-
-	useEffect(() => {
-		const urlParams = new URLSearchParams(location.search);
-		setCount(urlParams.get('count'));
-		setXpage(urlParams.get('page'));
-	}, []);
+			fetchUsersList(cookie['login-cookie'], lastCursor, page);
+	}, [lastCursor, cursors]);
 
 	const handleTableRowClick = id => {
 		props.history.push({
@@ -80,19 +73,22 @@ export default connect(mapStateToProps, actions)(props => {
 				data={usersList.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
-				totalDataCount={totalUsers}
-				setCount={setCount}
-				setXpage={setXpage}
-				xPage={xPage}
-				count={count}
+				setEndCursor={setLastCursor}
+				endCursor={endCursor}
+				page={page}
+				setPage={setPage}
+				hasNextPage={hasNextPage}
+				cursors={cursors}
+				setCursors={setCursors}
+				totalCount={totalUsers}
 			/>
 		);
 	}
 
 	function usersDataRender(item) {
-		const {_id, givenName, publisher, preferences} = item;
+		const {id, givenName, publisher, preferences} = item;
 		return {
-			id: _id,
+			id: id,
 			name: givenName,
 			publisher: publisher,
 			defaultLanguage: preferences.defaultLanguage
@@ -117,6 +113,9 @@ function mapStateToProps(state) {
 		loading: state.users.loading,
 		usersList: state.users.usersList,
 		userInfo: state.login.userInfo,
-		totalUsers: state.users.totalUsers
+		totalUsers: state.users.totalUsers,
+		pageInfo: state.users.pageInfo,
+		endCursor: state.users.pageInfo.endCursor,
+		hasNextPage: state.users.pageInfo.hasNextPage,
 	});
 }

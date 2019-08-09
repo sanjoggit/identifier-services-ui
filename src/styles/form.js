@@ -46,7 +46,7 @@ const useStyles = makeStyles({
 	},
 	textField: {
 		height: '60px',
-		width: '-webkit-fill-available'
+		width: '100%'
 	},
 	arrayString: {
 		height: '60px',
@@ -60,7 +60,7 @@ const useStyles = makeStyles({
 	},
 	textArea: {
 		height: '180px',
-		width: '-webkit-fill-available'
+		width: '100%'
 	},
 	stepLabel: {
 		textTransform: 'capitalize'

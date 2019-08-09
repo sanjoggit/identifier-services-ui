@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-unused-expressions */
 /**
  *
@@ -30,6 +31,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Field, FieldArray, reduxForm} from 'redux-form';
 import {Button, Grid} from '@material-ui/core';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import {ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 import PropTypes from 'prop-types';
 import {validate} from '@natlibfi/identifier-services-commons';
 import {useCookies} from 'react-cookie';
@@ -51,23 +54,16 @@ const roleOption = [
 const selectOption = [
 	{label: 'ENG', value: 'eng'},
 	{label: 'FIN', value: 'fin'},
-	{label: 'SwD', value: 'swd'}
+	{label: 'SWE', value: 'swe'}
 ];
 
 const fieldArray = [
 	{
 		name: 'role',
-		type: 'check',
+		type: 'select',
 		label: 'Role',
 		option: roleOption,
 		width: 'half'
-	},
-	{
-		name: 'emails',
-		type: 'arrayObject',
-		label: 'Emails',
-		width: 'half',
-		subName: [{name: 'value', label: 'Email'}, {name: 'type', label: 'Type'}]
 	},
 	{
 		name: 'givenName',
@@ -84,7 +80,7 @@ const fieldArray = [
 	{
 		name: 'defaultLanguage',
 		type: 'select',
-		label: 'Default Language',
+		label: 'Choose Language',
 		option: selectOption,
 		width: 'half'
 	}
@@ -93,15 +89,16 @@ const fieldArray = [
 export default connect(null, actions)(reduxForm({
 	form: 'userCreation',
 	validate,
-	initialValues: {
-		defaultLanguage: 'eng'
-	}
+	
 })(
 	props => {
 		const {handleSubmit, clearFields, valid, createUser, pristine} = props;
 		const classes = useStyles();
 		const [cookie] = useCookies('login-cookie');
 		const token = cookie['login-cookie'];
+		const [status, setStatus] = React.useState('');
+		const [rejectTextArea, setRejectTextArea] = React.useState(false);
+		const [rejectedText, setRejectText] = React.useState('');
 
 		function getStepContent() {
 			return element(fieldArray, classes, clearFields);
@@ -115,8 +112,25 @@ export default connect(null, actions)(reduxForm({
 				role: values.role[0],
 				preferences: {defaultLanguage: values.defaultLanguage}
 			};
-			delete newUser.defaultLanguage;
-			createUser(newUser, token);
+			window.confirm('Please confirm again to accept') === true ?
+				(delete newUser.defaultLanguage && createUser(newUser, token).then(()=> console.log('milxa'))) :
+				null;
+		}
+
+		function handleChange(event, values) {
+			values !== null && setStatus(values);
+		}
+
+		function handleOnClick() {
+			setRejectTextArea(true);
+		}
+
+		function handleRejectTextChange(e) {
+			setRejectText(e.target.value);
+		}
+
+		function handleReject() {
+			console.log(rejectedText);
 		}
 
 		const component = (
@@ -125,11 +139,34 @@ export default connect(null, actions)(reduxForm({
 					<Grid container spacing={3} direction="row">
 						{(getStepContent())}
 					</Grid>
-					<div className={classes.btnContainer}>
-						<Button type="submit" disabled={pristine || !valid} variant="contained" color="primary">
-							Submit
-						</Button>
-					</div>
+					<Grid>
+						<Grid item>
+							<ToggleButtonGroup exclusive value={status} onChange={handleChange}>
+								<Button disabled={rejectTextArea || !valid || pristine} value="Accept" type="submit">
+									Accept
+								</Button>
+								<ToggleButton value="Reject" onClick={handleOnClick}>
+									Reject
+								</ToggleButton>
+							</ToggleButtonGroup>
+						</Grid>
+						<Grid item>
+							{rejectTextArea ?
+								<div>
+									<TextareaAutosize
+										aria-label="Minimum height"
+										rows={5}
+										placeholder="Minimum 3 rows"
+										value={rejectedText}
+										onChange={handleRejectTextChange}
+									/>;
+									<Button variant="outlined" color="primary" onClick={handleReject}>Submit</Button>
+									<Button variant="outlined" color="primary" onClick={e => setRejectTextArea(false) || handleChange(e, '')}>Cancel</Button>
+								</div> :
+								null}
+						</Grid>
+					</Grid>
+
 				</div>
 			</form>
 		);
@@ -151,7 +188,6 @@ export default connect(null, actions)(reduxForm({
 
 function element(array, classes, clearFields) {
 	return array.map(list =>
-
 		// eslint-disable-next-line no-negated-condition
 		((list.type === 'arrayObject') ?
 			<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
@@ -166,7 +202,7 @@ function element(array, classes, clearFields) {
 			</Grid> :
 			((list.type === 'check') ?
 				<Grid key={list.name} item xs={(list.width === 'full') ? 12 : 6}>
-					<FieldArray
+					<Field
 						className={`${classes.textField} ${list.width}`}
 						component={renderCheckboxes}
 						label={list.label}
@@ -175,7 +211,7 @@ function element(array, classes, clearFields) {
 						options={list.option}
 						props={{name: list.name}}
 					/>
-				</Grid>	:
+				</Grid> :
 				((list.type === 'select') ?
 					<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
 						<Field
@@ -186,7 +222,7 @@ function element(array, classes, clearFields) {
 							type={list.type}
 							options={list.option}
 						/>
-					</Grid>	:
+					</Grid> :
 
 					<Grid key={list.name} item xs={list.width === 'full' ? 12 : 6}>
 						<Field
@@ -199,3 +235,4 @@ function element(array, classes, clearFields) {
 					</Grid>)))
 	);
 }
+

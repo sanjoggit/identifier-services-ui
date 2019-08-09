@@ -31,7 +31,7 @@ import {makeStyles} from '@material-ui/core/styles';
 const useStyles = makeStyles(
 	{
 		publisher: {
-			width: '1200px',
+			maxWidth: '1200px',
 			minWidth: '750px',
 			padding: '20px 0px'
 		},

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable complexity */
 /* eslint-disable no-negated-condition */
 /**
@@ -29,7 +30,7 @@
  */
 
 import React from 'react';
-import {Typography, Tabs, Tab, TextField, Button} from '@material-ui/core';
+import {Typography, Tabs, Tab, Button} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
 import {connect} from 'react-redux';
@@ -44,6 +45,7 @@ export default connect(mapStateToProps, actions)(props => {
 	const [value, setValue] = React.useState(0);
 	const {forgotPwd, setPwd} = props;
 	const classes = useStyles();
+
 	function handleChange(event, newValue) {
 		setValue(newValue);
 	}
@@ -51,9 +53,10 @@ export default connect(mapStateToProps, actions)(props => {
 	const handleLogOut = () => {
 		props.logOut();
 		props.history.push('/');
-		// eslint-disable-next-line no-undef
-		window.location.reload();
 		props.handleClose();
+		setTimeout(() => {
+			location.reload(true);
+		});
 	};
 
 	const component = (

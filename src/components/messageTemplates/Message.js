@@ -69,33 +69,33 @@ export default connect(mapStateToProps, actions)(props => {
 	}, [messageInfo === undefined]);
 
 	let messageDetail;
-	messageDetail = (messageInfo !== null && 
+	messageDetail = (messageInfo !== null &&
 		<Grid item xs={12} md={6}>
-					<Typography variant="h6">
+			<Typography variant="h6">
 						Message Detail
-					</Typography>
-					<List>
-						<ListItem>
-							<ListItemText>
-								<Grid container>
-										<>
-											<Grid item xs={4}>ID:</Grid>
-                                            <Grid item xs={8}>{messageInfo.messageTemplate._id}</Grid>
-										</>
-								</Grid>
-							</ListItemText>
-						</ListItem>
-					</List>
-			</Grid>
-		);
+			</Typography>
+			<List>
+				<ListItem>
+					<ListItemText>
+						<Grid container>
+							<>
+								<Grid item xs={4}>Message:</Grid>
+								<Grid item xs={8}>{messageInfo.body}</Grid>
+							</>
+						</Grid>
+					</ListItemText>
+				</ListItem>
+			</List>
+		</Grid>
+	);
 
 	const component = (
 		<ModalLayout isTableRow color="primary">
-				<div className={classes.publisher}>
-					<Grid container spacing={3} className={classes.publisherSpinner}>
-						{messageDetail}
-					</Grid>
-				</div>
+			<div className={classes.publisher}>
+				<Grid container spacing={3} className={classes.publisherSpinner}>
+					{messageDetail}
+				</Grid>
+			</div>
 		</ModalLayout>
 	);
 	return {

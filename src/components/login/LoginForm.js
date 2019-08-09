@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -26,7 +27,7 @@
  *
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Grid, Button, Link, Typography} from '@material-ui/core';
 import {validate} from '@natlibfi/identifier-services-commons';
 import PersonIcon from '@material-ui/icons/Person';
@@ -48,9 +49,11 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const handleLogin = values => {
 		normalLogin(values);
 		history.push('/publishers');
+		//  settimeout for firefox to work properly
+		setTimeout(() => {
+			location.reload(true);
+		});
 		handleClose();
-		// eslint-disable-next-line no-undef
-		window.location.reload();
 	};
 
 	const component = (

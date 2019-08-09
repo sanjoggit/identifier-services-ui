@@ -51,14 +51,14 @@ import {connect} from 'react-redux';
 import {validate} from '@natlibfi/identifier-services-commons';
 import ModalLayout from '../ModalLayout';
 import Spinner from '../Spinner';
-import UserRequestForm from '../form/UserCreationForm';
+import UserCreationForm from '../form/UserCreationForm';
 
 export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'userCreation',
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {match, usersRequest, userInfo, loading, fetchUserRequest} = props;
+	const {match, usersRequest, userInfo, loading, fetchUserRequest, updateUserRequest} = props;
 	const classes = useStyles();
 	const {role} = userInfo;
 	const [isEdit, setIsEdit] = useState(false);
@@ -67,7 +67,13 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	useEffect(() => {
 		const token = cookie['login-cookie'];
 		fetchUserRequest(match.params.id, token);
-	}, [usersRequest === undefined]);
+		const requestToUpdate = {
+			...usersRequest,
+			state: 'inProgress',
+			backgroundProcessingState: 'inProgress'
+		};
+		usersRequest.id && updateUserRequest(match.params.id, requestToUpdate, token);
+	}, [usersRequest.id === undefined]);
 
 	const handleEditClick = () => {
 		setIsEdit(true);
@@ -77,91 +83,86 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		setIsEdit(false);
 	};
 
+	console.log(usersRequest)
 	let userRequestDetail;
-	if (usersRequest === undefined || loading) {
+	if (usersRequest.length < 1 || loading) {
 		userRequestDetail = <Spinner/>;
 	} else {
 		userRequestDetail = (
-			<Grid item xs={12} md={6}>
-				<Typography variant="h6">
-					Publisher Detail
-				</Typography>
-				<List>
-					<ListItem>
-						<ListItemText>
-							{isEdit ?
-								<UserRequestForm/> :
-								<Grid container>
-									{Object.keys(usersRequest).map(key => (key !== 'emails') ?
-										<div key={key}>
-											<Grid item xs={4}>{key}: </Grid>
-											<Grid item xs={8}>{usersRequest[key]}</Grid>
-										</div> :
-										usersRequest[key].map(field => (
-											<div key={key}>
-												<Grid item xs={4}>{key}: </Grid>
-												<>
-													<Grid item xs={8}>{field.value}</Grid>
-													<Grid item xs={8}>{field.type}</Grid>
-												</>
-											</div>
-										))
-									)}
-								</Grid>
-							}
-						</ListItemText>
-					</ListItem>
-				</List>
-			</Grid>
+			<>
+				<Grid item xs={12}>
+					{isEdit ?
+						<UserCreationForm/> :
+						<List>
+							<Grid container xs={12}>
+								{Object.keys(usersRequest).map(key => (
+									<ListItem key={key}>
+										<ListItemText>
+											{(typeof usersRequest[key] !== 'object') ?
+												<Grid container>
+													<Grid item xs={4}>{key}: </Grid>
+													<Grid item xs={8}>{usersRequest[key]}</Grid>
+												</Grid> :
+												Object.keys(usersRequest[key]).map(subKey => (
+													<Grid key={subKey} container>
+														<Grid item xs={4}>{subKey}: </Grid>
+														<Grid item xs={8}>{usersRequest[key][subKey]}</Grid>
+													</Grid>
+												))}
+										</ListItemText>
+									</ListItem>
+								))}
+							</Grid>
+						</List>
+					}
+				</Grid>
+			</>
 		);
 	}
 
 	const component = (
 		<ModalLayout isTableRow color="primary">
-			{isEdit ?
-				<div className={classes.publisher}>
-					<form>
+			<>
+				<Typography variant="h6">
+					Publisher Detail
+				</Typography>
+				{isEdit ?
+					<div className={classes.publisher}>
+						<form>
+							<Grid container spacing={3} className={classes.publisherSpinner}>
+								{userRequestDetail}
+							</Grid>
+							<div className={classes.btnContainer}>
+								<Button onClick={handleCancel}>Cancel</Button>
+								<Fab
+									color="primary"
+									size="small"
+									title="Done"
+								// OnClick={handleEditClick}
+								>
+									<DoneIcon/>
+								</Fab>
+							</div>
+						</form>
+					</div> :
+					<div className={classes.publisher}>
 						<Grid container spacing={3} className={classes.publisherSpinner}>
 							{userRequestDetail}
 						</Grid>
-						<div className={classes.btnContainer}>
-							<Button onClick={handleCancel}>Cancel</Button>
-							<Fab
-								color="primary"
-								size="small"
-								title="Reject"
-							// OnClick={handleEditClick}
-							>
-								<CloseIcon/>
-							</Fab>
-							<Fab
-								color="primary"
-								size="small"
-								title="Accept"
-							// OnClick={handleEditClick}
-							>
-								<DoneIcon/>
-							</Fab>
-						</div>
-					</form>
-				</div> :
-				<div className={classes.publisher}>
-					<Grid container spacing={3} className={classes.publisherSpinner}>
-						{userRequestDetail}
-					</Grid>
-					{role !== undefined && role.some(item => item === 'admin') &&
-						<div className={classes.btnContainer}>
-							<Fab
-								color="primary"
-								size="small"
-								title="Edit User Detail"
-								onClick={handleEditClick}
-							>
-								<EditIcon/>
-							</Fab>
-						</div>}
-				</div>
-			}
+						{role !== undefined && role.some(item => item === 'admin') &&
+							<div className={classes.btnContainer}>
+								<Fab
+									color="primary"
+									size="small"
+									title="Edit User Detail"
+									onClick={handleEditClick}
+								>
+									<EditIcon/>
+								</Fab>
+							</div>}
+					</div>
+				}
+			</>
 		</ModalLayout>
 	);
 	return {

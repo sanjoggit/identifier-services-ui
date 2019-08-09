@@ -90,12 +90,12 @@ export default connect(mapStateToProps, actions)(reduxForm({
 						<ListItemText>
 							<Grid container>
 								<>
-									<Grid item xs={4}>ID:</Grid>
+									<Grid item xs={4}>Name:</Grid>
 									{isEdit ?
 										<Grid item xs={8}>
-											<Field name="id" className={formClasses.editForm} component={renderTextField}/>
+											<Field name="givenName" className={formClasses.editForm} component={renderTextField}/>
 										</Grid> :
-										<Grid item xs={8}>{user.id}</Grid>
+										<Grid item xs={8}>{user.givenName}</Grid>
 									}
 								</>
 							</Grid>

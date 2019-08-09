@@ -31,15 +31,16 @@ import {setLoader, success, fail} from './commonAction';
 
 const BASE_URL = 'http://localhost:8081';
 
-export const fetchUsersList = (token, {count, page}) => async dispatch => {
+export const fetchUsersList = (token, offset) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/users/query?count=${count}&page=${page}`, {
+		const response = await fetch(`${BASE_URL}/users/query`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			}
+			},
+			body: JSON.stringify({query: {}, offset: offset})
 		});
 		const result = await response.json();
 		dispatch(success(USERS_LIST, result));
@@ -100,7 +101,7 @@ export const fetchUserRequest = (id, token) => async dispatch => {
 			}
 		});
 		const result = await response.json();
-		dispatch(success(FETCH_USERS_REQUEST, result.data.usersRequestContent));
+		dispatch(success(FETCH_USERS_REQUEST, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
@@ -115,11 +116,24 @@ export const fetchUsersRequestsList = (token, {first, offset}) => async dispatch
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({first: first, offset: offset})
+			body: JSON.stringify({query: {}, offset: offset})
 		});
 		const result = await response.json();
 		dispatch(success(USERS_REQUESTS_LIST, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
+};
+
+export const updateUserRequest = (id, values, token) => async () => {
+	const response = await fetch(`${BASE_URL}/requests/users/${id}`, {
+		method: 'PUT',
+		headers: {
+			Authorization: 'Bearer ' + token,
+			'Content-Type': 'application/json'
+		},
+		credentials: 'same-origin',
+		body: JSON.stringify(values)
+	});
+	console.log(await response.json());
 };

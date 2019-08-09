@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -40,7 +38,7 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchMessagesList, messagesList} = props;
+	const {loading, fetchMessagesList, messagesList, offset} = props;
 	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 
@@ -67,21 +65,21 @@ export default connect(mapStateToProps, actions)(props => {
 	let messageData;
 	if (loading) {
 		messageData = <Spinner/>;
-	} else if (messagesList.MessageTemplates === undefined) {
+	} else if (messagesList === undefined) {
 		messageData = <p>No Users Available</p>;
 	} else {
 		messageData = 
 			<TableComponent
-				data={messagesList.MessageTemplates.map(item => usersDataRender(item))}
+				data={messagesList.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 			/>
 		}
 
 		function usersDataRender(item){
-			const {_id, name, language, subject, body, notes}= item;
+			const {id, name, language, subject, body, notes}= item;
 		return{
-			id: _id,
+			id: id,
 			name: name,
 			subject : subject,
 			body: body,
@@ -106,6 +104,7 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.contact.loading,
-		messagesList: state.contact.messagesList
+		messagesList: state.contact.messagesList,
+		offset: state.contact.messageOffset
 	});
 }
