@@ -61,6 +61,7 @@ import * as actions from './store/actions';
 
 export default connect(mapStateToProps, actions)(withRouter(props => {
 	const {lang, userInfo, isAuthenticated, history, location, responseMessage} = props;
+	const {modal} = location.state !== undefined && location.state;
 
 	const routeField = [
 		{path: '/', component: Home},
@@ -87,7 +88,7 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 					key={fields.path}
 					exact
 					path={fields.path}
-					component={fields.component}
+					render={props => <fields.component {...props}/>}
 				/>
 			))}
 			{privateRoutesList.map(pRoute => (
@@ -102,7 +103,6 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 		</>
 	);
 
-	const isModal = location.state;
 
 	const translations = {
 		fi: fiMessages,
@@ -126,11 +126,11 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 					<Switch>
 						{routes}
 					</Switch>
-					{isModal ? <Route path="/publishers/:id" component={Publisher}/> : null}
-					{isModal ? <Route path="/requests/publishers/:id" component={PublisherRequest}/> : null}
-					{isModal ? <Route path="/users/:id" component={User}/> : null}
-					{isModal ? <Route path="/requests/users/:id" component={UsersRequest}/> : null}
-					{isModal ? <Route path="/templates/:id" component={Message}/> : null}
+					{modal ? <Route path="/publishers/:id" component={Publisher}/> : null}
+					{modal ? <Route path="/requests/publishers/:id" component={PublisherRequest}/> : null}
+					{modal ? <Route path="/users/:id" component={User}/> : null}
+					{modal ? <Route path="/requests/users/:id" component={UsersRequest}/> : null}
+					{modal ? <Route path="/templates/:id" component={Message}/> : null}
 
 					{responseMessage && <SnackBar message={responseMessage} variant="success" openSnackBar={Boolean(responseMessage)}/>}
 				</section>

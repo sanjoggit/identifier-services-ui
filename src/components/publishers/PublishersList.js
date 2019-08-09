@@ -29,6 +29,7 @@
 
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
+import {useCookies} from 'react-cookie';
 import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
 
 import SearchComponent from '../SearchComponent';
@@ -36,18 +37,22 @@ import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
 import * as actions from '../../store/actions';
 import Spinner from '../Spinner';
-import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, fetchPublishersList} = props;
+	const {loading, searchedPublishers, offset, searchPublisher, totalDoc} = props;
+	const [cookie] = useCookies('login-cookie');
+	const [inputVal, setSearchInputVal] = useState('');
+	const [page, setPage] = React.useState(1);
 	const [activeCheck, setActiveCheck] = useState({
 		checked: false
 	});
-	const [cookie] = useCookies('login-cookie');
-	// useEffect(() => {
-	// 	fetchPublishersList(token);
-	// }, [token]);
+	const [cursors] = useState([]);
+	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
+
+	useEffect(() => {
+		searchPublisher(inputVal, cookie['login-cookie'], lastCursor);
+	}, [lastCursor, cursors])
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
@@ -65,7 +70,7 @@ export default connect(mapStateToProps, actions)(props => {
 		{id: 'phone', label: 'Phone'}
 	];
 	let publishersData;
-	if ((searchedPublishers === undefined) || (loading)) {
+	if (loading) {
 		publishersData = <Spinner/>;
 	} else if (searchedPublishers.length === 0) {
 		publishersData = <p>No Search Result</p>;
@@ -75,9 +80,15 @@ export default connect(mapStateToProps, actions)(props => {
 				data={activeCheck.checked ? searchedPublishers
 					.filter(item => item.activity.active === true)
 					.map(item => searchResultRender(item._id, item.name, item.phone)) :
-					searchedPublishers.map(item => searchResultRender(item._id, item.name, item.phone))}
+					searchedPublishers.map(item => searchResultRender(item.id, item.name, item.phone))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
+				offset={offset}
+				cursors={cursors}
+				page={page}
+				setPage={setPage}
+				setLastCursor={setLastCursor}
+				totalDoc={totalDoc}
 			/>
 		);
 	}
@@ -94,7 +105,7 @@ export default connect(mapStateToProps, actions)(props => {
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
 				<Typography variant="h5">Search Publisher By Name or Aliases</Typography>
-				<SearchComponent/>
+				<SearchComponent offset={offset} setSearchInputVal={setSearchInputVal}/>
 				<FormControlLabel
 					control={
 						<Checkbox
@@ -118,7 +129,9 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.publisher.loading,
-		searchedPublishers: state.publisher.searchedPublisher.SearchPublishers,
-		publishersList: state.publisher.publishersList
+		searchedPublishers: state.publisher.searchedPublisher,
+		publishersList: state.publisher.publishersList,
+		offset: state.publisher.offset,
+		totalDoc: state.publisher.totalDoc
 	});
 }

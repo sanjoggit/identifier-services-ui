@@ -62,16 +62,22 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {fetchPublisher, updatePublisher, match, publisher, loading, handleSubmit, clearFields, isAuthenticated, userInfo} = props;
+	const {
+		fetchPublisher,
+		updatePublisher,
+		match, publisher,
+		loading,
+		handleSubmit,
+		clearFields,
+		isAuthenticated,
+		userInfo} = props;
 	const classes = useStyles();
 	const formClasses = useFormStyles();
 	const [isEdit, setIsEdit] = useState(false);
 	const [cookie] = useCookies('login-cookie');
-
 	useEffect(() => {
-		fetchPublisher(match.params.id);
-	}, [publisher === undefined]);
-
+		fetchPublisher(match.params.id, cookie['login-cookie']);
+	}, []);
 	const handleEditClick = () => {
 		setIsEdit(true);
 	};
@@ -81,7 +87,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	};
 
 	let publisherDetail;
-	if (publisher === undefined || loading) {
+	if ((Object.keys(publisher).length === 0) || loading) {
 		publisherDetail = <Spinner/>;
 	} else {
 		publisherDetail = (
@@ -302,9 +308,9 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 function mapStateToProps(state) {
 	return ({
-		publisher: state.publisher.publisher.Publisher,
+		publisher: state.publisher.publisher,
 		loading: state.publisher.loading,
-		initialValues: state.publisher.publisher.Publisher,
+		initialValues: state.publisher.publisher,
 		isAuthenticated: state.login.isAuthenticated,
 		userInfo: state.login.userInfo
 	});

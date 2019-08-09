@@ -45,7 +45,6 @@ export default connect(mapStateToProps, actions)(props => {
 		fetchPublishersRequestsList(cookie['login-cookie']);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
 	const handleTableRowClick = id => {
 		props.history.push({
 			pathname: `/requests/publishers/${id}`,
@@ -67,7 +66,7 @@ export default connect(mapStateToProps, actions)(props => {
 		publishersRequestsData = (
 			<TableComponent
 				data={publishersRequestsList
-					.map(item => publishersRequestsRender(item._id, item.name, item.language))}
+					.map(item => publishersRequestsRender(item.id, item.name, item.language))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 			/>
@@ -97,6 +96,6 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.publisher.loading,
-		publishersRequestsList: state.publisher.publishersRequestsList.PublisherRequests
+		publishersRequestsList: state.publisher.publishersRequestsList
 	});
 }

@@ -32,6 +32,9 @@ const initialState = {
 	publishersList: [],
 	publisher: {},
 	searchedPublisher: [],
+	offset: null,
+	totalDoc: null,
+
 	publishersRequestsList: [],
 	publisherRequest: {},
 	loading: false,
@@ -60,7 +63,7 @@ export default function (state = initialState, action) {
 		case PUBLISHERS_REQUESTS_LIST:
 			return {
 				...state,
-				publishersRequestsList: action.payload,
+				publishersRequestsList: action.payload.results,
 				loading: false
 			};
 		case PUBLISHER_REQUEST:
@@ -78,7 +81,9 @@ export default function (state = initialState, action) {
 		case SEARCH_PUBLISHER:
 			return {
 				...state,
-				searchedPublisher: action.payload,
+				searchedPublisher: action.payload.results,
+				offset: action.payload.offset,
+				totalDoc: action.payload.totalDoc,
 				loading: false
 			};
 

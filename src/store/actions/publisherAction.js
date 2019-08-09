@@ -28,6 +28,7 @@
 import fetch from 'node-fetch';
 import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER, PUBLISHERS_REQUESTS_LIST, PUBLISHER_REQUEST} from './types';
 import {setLoader, success, fail} from './commonAction';
+import renderAliases from '../../components/form/render/renderAliases';
 
 const BASE_URL = 'http://localhost:8081';
 
@@ -48,14 +49,18 @@ export const fetchPublishersList = token => async dispatch => {
 	}
 };
 
-export const fetchPublisher = id => async dispatch => {
+export const fetchPublisher = (id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/publishers/${id}`, {
-			method: 'GET'
+			method: 'GET',
+			headers: {
+				Authorization: 'Bearer ' + token,
+				'Content-Type': 'application/json'
+			}
 		});
 		const result = await response.json();
-		dispatch(success(PUBLISHER, result.data));
+		dispatch(success(PUBLISHER, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
@@ -80,24 +85,26 @@ export const updatePublisher = (id, values, token) => async dispatch => {
 	}
 };
 
-export const searchPublisher = (data, token) => async dispatch => {
+export const searchPublisher = (searchText, token, offset) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/publishers/query?q=${data}`, {
+		const response = await fetch(`${BASE_URL}/publishers/query`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			}
+			},
+			body: JSON.stringify({query: {name: searchText}, offset: offset})
 		});
 		const result = await response.json();
-		dispatch(success(SEARCH_PUBLISHER, result.data));
+		console.log('ressssssssssss', result)
+		dispatch(success(SEARCH_PUBLISHER, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
 };
 
-export const fetchPublishersRequestsList = token => async dispatch => {
+export const fetchPublishersRequestsList = (token, searchText) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/requests/publishers/query`, {
@@ -105,10 +112,11 @@ export const fetchPublishersRequestsList = token => async dispatch => {
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			}
+			},
+			body: JSON.stringify({query: {name: searchText}})
 		});
 		const result = await response.json();
-		dispatch(success(PUBLISHERS_REQUESTS_LIST, result.data));
+		dispatch(success(PUBLISHERS_REQUESTS_LIST, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}
@@ -125,7 +133,7 @@ export const fetchPublisherRequest = (id, token) => async dispatch => {
 			}
 		});
 		const result = await response.json();
-		dispatch(success(PUBLISHER_REQUEST, result.data));
+		dispatch(success(PUBLISHER_REQUEST, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
 	}

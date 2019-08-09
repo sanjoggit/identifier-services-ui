@@ -135,7 +135,7 @@ app.get('/logOut', (req, res) => {
 });
 
 app.post('/passwordreset', (req, res) => {
-	console.log('----', req.body);
+	console.log('password reset', req.body);
 });
 
 app.get('*', (req, res) => {

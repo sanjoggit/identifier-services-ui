@@ -83,8 +83,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 				</Typography>
 			</Grid>
 		);
-    }
-    
+	}
+
     //NOTICE !!! Edit functionality is not done yet
 
 	const component = (
@@ -129,7 +129,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 function mapStateToProps(state) {
 	return ({
-		publisherRequest: state.publisher.publisherRequest.PublisherRequest,
+		publisherRequest: state.publisher.publisherRequest,
 		loading: state.publisher.loading,
 		isAuthenticated: state.login.isAuthenticated,
 		userInfo: state.login.userInfo
