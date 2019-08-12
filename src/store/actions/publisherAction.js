@@ -88,16 +88,25 @@ export const updatePublisher = (id, values, token) => async dispatch => {
 export const searchPublisher = (searchText, token, offset) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/publishers/query`, {
+		const properties = {
 			method: 'POST',
-			headers: {
+			headers: token ? {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({query: {name: searchText}, offset: offset})
-		});
+			} :
+				{'Content-Type': 'application/json'},
+			body: JSON.stringify({
+				queries: [{
+					query: {$or: [{name: searchText}, {aliases: searchText}]}
+				}],
+				offset: offset
+			})
+		};
+
+		console.log(properties)
+		const response = await fetch(`${BASE_URL}/publishers/query`,properties);
+
 		const result = await response.json();
-		console.log('ressssssssssss', result)
 		dispatch(success(SEARCH_PUBLISHER, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
