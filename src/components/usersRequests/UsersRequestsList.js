@@ -30,23 +30,28 @@
 
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Grid, Typography} from '@material-ui/core';
+import {Grid, Typography, Checkbox, FormControlLabel, Button, Tabs, Tab} from '@material-ui/core';
+import {useCookies} from 'react-cookie';
 
+import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
 import * as actions from '../../store/actions';
 import Spinner from '../Spinner';
-import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersRequestsList, usersRequestsList, totalUsersRequests} = props;
+	const {loading, fetchUsersRequestsList, usersRequestsList, totalUsersRequests, totalDoc, offset} = props;
 	const [cookie] = useCookies('login-cookie');
-	const [first, setFirst]= useState(0);
+	const [inputVal, setSearchInputVal] = useState('');
+	const [sortStateBy, setSortStateBy] = useState('');
+	const [cursors] = useState([]);
+	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		cookie['login-cookie'] !== null && fetchUsersRequestsList(cookie['login-cookie'], {first: first});
-	}, [cookie['login-cookie']]);
+		console.log(sortStateBy)
+		fetchUsersRequestsList(inputVal, sortStateBy, cookie['login-cookie'], lastCursor);
+	}, [lastCursor, cursors, inputVal, sortStateBy]);
 
 	const handleTableRowClick = id => {
 		props.history.push({
@@ -55,10 +60,15 @@ export default connect(mapStateToProps, actions)(props => {
 		});
 	};
 
+	const handleChange = (event, newValue) =>{
+		setSortStateBy(newValue);
+	}
+	
 	const headRows = [
 		{id: 'state', label: 'State'},
-		{id: 'givenName', label: 'Given Name'},
-		{id: 'familyName', label: 'Family Name'}
+		{id: 'publisher', label: 'Publisher'},
+		{id: 'email', label: 'email'}
+
 	];
 	let usersData;
 	if ((usersRequestsList === undefined) || (loading)) {
@@ -68,30 +78,48 @@ export default connect(mapStateToProps, actions)(props => {
 	} else {
 		usersData = (
 			<TableComponent
-				data={usersRequestsList.map(item => usersDataRender(item))}
+				data={usersRequestsList.map(item => usersDataRender(item.id, item.state, item.publisher, item.email))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 				totalDataCount={totalUsersRequests}
-				setFirst={setFirst}
-				first={first}
+				offset={offset}
+				totalDoc={totalDoc}
+				cursors={cursors}
+				setLastCursor={setLastCursor}
 			/>
 		);
 	}
 
-	function usersDataRender(item) {
-		const {id, state, givenName, familyName} = item;
+	function usersDataRender(id, state, publisher, email) {
 		return {
 			id: id,
 			state: state,
-			givenName: givenName,
-			familyName: familyName 
+			publisher: publisher,
+			email: email
 		};
 	}
 
+	
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
 				<Typography variant="h5">List of Users Creation Requests</Typography>
+				<SearchComponent offset={offset} searchFunction={fetchUsersRequestsList} setSearchInputVal={setSearchInputVal}/>
+					<Tabs
+						value={sortStateBy}
+						onChange={handleChange}
+						indicatorColor="primary"
+						textColor="primary"
+						variant="outlined"
+						>
+						<Typography variant="overline">Sort State By :</Typography>	
+						<Tab className={classes.tab} value="new" label="New"/>
+						<Tab className={classes.tab} value="inProgress" label="InProgress"/>
+						<Tab className={classes.tab} value="accepted" label="Accepted"/>
+						<Tab className={classes.tab} value="rejected" label="Rejected"/>
+						<Tab className={classes.tab} value="" label="ShowAll"/>
+					</Tabs>
+
 				{usersData}
 			</Grid>
 		</Grid>
@@ -106,6 +134,6 @@ function mapStateToProps(state) {
 		loading: state.users.loading,
 		usersRequestsList: state.users.usersRequestsList,
 		offset: state.users.offset,
-		totalUsersRequests: state.users.totalUsersRequests
+		totalDoc: state.users.totalUsersRequests
 	});
 }

@@ -38,19 +38,23 @@ import useStyles from '../styles/searchComponent';
 import * as actions from '../store/actions';
 
 export default connect(null, actions)(withRouter(props => {
-	const {searchPublisher, history, offset, setSearchInputVal} = props;
+	const {searchFunction, history, offset, setSearchInputVal} = props;
 	const classes = useStyles();
 	const [inputVal, setInputVal] = useState('');
 	const [cookie] = useCookies('login-cookie');
+
 	const handleInputChange = e => {
 		setInputVal(e.target.value);
 	};
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		searchPublisher(inputVal, cookie['login-cookie']);
+		props.homePage && history.push({
+			pathname: `/publishers/`,
+			state: {searchText: inputVal}
+		})
+		searchFunction(inputVal, cookie['login-cookie']);
 		setSearchInputVal(inputVal);
-		history.push('/publishers');
 	};
 
 	const component = (

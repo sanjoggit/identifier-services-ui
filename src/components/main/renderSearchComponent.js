@@ -26,19 +26,21 @@
  *
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Grid, Typography} from '@material-ui/core';
 import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/searchComponent';
+import {searchPublisher} from '../../store/actions';
 
 export default function () {
 	const classes = useStyles();
+	const [inputVal, setSearchInputVal] = useState('');
 
 	return (
 		<Grid container>
 			<Grid item xs={12} className={classes.searchContianer}>
 				<Typography variant="h4" align="center">Explore Finnish Publisher</Typography>
-				<SearchComponent/>
+				<SearchComponent homePage searchFunction={searchPublisher} setSearchInputVal={setSearchInputVal}/>
 			</Grid>
 		</Grid>
 	);

@@ -83,7 +83,6 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		setIsEdit(false);
 	};
 
-	console.log(usersRequest)
 	let userRequestDetail;
 	if (usersRequest.length < 1 || loading) {
 		userRequestDetail = <Spinner/>;
@@ -124,7 +123,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		<ModalLayout isTableRow color="primary">
 			<>
 				<Typography variant="h6">
-					Publisher Detail
+					Users Request Details
 				</Typography>
 				{isEdit ?
 					<div className={classes.publisher}>

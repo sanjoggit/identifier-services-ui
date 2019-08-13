@@ -205,7 +205,6 @@ function TablePaginationActions(props) {
 	const theme = useTheme();
 	const count = 5;
 	const {offset, cursors, setLastCursor, page, setPage, totalDoc} = props;
-	console.log('*******', page)
 	function handleFirstPageButtonClick() {
 	}
 
@@ -219,7 +218,6 @@ function TablePaginationActions(props) {
 	function handleNextButtonClick() {
 		cursors.push(offset);
 		setPage(page + 1);
-		console.log(page);
 		setLastCursor(offset);
 	}
 

@@ -60,6 +60,7 @@ export default function (state = initialState, action) {
 				...state,
 				usersList: action.payload.results,
 				offset: action.payload.offset,
+				totalUsers: action.payload.totalDoc,
 				loading: false
 			};
 		case USERS_REQUESTS_LIST:
@@ -67,6 +68,7 @@ export default function (state = initialState, action) {
 				...state,
 				usersRequestsList: action.payload.results,
 				requestOffset: action.payload.offset,
+				totalUsersRequests: action.payload.totalDoc,
 				loading: false
 			};
 		case FETCH_USERS_REQUEST:

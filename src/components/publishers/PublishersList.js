@@ -40,9 +40,9 @@ import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, offset, searchPublisher, totalDoc} = props;
+	const {loading, searchedPublishers, offset, location, searchPublisher, totalDoc} = props;
 	const [cookie] = useCookies('login-cookie');
-	const [inputVal, setSearchInputVal] = useState('');
+	const [inputVal, setSearchInputVal] = location.state === undefined ? useState('') : useState(location.state.searchText);
 	const [page, setPage] = React.useState(1);
 	const [activeCheck, setActiveCheck] = useState({
 		checked: false
@@ -51,8 +51,9 @@ export default connect(mapStateToProps, actions)(props => {
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
+		console.log(inputVal)
 		searchPublisher(inputVal, cookie['login-cookie'], lastCursor);
-	}, [lastCursor, cursors])
+	}, [lastCursor, cursors, inputVal])
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
@@ -67,7 +68,8 @@ export default connect(mapStateToProps, actions)(props => {
 
 	const headRows = [
 		{id: 'name', label: 'Name'},
-		{id: 'phone', label: 'Phone'}
+		{id: 'phone', label: 'Phone'},
+		{id: 'email', label: 'Email'}
 	];
 	let publishersData;
 	if (loading) {
@@ -79,8 +81,8 @@ export default connect(mapStateToProps, actions)(props => {
 			<TableComponent
 				data={activeCheck.checked ? searchedPublishers
 					.filter(item => item.activity.active === true)
-					.map(item => searchResultRender(item._id, item.name, item.phone)) :
-					searchedPublishers.map(item => searchResultRender(item.id, item.name, item.phone))}
+					.map(item => searchResultRender(item._id, item.name, item.phone, item.email)) :
+					searchedPublishers.map(item => searchResultRender(item.id, item.name, item.phone, item.email))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 				offset={offset}
@@ -93,11 +95,12 @@ export default connect(mapStateToProps, actions)(props => {
 		);
 	}
 
-	function searchResultRender(id, name, phone) {
+	function searchResultRender(id, name, phone, email) {
 		return {
 			id: id,
 			name: name,
-			phone: phone
+			phone: phone,
+			email: email
 		};
 	}
 
@@ -105,7 +108,7 @@ export default connect(mapStateToProps, actions)(props => {
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
 				<Typography variant="h5">Search Publisher By Name or Aliases</Typography>
-				<SearchComponent offset={offset} setSearchInputVal={setSearchInputVal}/>
+				<SearchComponent offset={offset} searchFunction={searchPublisher} setSearchInputVal={setSearchInputVal}/>
 				<FormControlLabel
 					control={
 						<Checkbox

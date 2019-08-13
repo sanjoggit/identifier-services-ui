@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 /**
@@ -77,30 +78,52 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	};
 
 	let userDetail;
+	let keys = isEdit ? Object.keys(user).filter(key => key !== 'lastUpdated') : Object.keys(user).map(key => key);
 	if (user === undefined || loading) {
 		userDetail = <Spinner/>;
 	} else {
 		userDetail = (
-			<Grid item xs={12} md={6}>
+			<Grid item xs={12}>
 				<Typography variant="h6">
-						Publisher Detail
+						User Details
 				</Typography>
 				<List>
-					<ListItem>
-						<ListItemText>
-							<Grid container>
-								<>
-									<Grid item xs={4}>Name:</Grid>
-									{isEdit ?
-										<Grid item xs={8}>
-											<Field name="givenName" className={formClasses.editForm} component={renderTextField}/>
-										</Grid> :
-										<Grid item xs={8}>{user.givenName}</Grid>
-									}
-								</>
-							</Grid>
-						</ListItemText>
-					</ListItem>
+					<Grid container xs={12}>
+						{keys.map(key => {
+							return (
+								<ListItem key={key}>
+									<ListItemText>
+										{(typeof user[key] !== 'object') ?
+											<Grid container>
+												<Grid item xs={4}>{key}: </Grid>
+												{isEdit ?
+													<Grid item xs={8}>
+														<Field name={key} className={formClasses.editForm} component={renderTextField}/>
+													</Grid> :
+													<Grid item xs={8}>{user[key]}</Grid>
+												}
+											</Grid> :
+											Object.keys(user[key]).map(subKey =>
+												(
+													<Grid key={subKey} container>
+														<Grid item xs={4}>{subKey}: </Grid>
+														{isEdit ?
+															<Grid item xs={8}>
+																{console.log(key, subKey, key[subKey])}
+																<Field name={`${key}[${subKey}]`} className={formClasses.editForm} component={renderTextField}/>
+															</Grid> :
+															<Grid item xs={8}>{user[key][subKey]}</Grid>
+														}
+													</Grid>
+												)
+											)
+										}
+									</ListItemText>
+								</ListItem>
+							);
+						}
+						)}
+					</Grid>
 				</List>
 			</Grid>
 		);

@@ -40,7 +40,12 @@ export const fetchUsersList = (token, offset) => async dispatch => {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({query: {}, offset: offset})
+			body: JSON.stringify({
+				queries: [{
+					query: {}
+				}],
+				offset: offset
+			})
 		});
 		const result = await response.json();
 		dispatch(success(USERS_LIST, result));
@@ -107,17 +112,25 @@ export const fetchUserRequest = (id, token) => async dispatch => {
 	}
 };
 
-export const fetchUsersRequestsList = (token, {first, offset}) => async dispatch => {
+export const fetchUsersRequestsList = (inputVal, sortStateBy, token, offset) => async dispatch => {
+	console.log('userAction#####', sortStateBy);
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${BASE_URL}/requests/users/query`, {
+		const properties = {
 			method: 'POST',
-			headers: {
+			headers: token ? {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({query: {}, offset: offset})
-		});
+			} :
+				{'Content-Type': 'application/json'},
+			body: JSON.stringify({
+				queries: [{
+					query: {state: sortStateBy, publisher: inputVal}
+				}],
+				offset: offset
+			})
+		};
+		const response = await fetch(`${BASE_URL}/requests/users/query`, properties);
 		const result = await response.json();
 		dispatch(success(USERS_REQUESTS_LIST, result));
 	} catch (err) {
