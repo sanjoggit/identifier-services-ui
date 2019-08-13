@@ -51,8 +51,9 @@ export default connect(mapStateToProps, actions)(props => {
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		searchPublisher(inputVal, cookie['login-cookie'], lastCursor);
-	}, [lastCursor, cursors])
+		searchPublisher(inputVal, cookie['login-cookie'], lastCursor, activeCheck);
+		console.log('check', activeCheck);
+	}, [lastCursor, cursors, activeCheck])
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
@@ -78,7 +79,7 @@ export default connect(mapStateToProps, actions)(props => {
 		publishersData = (
 			<TableComponent
 				data={activeCheck.checked ? searchedPublishers
-					.filter(item => item.activity.active === true)
+					//.filter(item => item.activity.active === true)
 					.map(item => searchResultRender(item._id, item.name, item.phone)) :
 					searchedPublishers.map(item => searchResultRender(item.id, item.name, item.phone))}
 				handleTableRowClick={handleTableRowClick}
