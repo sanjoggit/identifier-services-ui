@@ -34,6 +34,7 @@ const initialState = {
 	searchedPublisher: [],
 	offset: null,
 	totalDoc: null,
+	queryDocCount: null,
 
 	publishersRequestsList: [],
 	publisherRequest: {},
@@ -42,6 +43,7 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
+	console.log('action', action.payload)
 	switch (action.type) {
 		case LOADER:
 			return {
@@ -84,6 +86,7 @@ export default function (state = initialState, action) {
 				searchedPublisher: action.payload.results,
 				offset: action.payload.offset,
 				totalDoc: action.payload.totalDoc,
+				queryDocCount: action.payload.queryDocCount,
 				loading: false
 			};
 

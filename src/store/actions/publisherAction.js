@@ -53,10 +53,11 @@ export const fetchPublisher = (id, token) => async dispatch => {
 	try {
 		const response = await fetch(`${`${API_URL}/auth`}/publishers/${id}`, {
 			method: 'GET',
-			headers: {
+			headers: token ? {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
-			}
+			} :
+				{'Content-Type': 'application/json'}
 		});
 		const result = await response.json();
 		dispatch(success(PUBLISHER, result));
@@ -84,8 +85,11 @@ export const updatePublisher = (id, values, token) => async dispatch => {
 	}
 };
 
-export const searchPublisher = (searchText, token, offset) => async dispatch => {
+export const searchPublisher = (searchText, token, offset, activeCheck) => async dispatch => {
 	dispatch(setLoader());
+	const query = (activeCheck !== undefined && activeCheck.checked === true) ? {$or: [{name: searchText}, {aliases: searchText}], activity: {active: true}} :
+		{$or: [{name: searchText}, {aliases: searchText}]};
+
 	try {
 		const properties = {
 			method: 'POST',
@@ -96,7 +100,7 @@ export const searchPublisher = (searchText, token, offset) => async dispatch => 
 				{'Content-Type': 'application/json'},
 			body: JSON.stringify({
 				queries: [{
-					query: {$or: [{name: searchText}, {aliases: searchText}]}
+					query: query
 				}],
 				offset: offset
 			})
@@ -111,7 +115,7 @@ export const searchPublisher = (searchText, token, offset) => async dispatch => 
 	}
 };
 
-export const fetchPublishersRequestsList = (token, searchText) => async dispatch => {
+export const fetchPublishersRequestsList = token => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${`${API_URL}/auth`}/requests/publishers/query`, {
@@ -120,7 +124,12 @@ export const fetchPublishersRequestsList = (token, searchText) => async dispatch
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({query: {name: searchText}})
+			body: JSON.stringify({
+				queries: [{
+					query: {$or: [{name: 'Myn'}, {aliases: 'Myn'}]}
+				}],
+				offset: null
+			})
 		});
 		const result = await response.json();
 		dispatch(success(PUBLISHERS_REQUESTS_LIST, result));

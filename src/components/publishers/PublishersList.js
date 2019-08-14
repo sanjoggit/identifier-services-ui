@@ -41,7 +41,7 @@ import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, offset, location, searchPublisher, totalDoc} = props;
+	const {loading, searchedPublishers, offset, searchPublisher, totalDoc, queryDocCount} = props;
 	const [cookie] = useCookies('login-cookie');
 	const [inputVal, setSearchInputVal] = location.state === undefined ? useState('') : useState(location.state.searchText);
 	const [page, setPage] = React.useState(1);
@@ -52,13 +52,12 @@ export default connect(mapStateToProps, actions)(props => {
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		searchPublisher(inputVal, cookie['login-cookie'], lastCursor);
-	}, [lastCursor, cursors, inputVal]);
+		searchPublisher(inputVal, cookie['login-cookie'], lastCursor, activeCheck);
+	}, [lastCursor, cursors, activeCheck, inputVal])
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
-
 	const handleTableRowClick = id => {
 		props.history.push(`/publishers/${id}`, {modal: true});
 	};
@@ -77,9 +76,8 @@ export default connect(mapStateToProps, actions)(props => {
 		publishersData = (
 			<TableComponent
 				data={activeCheck.checked ? searchedPublishers
-					.filter(item => item.activity.active === true)
-					.map(item => searchResultRender(item._id, item.name, item.phone, item.email)) :
-					searchedPublishers.map(item => searchResultRender(item.id, item.name, item.phone, item.email))}
+					.map(item => searchResultRender(item._id, item.name, item.phone)) :
+					searchedPublishers.map(item => searchResultRender(item.id, item.name, item.phone))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 				offset={offset}
@@ -88,6 +86,7 @@ export default connect(mapStateToProps, actions)(props => {
 				setPage={setPage}
 				setLastCursor={setLastCursor}
 				totalDoc={totalDoc}
+				queryDocCount={queryDocCount}
 			/>
 		);
 	}
@@ -132,6 +131,7 @@ function mapStateToProps(state) {
 		searchedPublishers: state.publisher.searchedPublisher,
 		publishersList: state.publisher.publishersList,
 		offset: state.publisher.offset,
-		totalDoc: state.publisher.totalDoc
+		totalDoc: state.publisher.totalDoc,
+		queryDocCount: state.publisher.queryDocCount
 	});
 }
