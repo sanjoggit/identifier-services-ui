@@ -200,11 +200,12 @@ export default function (props) {
 	};
 }
 
+
 function TablePaginationActions(props) {
 	const classes = useStyles1();
 	const theme = useTheme();
 	const count = 5;
-	const {offset, cursors, setLastCursor, page, setPage, totalDoc} = props;
+	const {offset, cursors, setLastCursor, page, setPage, totalDoc, queryDocCount} = props;
 	function handleFirstPageButtonClick() {
 	}
 
@@ -226,7 +227,7 @@ function TablePaginationActions(props) {
 
 	return (
 		<div className={classes.root}>
-			{/* <span>{count * page < totalDoc ? count * page : totalDoc}/{totalDoc}</span> */}
+			<span>{page * 5 > queryDocCount ? queryDocCount : page * 5}/{queryDocCount}</span>
 			<IconButton
 				disabled={page === 1}
 				aria-label="First Page"
@@ -240,6 +241,7 @@ function TablePaginationActions(props) {
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowRight/> : <KeyboardArrowLeft/>}
 			</IconButton>
+			<span>Page{page}</span>
 			<IconButton
 				disabled={(count * page) >= totalDoc}
 				aria-label="Next Page"
@@ -264,5 +266,6 @@ TablePaginationActions.propTypes = {
 	setLastCursor: PropTypes.func.isRequired,
 	page: PropTypes.number.isRequired,
 	setPage: PropTypes.func.isRequired,
-	totalDoc: PropTypes.number.isRequired
+	totalDoc: PropTypes.number.isRequired,
+	queryDocCount: PropTypes.number.isRequired
 };

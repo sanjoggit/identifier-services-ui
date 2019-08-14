@@ -28,7 +28,6 @@
 import fetch from 'node-fetch';
 import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER, PUBLISHERS_REQUESTS_LIST, PUBLISHER_REQUEST} from './types';
 import {setLoader, success, fail} from './commonAction';
-import renderAliases from '../../components/form/render/renderAliases';
 
 const BASE_URL = 'http://localhost:8081';
 
@@ -88,7 +87,9 @@ export const updatePublisher = (id, values, token) => async dispatch => {
 
 export const searchPublisher = (searchText, token, offset, activeCheck) => async dispatch => {
 	dispatch(setLoader());
-	const query = activeCheck.checked ? {$or: [{name: searchText}, {aliases: searchText}], activity: {active: true}} : {$or: [{name: searchText}, {aliases: searchText}]};
+	const query = (activeCheck !== undefined && activeCheck.checked === true) ? {$or: [{name: searchText}, {aliases: searchText}], activity: {active: true}} :
+		{$or: [{name: searchText}, {aliases: searchText}]};
+
 	try {
 		const properties = {
 			method: 'POST',
@@ -114,7 +115,7 @@ export const searchPublisher = (searchText, token, offset, activeCheck) => async
 	}
 };
 
-export const fetchPublishersRequestsList = (token, searchText) => async dispatch => {
+export const fetchPublishersRequestsList = token => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/requests/publishers/query`, {
