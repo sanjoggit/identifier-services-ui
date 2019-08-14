@@ -112,7 +112,7 @@ export const fetchUserRequest = (id, token) => async dispatch => {
 	}
 };
 
-export const fetchUsersRequestsList = (inputVal, sortStateBy, token, offset) => async dispatch => {
+export const fetchUsersRequestsList = ({inputVal, sortStateBy, token, offset}) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const properties = {
