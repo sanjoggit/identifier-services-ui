@@ -243,14 +243,14 @@ function TablePaginationActions(props) {
 			</IconButton>
 			<span>Page{page}</span>
 			<IconButton
-				disabled={(count * page) >= totalDoc}
+				disabled={(count * page) >= queryDocCount}
 				aria-label="Next Page"
 				onClick={handleNextButtonClick}
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
 			</IconButton>
 			<IconButton
-				disabled={(count * page) >= totalDoc}
+				disabled={(count * page) >= queryDocCount}
 				aria-label="Last Page"
 				onClick={handleLastPageButtonClick}
 			>

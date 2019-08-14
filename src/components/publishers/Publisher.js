@@ -65,7 +65,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const {
 		fetchPublisher,
 		updatePublisher,
-		match, publisher,
+		match,
+		publisher,
 		loading,
 		handleSubmit,
 		clearFields,
@@ -85,6 +86,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const handleCancel = () => {
 		setIsEdit(false);
 	};
+console.log('publisher', publisher)
+console.log('userInfo', userInfo)
 
 	let publisherDetail;
 	if ((Object.keys(publisher).length === 0) || loading) {

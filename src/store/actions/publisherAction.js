@@ -60,6 +60,7 @@ export const fetchPublisher = (id, token) => async dispatch => {
 				{'Content-Type': 'application/json'}
 		});
 		const result = await response.json();
+		console.log('kkkkkkkkkkkkkkk', result)
 		dispatch(success(PUBLISHER, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
@@ -109,6 +110,7 @@ export const searchPublisher = (searchText, token, offset, activeCheck) => async
 		const response = await fetch(`${BASE_URL}/publishers/query`, properties);
 
 		const result = await response.json();
+		console.log('ffffffffffff', result)
 		dispatch(success(SEARCH_PUBLISHER, result));
 	} catch (err) {
 		dispatch(fail(ERROR, err));
