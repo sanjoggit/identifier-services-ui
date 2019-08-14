@@ -143,7 +143,6 @@ export default function (props) {
 	const classes = useStyles();
 	const [order, setOrder] = React.useState('asc');
 	const [orderBy, setOrderBy] = React.useState('');
-	
 
 	function handleRequestSort(event, property) {
 		const isDesc = orderBy === property && order === 'desc';
@@ -212,7 +211,6 @@ function TablePaginationActions(props) {
 		cursors.pop();
 		setPage(page - 1);
 		setLastCursor(cursors.length === 0 ? null : cursors[cursors.length - 1]);
-
 	}
 
 	function handleNextButtonClick() {
@@ -259,4 +257,10 @@ function TablePaginationActions(props) {
 }
 
 TablePaginationActions.propTypes = {
+	offset: PropTypes.string.isRequired,
+	cursors: PropTypes.array.isRequired,
+	setLastCursor: PropTypes.func.isRequired,
+	page: PropTypes.number.isRequired,
+	setPage: PropTypes.func.isRequired,
+	totalDoc: PropTypes.number.isRequired
 };

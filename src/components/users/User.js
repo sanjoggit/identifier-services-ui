@@ -109,7 +109,6 @@ export default connect(mapStateToProps, actions)(reduxForm({
 														<Grid item xs={4}>{subKey}: </Grid>
 														{isEdit ?
 															<Grid item xs={8}>
-																{console.log(key, subKey, key[subKey])}
 																<Field name={`${key}[${subKey}]`} className={formClasses.editForm} component={renderTextField}/>
 															</Grid> :
 															<Grid item xs={8}>{user[key][subKey]}</Grid>

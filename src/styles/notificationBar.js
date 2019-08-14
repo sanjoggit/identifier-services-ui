@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 	bar: {
 		position: 'sticky',
 		minHeight: 30,
-		background: 'orange',	
+		background: 'orange',
 		justifyContent: 'center',
 		display: 'flex',
 		flexDirection: 'row',

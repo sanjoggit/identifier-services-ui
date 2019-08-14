@@ -56,5 +56,5 @@ export default function ({label, className, id, input, meta: {touched, error}}) 
 			className: PropTypes.string.isRequired,
 			meta: PropTypes.shape({touched: PropTypes.bool, error: PropTypes.bool})
 		}
-	}
-};
+	};
+}

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -28,7 +30,7 @@
 
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
+import {Grid, Typography} from '@material-ui/core';
 
 import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
@@ -38,7 +40,7 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchMessagesList, messagesList, offset} = props;
+	const {loading, fetchMessagesList, messagesList} = props;
 	const [token, setToken] = useState(null);
 	const [cookie] = useCookies('login-cookie');
 
@@ -48,10 +50,7 @@ export default connect(mapStateToProps, actions)(props => {
 	}, [token]);
 
 	const handleTableRowClick = id => {
-		props.history.push({
-			pathname: `/templates/${id}`,
-			state: {modal: true}
-		});
+		props.history.push(`/templates/${id}`, {modal: true});
 	};
 
 	const headRows = [
@@ -68,23 +67,24 @@ export default connect(mapStateToProps, actions)(props => {
 	} else if (messagesList === undefined) {
 		messageData = <p>No Users Available</p>;
 	} else {
-		messageData = 
+		messageData = (
 			<TableComponent
 				data={messagesList.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
 			/>
-		}
+		);
+	}
 
-		function usersDataRender(item){
-			const {id, name, language, subject, body, notes}= item;
-		return{
+	function usersDataRender(item) {
+		const {id, name, language, subject, body, notes} = item;
+		return {
 			id: id,
 			name: name,
-			subject : subject,
+			subject: subject,
 			body: body,
 			notes: notes,
-			language : language,
+			language: language
 		};
 	}
 

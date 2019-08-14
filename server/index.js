@@ -35,9 +35,9 @@ import bodyParser from 'body-parser';
 import validateContentType from '@natlibfi/express-validate-content-type';
 import parse from 'url-parse';
 import {HTTP_PORT, SMTP_URL, BASE_URL} from '../config/config';
+import * as frontendConfig from '../config/frontEndConfig';
 import fetch from 'node-fetch';
 import base64 from 'base-64';
-import HttpStatus from 'http-status';
 import svgCaptcha from 'svg-captcha';
 import uuidv4 from 'uuid/v4';
 
@@ -79,7 +79,7 @@ app.post('/message', (req, res) => {
 			secure: false
 		});
 
-		let info = await transporter.sendMail({
+		await transporter.sendMail({
 			from: 'test@test.com',
 			to: 'sanjogstha7@gmail.com',
 			replyTo: 'test@test.com',
@@ -134,8 +134,12 @@ app.get('/logOut', (req, res) => {
 	res.send('cookie cleared');
 });
 
-app.post('/passwordreset', (req, res) => {
+app.post('/passwordreset', req => {
 	console.log('password reset', req.body);
+});
+
+app.get('/conf', (_req, res) => {
+	res.json(frontendConfig);
 });
 
 app.get('*', (req, res) => {

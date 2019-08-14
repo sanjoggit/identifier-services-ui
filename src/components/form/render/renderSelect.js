@@ -30,7 +30,6 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import {Input, InputLabel, NativeSelect} from '@material-ui/core';
 
-
 export default function ({label, input, name, options, meta: {touched, error}}) {
 	const component = (
 		<>

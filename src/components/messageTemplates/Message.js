@@ -28,38 +28,23 @@
  *
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
 	Typography,
-	Button,
 	Grid,
 	List,
 	ListItem,
-	ListItemText,
-	Fab,
-	Chip,
-	Paper,
-	ExpansionPanel,
-	ExpansionPanelDetails,
-	ExpansionPanelSummary
+	ListItemText
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import {reduxForm, Field, FieldArray} from 'redux-form';
 import {useCookies} from 'react-cookie';
 
 import useStyles from '../../styles/publisher';
-import useFormStyles from '../../styles/form';
 import * as actions from '../../store/actions';
 import {connect} from 'react-redux';
-import {validate} from '@natlibfi/identifier-services-commons';
 import ModalLayout from '../ModalLayout';
-import Spinner from '../Spinner';
-import renderTextField from '../form/render/renderTextField';
-import renderAliases from '../form/render/renderAliases';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 export default connect(mapStateToProps, actions)(props => {
-	const {match, loading, fetchMessage, messageInfo} = props;
+	const {match, fetchMessage, messageInfo} = props;
 	const classes = useStyles();
 	const [cookie] = useCookies('login-cookie');
 

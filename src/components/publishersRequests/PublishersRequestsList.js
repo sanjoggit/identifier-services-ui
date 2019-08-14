@@ -46,10 +46,7 @@ export default connect(mapStateToProps, actions)(props => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	const handleTableRowClick = id => {
-		props.history.push({
-			pathname: `/requests/publishers/${id}`,
-			state: {modal: true}
-		});
+		props.history.push(`/requests/publishers/${id}`, {modal: true});
 	};
 
 	const headRows = [

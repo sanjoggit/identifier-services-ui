@@ -81,3 +81,12 @@ export const postCaptchaInput = (inputData, id) => async dispatch => {
 		dispatch(fail(ERROR, err));
 	}
 };
+
+export async function getApiUrl() {
+	const temp = await fetch('http://localhost:8080/conf', {
+		method: 'GET'
+	});
+	const result = await temp.json();
+	return result.API_URL;
+}
+

@@ -26,8 +26,10 @@
  *
  */
 const path = require('path');
-const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const PATHS = require('./paths');
 
 module.exports = {
 	entry: path.resolve(path.join(__dirname, '..', 'src', 'index.js')),
@@ -51,7 +53,7 @@ module.exports = {
 					{
 						loader: 'file-loader',
 						options: {
-							name: 'images/[name]-[hash:8].[ext]',
+							name: 'images/[name].[ext]',
 							outputPath: 'images/'
 						}
 					}
@@ -60,13 +62,21 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new OptimizeCssAssetsPlugin({
+			filename: '[name]-[contenthash].css',
+			cssProcessorOptions: {
+				preset: 'advanced'
+			}
+		}),
+		new CopyWebpackPlugin([
+			{
+				from: PATHS.images,
+				to: 'images'
+			}
+		]),
 		new HtmlWebpackPlugin({
 			template: path.resolve(path.join(__dirname, '../public/index.html')),
 			filename: 'index.html'
-		}),
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify('production'),
-			_DEV_: JSON.stringify(JSON.parse(process.env.DEBUG || false))
 		})
 	]
 };

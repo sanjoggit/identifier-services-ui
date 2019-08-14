@@ -28,7 +28,6 @@
 import fetch from 'node-fetch';
 import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER, PUBLISHERS_REQUESTS_LIST, PUBLISHER_REQUEST} from './types';
 import {setLoader, success, fail} from './commonAction';
-import renderAliases from '../../components/form/render/renderAliases';
 
 const API_URL = 'http://localhost:8081';
 

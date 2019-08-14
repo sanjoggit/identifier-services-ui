@@ -30,7 +30,7 @@
 
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Grid, Typography, Checkbox, FormControlLabel, Button, Tabs, Tab} from '@material-ui/core';
+import {Grid, Typography, Tabs, Tab} from '@material-ui/core';
 import {useCookies} from 'react-cookie';
 
 import SearchComponent from '../SearchComponent';
@@ -49,21 +49,17 @@ export default connect(mapStateToProps, actions)(props => {
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		console.log(sortStateBy)
 		fetchUsersRequestsList(inputVal, sortStateBy, cookie['login-cookie'], lastCursor);
 	}, [lastCursor, cursors, inputVal, sortStateBy]);
 
 	const handleTableRowClick = id => {
-		props.history.push({
-			pathname: `/requests/users/${id}`,
-			state: {modal: true}
-		});
+		props.history.push(`/requests/users/${id}`, {modal: true});
 	};
 
-	const handleChange = (event, newValue) =>{
+	const handleChange = (event, newValue) => {
 		setSortStateBy(newValue);
-	}
-	
+	};
+
 	const headRows = [
 		{id: 'state', label: 'State'},
 		{id: 'publisher', label: 'Publisher'},
@@ -99,26 +95,25 @@ export default connect(mapStateToProps, actions)(props => {
 		};
 	}
 
-	
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
 				<Typography variant="h5">List of Users Creation Requests</Typography>
 				<SearchComponent offset={offset} searchFunction={fetchUsersRequestsList} setSearchInputVal={setSearchInputVal}/>
-					<Tabs
-						value={sortStateBy}
-						onChange={handleChange}
-						indicatorColor="primary"
-						textColor="primary"
-						variant="outlined"
-						>
-						<Typography variant="overline">Sort State By :</Typography>	
-						<Tab className={classes.tab} value="new" label="New"/>
-						<Tab className={classes.tab} value="inProgress" label="InProgress"/>
-						<Tab className={classes.tab} value="accepted" label="Accepted"/>
-						<Tab className={classes.tab} value="rejected" label="Rejected"/>
-						<Tab className={classes.tab} value="" label="ShowAll"/>
-					</Tabs>
+				<Tabs
+					value={sortStateBy}
+					indicatorColor="primary"
+					textColor="primary"
+					variant="outlined"
+					onChange={handleChange}
+				>
+					<Typography variant="overline">Sort State By :</Typography>
+					<Tab className={classes.tab} value="new" label="New"/>
+					<Tab className={classes.tab} value="inProgress" label="InProgress"/>
+					<Tab className={classes.tab} value="accepted" label="Accepted"/>
+					<Tab className={classes.tab} value="rejected" label="Rejected"/>
+					<Tab className={classes.tab} value="" label="ShowAll"/>
+				</Tabs>
 
 				{usersData}
 			</Grid>

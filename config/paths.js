@@ -25,25 +25,9 @@
  * for the JavaScript code in this file.
  *
  */
-import React from 'react';
-import {AppBar, IconButton} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import useStyles from '../styles/notificationBar';
 
-export default function ({handleClose}) {
-	const classes = useStyles();
+const path = require('path');
 
-	const component = (
-		<AppBar className={classes.bar} color="secondary">
-			<p>Hello World! This is a notification...</p>
-			<IconButton key="close" aria-label="Close" color="inherit" onClick={handleClose}>
-				<CloseIcon className={classes.icon}/>
-			</IconButton>
-		</AppBar>
-	);
-
-	return {
-		...component
-	};
-}
-
+module.exports = {
+	images: path.resolve(path.join(__dirname, '../public/images/images'))
+};

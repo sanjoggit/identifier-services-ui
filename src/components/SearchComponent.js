@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
@@ -38,7 +39,7 @@ import useStyles from '../styles/searchComponent';
 import * as actions from '../store/actions';
 
 export default connect(null, actions)(withRouter(props => {
-	const {searchFunction, history, offset, setSearchInputVal} = props;
+	const {searchFunction, history} = props;
 	const classes = useStyles();
 	const [inputVal, setInputVal] = useState('');
 	const [cookie] = useCookies('login-cookie');
@@ -49,12 +50,8 @@ export default connect(null, actions)(withRouter(props => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		props.homePage && history.push({
-			pathname: `/publishers/`,
-			state: {searchText: inputVal}
-		})
+		props.homePage && history.push('/publishers/', {searchText: inputVal});
 		searchFunction(inputVal, cookie['login-cookie']);
-		setSearchInputVal(inputVal);
 	};
 
 	const component = (

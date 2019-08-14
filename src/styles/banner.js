@@ -25,25 +25,31 @@
  * for the JavaScript code in this file.
  *
  */
-
-import bgImage from '../assets/img/bg.jpg';
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
 	bannerContainer: {
-		backgroundImage: `url(${bgImage})`,
-		height: '500px',
-		width: '100%',
+		display: 'flex',
+		position: 'relative',
 		backgroundSize: 'cover',
-		backgroundColor: '#1f1e1e80',
+		height: '500px',
+		backgroundColor: '#15141457',
 		backgroundBlendMode: 'color',
+		'& img': {
+			objectFit: 'cover',
+			objectPosition: 'top',
+			width: '100%',
+			height: '100%',
+			position: 'absolute',
+			zIndex: '-2'
+		},
 		'& h1': {
 			color: '#ffffff',
 			margin: '0'
-		},
-		display: 'flex'
+		}
 	},
 	textContainer: {
+		margin: '150px auto',
 		maxWidth: '1200px',
 		color: '#ffffff',
 		display: 'flex',

@@ -69,24 +69,24 @@ export default connect(state => ({
 					{
 						subName.map(item => (
 							(item.type === 'select') ?
-							<Field
-								key={item.label}
-								className={`${classes.textField} ${classes[`${item.className}`]}`}
-								component={renderSelect}
-								label={item.label}
-								name={item.name}
-								type={item.type}
-								options={item.option}
-							/>	:
-							<Field
-								key={item.label}
-								className={classes[`${item.className}`]}
-								name={item.name}
-								type="text"
-								component={renderTextField}
-								label={item.label}
-								props={{errors}}
-							/>
+								<Field
+									key={item.label}
+									className={`${classes.textField} ${classes[`${item.className}`]}`}
+									component={renderSelect}
+									label={item.label}
+									name={item.name}
+									type={item.type}
+									options={item.option}
+								/>	:
+								<Field
+									key={item.label}
+									className={classes[`${item.className}`]}
+									name={item.name}
+									type="text"
+									component={renderTextField}
+									label={item.label}
+									props={{errors}}
+								/>
 						))
 					}
 					<Fab

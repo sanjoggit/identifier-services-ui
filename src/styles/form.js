@@ -50,7 +50,7 @@ const useStyles = makeStyles({
 	},
 	arrayString: {
 		height: '60px',
-		width: '95%',
+		width: '95%'
 	},
 	full: {
 		flexDirection: 'column'

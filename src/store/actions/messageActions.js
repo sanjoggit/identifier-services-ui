@@ -57,7 +57,7 @@ export const createMessageTemplate = values => async dispatch => {
 		},
 		body: JSON.stringify(values)
 	});
-	console.log(await response.json());
+	await response.json();
 };
 
 export const fetchMessagesList = (token, offset) => async dispatch => {

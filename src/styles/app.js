@@ -80,11 +80,11 @@ const theme = createMuiTheme({
 		},
 
 		MuiToggleButton: {
-			selected: {
+			'&$selected': {
 				'& span': {
 					color: '#ffffff !important'
 				},
-				backgroundColor: '#00224f !important'
+				backgroundColor: 'red !important'
 			}
 
 		}

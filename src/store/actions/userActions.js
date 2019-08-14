@@ -64,7 +64,7 @@ export const createUser = (values, token) => async () => {
 		credentials: 'same-origin',
 		body: JSON.stringify(values)
 	});
-	console.log(await response.json());
+	await response.json();
 };
 
 export const createUserRequest = (values, token) => async () => {
@@ -77,7 +77,7 @@ export const createUserRequest = (values, token) => async () => {
 		credentials: 'same-origin',
 		body: JSON.stringify(values)
 	});
-	console.log(await response.json());
+	await response.json();
 };
 
 export const fetchUser = (id, token) => async dispatch => {
@@ -113,7 +113,6 @@ export const fetchUserRequest = (id, token) => async dispatch => {
 };
 
 export const fetchUsersRequestsList = (inputVal, sortStateBy, token, offset) => async dispatch => {
-	console.log('userAction#####', sortStateBy);
 	dispatch(setLoader());
 	try {
 		const properties = {
@@ -148,5 +147,5 @@ export const updateUserRequest = (id, values, token) => async () => {
 		credentials: 'same-origin',
 		body: JSON.stringify(values)
 	});
-	console.log(await response.json());
+	await response.json();
 };

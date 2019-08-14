@@ -52,7 +52,7 @@ const useStyles = makeStyles({
 		a: {
 			textDecoration: 'none',
 			color: '#00224f'
-		}		
+		}
 	},
 
 	container: {

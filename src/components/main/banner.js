@@ -29,6 +29,7 @@
 import React from 'react';
 import {Container, Typography} from '@material-ui/core';
 import {FormattedMessage} from 'react-intl';
+import bg from '../../assets/img/bg.jpg';
 
 import useStyles from '../../styles/banner';
 
@@ -36,6 +37,7 @@ export default function () {
 	const classes = useStyles();
 	return (
 		<div className={classes.bannerContainer}>
+			<img src={bg}/>
 			<Container className={classes.textContainer}>
 				<Typography variant="h2" align="center"><FormattedMessage id="app.home.title"/></Typography>
 				<Typography variant="h5" align="center">

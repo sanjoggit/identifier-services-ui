@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-negated-condition */
 /* eslint-disable react-hooks/exhaustive-deps */
 
@@ -40,7 +41,6 @@ import {
 	Fab
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
 import {reduxForm} from 'redux-form';
 import {useCookies} from 'react-cookie';

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
 /**
  *
@@ -51,19 +52,15 @@ export default connect(mapStateToProps, actions)(props => {
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		console.log(inputVal)
 		searchPublisher(inputVal, cookie['login-cookie'], lastCursor);
-	}, [lastCursor, cursors, inputVal])
+	}, [lastCursor, cursors, inputVal]);
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
 
 	const handleTableRowClick = id => {
-		props.history.push({
-			pathname: `/publishers/${id}`,
-			state: {modal: true}
-		});
+		props.history.push(`/publishers/${id}`, {modal: true});
 	};
 
 	const headRows = [
