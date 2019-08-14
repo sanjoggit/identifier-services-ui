@@ -131,7 +131,6 @@ export default connect(null, actions)(reduxForm({
 		}
 
 		function handleReject() {
-			console.log(rejectedText);
 		}
 
 		const component = (

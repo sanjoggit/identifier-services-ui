@@ -34,7 +34,7 @@ const API_URL = 'http://localhost:8081';
 export const fetchPublishersList = token => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${`${API_URL}/auth`}/publishers/query`, {
+		const response = await fetch(`${API_URL}/publishers/query`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
@@ -51,7 +51,7 @@ export const fetchPublishersList = token => async dispatch => {
 export const fetchPublisher = (id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${`${API_URL}/auth`}/publishers/${id}`, {
+		const response = await fetch(`${API_URL}/publishers/${id}`, {
 			method: 'GET',
 			headers: token ? {
 				Authorization: 'Bearer ' + token,
@@ -69,7 +69,7 @@ export const fetchPublisher = (id, token) => async dispatch => {
 export const updatePublisher = (id, values, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${`${API_URL}/auth`}/publishers/${id}`, {
+		const response = await fetch(`${API_URL}/publishers/${id}`, {
 			method: 'PUT',
 			headers: {
 				Authorization: 'Bearer ' + token,
@@ -106,7 +106,7 @@ export const searchPublisher = (searchText, token, offset, activeCheck) => async
 			})
 		};
 
-		const response = await fetch(`${`${API_URL}/auth`}/publishers/query`, properties);
+		const response = await fetch(`${API_URL}/publishers/query`, properties);
 
 		const result = await response.json();
 		dispatch(success(SEARCH_PUBLISHER, result));
@@ -118,7 +118,7 @@ export const searchPublisher = (searchText, token, offset, activeCheck) => async
 export const fetchPublishersRequestsList = token => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${`${API_URL}/auth`}/requests/publishers/query`, {
+		const response = await fetch(`${API_URL}/requests/publishers/query`, {
 			method: 'POST',
 			headers: {
 				Authorization: 'Bearer ' + token,
@@ -141,7 +141,7 @@ export const fetchPublishersRequestsList = token => async dispatch => {
 export const fetchPublisherRequest = (id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
-		const response = await fetch(`${`${API_URL}/auth`}/requests/publishers/${id}`, {
+		const response = await fetch(`${API_URL}/requests/publishers/${id}`, {
 			method: 'GET',
 			headers: {
 				Authorization: 'Bearer ' + token,

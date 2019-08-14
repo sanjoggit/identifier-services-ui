@@ -21,7 +21,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "check-deps": "npm-check || exit 0",
-    "lint": "eslint --fix --ext .jsx,.js .",
+    "lint": "eslint --ext .jsx,.js .",
     "test": "cross-env NODE_ENV=test mocha --require @babel/register frontend/**/*.spec.js frontend/**/*.spec.jsx",
     "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.config.prod.js --progress",
     "watch:dev": "DEBUG=1 webpack-dev-server --open --config=./config/webpack.config.dev.js --hot --inline --progress",

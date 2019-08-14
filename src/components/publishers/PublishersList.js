@@ -41,7 +41,7 @@ import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, offset, searchPublisher, totalDoc, queryDocCount} = props;
+	const {loading, searchedPublishers, offset, location, searchPublisher, totalDoc, queryDocCount} = props;
 	const [cookie] = useCookies('login-cookie');
 	const [inputVal, setSearchInputVal] = location.state === undefined ? useState('') : useState(location.state.searchText);
 	const [page, setPage] = React.useState(1);
@@ -53,11 +53,12 @@ export default connect(mapStateToProps, actions)(props => {
 
 	useEffect(() => {
 		searchPublisher(inputVal, cookie['login-cookie'], lastCursor, activeCheck);
-	}, [lastCursor, cursors, activeCheck, inputVal])
+	}, [lastCursor, cursors, activeCheck, inputVal]);
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
+
 	const handleTableRowClick = id => {
 		props.history.push(`/publishers/${id}`, {modal: true});
 	};

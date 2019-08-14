@@ -199,7 +199,6 @@ export default function (props) {
 	};
 }
 
-
 function TablePaginationActions(props) {
 	const classes = useStyles1();
 	const theme = useTheme();
