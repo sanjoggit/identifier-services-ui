@@ -28,10 +28,11 @@
  */
 
 export const handleMenuClick = (path, token) => async () => {
-	await fetch(`http://localhost:8081/${path}`, {
+	const result = await fetch(`http://localhost:8081/${path}`, {
 		method: 'GET',
 		headers: {
 			Authorization: 'Bearer ' + token
 		}
 	});
+	console.log(await result.json());
 };

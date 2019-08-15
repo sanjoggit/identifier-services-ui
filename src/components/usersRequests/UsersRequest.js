@@ -72,6 +72,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 			state: 'inProgress',
 			backgroundProcessingState: 'inProgress'
 		};
+		// eslint-disable-next-line no-unused-expressions
 		usersRequest.id && updateUserRequest(match.params.id, requestToUpdate, token);
 	}, [usersRequest.id === undefined]);
 

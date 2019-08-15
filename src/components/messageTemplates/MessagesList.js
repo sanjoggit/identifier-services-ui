@@ -46,8 +46,8 @@ export default connect(mapStateToProps, actions)(props => {
 
 	useEffect(() => {
 		setToken(cookie['login-cookie']);
-		token !== null && fetchMessagesList(token);
-	}, [token]);
+		fetchMessagesList(token);
+	}, [cookie, fetchMessagesList, token]);
 
 	const handleTableRowClick = id => {
 		props.history.push(`/templates/${id}`, {modal: true});

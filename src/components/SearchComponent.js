@@ -51,12 +51,12 @@ export default connect(null, actions)(withRouter(props => {
 	const handleSubmit = e => {
 		e.preventDefault();
 		if (props.homePage) {
-			history.push({pathname: '/publishers/', state: {searchText: inputVal}});
+			history.push('/publishers/', {searchText: inputVal});
 			searchFunction(inputVal, cookie['login-cookie']);
+		} else {
+			searchFunction(inputVal, cookie['login-cookie']);
+			setSearchInputVal(inputVal);
 		}
-
-		searchFunction(inputVal, cookie['login-cookie']);
-		setSearchInputVal(inputVal);
 	};
 
 	const component = (

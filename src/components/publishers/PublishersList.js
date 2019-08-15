@@ -43,6 +43,7 @@ export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, searchedPublishers, offset, location, searchPublisher, totalDoc, queryDocCount} = props;
 	const [cookie] = useCookies('login-cookie');
+	console.log('lllllllllllllllllll', location.state);
 	const [inputVal, setSearchInputVal] = location.state === undefined ? useState('') : useState(location.state.searchText);
 	const [page, setPage] = React.useState(1);
 	const [activeCheck, setActiveCheck] = useState({
@@ -52,21 +53,21 @@ export default connect(mapStateToProps, actions)(props => {
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		searchPublisher(inputVal, cookie['login-cookie'], lastCursor, activeCheck);
-	}, [lastCursor, cursors, activeCheck, inputVal]);
+		console.log(inputVal, cookie['login-cookie'], lastCursor, activeCheck);
+		searchPublisher({searchText: inputVal, token: cookie['login-cookie'], offset: lastCursor, activeCheck: activeCheck});
+	}, [lastCursor, cursors, activeCheck, inputVal, searchPublisher, cookie]);
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
 
 	const handleTableRowClick = id => {
-		props.history.push(`/publishers/${id}`, {modal: true});
+		props.history.push({pathname: `/publishers/${id}`, state: {modal: true, searchText: ''}});
 	};
 
 	const headRows = [
 		{id: 'name', label: 'Name'},
-		{id: 'phone', label: 'Phone'},
-		{id: 'email', label: 'Email'}
+		{id: 'phone', label: 'Phone'}
 	];
 	let publishersData;
 	if (loading) {
@@ -92,12 +93,11 @@ export default connect(mapStateToProps, actions)(props => {
 		);
 	}
 
-	function searchResultRender(id, name, phone, email) {
+	function searchResultRender(id, name, phone) {
 		return {
 			id: id,
 			name: name,
-			phone: phone,
-			email: email
+			phone: phone
 		};
 	}
 

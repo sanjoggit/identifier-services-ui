@@ -147,5 +147,5 @@ export const updateUserRequest = (id, values, token) => async () => {
 		credentials: 'same-origin',
 		body: JSON.stringify(values)
 	});
-	await response.json();
+	console.log(await response.json());
 };

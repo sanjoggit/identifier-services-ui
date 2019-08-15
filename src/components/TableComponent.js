@@ -31,18 +31,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import {Table, TableBody, TableCell, TableHead, TableFooter, TableRow, TableSortLabel, Paper, IconButton} from '@material-ui/core';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
-
-const useStyles1 = makeStyles(theme => ({
-	root: {
-		flexShrink: 0,
-		color: theme.palette.text.secondary,
-		marginLeft: theme.spacing(2.5)
-	}
-}));
 
 function desc(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -142,7 +132,7 @@ export default function (props) {
 	const {data, headRows, handleTableRowClick} = props;
 	const classes = useStyles();
 	const [order, setOrder] = React.useState('asc');
-	const [orderBy, setOrderBy] = React.useState('');
+	const [orderBy, setOrderBy] = React.useState(headRows[0].id);
 
 	function handleRequestSort(event, property) {
 		const isDesc = orderBy === property && order === 'desc';
@@ -169,7 +159,7 @@ export default function (props) {
 							return (
 								<TableRow key={row.id} className={classes.tableRow} onClick={() => handleTableRowClick(row.id)}>
 									{Object.keys(row).map(key => (key !== 'id') && (
-										<TableCell key={`${row.id}${row[key]}`} component="th" scope="row">
+										<TableCell key={row[key]} component="th" scope="row">
 											{row[key]}
 										</TableCell>
 									))}
@@ -200,12 +190,16 @@ export default function (props) {
 }
 
 function TablePaginationActions(props) {
-	const classes = useStyles1();
 	const theme = useTheme();
 	const count = 5;
-	const {offset, cursors, setLastCursor, page, setPage, totalDoc, queryDocCount} = props;
-	function handleFirstPageButtonClick() {
-	}
+	const {
+		offset,
+		cursors,
+		setLastCursor,
+		page,
+		setPage,
+		queryDocCount
+	} = props;
 
 	function handleBackButtonClick() {
 		cursors.pop();
@@ -219,19 +213,16 @@ function TablePaginationActions(props) {
 		setLastCursor(offset);
 	}
 
-	function handleLastPageButtonClick() {
-	}
-
 	return (
-		<div className={classes.root}>
+		<TableCell>
 			<span>{page * 5 > queryDocCount ? queryDocCount : page * 5}/{queryDocCount}</span>
-			<IconButton
+			{/* <IconButton
 				disabled={page === 1}
 				aria-label="First Page"
 				onClick={handleFirstPageButtonClick}
 			>
 				{theme.direction === 'rtl' ? <LastPageIcon/> : <FirstPageIcon/>}
-			</IconButton>
+			</IconButton> */}
 			<IconButton
 				disabled={page === 1}
 				aria-label="Previous Page" onClick={handleBackButtonClick}
@@ -240,20 +231,20 @@ function TablePaginationActions(props) {
 			</IconButton>
 			<span>Page{page}</span>
 			<IconButton
-				disabled={(count * page) >= totalDoc}
+				disabled={(count * page) >= queryDocCount}
 				aria-label="Next Page"
 				onClick={handleNextButtonClick}
 			>
 				{theme.direction === 'rtl' ? <KeyboardArrowLeft/> : <KeyboardArrowRight/>}
 			</IconButton>
-			<IconButton
-				disabled={(count * page) >= totalDoc}
+			{/* <IconButton
+				disabled={(count * page) >= queryDocCount}
 				aria-label="Last Page"
 				onClick={handleLastPageButtonClick}
 			>
 				{theme.direction === 'rtl' ? <FirstPageIcon/> : <LastPageIcon/>}
-			</IconButton>
-		</div>
+			</IconButton> */}
+		</TableCell>
 	);
 }
 
@@ -263,6 +254,5 @@ TablePaginationActions.propTypes = {
 	setLastCursor: PropTypes.func.isRequired,
 	page: PropTypes.number.isRequired,
 	setPage: PropTypes.func.isRequired,
-	totalDoc: PropTypes.number.isRequired,
 	queryDocCount: PropTypes.number.isRequired
 };

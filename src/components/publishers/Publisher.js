@@ -65,7 +65,8 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const {
 		fetchPublisher,
 		updatePublisher,
-		match, publisher,
+		match,
+		publisher,
 		loading,
 		handleSubmit,
 		clearFields,
@@ -220,7 +221,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 									<Grid item xs={4}>Primary Contact:</Grid>
 									{isEdit ?
 										<Grid item xs={8}><Field name="primaryContact" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.primaryContact.map(item => {
+										<Grid item xs={8}>{publisher.primaryContact && publisher.primaryContact.map(item => {
 											return (
 												<Chip key={item} label={item}/>
 											);
