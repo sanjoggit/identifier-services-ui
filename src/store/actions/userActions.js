@@ -107,7 +107,7 @@ export const fetchUserRequest = (id, token) => async dispatch => {
 	}
 };
 
-export const fetchUsersRequestsList = (token, {first, offset}) => async dispatch => {
+export const fetchUsersRequestsList = (token, {offset}) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${BASE_URL}/requests/users/query`, {

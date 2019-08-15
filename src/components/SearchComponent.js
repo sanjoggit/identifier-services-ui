@@ -38,7 +38,7 @@ import useStyles from '../styles/searchComponent';
 import * as actions from '../store/actions';
 
 export default connect(null, actions)(withRouter(props => {
-	const {searchPublisher, history, offset, setSearchInputVal} = props;
+	const {searchPublisher, history, setSearchInputVal} = props;
 	const classes = useStyles();
 	const [inputVal, setInputVal] = useState('');
 	const [cookie] = useCookies('login-cookie');

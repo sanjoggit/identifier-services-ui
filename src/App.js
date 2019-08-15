@@ -104,7 +104,6 @@ export default connect(mapStateToProps, actions)(withRouter(props => {
 		</>
 	);
 
-
 	const translations = {
 		fi: fiMessages,
 		en: enMessages,

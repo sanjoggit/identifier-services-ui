@@ -88,8 +88,7 @@ const fieldArray = [
 
 export default connect(null, actions)(reduxForm({
 	form: 'userCreation',
-	validate,
-	
+	validate
 })(
 	props => {
 		const {handleSubmit, clearFields, valid, createUser, pristine} = props;
@@ -112,8 +111,9 @@ export default connect(null, actions)(reduxForm({
 				role: values.role[0],
 				preferences: {defaultLanguage: values.defaultLanguage}
 			};
+			// eslint-disable-next-line no-undef
 			window.confirm('Please confirm again to accept') === true ?
-				(delete newUser.defaultLanguage && createUser(newUser, token).then(()=> console.log('milxa'))) :
+				(delete newUser.defaultLanguage && createUser(newUser, token).then(() => console.log('milxa'))) :
 				null;
 		}
 

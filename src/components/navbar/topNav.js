@@ -26,9 +26,8 @@
  *
  */
 import React, {useState} from 'react';
-import {AppBar, Typography, Grid, Menu, MenuItem, Button} from '@material-ui/core';
+import {AppBar, Typography, Grid, Menu, MenuItem} from '@material-ui/core';
 
-import PersonIcon from '@material-ui/icons/Person';
 import LanguageIcon from '@material-ui/icons/Language';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import {Link} from 'react-router-dom';

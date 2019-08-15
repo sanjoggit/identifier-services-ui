@@ -26,6 +26,6 @@
  *
  */
 
-export const registerPublisher = values => async dispatch => {
+export const registerPublisher = values => async () => {
 	console.log('from action', values);
 };

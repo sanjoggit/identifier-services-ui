@@ -54,7 +54,7 @@ const useStyles = makeStyles({
 		alignItems: 'center',
 		color: 'white',
 		'& svg': {
-			justifySelf:'right'
+			justifySelf: 'right'
 		}
 	},
 	rightMenuLogIn: {

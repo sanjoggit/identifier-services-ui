@@ -52,11 +52,12 @@ export default connect(mapStateToProps, actions)(props => {
 
 	useEffect(() => {
 		searchPublisher(inputVal, cookie['login-cookie'], lastCursor, activeCheck);
-	}, [lastCursor, cursors, activeCheck, inputVal])
+	}, [lastCursor, cursors, activeCheck, inputVal, searchPublisher, cookie]);
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
 	};
+
 	const handleTableRowClick = id => {
 		props.history.push({
 			pathname: `/publishers/${id}`,
@@ -77,7 +78,6 @@ export default connect(mapStateToProps, actions)(props => {
 		publishersData = (
 			<TableComponent
 				data={activeCheck.checked ? searchedPublishers
-					//.filter(item => item.activity.active === true)
 					.map(item => searchResultRender(item._id, item.name, item.phone)) :
 					searchedPublishers.map(item => searchResultRender(item.id, item.name, item.phone))}
 				handleTableRowClick={handleTableRowClick}

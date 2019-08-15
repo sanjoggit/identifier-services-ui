@@ -34,9 +34,6 @@ import {
 	Typography,
 	Button,
 	Grid,
-	List,
-	ListItem,
-	ListItemText,
 	Fab
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
@@ -85,7 +82,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		);
 	}
 
-    //NOTICE !!! Edit functionality is not done yet
+	// NOTICE !!! Edit functionality is not done yet
 
 	const component = (
 		<ModalLayout isTableRow color="primary" label="Publisher Detail">
@@ -97,7 +94,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 						</Grid>
 						<div className={classes.btnContainer}>
 							<Button onClick={handleCancel}>Cancel</Button>
-							<Button variant="contained" color="primary" onClick={handleSubmit(handlePublisherUpdate)}>
+							<Button variant="contained" color="primary">
                             UPDATE
 							</Button>
 						</div>

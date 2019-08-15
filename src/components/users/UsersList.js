@@ -30,9 +30,8 @@
 
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Grid, Typography, Checkbox, FormControlLabel} from '@material-ui/core';
+import {Grid, Typography} from '@material-ui/core';
 
-import SearchComponent from '../SearchComponent';
 import useStyles from '../../styles/publisherLists';
 import TableComponent from '../TableComponent';
 import * as actions from '../../store/actions';
@@ -41,13 +40,13 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersList, usersList, pageInfo, totalUsers, endCursor, hasNextPage} = props;
+	const {loading, fetchUsersList, usersList, totalUsers, endCursor, hasNextPage} = props;
 	const [cookie] = useCookies('login-cookie');
 	const [page, setPage] = useState(1);
 	const [cursors, setCursors] = useState([]);
-	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length-1]);
+	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 	useEffect(() => {
-			fetchUsersList(cookie['login-cookie'], lastCursor, page);
+		fetchUsersList(cookie['login-cookie'], lastCursor, page);
 	}, [lastCursor, cursors]);
 
 	const handleTableRowClick = id => {
@@ -116,6 +115,6 @@ function mapStateToProps(state) {
 		totalUsers: state.users.totalUsers,
 		pageInfo: state.users.pageInfo,
 		endCursor: state.users.pageInfo.endCursor,
-		hasNextPage: state.users.pageInfo.hasNextPage,
+		hasNextPage: state.users.pageInfo.hasNextPage
 	});
 }

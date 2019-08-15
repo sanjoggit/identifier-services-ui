@@ -26,14 +26,13 @@
  * for the JavaScript code in this file.
  *
  */
-import {GET_USERS} from './types';
 
-export const handleMenuClick = (path, token) => async dispatch => {
+export const handleMenuClick = (path, token) => async () => {
 	const result = await fetch(`http://localhost:8081/${path}`, {
 		method: 'GET',
 		headers: {
 			Authorization: 'Bearer ' + token
 		}
-    });
-    console.log(await result.json());
+	});
+	console.log(await result.json());
 };

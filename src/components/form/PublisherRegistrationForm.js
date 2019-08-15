@@ -202,7 +202,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 						{(getStepContent(activeStep))}
 					</Grid>
 					{
-						activeStep === steps.length - 1 && 
+						activeStep === steps.length - 1 &&
 						<>
 							<Captcha
 								captchaInput={captchaInput}

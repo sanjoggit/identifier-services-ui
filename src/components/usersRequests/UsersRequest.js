@@ -40,7 +40,6 @@ import {
 	Fab
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
 import {reduxForm} from 'redux-form';
 import {useCookies} from 'react-cookie';
@@ -72,6 +71,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 			state: 'inProgress',
 			backgroundProcessingState: 'inProgress'
 		};
+		// eslint-disable-next-line no-unused-expressions
 		usersRequest.id && updateUserRequest(match.params.id, requestToUpdate, token);
 	}, [usersRequest.id === undefined]);
 
@@ -83,7 +83,6 @@ export default connect(mapStateToProps, actions)(reduxForm({
 		setIsEdit(false);
 	};
 
-	console.log(usersRequest)
 	let userRequestDetail;
 	if (usersRequest.length < 1 || loading) {
 		userRequestDetail = <Spinner/>;

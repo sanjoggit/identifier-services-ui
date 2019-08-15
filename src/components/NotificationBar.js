@@ -25,21 +25,21 @@
  * for the JavaScript code in this file.
  *
  */
-import React, {useState} from 'react';
+import React from 'react';
 import {AppBar, IconButton} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import useStyles from '../styles/notificationBar';
 
 export default function ({handleClose}) {
 	const classes = useStyles();
-	// const [open, setOpen] = useState(true);
+	// Const [open, setOpen] = useState(true);
 
 	// const handleClose = () =>{
 	// 	setOpen(false);
 	// }
 
 	const component = (
-		<AppBar className={classes.bar} color="secondary" >
+		<AppBar className={classes.bar} color="secondary">
 			<p>Hello World! This is a notification...</p>
 			<IconButton key="close" aria-label="Close" color="inherit" onClick={handleClose}>
 				<CloseIcon className={classes.icon}/>

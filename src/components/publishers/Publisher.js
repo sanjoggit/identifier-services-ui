@@ -86,8 +86,6 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const handleCancel = () => {
 		setIsEdit(false);
 	};
-console.log('publisher', publisher)
-console.log('userInfo', userInfo)
 
 	let publisherDetail;
 	if ((Object.keys(publisher).length === 0) || loading) {
@@ -171,9 +169,9 @@ console.log('userInfo', userInfo)
 									<Grid item xs={4}>Aliases:</Grid>
 									{isEdit ?
 										<Grid item xs={8}><FieldArray name="aliases" className={formClasses.editForm} component={renderAliases} props={{clearFields, name: 'aliases', subName: 'alias'}}/></Grid> :
-										<Grid item xs={8}>{publisher.aliases.map((item, i) => {
+										<Grid item xs={8}>{publisher.aliases.map(item => {
 											return (
-												<Chip key={i} label={item}/>
+												<Chip key={item} label={item}/>
 											);
 										})}
 										</Grid>}
@@ -223,9 +221,9 @@ console.log('userInfo', userInfo)
 									<Grid item xs={4}>Primary Contact:</Grid>
 									{isEdit ?
 										<Grid item xs={8}><Field name="primaryContact" className={formClasses.editForm} component={renderTextField}/></Grid> :
-										<Grid item xs={8}>{publisher.primaryContact.map((item, i) => {
+										<Grid item xs={8}>{publisher.primaryContact && publisher.primaryContact.map(item => {
 											return (
-												<Chip key={i} label={item}/>
+												<Chip key={item} label={item}/>
 											);
 										})}
 										</Grid>}
@@ -238,9 +236,9 @@ console.log('userInfo', userInfo)
 									null :
 									<Grid container>
 										<Grid item xs={4}>Notes:</Grid>
-										<Grid item xs={8}>{publisher.notes.map((item, i) => {
+										<Grid item xs={8}>{publisher.notes.map(item => {
 											return (
-												<ExpansionPanel key={i}>
+												<ExpansionPanel key={item}>
 													<ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
 														<Typography className={classes.heading}>Expansion Panel 1</Typography>
 													</ExpansionPanelSummary>

@@ -27,7 +27,7 @@
  *
  */
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Grid, Button, Link, Typography} from '@material-ui/core';
 import {validate} from '@natlibfi/identifier-services-commons';
 import PersonIcon from '@material-ui/icons/Person';
@@ -49,7 +49,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	const handleLogin = values => {
 		normalLogin(values);
 		history.push('/publishers');
-		//  settimeout for firefox to work properly
+		//  Settimeout for firefox to work properly
 		setTimeout(() => {
 			location.reload(true);
 		});

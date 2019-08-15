@@ -42,7 +42,7 @@ export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, fetchUsersRequestsList, usersRequestsList, totalUsersRequests} = props;
 	const [cookie] = useCookies('login-cookie');
-	const [first, setFirst]= useState(0);
+	const [first, setFirst] = useState(0);
 
 	useEffect(() => {
 		cookie['login-cookie'] !== null && fetchUsersRequestsList(cookie['login-cookie'], {first: first});
@@ -84,7 +84,7 @@ export default connect(mapStateToProps, actions)(props => {
 			id: id,
 			state: state,
 			givenName: givenName,
-			familyName: familyName 
+			familyName: familyName
 		};
 	}
 
