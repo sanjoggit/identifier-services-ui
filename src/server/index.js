@@ -34,8 +34,8 @@ import nodemailer from 'nodemailer';
 import bodyParser from 'body-parser';
 import validateContentType from '@natlibfi/express-validate-content-type';
 import parse from 'url-parse';
-import {HTTP_PORT, SMTP_URL, BASE_URL} from '../config/config';
-import * as frontendConfig from '../config/frontEndConfig';
+import {HTTP_PORT, SMTP_URL, BASE_URL} from '../../config/config';
+import * as frontendConfig from '../../config/frontEndConfig';
 import fetch from 'node-fetch';
 import base64 from 'base-64';
 import svgCaptcha from 'svg-captcha';
@@ -58,7 +58,7 @@ process.on('SIGINT', () => {
 	process.exit(-1);
 });
 
-app.use(express.static(path.resolve(__dirname, '..', 'dist', 'public')));
+app.use(express.static(path.resolve(__dirname, '..', '..', 'dist', 'public')));
 
 app.post('/message', (req, res) => {
 	async function main() {
@@ -143,7 +143,7 @@ app.get('/conf', (_req, res) => {
 });
 
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+	res.sendFile(path.join(__dirname, '../../dist/public/index.html'));
 });
 
 app.listen(HTTP_PORT, () => console.log('info', `Application Started on PORT ${HTTP_PORT}`));

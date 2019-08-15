@@ -167,9 +167,9 @@ export default function (props) {
 					{stableSort(data, getSorting(order, orderBy))
 						.map(row => {
 							return (
-								<TableRow key={row.name} className={classes.tableRow} onClick={() => handleTableRowClick(row.id)}>
+								<TableRow key={row.id} className={classes.tableRow} onClick={() => handleTableRowClick(row.id)}>
 									{Object.keys(row).map(key => (key !== 'id') && (
-										<TableCell key={row[key]} component="th" scope="row">
+										<TableCell key={`${row.id}${row[key]}`} component="th" scope="row">
 											{row[key]}
 										</TableCell>
 									))}
@@ -259,7 +259,7 @@ function TablePaginationActions(props) {
 
 TablePaginationActions.propTypes = {
 	offset: PropTypes.string.isRequired,
-	cursors: PropTypes.string.isRequired,
+	cursors: PropTypes.array.isRequired,
 	setLastCursor: PropTypes.func.isRequired,
 	page: PropTypes.number.isRequired,
 	setPage: PropTypes.func.isRequired,

@@ -50,7 +50,11 @@ export default connect(null, actions)(withRouter(props => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		props.homePage && history.push('/publishers/', {searchText: inputVal});
+		if (props.homePage) {
+			history.push({pathname: '/publishers/', state: {searchText: inputVal}});
+			searchFunction(inputVal, cookie['login-cookie']);
+		}
+
 		searchFunction(inputVal, cookie['login-cookie']);
 		setSearchInputVal(inputVal);
 	};

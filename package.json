@@ -21,11 +21,11 @@
   "scripts": {
     "start": "node dist/index.js",
     "check-deps": "npm-check || exit 0",
-    "lint": "eslint --ext .jsx,.js .",
+    "lint": "eslint --fix --ext .jsx,.js src",
     "test": "cross-env NODE_ENV=test mocha --require @babel/register frontend/**/*.spec.js frontend/**/*.spec.jsx",
     "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.config.prod.js --progress",
     "watch:dev": "DEBUG=1 webpack-dev-server --open --config=./config/webpack.config.dev.js --hot --inline --progress",
-    "watch:devtemp": "npm run build && cross-env DEBUG=1 nodemon -w src --exec 'babel-node server/index.js'",
+    "watch:devtemp": "npm run build && cross-env DEBUG=1 nodemon -w src --exec 'babel-node src/server/index.js'",
     "watch:test": "cross-env DEBUG=1 NODE_ENV=test nodemon -w src --exec 'npm test'"
   },
   "dependencies": {

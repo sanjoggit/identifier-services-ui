@@ -26,10 +26,7 @@
  *
  */
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const PATHS = require('./paths');
 
 module.exports = {
 	entry: path.resolve(path.join(__dirname, '..', 'src', 'index.js')),
@@ -62,18 +59,6 @@ module.exports = {
 		]
 	},
 	plugins: [
-		new OptimizeCssAssetsPlugin({
-			filename: '[name]-[contenthash].css',
-			cssProcessorOptions: {
-				preset: 'advanced'
-			}
-		}),
-		new CopyWebpackPlugin([
-			{
-				from: PATHS.images,
-				to: 'images'
-			}
-		]),
 		new HtmlWebpackPlugin({
 			template: path.resolve(path.join(__dirname, '../public/index.html')),
 			filename: 'index.html'
