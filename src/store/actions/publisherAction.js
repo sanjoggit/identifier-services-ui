@@ -89,7 +89,6 @@ export const searchPublisher = ({searchText, token, offset, activeCheck}) => asy
 	dispatch(setLoader());
 	const query = (activeCheck !== undefined && activeCheck.checked === true) ? {$or: [{name: searchText}, {aliases: searchText}], activity: {active: true}} :
 		{$or: [{name: searchText}, {aliases: searchText}]};
-	console.log(query);
 
 	try {
 		const properties = {

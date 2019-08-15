@@ -30,7 +30,9 @@ import {CONTACT, LOADER, FETCH_MESSAGE, FETCH_MESSAGES_LIST} from '../actions/ty
 
 const initialState = {
 	messagesList: [],
-	messageOffset: null,
+	pageInfo: {},
+	totalMessages: null,
+	offset: null,
 	messageInfo: null,
 	responseMessage: null,
 	loading: false
@@ -59,7 +61,8 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				messagesList: action.payload.results,
-				messageOffset: action.payload.offset,
+				offset: action.payload.offset,
+				totalMessages: action.payload.totalDoc,
 				loading: false
 			};
 		default:

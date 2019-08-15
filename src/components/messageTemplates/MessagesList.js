@@ -40,14 +40,15 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchMessagesList, messagesList} = props;
-	const [token, setToken] = useState(null);
+	const {loading, fetchMessagesList, messagesList, totalMessages, endCursor, hasNextPage} = props;
 	const [cookie] = useCookies('login-cookie');
+	const [page, setPage] = useState(1);
+	const [cursors, setCursors] = useState([]);
+	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		setToken(cookie['login-cookie']);
-		fetchMessagesList(token);
-	}, [cookie, fetchMessagesList, token]);
+		fetchMessagesList(cookie['login-cookie'], lastCursor, page);
+	}, [lastCursor, cursors]);
 
 	const handleTableRowClick = id => {
 		props.history.push(`/templates/${id}`, {modal: true});
@@ -72,6 +73,14 @@ export default connect(mapStateToProps, actions)(props => {
 				data={messagesList.map(item => usersDataRender(item))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
+				setEndCursor={setLastCursor}
+				endCursor={endCursor}
+				page={page}
+				setPage={setPage}
+				hasNextPage={hasNextPage}
+				cursors={cursors}
+				setCursors={setCursors}
+				totalCount={totalMessages}
 			/>
 		);
 	}
@@ -105,6 +114,9 @@ function mapStateToProps(state) {
 	return ({
 		loading: state.contact.loading,
 		messagesList: state.contact.messagesList,
-		offset: state.contact.messageOffset
+		totalMessages: state.contact.totalMessages,
+		pageInfo: state.contact.pageInfo,
+		endCursor: state.contact.pageInfo.endCursor,
+		hasNextPage: state.contact.pageInfo.hasNextPage
 	});
 }

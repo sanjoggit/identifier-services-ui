@@ -43,7 +43,6 @@ export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
 	const {loading, searchedPublishers, offset, location, searchPublisher, totalDoc, queryDocCount} = props;
 	const [cookie] = useCookies('login-cookie');
-	console.log('lllllllllllllllllll', location.state);
 	const [inputVal, setSearchInputVal] = location.state === undefined ? useState('') : useState(location.state.searchText);
 	const [page, setPage] = React.useState(1);
 	const [activeCheck, setActiveCheck] = useState({

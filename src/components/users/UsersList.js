@@ -46,7 +46,7 @@ export default connect(mapStateToProps, actions)(props => {
 	const [cursors, setCursors] = useState([]);
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 	useEffect(() => {
-		fetchUsersList(cookie['login-cookie'], lastCursor, page);
+		fetchUsersList(cookie['login-cookie'], lastCursor);
 	}, [lastCursor, cursors]);
 
 	const handleTableRowClick = id => {
