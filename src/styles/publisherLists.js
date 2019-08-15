@@ -29,6 +29,11 @@
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+	tabs: {
+		'& div:first-child': {
+			maxHeight: 30
+		}
+	},
 	tab: {
 		minWidth: 'fit-content',
 		minHeight: 'fit-content',

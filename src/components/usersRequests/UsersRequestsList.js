@@ -101,6 +101,7 @@ export default connect(mapStateToProps, actions)(props => {
 				<Typography variant="h5">List of Users Creation Requests</Typography>
 				<SearchComponent offset={offset} searchFunction={fetchUsersRequestsList} setSearchInputVal={setSearchInputVal}/>
 				<Tabs
+					className={classes.tabs}
 					value={sortStateBy}
 					indicatorColor="primary"
 					textColor="primary"
