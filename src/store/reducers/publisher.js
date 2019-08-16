@@ -32,12 +32,14 @@ const initialState = {
 	publishersList: [],
 	publisher: {},
 	searchedPublisher: [],
+
+	publishersRequestsList: [],
+	publisherRequest: {},
+
 	offset: null,
 	totalDoc: null,
 	queryDocCount: null,
 
-	publishersRequestsList: [],
-	publisherRequest: {},
 	loading: false,
 	error: {}
 };
@@ -65,6 +67,9 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				publishersRequestsList: action.payload.results,
+				offset: null,
+				totalDoc: null,
+				queryDocCount: null,
 				loading: false
 			};
 		case PUBLISHER_REQUEST:

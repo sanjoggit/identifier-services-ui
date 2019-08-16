@@ -115,7 +115,8 @@ export const searchPublisher = ({searchText, token, offset, activeCheck}) => asy
 	}
 };
 
-export const fetchPublishersRequestsList = token => async dispatch => {
+export const fetchPublishersRequestsList = (searchText, token, offset) => async dispatch => {
+	console.log('req', searchText);
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/requests/publishers/query`, {
@@ -126,9 +127,9 @@ export const fetchPublishersRequestsList = token => async dispatch => {
 			},
 			body: JSON.stringify({
 				queries: [{
-					query: {$or: [{name: 'Myn'}, {aliases: 'Myn'}]}
+					query: {name: searchText}
 				}],
-				offset: null
+				offset: offset
 			})
 		});
 		const result = await response.json();
