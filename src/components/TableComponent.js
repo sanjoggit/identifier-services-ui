@@ -215,7 +215,7 @@ function TablePaginationActions(props) {
 
 	return (
 		<TableCell>
-			<span>{page * 5 > queryDocCount ? queryDocCount : page * 5}/{queryDocCount}</span>
+			{/* <span>{page * 5 > queryDocCount ? queryDocCount : page * 5}/{queryDocCount}</span> */}
 			{/* <IconButton
 				disabled={page === 1}
 				aria-label="First Page"

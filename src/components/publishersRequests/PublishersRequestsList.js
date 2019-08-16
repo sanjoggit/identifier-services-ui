@@ -26,25 +26,30 @@
  *
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useCookies} from 'react-cookie';
 import {connect} from 'react-redux';
-import {Grid} from '@material-ui/core';
+import {Grid, Typography} from '@material-ui/core';
 
 import * as actions from '../../store/actions';
 import Spinner from '../Spinner';
 import TableComponent from '../TableComponent';
 import useStyles from '../../styles/publisherLists';
+import SearchComponent from '../SearchComponent';
 
 export default connect(mapStateToProps, actions)(props => {
-	const {fetchPublishersRequestsList, publishersRequestsList, loading} = props;
+	const {fetchPublishersRequestsList, publishersRequestsList, loading, offset, queryDocCount} = props;
 	const [cookie] = useCookies('login-cookie');
 	const classes = useStyles();
+	const [inputVal, setSearchInputVal] = useState('');
+	const [page, setPage] = React.useState(1);
+	const [cursors] = useState([]);
+	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		fetchPublishersRequestsList(cookie['login-cookie']);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		fetchPublishersRequestsList(inputVal, cookie['login-cookie'], lastCursor);
+	}, [cookie, fetchPublishersRequestsList, inputVal, lastCursor]);
+
 	const handleTableRowClick = id => {
 		props.history.push(`/requests/publishers/${id}`, {modal: true});
 	};
@@ -66,6 +71,12 @@ export default connect(mapStateToProps, actions)(props => {
 					.map(item => publishersRequestsRender(item.id, item.name, item.language))}
 				handleTableRowClick={handleTableRowClick}
 				headRows={headRows}
+				offset={offset}
+				cursors={cursors}
+				page={page}
+				setPage={setPage}
+				setLastCursor={setLastCursor}
+				queryDocCount={queryDocCount}
 			/>
 		);
 	}
@@ -81,6 +92,8 @@ export default connect(mapStateToProps, actions)(props => {
 	const component = (
 		<Grid>
 			<Grid item xs={12} className={classes.publisherListSearch}>
+				<Typography variant="h5">Search Publishers Request</Typography>
+				<SearchComponent searchFunction={fetchPublishersRequestsList} setSearchInputVal={setSearchInputVal}/>
 				{publishersRequestsData}
 			</Grid>
 		</Grid>
@@ -93,6 +106,9 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.publisher.loading,
-		publishersRequestsList: state.publisher.publishersRequestsList
+		publishersRequestsList: state.publisher.publishersRequestsList,
+		offset: state.publisher.offset,
+		totalDoc: state.publisher.totalDoc,
+		queryDocCount: state.publisher.queryDocCount
 	});
 }
