@@ -29,15 +29,16 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-	entry: path.resolve(path.join(__dirname, '..', 'src', 'index.js')),
+	entry: path.resolve(path.join(__dirname, '..', 'src', 'frontend', 'index.js')),
 	output: {
-		path: path.join(__dirname, '../dist'),
-		filename: '[name]-bundle.js'
+		path: path.resolve(__dirname, '../dist/public'),
+		filename: '[name]-bundle.js',
+		publicPath: '/'
 	},
 	module: {
 		rules: [
 			{
-				test: /\.(js|jsx)$/,
+				test: /\.js$/,
 				exclude: /node_modules/,
 				use: {
 					loader: 'babel-loader'
@@ -49,7 +50,7 @@ module.exports = {
 					{
 						loader: 'file-loader',
 						options: {
-							name: '[name]-[hash:8].[ext]',
+							name: 'images/[name].[ext]',
 							outputPath: 'images/'
 						}
 					}

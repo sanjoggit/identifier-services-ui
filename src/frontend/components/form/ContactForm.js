@@ -42,7 +42,7 @@ import renderTextField from './render/renderTextField';
 import renderTextArea from './render/renderTextArea';
 import useStyles from '../../styles/form';
 import * as actions from '../../store/actions';
-import Captcha from '../../components/Captcha';
+import Captcha from '../Captcha';
 
 export default connect(mapToProps, actions)(reduxForm({
 	form: 'contactForm', validate

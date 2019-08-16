@@ -36,7 +36,7 @@ import {connect} from 'react-redux';
 
 import useStyles from '../../styles/topNav';
 import Logo from '../../assets/logo/logo.png';
-import NotificationBar from '../../components/NotificationBar';
+import NotificationBar from '../NotificationBar';
 import * as actions from '../../store/actions';
 import LoginLayout from '../login/LoginLayout';
 
