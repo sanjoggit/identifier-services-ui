@@ -23,9 +23,11 @@
     "check-deps": "npm-check || exit 0",
     "lint": "eslint --fix --ext .jsx,.js src",
     "test": "cross-env NODE_ENV=test mocha --require @babel/register frontend/**/*.spec.js frontend/**/*.spec.jsx",
-    "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.config.prod.js --progress",
-    "watch:dev": "DEBUG=1 webpack-dev-server --open --config=./config/webpack.config.dev.js --hot --inline --progress",
-    "watch:devtemp": "npm run build && cross-env DEBUG=1 nodemon -w src --exec 'babel-node src/server/index.js'",
+    "watch:dev": "DEBUG=1 webpack-dev-server --open --config=./webpack/webpack.config.dev.js --hot --inline --progress",
+    "watch:devtemp": "npm run build && cross-env DEBUG=1 nodemon -w src --exec 'babel-node  dist/index.js'",
+    "build": "npm run build:server && npm run build:frontend",
+    "build:frontend": "export NODE_ENV=production & NODE_ENV=production & webpack --config ./webpack/webpack.config.prod.js --progress ",
+    "build:server": "cd src/server && BABEL_ENV=production babel . --out-dir ../../dist --source-maps",
     "watch:test": "cross-env DEBUG=1 NODE_ENV=test nodemon -w src --exec 'npm test'"
   },
   "dependencies": {

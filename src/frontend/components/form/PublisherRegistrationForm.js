@@ -42,7 +42,7 @@ import renderTextField from './render/renderTextField';
 import renderAliases from './render/renderAliases';
 import useStyles from '../../styles/form';
 import renderContactDetail from './render/renderContactDetail';
-import Captcha from '../../components/Captcha';
+import Captcha from '../Captcha';
 import * as actions from '../../store/actions';
 
 const fieldArray = [
