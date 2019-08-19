@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -41,7 +39,7 @@ import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchUsersRequestsList, usersRequestsList, totalUsersRequests, totalDoc, offset} = props;
+	const {loading, fetchUsersRequestsList, usersRequestsList, totalUsersRequests, totalDoc, offset, apiURL} = props;
 	const [cookie] = useCookies('login-cookie');
 	const [inputVal, setSearchInputVal] = useState('');
 	const [sortStateBy, setSortStateBy] = useState('');
@@ -49,8 +47,9 @@ export default connect(mapStateToProps, actions)(props => {
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		fetchUsersRequestsList({inputVal: inputVal, sortStateBy: sortStateBy, token: cookie['login-cookie'], offset: lastCursor});
-	}, [lastCursor, cursors, inputVal, sortStateBy]);
+		// eslint-disable-next-line no-unused-expressions
+		apiURL !== null && fetchUsersRequestsList({API_URL: apiURL, inputVal: inputVal, sortStateBy: sortStateBy, token: cookie['login-cookie'], offset: lastCursor});
+	}, [lastCursor, cursors, inputVal, sortStateBy, apiURL, fetchUsersRequestsList, cookie]);
 
 	const handleTableRowClick = id => {
 		props.history.push(`/requests/users/${id}`, {modal: true});
@@ -130,6 +129,7 @@ function mapStateToProps(state) {
 		loading: state.users.loading,
 		usersRequestsList: state.users.usersRequestsList,
 		offset: state.users.offset,
-		totalDoc: state.users.totalUsersRequests
+		totalDoc: state.users.totalUsersRequests,
+		apiURL: state.common.apiURL
 	});
 }

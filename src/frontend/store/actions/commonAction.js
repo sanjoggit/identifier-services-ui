@@ -26,7 +26,7 @@
  *
  */
 import fetch from 'node-fetch';
-import {LOADER, GET_CAPTCHA, ERROR} from './types';
+import {LOADER, GET_CAPTCHA, ERROR, GET_API_URL} from './types';
 
 export function success(type, payload) {
 	return ({
@@ -82,11 +82,15 @@ export const postCaptchaInput = (inputData, id) => async dispatch => {
 	}
 };
 
-export async function getApiUrl() {
-	const temp = await fetch('http://localhost:8080/conf', {
-		method: 'GET'
-	});
-	const result = await temp.json();
-	return result.API_URL;
-}
+export const getApiUrl = () => async dispatch => {
+	try {
+		const temp = await fetch('http://localhost:8080/conf', {
+			method: 'GET'
+		});
+		const result = await temp.json();
+		dispatch(success(GET_API_URL, result.API_URL));
+	} catch (err) {
+		dispatch(fail(ERROR, err));
+	}
+};
 

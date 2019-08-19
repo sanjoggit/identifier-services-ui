@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-expressions */
 /* eslint-disable no-negated-condition */
-/* eslint-disable react-hooks/exhaustive-deps */
 
 /**
  *
@@ -58,7 +56,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 	validate,
 	enableReinitialize: true
 })(props => {
-	const {match, usersRequest, userInfo, loading, fetchUserRequest, updateUserRequest} = props;
+	const {match, usersRequest, userInfo, loading, fetchUserRequest, updateUserRequest, apiURL} = props;
 	const classes = useStyles();
 	const {role} = userInfo;
 	const [isEdit, setIsEdit] = useState(false);
@@ -66,15 +64,16 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 	useEffect(() => {
 		const token = cookie['login-cookie'];
-		fetchUserRequest(match.params.id, token);
+		// eslint-disable-next-line no-unused-expressions
+		apiURL !== null && fetchUserRequest({API_URL: apiURL}, match.params.id, token);
 		const requestToUpdate = {
 			...usersRequest,
 			state: 'inProgress',
 			backgroundProcessingState: 'inProgress'
 		};
 		// eslint-disable-next-line no-unused-expressions
-		usersRequest.id && updateUserRequest(match.params.id, requestToUpdate, token);
-	}, [usersRequest.id === undefined]);
+		usersRequest.id && updateUserRequest({API_URL: apiURL}, match.params.id, requestToUpdate, token);
+	}, [apiURL, cookie, fetchUserRequest, match.params.id, updateUserRequest, usersRequest]);
 
 	const handleEditClick = () => {
 		setIsEdit(true);
@@ -175,6 +174,7 @@ function mapStateToProps(state) {
 		usersRequest: state.users.usersRequest,
 		loading: state.users.loading,
 		initialValues: state.users.usersRequest,
-		userInfo: state.login.userInfo
+		userInfo: state.login.userInfo,
+		apiURL: state.common.apiURL
 	});
 }

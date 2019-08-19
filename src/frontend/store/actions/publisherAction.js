@@ -26,29 +26,10 @@
  *
  */
 import fetch from 'node-fetch';
-import {PUBLISHERS_LIST, PUBLISHER, ERROR, SEARCH_PUBLISHER, PUBLISHERS_REQUESTS_LIST, PUBLISHER_REQUEST} from './types';
+import {PUBLISHER, ERROR, SEARCH_PUBLISHER, PUBLISHERS_REQUESTS_LIST, PUBLISHER_REQUEST} from './types';
 import {setLoader, success, fail} from './commonAction';
 
-const API_URL = 'http://localhost:8081';
-
-export const fetchPublishersList = token => async dispatch => {
-	dispatch(setLoader());
-	try {
-		const response = await fetch(`${API_URL}/publishers/query`, {
-			method: 'POST',
-			headers: {
-				Authorization: 'Bearer ' + token,
-				'Content-Type': 'application/json'
-			}
-		});
-		const result = await response.json();
-		dispatch(success(PUBLISHERS_LIST, result.data));
-	} catch (err) {
-		dispatch(fail(ERROR, err));
-	}
-};
-
-export const fetchPublisher = (id, token) => async dispatch => {
+export const fetchPublisher = ({API_URL}, id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/publishers/${id}`, {
@@ -66,7 +47,7 @@ export const fetchPublisher = (id, token) => async dispatch => {
 	}
 };
 
-export const updatePublisher = (id, values, token) => async dispatch => {
+export const updatePublisher = ({API_URL}, id, values, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/publishers/${id}`, {
@@ -85,7 +66,7 @@ export const updatePublisher = (id, values, token) => async dispatch => {
 	}
 };
 
-export const searchPublisher = ({searchText, token, offset, activeCheck}) => async dispatch => {
+export const searchPublisher = ({API_URL, searchText, token, offset, activeCheck}) => async dispatch => {
 	dispatch(setLoader());
 	const query = (activeCheck !== undefined && activeCheck.checked === true) ? {$or: [{name: searchText}, {aliases: searchText}], activity: {active: true}} :
 		{$or: [{name: searchText}, {aliases: searchText}]};
@@ -115,7 +96,7 @@ export const searchPublisher = ({searchText, token, offset, activeCheck}) => asy
 	}
 };
 
-export const fetchPublishersRequestsList = (searchText, token, offset) => async dispatch => {
+export const fetchPublishersRequestsList = ({API_URL}, searchText, token, offset) => async dispatch => {
 	console.log('req', searchText);
 	dispatch(setLoader());
 	try {
@@ -139,7 +120,7 @@ export const fetchPublishersRequestsList = (searchText, token, offset) => async 
 	}
 };
 
-export const fetchPublisherRequest = (id, token) => async dispatch => {
+export const fetchPublisherRequest = ({API_URL}, id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/requests/publishers/${id}`, {

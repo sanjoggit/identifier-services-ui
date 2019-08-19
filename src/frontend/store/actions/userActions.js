@@ -29,9 +29,7 @@ import fetch from 'node-fetch';
 import {USERS_LIST, ERROR, USERS_REQUESTS_LIST, FETCH_USER, FETCH_USERS_REQUEST} from './types';
 import {setLoader, success, fail} from './commonAction';
 
-const API_URL = 'http://localhost:8081';
-
-export const fetchUsersList = (token, offset) => async dispatch => {
+export const fetchUsersList = ({API_URL}, token, offset) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/users/query`, {
@@ -54,7 +52,7 @@ export const fetchUsersList = (token, offset) => async dispatch => {
 	}
 };
 
-export const createUser = (values, token) => async () => {
+export const createUser = ({API_URL}, values, token) => async () => {
 	const response = await fetch(`${API_URL}/users`, {
 		method: 'POST',
 		headers: {
@@ -67,7 +65,7 @@ export const createUser = (values, token) => async () => {
 	await response.json();
 };
 
-export const createUserRequest = (values, token) => async () => {
+export const createUserRequest = ({API_URL}, values, token) => async () => {
 	const response = await fetch(`${API_URL}/requests/users`, {
 		method: 'POST',
 		headers: {
@@ -80,7 +78,7 @@ export const createUserRequest = (values, token) => async () => {
 	await response.json();
 };
 
-export const fetchUser = (id, token) => async dispatch => {
+export const fetchUser = ({API_URL}, id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/users/${id}`, {
@@ -96,7 +94,7 @@ export const fetchUser = (id, token) => async dispatch => {
 	}
 };
 
-export const fetchUserRequest = (id, token) => async dispatch => {
+export const fetchUserRequest = ({API_URL}, id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/requests/users/${id}`, {
@@ -112,7 +110,7 @@ export const fetchUserRequest = (id, token) => async dispatch => {
 	}
 };
 
-export const fetchUsersRequestsList = ({inputVal, sortStateBy, token, offset}) => async dispatch => {
+export const fetchUsersRequestsList = ({API_URL, inputVal, sortStateBy, token, offset}) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const properties = {
@@ -137,7 +135,7 @@ export const fetchUsersRequestsList = ({inputVal, sortStateBy, token, offset}) =
 	}
 };
 
-export const updateUserRequest = (id, values, token) => async () => {
+export const updateUserRequest = ({API_URL}, id, values, token) => async () => {
 	const response = await fetch(`${API_URL}/requests/users/${id}`, {
 		method: 'PUT',
 		headers: {

@@ -41,7 +41,7 @@ import Spinner from '../Spinner';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, searchedPublishers, offset, location, searchPublisher, totalDoc, queryDocCount} = props;
+	const {loading, searchedPublishers, offset, location, searchPublisher, totalDoc, queryDocCount, apiURL} = props;
 	const [cookie] = useCookies('login-cookie');
 	const [inputVal, setSearchInputVal] = location.state === undefined ? useState('') : useState(location.state.searchText);
 	const [page, setPage] = React.useState(1);
@@ -52,9 +52,9 @@ export default connect(mapStateToProps, actions)(props => {
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		console.log(inputVal, cookie['login-cookie'], lastCursor, activeCheck);
-		searchPublisher({searchText: inputVal, token: cookie['login-cookie'], offset: lastCursor, activeCheck: activeCheck});
-	}, [lastCursor, cursors, activeCheck, inputVal, searchPublisher, cookie]);
+		// eslint-disable-next-line no-unused-expressions
+		apiURL !== null && searchPublisher({API_URL: apiURL, searchText: inputVal, token: cookie['login-cookie'], offset: lastCursor, activeCheck: activeCheck});
+	}, [lastCursor, cursors, activeCheck, inputVal, searchPublisher, cookie, apiURL]);
 
 	const handleChange = name => event => {
 		setActiveCheck({...activeCheck, [name]: event.target.checked});
@@ -132,6 +132,7 @@ function mapStateToProps(state) {
 		publishersList: state.publisher.publishersList,
 		offset: state.publisher.offset,
 		totalDoc: state.publisher.totalDoc,
-		queryDocCount: state.publisher.queryDocCount
+		queryDocCount: state.publisher.queryDocCount,
+		apiURL: state.common.apiURL
 	});
 }
