@@ -31,8 +31,6 @@ import {CONTACT, FETCH_MESSAGE, FETCH_MESSAGES_LIST, ERROR} from './types';
 import fetch from 'node-fetch';
 import {setLoader, success, fail} from './commonAction';
 
-const API_URL = 'http://localhost:8081';
-
 export const sendMessage = values => async dispatch => {
 	dispatch(setLoader());
 	const response = await fetch('http://localhost:8080/message', {
@@ -50,7 +48,7 @@ export const sendMessage = values => async dispatch => {
 	}
 };
 
-export const createMessageTemplate = values => async dispatch => {
+export const createMessageTemplate = ({API_URL}, values) => async dispatch => {
 	dispatch(setLoader());
 	const response = await fetch(`${API_URL}/templates`, {
 		method: 'POST',
@@ -62,7 +60,7 @@ export const createMessageTemplate = values => async dispatch => {
 	await response.json();
 };
 
-export const fetchMessagesList = (token, offset) => async dispatch => {
+export const fetchMessagesList = ({API_URL}, token, offset) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/templates/query`, {
@@ -83,7 +81,7 @@ export const fetchMessagesList = (token, offset) => async dispatch => {
 	}
 };
 
-export const fetchMessage = (id, token) => async dispatch => {
+export const fetchMessage = ({API_URL}, id, token) => async dispatch => {
 	dispatch(setLoader());
 	try {
 		const response = await fetch(`${API_URL}/templates/${id}`, {

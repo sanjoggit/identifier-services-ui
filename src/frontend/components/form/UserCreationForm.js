@@ -87,12 +87,12 @@ const fieldArray = [
 	}
 ];
 
-export default connect(null, actions)(reduxForm({
+export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'userCreation',
 	validate
 })(
 	props => {
-		const {handleSubmit, clearFields, valid, createUser, pristine} = props;
+		const {handleSubmit, clearFields, valid, createUser, pristine, apiURL} = props;
 		const classes = useStyles();
 		const [cookie] = useCookies('login-cookie');
 		const token = cookie['login-cookie'];
@@ -114,7 +114,13 @@ export default connect(null, actions)(reduxForm({
 			};
 			// eslint-disable-next-line no-undef
 			window.confirm('Please confirm again to accept') === true ?
-				(delete newUser.defaultLanguage && createUser(newUser, token).then(() => console.log('milxa'))) :
+				(
+					delete newUser.defaultLanguage &&
+					(
+						apiURL !== null &&
+						createUser({APIURL: apiURL}, newUser, token)
+					)
+				) :
 				null;
 		}
 
@@ -234,5 +240,11 @@ function element(array, classes, clearFields) {
 						/>
 					</Grid>)))
 	);
+}
+
+function mapStateToProps(state) {
+	return ({
+		apiURL: state.common.apiURL
+	});
 }
 

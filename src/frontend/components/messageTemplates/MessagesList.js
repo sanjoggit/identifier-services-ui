@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable react-hooks/exhaustive-deps */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -40,15 +38,16 @@ import {useCookies} from 'react-cookie';
 
 export default connect(mapStateToProps, actions)(props => {
 	const classes = useStyles();
-	const {loading, fetchMessagesList, messagesList, totalMessages, endCursor, hasNextPage} = props;
+	const {loading, fetchMessagesList, messagesList, totalMessages, endCursor, hasNextPage, apiURL} = props;
 	const [cookie] = useCookies('login-cookie');
 	const [page, setPage] = useState(1);
 	const [cursors, setCursors] = useState([]);
 	const [lastCursor, setLastCursor] = useState(cursors.length === 0 ? null : cursors[cursors.length - 1]);
 
 	useEffect(() => {
-		fetchMessagesList(cookie['login-cookie'], lastCursor, page);
-	}, [lastCursor, cursors]);
+		// eslint-disable-next-line no-unused-expressions
+		apiURL !== null && fetchMessagesList({API_URL: apiURL}, cookie['login-cookie'], lastCursor, page);
+	}, [lastCursor, cursors, apiURL, fetchMessagesList, cookie, page]);
 
 	const handleTableRowClick = id => {
 		props.history.push(`/templates/${id}`, {modal: true});
@@ -117,6 +116,7 @@ function mapStateToProps(state) {
 		totalMessages: state.contact.totalMessages,
 		pageInfo: state.contact.pageInfo,
 		endCursor: state.contact.pageInfo.endCursor,
-		hasNextPage: state.contact.pageInfo.hasNextPage
+		hasNextPage: state.contact.pageInfo.hasNextPage,
+		apiURL: state.common.apiURL
 	});
 }

@@ -29,7 +29,7 @@
  *
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -60,8 +60,12 @@ import SnackBar from './components/SnackBar';
 import * as actions from './store/actions';
 
 export default connect(mapStateToProps, actions)(withRouter(props => {
-	const {lang, userInfo, isAuthenticated, history, location, responseMessage} = props;
+	const {lang, userInfo, isAuthenticated, history, location, responseMessage, getApiUrl} = props;
 	const {modal} = location.state !== undefined && location.state;
+
+	useEffect(() => {
+		getApiUrl();
+	}, []);
 
 	const routeField = [
 		{path: '/', component: Home},

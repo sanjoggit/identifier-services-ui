@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -44,14 +42,15 @@ import {connect} from 'react-redux';
 import ModalLayout from '../ModalLayout';
 
 export default connect(mapStateToProps, actions)(props => {
-	const {match, fetchMessage, messageInfo} = props;
+	const {match, fetchMessage, messageInfo, apiURL} = props;
 	const classes = useStyles();
 	const [cookie] = useCookies('login-cookie');
 
 	useEffect(() => {
 		const token = cookie['login-cookie'];
-		fetchMessage(match.params.id, token);
-	}, [messageInfo === undefined]);
+		// eslint-disable-next-line no-unused-expressions
+		apiURL !== null && fetchMessage({API_URL: apiURL}, match.params.id, token);
+	}, [apiURL, cookie, fetchMessage, match.params.id]);
 
 	let messageDetail;
 	messageDetail = (messageInfo !== null &&
@@ -91,6 +90,7 @@ export default connect(mapStateToProps, actions)(props => {
 function mapStateToProps(state) {
 	return ({
 		loading: state.contact.loading,
-		messageInfo: state.contact.messageInfo
+		messageInfo: state.contact.messageInfo,
+		apiURL: state.common.apiURL
 	});
 }

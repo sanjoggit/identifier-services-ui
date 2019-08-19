@@ -60,7 +60,8 @@ export default connect(mapToProps, actions)(reduxForm({
 			userInfo,
 			createMessageTemplate,
 			captcha,
-			language
+			language,
+			apiURL
 		} = props;
 		const initialState = {};
 		const [state, setState] = useState(initialState);
@@ -84,7 +85,7 @@ export default connect(mapToProps, actions)(reduxForm({
 				if (result === true) {
 					const newValues = {...values, user: userInfo.user, language: language, subject: values.email};
 					sendMessage(values);
-					createMessageTemplate(newValues);
+					createMessageTemplate({API_URL: apiURL}, newValues);
 					handleClose();
 					history.push('/');
 				} else {
@@ -178,6 +179,7 @@ function mapToProps(state) {
 		loading: state.contact.loading,
 		captcha: state.common.captcha,
 		userInfo: state.login.userInfo,
-		language: state.locale.lang
+		language: state.locale.lang,
+		apiURL: state.common.apiURL
 	});
 }

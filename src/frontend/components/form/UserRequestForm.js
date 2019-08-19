@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -71,12 +70,12 @@ const fieldArray = [
 	}
 ];
 
-export default connect(null, actions)(reduxForm({
+export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'userCreation',
 	validate
 })(
 	props => {
-		const {handleSubmit, clearFields, valid, createUserRequest, pristine} = props;
+		const {handleSubmit, clearFields, valid, createUserRequest, pristine, apiURL} = props;
 		const classes = useStyles();
 		const [cookie] = useCookies('login-cookie');
 		const token = cookie['login-cookie'];
@@ -91,7 +90,8 @@ export default connect(null, actions)(reduxForm({
 				givenName: values.givenName.toLowerCase(),
 				familyName: values.familyName.toLowerCase()
 			};
-			createUserRequest(newUser, token);
+			// eslint-disable-next-line no-unused-expressions
+			apiURL !== null && createUserRequest({API_URL: apiURL}, newUser, token);
 		}
 
 		const component = (
@@ -149,4 +149,10 @@ function element(array, classes, clearFields) {
 				/>
 			</Grid>)
 	);
+}
+
+function mapStateToProps(state) {
+	return ({
+		apiURL: state.common.apiURL
+	});
 }
