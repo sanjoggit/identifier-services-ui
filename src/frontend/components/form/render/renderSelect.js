@@ -30,7 +30,7 @@ import React from 'react';
 import {PropTypes} from 'prop-types';
 import {Input, InputLabel, NativeSelect} from '@material-ui/core';
 
-export default function ({label, input, name, options, meta: {touched, error}}) {
+export default function ({label, input, name, options, defaultValue, meta: {touched, error}}) {
 	const component = (
 		<>
 			<InputLabel htmlFor="language-helper">{label}</InputLabel>
@@ -41,7 +41,7 @@ export default function ({label, input, name, options, meta: {touched, error}}) 
 			>
 				{
 					options.map(item =>
-						<option key={item.value} value={item.value}>{item.label}</option>
+						<option key={item.value} defaultValue={defaultValue} value={item.value}>{item.label}</option>
 					)
 				}
 			</NativeSelect>

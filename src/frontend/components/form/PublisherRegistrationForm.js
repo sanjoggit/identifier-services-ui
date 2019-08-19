@@ -1,8 +1,6 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-undef */
 /* eslint-disable react/no-danger */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable complexity */
 /* eslint-disable no-negated-condition */
 /**
  *
@@ -44,6 +42,7 @@ import useStyles from '../../styles/form';
 import renderContactDetail from './render/renderContactDetail';
 import Captcha from '../Captcha';
 import * as actions from '../../store/actions';
+import renderSelect from './render/renderSelect';
 
 const fieldArray = [
 	{
@@ -51,19 +50,19 @@ const fieldArray = [
 			{
 				name: 'name',
 				type: 'text',
-				label: 'Name',
+				label: 'Name*',
 				width: 'half'
 			},
 			{
 				name: 'publisherEmail',
 				type: 'email',
-				label: 'Publisher Email',
+				label: 'Publisher Email*',
 				width: 'half'
 			},
 			{
 				name: 'publicationEstimate',
 				type: 'number',
-				label: 'Publication Estimate',
+				label: 'Publication Estimate*',
 				width: 'half'
 			},
 			{
@@ -71,6 +70,24 @@ const fieldArray = [
 				type: 'text',
 				label: 'Website',
 				width: 'half'
+			},
+			{
+				name: 'phone',
+				type: 'text',
+				label: 'Phone*',
+				width: 'half'
+			},
+			{
+				name: 'language',
+				type: 'select',
+				label: 'Select Language*',
+				width: 'half',
+				defaultValue: 'eng',
+				options: [
+					{label: 'English', value: 'eng'},
+					{label: 'Suomi', value: 'fin'},
+					{label: 'Svenska', value: 'swe'}
+				]
 			},
 			{
 				name: 'aliases',
@@ -131,6 +148,9 @@ const fieldArray = [
 
 export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'publisherRegistrationForm',
+	initialValues: {
+		language: 'eng'
+	},
 	validate
 })(
 	props => {
@@ -141,7 +161,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 		useEffect(() => {
 			loadSvgCaptcha();
-		}, []);
+		}, [loadSvgCaptcha]);
 
 		const steps = getSteps();
 		function getStepContent(step) {
@@ -274,16 +294,28 @@ function element(array, classes, clearFields) {
 						label={list.label}
 						props={{clearFields, name: list.name, subName: list.subName}}
 					/>
-				</Grid> :
-				<Grid key={list.name} item xs={6}>
-					<Field
-						className={`${classes.textField} ${list.width}`}
-						component={renderTextField}
-						label={list.label}
-						name={list.name}
-						type={list.type}
-					/>
-				</Grid>))
+				</Grid> :(
+					(list.type === 'select') ?
+						console.log('---', list.type) ||
+						<Grid key={list.name} item xs={6}>
+							<Field
+								className={`${list.width}`}
+								component={renderSelect}
+								label={list.label}
+								name={list.name}
+								type={list.type}
+								options={list.options}
+							/>
+						</Grid> :
+						<Grid key={list.name} item xs={6}>
+							<Field
+								className={`${classes.textField} ${list.width}`}
+								component={renderTextField}
+								label={list.label}
+								name={list.name}
+								type={list.type}
+							/>
+						</Grid>)))
 	);
 }
 
