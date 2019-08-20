@@ -43,6 +43,7 @@ import renderContactDetail from './render/renderContactDetail';
 import Captcha from '../Captcha';
 import * as actions from '../../store/actions';
 import renderSelect from './render/renderSelect';
+import renderCheckboxes from './render/renderCheckboxes';
 
 const fieldArray = [
 	{
@@ -55,13 +56,13 @@ const fieldArray = [
 			},
 			{
 				name: 'publisherEmail',
-				type: 'email',
+				type: 'text',
 				label: 'Publisher Email*',
 				width: 'half'
 			},
 			{
 				name: 'publicationEstimate',
-				type: 'number',
+				type: 'text',
 				label: 'Publication Estimate*',
 				width: 'half'
 			},
@@ -80,14 +81,20 @@ const fieldArray = [
 			{
 				name: 'language',
 				type: 'select',
-				label: 'Select Language*',
+				label: 'Select Language',
 				width: 'half',
 				defaultValue: 'eng',
 				options: [
-					{label: 'English', value: 'eng'},
+					{label: 'English (Default Language)', value: 'eng'},
 					{label: 'Suomi', value: 'fin'},
 					{label: 'Svenska', value: 'swe'}
 				]
+			},
+			{
+				name: 'code',
+				type: 'text',
+				label: 'Code',
+				width: 'half'
 			},
 			{
 				name: 'aliases',
@@ -115,7 +122,7 @@ const fieldArray = [
 			{
 				name: 'email',
 				type: 'email',
-				label: 'Email',
+				label: 'Email*',
 				width: 'full'
 			}
 
@@ -124,21 +131,33 @@ const fieldArray = [
 	{
 		address: [
 			{
-				name: 'streetAddress',
+				name: 'address',
 				type: 'text',
-				label: 'Street Address',
+				label: 'Address*',
+				width: 'full'
+			},
+			{
+				name: 'addressDetails',
+				type: 'text',
+				label: 'Address Details',
 				width: 'full'
 			},
 			{
 				name: 'city',
 				type: 'text',
-				label: 'City',
+				label: 'City*',
 				width: 'full'
 			},
 			{
-				name: 'zip',
-				type: 'number',
+				name: 'zip*',
+				type: 'text',
 				label: 'Zip',
+				width: 'full'
+			},
+			{
+				name: 'public',
+				type: 'checkbox',
+				label: 'Public',
 				width: 'full'
 			}
 
@@ -271,43 +290,51 @@ function getSteps() {
 }
 
 function element(array, classes, clearFields) {
-	return array.map(list =>
-
-		// eslint-disable-next-line no-negated-condition
-		((list.width !== 'half') ?
-			<Grid key={list.name} item xs={12}>
-				<Field
-					className={`${classes.textField} ${list.width}`}
-					component={renderTextField}
-					label={list.label}
-					name={list.name}
-					type={list.type}
-				/>
-			</Grid> :
-			((list.type === 'arrayString') ?
-				<Grid key={list.name} item xs={12}>
-					<FieldArray
-						className={`${classes.arrayString} ${list.width}`}
-						component={renderAliases}
-						name={list.name}
-						type={list.type}
-						label={list.label}
-						props={{clearFields, name: list.name, subName: list.subName}}
-					/>
-				</Grid> :(
-					(list.type === 'select') ?
-						console.log('---', list.type) ||
-						<Grid key={list.name} item xs={6}>
-							<Field
-								className={`${list.width}`}
-								component={renderSelect}
-								label={list.label}
-								name={list.name}
-								type={list.type}
-								options={list.options}
-							/>
-						</Grid> :
-						<Grid key={list.name} item xs={6}>
+	return array.map(list => {
+		switch (list.type) {
+			case 'arrayString':
+				return (
+					<Grid key={list.name} item xs={12}>
+						<FieldArray
+							className={`${classes.arrayString} ${list.width}`}
+							component={renderAliases}
+							name={list.name}
+							type={list.type}
+							label={list.label}
+							props={{clearFields, name: list.name, subName: list.subName}}
+						/>
+					</Grid>
+				);
+			case 'select':
+				return (
+					<Grid key={list.name} item xs={6}>
+						<Field
+							className={`${classes.selectField} ${list.width}`}
+							component={renderSelect}
+							label={list.label}
+							name={list.name}
+							type={list.type}
+							options={list.options}
+						/>
+					</Grid>
+				);
+			case 'checkbox':
+				return (
+					<Grid key={list.name} item xs={6}>
+						<Field
+							//className={`${classes.textField} ${list.width}`}
+							component="input"
+							//label={list.label}
+							id={list.name}
+							name={list.name}
+							type={list.type}
+						/>
+					</Grid>
+				);
+			case 'text':
+				if (list.width === 'full') {
+					return (
+						<Grid key={list.name} item xs={12}>
 							<Field
 								className={`${classes.textField} ${list.width}`}
 								component={renderTextField}
@@ -315,7 +342,26 @@ function element(array, classes, clearFields) {
 								name={list.name}
 								type={list.type}
 							/>
-						</Grid>)))
+						</Grid>
+					);
+				}
+
+				return (
+					<Grid key={list.name} item xs={6}>
+						<Field
+							className={`${classes.textField} ${list.width}`}
+							component={renderTextField}
+							label={list.label}
+							name={list.name}
+							type={list.type}
+						/>
+					</Grid>
+				);
+
+			default:
+				return null;
+		}
+	}
 	);
 }
 
