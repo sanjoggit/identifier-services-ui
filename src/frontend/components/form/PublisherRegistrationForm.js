@@ -1,7 +1,4 @@
 /* eslint-disable no-alert */
-/* eslint-disable no-undef */
-/* eslint-disable react/no-danger */
-/* eslint-disable no-negated-condition */
 /**
  *
  * @licstart  The following is the entire license notice for the JavaScript code in this file.
@@ -35,15 +32,15 @@ import {Field, FieldArray, reduxForm} from 'redux-form';
 import {Button, Grid, Stepper, Step, StepLabel} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import {validate} from '@natlibfi/identifier-services-commons';
+import useStyles from '../../styles/form';
 
 import renderTextField from './render/renderTextField';
 import renderAliases from './render/renderAliases';
-import useStyles from '../../styles/form';
 import renderContactDetail from './render/renderContactDetail';
+import renderSelect from './render/renderSelect';
+import renderCheckbox from './render/renderCheckbox';
 import Captcha from '../Captcha';
 import * as actions from '../../store/actions';
-import renderSelect from './render/renderSelect';
-import renderCheckboxes from './render/renderCheckboxes';
 
 const fieldArray = [
 	{
@@ -168,7 +165,8 @@ const fieldArray = [
 export default connect(mapStateToProps, actions)(reduxForm({
 	form: 'publisherRegistrationForm',
 	initialValues: {
-		language: 'eng'
+		language: 'eng',
+		public: false
 	},
 	validate
 })(
@@ -210,6 +208,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 
 		const handlePublisherRegistration = async values => {
 			if (captchaInput.length === 0) {
+				// eslint-disable-next-line no-undef
 				alert('Captcha not provided');
 			} else if (captchaInput.length > 0) {
 				const result = await postCaptchaInput(captchaInput, captcha.id);
@@ -219,6 +218,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 					};
 					registerPublisher(newPublisher);
 				} else {
+					// eslint-disable-next-line no-undef
 					alert('Please type the correct word in the image below');
 					loadSvgCaptcha();
 				}
@@ -246,6 +246,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 							<Captcha
 								captchaInput={captchaInput}
 								handleCaptchaInput={handleCaptchaInput}/>
+								{/* eslint-disable-next-line react/no-danger */}
 							<span dangerouslySetInnerHTML={{__html: captcha.data}}/>
 						</>
 					}
@@ -254,6 +255,7 @@ export default connect(mapStateToProps, actions)(reduxForm({
 						<Button disabled={activeStep === 0} onClick={handleBack}>
 							Back
 						</Button>
+						{/* eslint-disable-next-line no-negated-condition */}
 						{activeStep !== steps.length - 1 ?
 							<Button type="button" disabled={(pristine || !valid) || activeStep === steps.length - 1} variant="contained" color="primary" onClick={handleNext}>
 								Next
@@ -322,10 +324,8 @@ function element(array, classes, clearFields) {
 				return (
 					<Grid key={list.name} item xs={6}>
 						<Field
-							//className={`${classes.textField} ${list.width}`}
-							component="input"
-							//label={list.label}
-							id={list.name}
+							component={renderCheckbox}
+							label={list.label}
 							name={list.name}
 							type={list.type}
 						/>
