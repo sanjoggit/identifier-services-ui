@@ -27,7 +27,6 @@
  */
 
 export {
-	fetchPublishersList,
 	fetchPublisher,
 	updatePublisher,
 	searchPublisher,
